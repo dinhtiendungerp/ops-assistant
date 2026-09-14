@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Marou Ops Assistant · kiến trúc hiện tại",
+    "output": "kien-truc-hien-tai.html",
+    "quality_profile": "showcase",
+    "viewBox": [1385, 780],
+    "views": [
+      { "id": "hoi-dap", "label": "Một câu hỏi đi qua hệ thống", "focus": ["web", "router", "kichban", "planner", "azure", "toolbox", "gateway", "bcdata"], "note": "Rule trước, kịch bản đã duyệt sau, model chỉ khi hai lớp kia không trả lời được." },
+      { "id": "ghi-de-xuat", "label": "Ranh giới ghi vào BC", "focus": ["toolbox", "policy", "gateway", "bcdata", "alcalc"], "note": "Trợ lý chỉ ghi đề xuất Proposed. Số do AL tính, chứng từ do người duyệt tạo." },
+      { "id": "mcp", "label": "Mở cho agent bên ngoài", "focus": ["mcpclient", "mcp", "toolbox", "policy"], "note": "Client MCP dùng chung bộ công cụ và chung policy với chat." }
+    ]
+  },
+  "components": [
+    { "id": "web", "type": "frontend", "label": "Web console", "sublabel": "10 vai demo · thẻ duyệt", "pos": [20, 300], "size": [160, 64] },
+    { "id": "router", "type": "backend", "label": "Định tuyến", "sublabel": "rule NLU trước", "pos": [250, 300], "size": [160, 64], "tag": "assistant/core.py", "brand": "fastapi" },
+    { "id": "kichban", "type": "database", "label": "Kịch bản đã duyệt", "sublabel": "0 token · kich-ban.sqlite", "pos": [250, 480], "size": [160, 64] },
+    { "id": "planner", "type": "backend", "label": "Planner", "sublabel": "vòng tool use", "pos": [480, 300], "size": [160, 64] },
+    { "id": "azure", "type": "cloud", "label": "Azure OpenAI", "sublabel": "gpt-4.1-mini · eastus", "pos": [480, 110], "size": [160, 64] },
+    { "id": "toolbox", "type": "backend", "label": "Bộ công cụ", "sublabel": "toolbox.py · chỉ đọc", "pos": [710, 300], "size": [160, 64] },
+    { "id": "policy", "type": "security", "label": "Policy engine", "sublabel": "P-01… · shadow mode", "pos": [710, 480], "size": [160, 64] },
+    { "id": "mcp", "type": "backend", "label": "MCP server", "sublabel": "POST /mcp · 10 tool", "pos": [480, 480], "size": [160, 64] },
+    { "id": "mcpclient", "type": "external", "label": "Client MCP", "sublabel": "Foundry · VS Code", "pos": [480, 660], "size": [160, 64], "tag": "chưa nối thử" },
+    { "id": "gateway", "type": "backend", "label": "BCGateway", "sublabel": "S2S OAuth · cache 60s", "pos": [940, 300], "size": [160, 64] },
+    { "id": "bcdata", "type": "database", "label": "Bảng kết quả", "sublabel": "Inv. Health · Proposal", "pos": [1170, 300], "size": [160, 64], "tag": "API page 70200+" },
+    { "id": "alcalc", "type": "backend", "label": "Lớp tính AL", "sublabel": "Job Queue · 05:00", "pos": [1170, 110], "size": [160, 64] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Trợ lý NaviWorld · cửa C · FastAPI :8188", "wraps": ["router", "kichban", "planner", "toolbox", "policy", "mcp", "gateway"] },
+    { "kind": "region", "label": "Business Central NWV01 / NWV", "wraps": ["alcalc", "bcdata"] }
+  ],
+  "connections": [
+    { "id": "web-router", "from": "web", "to": "router", "label": "tin nhắn", "variant": "emphasis" },
+    { "id": "router-kichban", "from": "router", "to": "kichban", "label": "khớp kịch bản", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "labelAt": [330, 422] },
+    { "id": "router-planner", "from": "router", "to": "planner", "label": "câu mở", "variant": "emphasis" },
+    { "id": "planner-azure", "from": "planner", "to": "azure", "label": "tool use", "fromSide": "top", "toSide": "bottom" },
+    { "id": "planner-toolbox", "from": "planner", "to": "toolbox", "label": "gọi tool", "variant": "emphasis" },
+    { "id": "toolbox-gateway", "from": "toolbox", "to": "gateway", "label": "đọc số", "variant": "emphasis" },
+    { "id": "gateway-bcdata", "from": "gateway", "to": "bcdata", "label": "OData", "variant": "emphasis" },
+    { "id": "alcalc-bcdata", "from": "alcalc", "to": "bcdata", "label": "ghi kết quả", "fromSide": "bottom", "toSide": "top", "labelAt": [1250, 237] },
+    { "id": "toolbox-policy", "from": "toolbox", "to": "policy", "label": "đề xuất", "fromSide": "bottom", "toSide": "top", "labelAt": [790, 422] },
+    { "id": "policy-gateway", "from": "policy", "to": "gateway", "label": "ghi Proposed", "variant": "security", "fromSide": "right", "toSide": "bottom" },
+    { "id": "mcpclient-mcp", "from": "mcpclient", "to": "mcp", "label": "JSON-RPC", "variant": "dashed", "fromSide": "top", "toSide": "bottom" },
+    { "id": "mcp-toolbox", "from": "mcp", "to": "toolbox", "label": "cùng bộ tool", "fromSide": "right", "toSide": "bottom" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "Số liệu", "items": ["AL trong BC tính tầng tồn và số cần chuyển", "Trợ lý chỉ đọc lại, không tự tính", "Mỗi con số mở ra được chứng từ gốc"] },
+    { "dot": "violet", "title": "Tiết kiệm token", "items": ["Rule đọc được thì không gọi model", "Câu lặp lại chạy kịch bản đã duyệt", "Trần cứng 2 USD mỗi ngày"] },
+    { "dot": "rose", "title": "Ranh giới quyền", "items": ["Trợ lý chỉ ghi đề xuất Proposed", "Chặn số vượt tồn ở lớp tool", "Người duyệt bấm thì BC tạo Transfer Order"] }
+  ]
+}

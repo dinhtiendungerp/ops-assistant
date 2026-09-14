@@ -1,0 +1,298 @@
+# Tu dien tham so LS Replenishment, khoa theo CAPTION dung nhu LS in trong Calc. Log Lines.
+# Moi muc ghi: ten tieng Viet ngan, y nghia, sua o dau, va noi doc trong source LS Central 28.0.10.3586
+# (thu muc src/src/Replenishment). Chi ghi dieu da doc trong source, khong suy dien.
+#
+# Quy tac nguon tham so (Replen. Calculation.LOCALReturnReplItemStoreRec, CopyItemToItemStore, CopyDataProfileToItemStore):
+#   Replen. Source = Item        -> lay tu cac field LSC tren Item Card.
+#   Replen. Source = ItemStore   -> lay tu ban ghi Replen. Item Store Rec (mat hang x cua hang, co Active From Date).
+#   Replen. Source = DataProfile -> lay tu Replen. Data Profile; Reorder Point, Maximum Inventory, Transfer Multiple,
+#                                   Purchase Order Multiple chi lay tu profile khi field "(Source)" tuong ung = Data Profile,
+#                                   nguoc lai lay tu Item hoac Item Store Rec.
+#   Data Profile duoc tim theo thu tu: Item Store Rec, Item, Retail Product Group, Item Category, Division (FindReplenDataProfile).
+
+nguon_tham_so:
+  Item: "các field LSC trên Item Card (nhóm Replenishment)"
+  ItemStore: "bản ghi Replen. Item Store Rec của mặt hàng tại cửa hàng này"
+  DataProfile: "Replen. Data Profile gắn cho mặt hàng (qua Item Store Rec, Item, Retail Product, Item Category hoặc Division)"
+
+tham_so:
+  Replen. Source:
+    ten: nguồn tham số
+    y_nghia: LS lấy bộ tham số cho mặt hàng tại cửa hàng này từ đâu. Ba giá trị Item, ItemStore, DataProfile.
+    nguon: Replen. Calculation.CalcLogItemStoreRec, LOCALReturnReplItemStoreRec
+
+  Replenishment Calculation Type:
+    ten: kiểu tính
+    y_nghia: Average Usage tính theo bán bình quân; Manual Estimate dùng số bán ước tính nhập tay; Stock Levels đưa tồn về Reorder Point hoặc Maximum Inventory; Like for Like chỉ lấy bán bình quân không tự ra số; Retail Forecast (LS Forecast) dùng bản dự báo của LS Forecast.
+    sua_o: field LSC Replen. Calculation Type trên Item, hoặc trên Item Store Rec, hoặc Data Profile tùy nguồn tham số
+    nguon: Replen. Calculation.InsertWorksheetDetail (case Calculation Type)
+
+  Store Stock Cover Reqd (Days):
+    ten: số ngày phủ ở cửa hàng
+    y_nghia: Journal tính đủ hàng bán cho bấy nhiêu ngày kể từ ngày sau Work Date. Khi có Store Coverage Days Profile thì LS tính lại số này theo lịch chạy.
+    sua_o: LSC Store Stock Cover Reqd (D) trên Item, hoặc Item Store Rec, hoặc Data Profile
+    nguon: Replen. Calculation.CalcAveMan, UpdateDynamicCoverageDays
+
+  Wareh Stock Cover Reqd (Days):
+    ten: số ngày phủ ở kho
+    y_nghia: Dùng khi journal mua hàng tính cho kho tổng. Bằng 0 thì LS dùng số ngày phủ cửa hàng.
+    sua_o: LSC Wareh Stock Cover Reqd (D) trên Item, hoặc Item Store Rec, hoặc Data Profile
+    nguon: Replen. Calculation.CalcAveMan (nhánh gReplenishForWarehouse)
+
+  Replenishment Sales Profile:
+    ten: sales profile
+    y_nghia: Các cửa sổ bán và trọng số dùng để tính bán bình quân. Để trống thì LS lấy profile có Default Profile.
+    sua_o: LSC Replenishment Sales Prof trên Item, hoặc Item Store Rec, hoặc Data Profile; dòng cửa sổ ở Replen. Sales Profile
+    nguon: Replen. - Calc. Qtys.Calc-DailySale
+
+  Manual Estimated Daily Sale:
+    ten: bán ước tính mỗi ngày
+    y_nghia: Chỉ dùng khi kiểu tính là Manual Estimate; khi đó Daily Sales bằng đúng số này.
+    sua_o: LSC Manual Est. Daily Sale trên Item, hoặc Item Store Rec, hoặc Data Profile
+    nguon: Replen. - Calc. Qtys.Calc-DailySale
+
+  Reorder Point:
+    ten: điểm đặt hàng lại
+    y_nghia: Tồn tối thiểu. Sau khi tính theo nhu cầu, nếu tồn cộng số đề xuất vẫn dưới mức này thì LS nâng số lên cho đủ.
+    sua_o: Reorder Point trên Item, hoặc Item Store Rec, hoặc Data Profile khi Reorder Point (Source) = Data Profile
+    nguon: Replen. Calculation.ApplyRoPMaxInv, Calc-StockLevels
+
+  Maximum Inventory:
+    ten: tồn tối đa
+    y_nghia: Trần tồn. Tồn cộng số đề xuất vượt mức này thì LS hạ số xuống; bằng 0 là không có trần.
+    sua_o: Maximum Inventory trên Item, hoặc Item Store Rec, hoặc Data Profile khi Max. Inventory (Source) = Data Profile
+    nguon: Replen. Calculation.ApplyRoPMaxInv, Calc-StockLevels
+
+  Transfer Multiple:
+    ten: bội số chuyển hàng
+    y_nghia: Số chuyển hàng được làm tròn theo bội số này (ví dụ thùng 12). Bằng 0 thì LS coi là 1.
+    sua_o: LSC Transfer Multiple trên Item, hoặc Item Store Rec, hoặc Data Profile khi Transfer Multiple (Source) = Data Profile
+    nguon: Replen. Calculation.InsertWorksheetDetail, MultipleRoundAndCheckRoPAndMax
+
+  Purchase Order Multiple:
+    ten: bội số đặt mua
+    y_nghia: Số mua được làm tròn theo bội số này. Bằng 0 thì LS lấy Order Multiple trên Item.
+    sua_o: Order Multiple trên Item, hoặc Item Store Rec, hoặc Data Profile khi Order Multiple (Source) = Data Profile
+    nguon: Replen. Calculation.InsertWorksheetDetail, GetWHPurchaseMultiple
+
+  Replenishment Grade Code:
+    ten: hạng bổ sung
+    y_nghia: Nhãn phân hạng mặt hàng tại cửa hàng. Trong Replen. Calculation chỉ được chép và ghi log, không tham gia công thức số lượng.
+    sua_o: LSC Replenishment Grade Code trên Item, hoặc Item Store Rec, hoặc Data Profile
+
+  Exclude from Replenishment:
+    ten: loại khỏi bổ sung
+    y_nghia: Bật thì LS bỏ qua mặt hàng tại cửa hàng này, không ra dòng journal nào.
+    sua_o: LSC Exclude from Replenishment trên Item, hoặc Item Store Rec, hoặc Data Profile
+    nguon: Replen. Calculation.IsItemExcludedFromReplenishment
+
+  Range in Location:
+    ten: có bày bán tại địa điểm
+    y_nghia: Cờ phân phối mặt hàng tại địa điểm. Mặt hàng phải nằm trong phân phối của cửa hàng (Item Distribution hoặc Item Store Rec, tùy Store Items Ranged By trên Replen. Setup) thì LS mới tính.
+    sua_o: Item Distribution của mặt hàng, hoặc Item Store Rec
+    nguon: Replen. Calculation.ItemIsInRange, Replen. - Calc. Qtys.ShouldPlanItem
+
+  Vendor No.:
+    ten: nhà cung cấp
+    y_nghia: Nhà cung cấp dùng cho journal mua hàng. Trống thì dòng mua không có nhà cung cấp và LS ghi "No available vendor found".
+    sua_o: Vendor No. trên Item hoặc Stockkeeping Unit, hoặc Item Store Rec, hoặc Data Profile
+    nguon: Replen. Calculation.ProcessRecord, FindReplenVendor
+
+  Purch. Order Delivery:
+    ten: nơi nhận hàng mua
+    y_nghia: To Warehouse là mua về kho rồi chuyển xuống cửa hàng; To Store là nhà cung cấp giao thẳng cửa hàng. Phải khớp Purchase Order Type của template, nếu không LS ghi "NOT processed".
+    sua_o: LSC Purch. Order Delivery trên Item, hoặc Item Store Rec, hoặc Data Profile
+    nguon: Replen. Calculation.ProcessRecord
+
+  Replenish From Warehouse:
+    ten: kho cấp hàng
+    y_nghia: Kho mà cửa hàng lấy hàng. Lấy từ Replen. From Warehouse theo mặt hàng hoặc nhóm hàng, không có thì Default Central Warehouse trên Replen. Setup.
+    sua_o: Replen. From Warehouse, hoặc Default Central Warehouse trên Replen. Setup
+
+  Store Coverage Days Profile:
+    ten: profile ngày phủ cửa hàng
+    y_nghia: Có profile thì số ngày phủ không cố định mà tính từ Work Date đến lần tính kế tiếp của batch, cộng Coverage Buffer Days và thời gian nhận hàng nếu bật.
+    sua_o: LSC Store Coverage Days Prof. trên Item, hoặc Item Store Rec, hoặc Data Profile
+    nguon: Replen. Calculation.UpdateDynamicCoverageDays
+
+  Wareh Coverage Days Profile:
+    ten: profile ngày phủ kho
+    y_nghia: Như profile ngày phủ cửa hàng nhưng cho phần tính kho tổng.
+    sua_o: LSC Wareh Coverage Days Prof trên Item, hoặc Item Store Rec, hoặc Data Profile
+    nguon: Replen. Calculation.UpdateDynamicCoverageDays
+
+  Store Forward Sales Profile:
+    ten: profile hệ số dự báo cửa hàng
+    y_nghia: Có profile thì LS so bán cùng kỳ năm trước giữa giai đoạn sắp tới và giai đoạn vừa qua để ra Forward Sales Forecast Factor. Trống thì hệ số bằng 1.
+    sua_o: LSC Store Forw. Sales Profile trên Item, hoặc Item Store Rec, hoặc Data Profile
+    nguon: Replen. Calculation.Calc-AverageUsage, CalculateForecastFactor
+
+  Wareh. Forward Sales Profile:
+    ten: profile hệ số dự báo kho
+    y_nghia: Như trên, dùng khi tính cho kho tổng.
+    sua_o: LSC Wareh. Forw. Sales Profile trên Item, hoặc Item Store Rec, hoặc Data Profile
+
+  Replenish as Location Code:
+    ten: tính như địa điểm
+    y_nghia: Có giá trị thì bán bình quân lấy theo lịch sử bán của địa điểm được chỉ định thay vì địa điểm này (ví dụ cửa hàng mới mượn lịch sử cửa hàng cũ).
+    sua_o: Item Store Rec hoặc Data Profile
+    nguon: Replen. - Calc. Qtys.Calc-DailySale
+
+  Replenish as Item No.:
+    ten: tính như mặt hàng
+    y_nghia: Có giá trị thì lịch sử bán lấy theo mặt hàng được chỉ định (mặt hàng thay thế hoặc mặt hàng mới).
+    sua_o: LSC Replenish as Item No. trên Item
+
+  Replenish as Item No - Method:
+    ten: cách tính như mặt hàng
+    y_nghia: Substitute là chỉ dùng lịch sử của mặt hàng kia; Total là cộng lịch sử cả hai.
+    sua_o: LSC Replen. as Item No - Met trên Item
+
+  Consider Location Closed Days:
+    ten: tính ngày đóng cửa
+    y_nghia: Bật thì ngày đóng cửa trong lịch Closed Days Calendar không được tính là ngày cần phủ hàng.
+    sua_o: Replen. Setup
+    nguon: Replen. Calculation.CalcAveMan (Consider Loc. Closed Days Cov.)
+
+  Closed Days Calendar:
+    ten: lịch ngày đóng cửa
+    sua_o: Replen. Setup hoặc Replen. Journal Batch
+
+  Enable Multi-Warehouse Replenishment:
+    ten: lấy hàng từ nhiều kho
+    y_nghia: Bật thì kho thứ nhất không đủ, LS lấy tiếp từ kho 2 và kho 3 theo Warehouse Stock Strategy.
+    sua_o: Replen. Template
+
+  Warehouse Stock Strategy:
+    ten: chiến lược chia kho
+    sua_o: Replen. Template
+
+  Enable Lead Time Calculation:
+    ten: tính lead time
+    y_nghia: Bật thì LS trừ phần sẽ bán trong thời gian chờ hàng về (Lead Time Sales Quantity) khỏi tồn khả dụng, và bắt đầu cửa sổ phủ sau khi hàng về.
+    sua_o: LSC Enable Lead Time Calc trên Item; lead time chuyển hàng lấy ở CO Sourcing Locations, lead time mua ở Item Vendor hoặc Vendor
+    nguon: Replen. Calculation.InsertWorksheetDetail, CalcAveMan, CalculateVendorLeadTime
+
+  Select Lowest Price Vendor:
+    ten: chọn nhà cung cấp giá thấp nhất
+    sua_o: LSC Select Lowest Price Vendor trên Item
+
+  Set Negative Eff. Inv. to Zero:
+    ten: đưa tồn khả dụng âm về 0
+    sua_o: Replen. Template
+    nguon: Replen. Calculation.InsertWorksheetDetail
+
+  Set Neg. WH. Eff. Inv. to Zero:
+    ten: đưa tồn kho âm về 0
+    sua_o: Replen. Template
+
+  Allow Negative Proj. Eff. Inv.:
+    ten: cho tồn dự kiến âm
+    y_nghia: Chỉ có tác dụng khi tính lead time. Tắt thì tồn dự kiến sau lead time âm được đưa về 0.
+    sua_o: Replen. Template
+    nguon: Replen. Calculation.CalculateNegProjectedEffInv
+
+  Effective Inventory:
+    ten: tồn khả dụng
+    y_nghia: Tồn + hàng mua đang về − hàng trả nhà cung cấp − đơn bán + hàng chuyển đến − hàng chuyển đi + lắp ráp − hàng không dùng được. Journal chuyển hàng có thể bỏ phần đơn mua và trả hàng theo Replen. Setup.
+    nguon: Replen. Calculation.CalculateEffectiveInventory
+
+  Store Effective Inventory:
+    ten: tồn khả dụng cửa hàng
+
+  Warehouse Effective Inventory:
+    ten: tồn khả dụng của kho cấp hàng
+    y_nghia: Tính cùng công thức cho kho. Journal chuyển hàng không chuyển quá số này; kho không đủ thì LS cắt số đề xuất.
+    nguon: Replen. Calculation.AssignNewQtyByWHInv, UpdQtyInDetailLinesTO
+
+  Projected Eff. Inventory:
+    ten: tồn dự kiến khi hàng về
+    y_nghia: Tồn khả dụng trừ phần bán trong thời gian chờ hàng (chỉ khi bật lead time).
+
+  Lead Time Sales Quantity:
+    ten: bán trong thời gian chờ hàng
+    y_nghia: Số ngày lead time (trừ ngày đóng cửa) nhân bán bình quân.
+
+  Daily Sales:
+    ten: bán bình quân mỗi ngày
+    y_nghia: Tính ở bước Calc. Item Quantities, lưu trên Replen. Item Quantity. Mỗi dòng sales profile là một cửa sổ ngày; bán trong cửa sổ trừ bán vào ngày hết hàng, chia cho số ngày còn hàng, rồi nhân trọng số của dòng. Cộng các dòng lại.
+    nguon: Replen. - Calc. Qtys.Calc-DailySale, GetAvgSalesPerDay, AssignDailySalesField
+
+  Forward Sales Forecast Factor:
+    ten: hệ số dự báo
+    y_nghia: Bán bình quân ngày của giai đoạn sắp tới năm trước chia cho giai đoạn vừa qua năm trước. Không có forward sales profile thì bằng 1; có Maximum Forward Factor thì không vượt mức đó.
+    nguon: Replen. Calculation.CalculateForecastFactor
+
+  System Suggested Quantity:
+    ten: số hệ thống đề xuất
+    y_nghia: Số trước khi áp Reorder Point, Maximum Inventory, bội số và giới hạn tồn kho cấp hàng.
+
+  Quantity to Cross Dock:
+    ten: số cross dock
+    y_nghia: Chỉ có ở template mua hàng kiểu One Purchase Order per Vendor with Cross Docking.
+
+  Unavailable Qty:
+    ten: hàng không dùng được
+    y_nghia: Số lượng khai trong bảng Replen. Unavailable Stock cho mặt hàng tại địa điểm, bị trừ khỏi tồn khả dụng.
+    sua_o: Replen. Unavailable Stock
+    nguon: Replen. Calculation.FindReplenUnavailableStockQty, CalculateEffectiveInventory
+
+  Quantity on Purchase Order:
+    ten: hàng mua đang về
+    y_nghia: Outstanding của dòng Purchase Order tới địa điểm. Effective Inv. Purchase Ord. = Exclude thì 0; = Coverage thì chỉ lấy dòng có Expected Receipt Date từ Work Date trừ Purchase Order Historical Days đến Work Date cộng Purchase Order Coverage Days (Replen. Setup).
+    nguon: Replen. - Calc. Qtys.CalcReplQtyForItem, CalcRIQ_SetFilterForPurchaseLineTypeOrder
+
+  Quantity on Purch. Ret. Order:
+    ten: hàng trả nhà cung cấp
+
+  Quantity on Sales Order:
+    ten: đơn bán chưa giao
+    y_nghia: Outstanding của Sales Order tại địa điểm; Exclude thì 0, Coverage thì theo Shipment Date.
+    nguon: Replen. - Calc. Qtys.CalcRIQ_SetFilterForSalesLine
+
+  Quantity in Transfer In:
+    ten: hàng chuyển đến
+    y_nghia: Outstanding cộng In Transit của MỌI Transfer Line tới địa điểm, không lọc theo Status, nên Transfer Order còn Open chưa release cũng được tính. Effective Inv. Transfer Inb. = Exclude thì 0; = Coverage thì chỉ lấy Receipt Date trong Transfer Order Coverage Days.
+    nguon: Replen. - Calc. Qtys.CalcReplQtyForItem, CalcRIQ_SetFilterForTransferLineIn
+
+  Quantity in Transfer Out:
+    ten: hàng chuyển đi
+    y_nghia: Outstanding của mọi Transfer Line đi từ địa điểm, không lọc Status.
+    nguon: Replen. - Calc. Qtys.CalcRIQ_SetFilterForTransferLineOut
+
+  Stock Coverage Start Date:
+    ten: ngày bắt đầu phủ
+  Stock Coverage End Date:
+    ten: ngày cuối phủ
+  Lead Time Start Date:
+    ten: ngày bắt đầu chờ hàng
+  Lead Time End Date:
+    ten: ngày cuối chờ hàng
+  Store Closed Days (Store):
+    ten: số ngày đóng cửa trong cửa sổ phủ
+  Store Closed Days (WH):
+    ten: số ngày đóng cửa trong cửa sổ phủ của kho
+  Location Code:
+    ten: địa điểm
+  Item No. Filter:
+    ten: lọc mặt hàng của template
+  Store Group Filter:
+    ten: lọc cửa hàng của template
+  Item Division Filter:
+    ten: lọc division của template
+  Item Category Filter:
+    ten: lọc nhóm hàng của template
+  Retail Product Filter:
+    ten: lọc retail product của template
+  Purchase Order Type:
+    ten: kiểu đơn mua của template
+  Item No.:
+    ten: mặt hàng
+  Variant Code:
+    ten: variant
+  Item Replenishment Type:
+    ten: loại mặt hàng bổ sung (BOM)
+  BOM Method:
+    ten: cách xử lý BOM
+  BOM Assembled In:
+    ten: nơi lắp ráp BOM

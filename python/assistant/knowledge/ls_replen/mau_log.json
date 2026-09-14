@@ -1,0 +1,2065 @@
+{
+ "ls_central": "28.0.10.3586",
+ "nguon": [
+  "Replenishment/Automatic/Journals/Core/Replen. Calculation.codeunit.al",
+  "Replenishment/Automatic/Journals/Standard/Add Items to Replen. Jrnl.report.al",
+  "Replenishment/Automatic/Journals/MultiWarehouse/Replen. Multi-Whse. Utils.codeunit.al",
+  "Replenishment/Automatic/Journals/StoreStockRedistribution/Replen. Redist. Calculation.codeunit.al",
+  "Replenishment/Automatic/Journals/Hospitality/Add BOM to Replen. Jrnl.report.al",
+  "Replenishment/Automatic/Journals/Hospitality/Add Comp. to Replen. Jrnl.report.al"
+ ],
+ "mau": [
+  {
+   "id": "CALC:AdjQtyWHEffInvLessThanQtyTxt",
+   "label": "AdjQtyWHEffInvLessThanQtyTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 112,
+   "van_ban": "Adjust Item quantity from %1 to %2. Warehouse Effective Inventory(%3) is less than Quantity(%4) then Quantity(%5) - Warehouse Effective Inventory(%6) = Quantity(%7)",
+   "so_tham_so": 7,
+   "do_dac_trung": 116,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:SalesNoRangeCreatedMsg",
+   "label": "SalesNoRangeCreatedMsg",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 803,
+   "van_ban": "Sales Orders %1 to %2 were created. \\Please note that there could be gaps between the Sales Orders \\if multiple number series are used.",
+   "so_tham_so": 2,
+   "do_dac_trung": 104,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:SalesNoRangeCreatedMsg",
+    "Add Comp. to Replen. Jrnl.report.al:SalesNoRangeCreatedMsg"
+   ]
+  },
+  {
+   "id": "CALC:AdjQtyWHEffInvGreaterEqualQtyTxt",
+   "label": "AdjQtyWHEffInvGreaterEqualQtyTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 113,
+   "van_ban": "Adjust Item quantity from %1 to %2. Warehouse Effective Inventory(%3) is greater than or equal to Quantity(%4) then Quantity = %5",
+   "so_tham_so": 5,
+   "do_dac_trung": 93,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text144",
+   "label": "Text144",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 67,
+   "van_ban": "Forward Factor: (PostTotalSale(%1)/No.OfDays(%2)) / (PreTotalSale(%3)/No.OfDays(%4)) = Factor(%5)  PostDailySale(%6) / PreDailySale(%7) = Factor(%5)",
+   "so_tham_so": 7,
+   "do_dac_trung": 91,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text225",
+   "label": "Text225",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 82,
+   "van_ban": "Quantity(%1) + Effective Inventory(%2) is greater than Maximum Inventory(%3) - Brought back down one Multiple(%4). Quantity = %5.",
+   "so_tham_so": 5,
+   "do_dac_trung": 89,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:LSForecastNoEntryFoundUseAvgMsg",
+   "label": "LSForecastNoEntryFoundUseAvgMsg",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 105,
+   "van_ban": "Some Forecast Entries are missing within the coverage period (%1 to %2). %3 is set to Average Daily Sales (%4) for %5 days",
+   "so_tham_so": 5,
+   "do_dac_trung": 85,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text224",
+   "label": "Text224",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 81,
+   "van_ban": "Quantity(%1) + Effective Inventory(%2) is less than Reorder Point(%3) - Brought back up one Multiple(%4). Quantity = %5.",
+   "so_tham_so": 5,
+   "do_dac_trung": 80,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text012",
+   "label": "Text012",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 26,
+   "van_ban": "Quantity to Cross Dock(%1) = Daily Sales(%2) * Store Stock Cover Reqd (Days)(%3) * Forward Sales Forecast Factor(%6) - %4(%5)",
+   "so_tham_so": 6,
+   "do_dac_trung": 78,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:FirstItemStoreRecPickedTxt",
+   "label": "FirstItemStoreRecPickedTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 89,
+   "van_ban": "Quantity multiple rounded from %1 to %2 (multiple=%3,precision=%4). System picked first multiple from %5.",
+   "so_tham_so": 5,
+   "do_dac_trung": 75,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDBOM:ThresholdExceptionFoundMsg",
+   "label": "ThresholdExceptionFoundMsg",
+   "file": "Add BOM to Replen. Jrnl.report.al",
+   "dong": 891,
+   "van_ban": "Threshold exceptions found. %1 Orders were not created for one or more Component Journals.",
+   "so_tham_so": 1,
+   "do_dac_trung": 73,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:DecisionSSQStoreEffInvQtyToXDockTxt",
+   "label": "DecisionSSQStoreEffInvQtyToXDockTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 55,
+   "van_ban": "Decision = %1. System Suggested Quantity(%2) - Store Effective Inventory(%3) = Quantity to Cross Dock(%4).",
+   "so_tham_so": 4,
+   "do_dac_trung": 73,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:ExcludeILEDataSourceLocation",
+   "label": "ExcludeILEDataSourceLocation",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 805,
+   "van_ban": "Data Source for Location Code (%1) is %2, the replenishment to this location will be excluded.",
+   "so_tham_so": 2,
+   "do_dac_trung": 71,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:ExcludeILEDataSourceLocation",
+    "Add Comp. to Replen. Jrnl.report.al:ExcludeILEDataSourceLocation"
+   ]
+  },
+  {
+   "id": "CALC:SelectLowestPriceVendorExcludedTxt",
+   "label": "SelectLowestPriceVendorExcludedTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 124,
+   "van_ban": "Select Lowest Price Vendor - vendor %1 is on vacation and excluded from the calculation.",
+   "so_tham_so": 1,
+   "do_dac_trung": 70,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:LSForecastNoEntryFoundUsedZeroMsg",
+   "label": "LSForecastNoEntryFoundUsedZeroMsg",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 104,
+   "van_ban": "Some Forecast Entries are missing within the coverage period (%1 to %2). %3 is set to 0 for %4 days",
+   "so_tham_so": 4,
+   "do_dac_trung": 69,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text128",
+   "label": "Text128",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 56,
+   "van_ban": "PStkD-Process Record: EntryNo=%1 ItemNo=%2 Variant=%3 Location=%4 Active From Date=%5 Quantity=%6",
+   "so_tham_so": 6,
+   "do_dac_trung": 68,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:SSQWithPSDTxt",
+   "label": "SSQWithPSDTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 138,
+   "van_ban": "System Suggested Quantity(%1) = Total Coverage Sales (%2) * Forward Sales Forecast Factor(%3) - %4(%5)",
+   "so_tham_so": 5,
+   "do_dac_trung": 67,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:SSQWithPSDWithoutEffInventoryTxt",
+   "label": "SSQWithPSDWithoutEffInventoryTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 139,
+   "van_ban": "System Suggested Quantity(%1) = Total Coverage Sales (%2) * Forward Sales Forecast Factor(%3)",
+   "so_tham_so": 3,
+   "do_dac_trung": 67,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:LSForecastEntryFoundMsg",
+   "label": "LSForecastEntryFoundMsg",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 106,
+   "van_ban": "Forecast Sales Entries found, Total %1 is %2. Total Qty added due to Add. Dimensions is %3.",
+   "so_tham_so": 3,
+   "do_dac_trung": 65,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text201",
+   "label": "Text201",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 72,
+   "van_ban": "Warehouse Effective Inventory(%1) is less than or equal to 0 then Quantity=0 [A201]",
+   "so_tham_so": 1,
+   "do_dac_trung": 64,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text210",
+   "label": "Text210",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 80,
+   "van_ban": "Not Replenished as Item (Variant) in Location is blocked for %1. (Item Status Link)",
+   "so_tham_so": 1,
+   "do_dac_trung": 63,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDBOM:BatchPostQueueAssembMsg",
+   "label": "BatchPostQueueAssembMsg",
+   "file": "Add BOM to Replen. Jrnl.report.al",
+   "dong": 857,
+   "van_ban": "The creation of the Assembly Orders has been put on the Batch Posting Queue.",
+   "so_tham_so": 0,
+   "do_dac_trung": 62,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:Text008",
+   "label": "Text008",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 779,
+   "van_ban": "The creation of the Purchase Orders has been put on the Batch Posting Queue.",
+   "so_tham_so": 0,
+   "do_dac_trung": 62,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:BatchPostQueuePurchMsg",
+    "Add Comp. to Replen. Jrnl.report.al:Text008"
+   ]
+  },
+  {
+   "id": "ADDITEMS:Text012",
+   "label": "Text012",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 782,
+   "van_ban": "The creation of the Transfer Orders has been put on the Batch Posting Queue.",
+   "so_tham_so": 0,
+   "do_dac_trung": 62,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:BatchPostQueueTransMsg",
+    "Add Comp. to Replen. Jrnl.report.al:Text012"
+   ]
+  },
+  {
+   "id": "CALC:DecisionSSQStoreEffInvQtyTxt",
+   "label": "DecisionSSQStoreEffInvQtyTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 53,
+   "van_ban": "Decision = %1. System Suggested Quantity(%2) - Store Effective Inventory(%3) = Quantity(%4).",
+   "so_tham_so": 4,
+   "do_dac_trung": 62,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text203",
+   "label": "Text203",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 76,
+   "van_ban": "Warehouse Effective Inventory(%1) is less than Quantity(%2) then Quantity=%1 [AD203]",
+   "so_tham_so": 2,
+   "do_dac_trung": 62,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:LSFCCoverClosedDaysMsg",
+   "label": "LSFCCoverClosedDaysMsg",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 142,
+   "van_ban": "%1 closed day(s) within the stock coverage period, the %2 for these day(s) is set to 0.",
+   "so_tham_so": 2,
+   "do_dac_trung": 61,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:AdjQtyToXDockTxt",
+   "label": "AdjQtyToXDockTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 115,
+   "van_ban": "Adjust Record Quantity to Cross Dock from %1 to %2 - Quantity adjusted from %3 to %4",
+   "so_tham_so": 4,
+   "do_dac_trung": 59,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:ItemIsBlockedFromPurchasingAndTransferring",
+   "label": "ItemIsBlockedFromPurchasingAndTransferring",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 159,
+   "van_ban": "PStkD-Not Processed: Item is blocked from purchasing and transferring (%1)",
+   "so_tham_so": 1,
+   "do_dac_trung": 59,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:SSQWithoutEffInventoryTxt",
+   "label": "SSQWithoutEffInventoryTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 30,
+   "van_ban": "System Suggested Quantity(%1) = Daily Sales(%2) * %3(%4) * Forward Sales Forecast Factor(%5)",
+   "so_tham_so": 5,
+   "do_dac_trung": 59,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text015",
+   "label": "Text015",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 29,
+   "van_ban": "System Suggested Quantity(%1) = Daily Sales(%2) * %3(%4) * Forward Sales Forecast Factor(%5) - %6(%7)",
+   "so_tham_so": 7,
+   "do_dac_trung": 59,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text125",
+   "label": "Text125",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 52,
+   "van_ban": "If Effective Inventory(%1) > Reorder Point(%2) THEN System Suggested Quantity(%3)",
+   "so_tham_so": 3,
+   "do_dac_trung": 59,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:QtyToXDockRoundedTxt",
+   "label": "QtyToXDockRoundedTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 109,
+   "van_ban": "Quantity to Cross Dock rounded from %1 to %2 (Transfer Multiple=%3,Precision=%4)",
+   "so_tham_so": 4,
+   "do_dac_trung": 57,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text118",
+   "label": "Text118",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 49,
+   "van_ban": "System Suggested Quantity less than zero :Old value=%1 New Value=0 [CA100]",
+   "so_tham_so": 1,
+   "do_dac_trung": 57,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:LSFCLeadTimeClosedDaysMsg",
+   "label": "LSFCLeadTimeClosedDaysMsg",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 141,
+   "van_ban": "%1 closed day(s) within the lead time period, the %2 for these day(s) is set to 0.",
+   "so_tham_so": 2,
+   "do_dac_trung": 56,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:CalcTypeNotSupportedErr",
+   "label": "CalcTypeNotSupportedErr",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 808,
+   "van_ban": "%1 is not supported as a filter for Replenishment Calculation Type.",
+   "so_tham_so": 1,
+   "do_dac_trung": 54,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:CalcTypeNotSupportedErr",
+    "Add Comp. to Replen. Jrnl.report.al:CalcTypeNotSupportedErr"
+   ]
+  },
+  {
+   "id": "CALC:SelectLowestPriceVendorIncludedTxt",
+   "label": "SelectLowestPriceVendorIncludedTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 123,
+   "van_ban": "Select Lowest Price Vendor - vendor %1 included in the calculation.",
+   "so_tham_so": 1,
+   "do_dac_trung": 53,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:DecisionQtyBecauseReorderLessThanDemandTxt",
+   "label": "DecisionQtyBecauseReorderLessThanDemandTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 87,
+   "van_ban": "Decision = %1; Quantity(%2) = SSQ (%4) because Reorder Point(%3) less than Demand (%5).",
+   "so_tham_so": 5,
+   "do_dac_trung": 52,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:SSQAdjToQtyToXDockTxt",
+   "label": "SSQAdjToQtyToXDockTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 116,
+   "van_ban": "System Suggested Quantity adjusted to Quantity to Cross Dock (%1)",
+   "so_tham_so": 1,
+   "do_dac_trung": 52,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text151",
+   "label": "Text151",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 71,
+   "van_ban": "Location is a store - Item Store Record exist for the warehouse",
+   "so_tham_so": 0,
+   "do_dac_trung": 51,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:ReplenJournalCalcFailedSessionErr",
+   "label": "ReplenJournalCalcFailedSessionErr",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 811,
+   "van_ban": "Replen. Journal calculation failed for one or more sessions (%1 %2). %3",
+   "so_tham_so": 3,
+   "do_dac_trung": 50,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:ReplenJournalCalcFailedSessionErr"
+   ]
+  },
+  {
+   "id": "CALC:StoreWhseEffInvTxt",
+   "label": "StoreWhseEffInvTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 65,
+   "van_ban": "Store Effective Inventory = %1 - Warehouse Effective Inventory = %2.",
+   "so_tham_so": 2,
+   "do_dac_trung": 50,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:DecisionQtyBecauseMaxInvLessThanTxt",
+   "label": "DecisionQtyBecauseMaxInvLessThanTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 85,
+   "van_ban": "Decision = %1; Quantity(%2) = 0 because Maximum Inventory(%3) less than %4(%5).",
+   "so_tham_so": 5,
+   "do_dac_trung": 48,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text016",
+   "label": "Text016",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 31,
+   "van_ban": "Quantity to Cross Dock less than zero :Old value=%1 New Value=0",
+   "so_tham_so": 1,
+   "do_dac_trung": 48,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text204",
+   "label": "Text204",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 77,
+   "van_ban": "%3(%1) is greater than or equal to Quantity(%2) then Quantity=0 [AD204]",
+   "so_tham_so": 3,
+   "do_dac_trung": 48,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:TotalQtyRoundedToOrderMultipleTxt",
+   "label": "TotalQtyRoundedToOrderMultipleTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 111,
+   "van_ban": "Total Quantity rounded from %1 to %2 (Order Multiple=%3, Precision=%4)",
+   "so_tham_so": 4,
+   "do_dac_trung": 48,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:QtyToXDockMoreThanQtyTxt",
+   "label": "QtyToXDockMoreThanQtyTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 114,
+   "van_ban": "Total Quantity to Cross Dock (%1) is more than Total Quantity (%2)",
+   "so_tham_so": 2,
+   "do_dac_trung": 47,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text123",
+   "label": "Text123",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 50,
+   "van_ban": "Maximum Inventory(%1) - Effective Inventory(%2) = Quantity(%3) [SL100] ",
+   "so_tham_so": 3,
+   "do_dac_trung": 47,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:Text109",
+   "label": "Text109",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 799,
+   "van_ban": "All three Item Hierarchy fields must be entered or none",
+   "so_tham_so": 0,
+   "do_dac_trung": 46,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:Text109",
+    "Add Comp. to Replen. Jrnl.report.al:ItemHierFieldsErr"
+   ]
+  },
+  {
+   "id": "CALC:ForwardFactorReplacedText",
+   "label": "ForwardFactorReplacedText",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 160,
+   "van_ban": "The Forward Factor (%1) is set to the Maximum Forward Factor (%2).",
+   "so_tham_so": 2,
+   "do_dac_trung": 46,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:ItemIsBlockedFromTransferring",
+   "label": "ItemIsBlockedFromTransferring",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 158,
+   "van_ban": "PStkD-Not Processed: Item is blocked from transferring (%1)",
+   "so_tham_so": 1,
+   "do_dac_trung": 46,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text147",
+   "label": "Text147",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 70,
+   "van_ban": "Quantity multiple rounded from %1 to %2 (multiple=%3,precision=%4)",
+   "so_tham_so": 4,
+   "do_dac_trung": 46,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:CrossDockStockCoverDaysMsg",
+   "label": "CrossDockStockCoverDaysMsg",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 119,
+   "van_ban": "Stock Cover Days for Cross Docking = %1 (%2). Coverage period = %3 to %4",
+   "so_tham_so": 4,
+   "do_dac_trung": 45,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:DecisionQtyBecauseReorderLessThanTxt",
+   "label": "DecisionQtyBecauseReorderLessThanTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 86,
+   "van_ban": "Decision = %1; Quantity(%2) = 0 because Reorder Point(%3) less than %4(%5).",
+   "so_tham_so": 5,
+   "do_dac_trung": 44,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:ItemIsBlockedFromPurchasing",
+   "label": "ItemIsBlockedFromPurchasing",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 157,
+   "van_ban": "PStkD-Not Processed: Item is blocked from purchasing (%1)",
+   "so_tham_so": 1,
+   "do_dac_trung": 44,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:NoAvailableVendorTxt",
+   "label": "NoAvailableVendorTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 126,
+   "van_ban": "No available vendor found. No vendor will be selected.",
+   "so_tham_so": 0,
+   "do_dac_trung": 44,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text132",
+   "label": "Text132",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 60,
+   "van_ban": "PStkD-Not Processed: Record not within filter - Filter=%1",
+   "so_tham_so": 1,
+   "do_dac_trung": 44,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:VendorOnVacationTxt",
+   "label": "VendorOnVacationTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 102,
+   "van_ban": "Vendor %1 is on vacation and excluded from calculation.",
+   "so_tham_so": 1,
+   "do_dac_trung": 44,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text124",
+   "label": "Text124",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 51,
+   "van_ban": "Reorder Point(%1) - Effective Inventory(%2) = Quantity(%3) [SL101]",
+   "so_tham_so": 3,
+   "do_dac_trung": 43,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text131",
+   "label": "Text131",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 59,
+   "van_ban": "PStkD-Not Processed: Store(%1)  not in Store Group Filter ",
+   "so_tham_so": 1,
+   "do_dac_trung": 43,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text202",
+   "label": "Text202",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 75,
+   "van_ban": "%4(%1) is less than Quantity(%2) then Quantity(%2) - %4(%1) = Quantity(%3) [AD202]",
+   "so_tham_so": 4,
+   "do_dac_trung": 43,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:QtyToCrossDockFormulaMsg",
+   "label": "QtyToCrossDockFormulaMsg",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 108,
+   "van_ban": "Quantity to Cross Dock(%1) = System Suggested Quantity (%2) - %3 (%4)",
+   "so_tham_so": 4,
+   "do_dac_trung": 42,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:SelectLowestPriceVendorByTxt",
+   "label": "SelectLowestPriceVendorByTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 125,
+   "van_ban": "Select Lowest Price Vendor - Select Lowest Cost By = %1.",
+   "so_tham_so": 1,
+   "do_dac_trung": 41,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:ComponentSSQTxt",
+   "label": "ComponentSSQTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 144,
+   "van_ban": "System Suggested Quantity(%1) = Component Quantity(%2) - %3(%4)",
+   "so_tham_so": 4,
+   "do_dac_trung": 40,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "REDIST:TripsEndNoMoreSupplyTxt",
+   "label": "TripsEndNoMoreSupplyTxt",
+   "file": "Replen. Redist. Calculation.codeunit.al",
+   "dong": 18,
+   "van_ban": "Trips calculation ended - no more Locations with %1.",
+   "so_tham_so": 1,
+   "do_dac_trung": 40,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:Text106",
+   "label": "Text106",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 796,
+   "van_ban": "Item NOT within Item Dynamic Hierarchy Filter",
+   "so_tham_so": 0,
+   "do_dac_trung": 39,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:Text106",
+    "Add Comp. to Replen. Jrnl.report.al:Text106"
+   ]
+  },
+  {
+   "id": "CALC:BOMinBOMSSQTxt",
+   "label": "BOMinBOMSSQTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 145,
+   "van_ban": "System Suggested Quantity(%1) = BOM in BOM Quantity(%2)",
+   "so_tham_so": 2,
+   "do_dac_trung": 39,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text129",
+   "label": "Text129",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 57,
+   "van_ban": "PStkD-Not Processed: Active From Date(%1) >= WORKDATE(%2)",
+   "so_tham_so": 2,
+   "do_dac_trung": 39,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:OnlyConsideredInComponentJournalTxt",
+   "label": "OnlyConsideredInComponentJournalTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 147,
+   "van_ban": "%1 are only considered in Component Journal for %2",
+   "so_tham_so": 2,
+   "do_dac_trung": 38,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "MWH:QtyMultipleRoundedTxt",
+   "label": "QtyMultipleRoundedTxt",
+   "file": "Replen. Multi-Whse. Utils.codeunit.al",
+   "dong": 8,
+   "van_ban": "Quantity rounded from %1 to %2 (multiple=%3, precision=%4)",
+   "so_tham_so": 4,
+   "do_dac_trung": 38,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:NotEqualOperatorIsNotSupportedMsg",
+   "label": "NotEqualOperatorIsNotSupportedMsg",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 855,
+   "van_ban": "The not-equal-to operator '<>' is not supported on %1.",
+   "so_tham_so": 1,
+   "do_dac_trung": 37,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:QtyAdjustedToQtyToXDockTxt",
+   "label": "QtyAdjustedToQtyToXDockTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 110,
+   "van_ban": "Quantity adjusted to Quantity to Cross Dock (%1)",
+   "so_tham_so": 1,
+   "do_dac_trung": 37,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:XDockWithPSDTxt",
+   "label": "XDockWithPSDTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 140,
+   "van_ban": "Quantity to Cross Dock(%1) = Total Coverage Sales (%2) - %3(%4)",
+   "so_tham_so": 4,
+   "do_dac_trung": 37,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text205",
+   "label": "Text205",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 78,
+   "van_ban": "%4(%1) is less than 0 then Quantity(%2) - %4(%1) = Quantity(%3) [AD205]",
+   "so_tham_so": 4,
+   "do_dac_trung": 36,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:VendorWithShortestLeadTimeTxt",
+   "label": "VendorWithShortestLeadTimeTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 122,
+   "van_ban": "Vendor %1 with shortest lead time is selected.",
+   "so_tham_so": 1,
+   "do_dac_trung": 36,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "MWH:AssignRemainingWhseQtyTxt",
+   "label": "AssignRemainingWhseQtyTxt",
+   "file": "Replen. Multi-Whse. Utils.codeunit.al",
+   "dong": 9,
+   "van_ban": "Assign remaining quantity (%1) from warehouse %2.",
+   "so_tham_so": 2,
+   "do_dac_trung": 36,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:StoreAndWarehouseEffInventoryTxt",
+   "label": "StoreAndWarehouseEffInventoryTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 149,
+   "van_ban": "Store and Warehouse Effective Inventory",
+   "so_tham_so": 0,
+   "do_dac_trung": 35,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text104",
+   "label": "Text104",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 43,
+   "van_ban": "Location %1 is NOT within Store Group Filter = %2.",
+   "so_tham_so": 2,
+   "do_dac_trung": 35,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text130",
+   "label": "Text130",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 58,
+   "van_ban": "PStkD-Not Processed: Item Record not found (%1)",
+   "so_tham_so": 1,
+   "do_dac_trung": 35,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:StoreNotFoundErr",
+   "label": "StoreNotFoundErr",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 92,
+   "van_ban": "The Store No. of this location (%1) is not found.",
+   "so_tham_so": 1,
+   "do_dac_trung": 34,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:LowestPriceVendorTxt",
+   "label": "LowestPriceVendorTxt",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 807,
+   "van_ban": "Select Lowest Price Vendor - %1 %2 is selected.",
+   "so_tham_so": 2,
+   "do_dac_trung": 33,
+   "cung_xuat_hien": [
+    "Add Comp. to Replen. Jrnl.report.al:LowestPriceVendorTxt"
+   ]
+  },
+  {
+   "id": "CALC:ILEDataSourceQtySetToZeroTxt",
+   "label": "ILEDataSourceQtySetToZeroTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 90,
+   "van_ban": "Data Source for Location Code (%1) is %2, %3 set to 0.",
+   "so_tham_so": 3,
+   "do_dac_trung": 33,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:Text108",
+   "label": "Text108",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 798,
+   "van_ban": "Item NOT within Item Attribute Filter",
+   "so_tham_so": 0,
+   "do_dac_trung": 32,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:Text108",
+    "Add Comp. to Replen. Jrnl.report.al:Text108"
+   ]
+  },
+  {
+   "id": "CALC:DecisionQtyMaxInvTxt",
+   "label": "DecisionQtyMaxInvTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 32,
+   "van_ban": "Decision = %1 - Quantity(%2) = Maximum Inventory(%3) - %4(%5).",
+   "so_tham_so": 5,
+   "do_dac_trung": 32,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:DecisionQtyMaxInvWithoutEffInventoryTxt",
+   "label": "DecisionQtyMaxInvWithoutEffInventoryTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 33,
+   "van_ban": "Decision = %1 - Quantity(%2) = Maximum Inventory(%3).",
+   "so_tham_so": 3,
+   "do_dac_trung": 32,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text105",
+   "label": "Text105",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 44,
+   "van_ban": "Location %1 is within Store Group Filter %2",
+   "so_tham_so": 2,
+   "do_dac_trung": 32,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text134",
+   "label": "Text134",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 62,
+   "van_ban": "New Planned Stock Demand line created:",
+   "so_tham_so": 0,
+   "do_dac_trung": 32,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text142",
+   "label": "Text142",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 66,
+   "van_ban": "Forward Factor: Pre-period=(%1-%2) Post-Period(%3-%4)",
+   "so_tham_so": 4,
+   "do_dac_trung": 32,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "REDIST:CalculatingTripsTxt",
+   "label": "CalculatingTripsTxt",
+   "file": "Replen. Redist. Calculation.codeunit.al",
+   "dong": 11,
+   "van_ban": "Calculating Trips: Item = %1, Variant = %2, Store = %3, %4 = %5.",
+   "so_tham_so": 5,
+   "do_dac_trung": 32,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:Text107",
+   "label": "Text107",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 797,
+   "van_ban": "Item NOT within Special Group Filter",
+   "so_tham_so": 0,
+   "do_dac_trung": 31,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:Text107",
+    "Add Comp. to Replen. Jrnl.report.al:Text107"
+   ]
+  },
+  {
+   "id": "CALC:DecisionSSQSWithoutStoreEffInvQtyTxt",
+   "label": "DecisionSSQSWithoutStoreEffInvQtyTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 54,
+   "van_ban": "Decision = %1. System Suggested Quantity = %2.",
+   "so_tham_so": 2,
+   "do_dac_trung": 31,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text106",
+   "label": "Text106",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 45,
+   "van_ban": "Not Replenished as Item Store Record -",
+   "so_tham_so": 0,
+   "do_dac_trung": 31,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:Text103",
+   "label": "Text103",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 793,
+   "van_ban": "Item is Blocked for Purchase Orders",
+   "so_tham_so": 0,
+   "do_dac_trung": 30,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:Text103",
+    "Add Comp. to Replen. Jrnl.report.al:Text103"
+   ]
+  },
+  {
+   "id": "ADDITEMS:Text104",
+   "label": "Text104",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 794,
+   "van_ban": "Item is Blocked for Transfer Orders",
+   "so_tham_so": 0,
+   "do_dac_trung": 30,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:Text104",
+    "Add Comp. to Replen. Jrnl.report.al:Text104"
+   ]
+  },
+  {
+   "id": "CALC:ItemIsBlocked",
+   "label": "ItemIsBlocked",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 156,
+   "van_ban": "PStkD-Not Processed: Item is blocked (%1)",
+   "so_tham_so": 1,
+   "do_dac_trung": 30,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:PlannedSalesDemandCoverFoundTxt",
+   "label": "PlannedSalesDemandCoverFoundTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 100,
+   "van_ban": "%1 found within the coverage period (%2 to %3).",
+   "so_tham_so": 3,
+   "do_dac_trung": 30,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:PlannedSalesDemandLeadTimeFoundTxt",
+   "label": "PlannedSalesDemandLeadTimeFoundTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 101,
+   "van_ban": "%1 found within the lead time period (%2 to %3).",
+   "so_tham_so": 3,
+   "do_dac_trung": 30,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:StockCoverDaysMsg",
+   "label": "StockCoverDaysMsg",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 120,
+   "van_ban": "Stock Cover Days = %1 (%2). Coverage period = %3 to %4",
+   "so_tham_so": 4,
+   "do_dac_trung": 30,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text135",
+   "label": "Text135",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 63,
+   "van_ban": "Old Quantity=%1 Quantity of new record=%2",
+   "so_tham_so": 2,
+   "do_dac_trung": 30,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:SafetyStockCalcEnabledMsg",
+   "label": "SafetyStockCalcEnabledMsg",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 121,
+   "van_ban": "%1 is enabled, %2 is set to use Upper value.",
+   "so_tham_so": 2,
+   "do_dac_trung": 29,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text021",
+   "label": "Text021",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 38,
+   "van_ban": "Negative Quantity brought to zero.",
+   "so_tham_so": 0,
+   "do_dac_trung": 29,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:DaysUntilNextCalcTxt",
+   "label": "DaysUntilNextCalcTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 95,
+   "van_ban": "No. of days until next calculation (%1)",
+   "so_tham_so": 1,
+   "do_dac_trung": 28,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:DecisionQtyReorderPointTxt",
+   "label": "DecisionQtyReorderPointTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 34,
+   "van_ban": "Decision = %1 - Quantity(%2) = Reorder Point(%3) - %4(%5).",
+   "so_tham_so": 5,
+   "do_dac_trung": 28,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:DecisionQtyReorderPointWithoutEffInventoryTxt",
+   "label": "DecisionQtyReorderPointWithoutEffInventoryTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 35,
+   "van_ban": "Decision = %1 - Quantity(%2) = Reorder Point(%3).",
+   "so_tham_so": 3,
+   "do_dac_trung": 28,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:SSQFormulaMsg",
+   "label": "SSQFormulaMsg",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 117,
+   "van_ban": "System Suggested Quantity(%1) = Total %2 (%3) - %4 (%5)",
+   "so_tham_so": 5,
+   "do_dac_trung": 28,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:SSQFormulaWithoutEffInventoryMsg",
+   "label": "SSQFormulaWithoutEffInventoryMsg",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 118,
+   "van_ban": "System Suggested Quantity(%1) = Total %2 (%3)",
+   "so_tham_so": 3,
+   "do_dac_trung": 28,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDBOM:AORangeCreatedMsg",
+   "label": "AORangeCreatedMsg",
+   "file": "Add BOM to Replen. Jrnl.report.al",
+   "dong": 890,
+   "van_ban": "Assembly Orders %1 to %2 were created.",
+   "so_tham_so": 2,
+   "do_dac_trung": 27,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:Text006",
+   "label": "Text006",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 777,
+   "van_ban": "Purchase Orders %1 to %2 were created.",
+   "so_tham_so": 2,
+   "do_dac_trung": 27,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:PurchOrderRangeCreatedMsg",
+    "Add Comp. to Replen. Jrnl.report.al:Text006"
+   ]
+  },
+  {
+   "id": "ADDITEMS:Text007",
+   "label": "Text007",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 778,
+   "van_ban": "No Purchase Orders were created.",
+   "so_tham_so": 0,
+   "do_dac_trung": 27,
+   "cung_xuat_hien": [
+    "Add Comp. to Replen. Jrnl.report.al:Text007"
+   ]
+  },
+  {
+   "id": "ADDITEMS:TransferNoRangeCreatedMsg",
+   "label": "TransferNoRangeCreatedMsg",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 781,
+   "van_ban": "Transfer Orders %1 to %2 were created.",
+   "so_tham_so": 2,
+   "do_dac_trung": 27,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:TransferNoRangeCreatedMsg",
+    "Add Comp. to Replen. Jrnl.report.al:TransferNoRangeCreatedMsg"
+   ]
+  },
+  {
+   "id": "CALC:ComponentQtyTxt",
+   "label": "ComponentQtyTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 150,
+   "van_ban": "Component Quantity(%1) = Demand from %2",
+   "so_tham_so": 2,
+   "do_dac_trung": 27,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:LSForecastSetupNotFoundMsg",
+   "label": "LSForecastSetupNotFoundMsg",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 107,
+   "van_ban": "Retail Forecast Setup not found",
+   "so_tham_so": 0,
+   "do_dac_trung": 27,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text102",
+   "label": "Text102",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 41,
+   "van_ban": "Item is not in range for location=%1",
+   "so_tham_so": 1,
+   "do_dac_trung": 27,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:WarehouseEffInventoryTxt",
+   "label": "WarehouseEffInventoryTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 148,
+   "van_ban": "Warehouse Effective Inventory",
+   "so_tham_so": 0,
+   "do_dac_trung": 27,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "MWH:AssignQtyFromWhseTxt",
+   "label": "AssignQtyFromWhseTxt",
+   "file": "Replen. Multi-Whse. Utils.codeunit.al",
+   "dong": 10,
+   "van_ban": "Assign quantity (%1) from warehouse %2.",
+   "so_tham_so": 2,
+   "do_dac_trung": 27,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "REDIST:TripsEndNoMoreDemandTxt",
+   "label": "TripsEndNoMoreDemandTxt",
+   "file": "Replen. Redist. Calculation.codeunit.al",
+   "dong": 19,
+   "van_ban": "Trips calculation ended - no more %1.",
+   "so_tham_so": 1,
+   "do_dac_trung": 27,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:ParallelMonitoringMsg1Txt",
+   "label": "ParallelMonitoringMsg1Txt",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 845,
+   "van_ban": "Monitoring parallel sessions...",
+   "so_tham_so": 0,
+   "do_dac_trung": 26,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:ParallelMonitoringMsg1Txt"
+   ]
+  },
+  {
+   "id": "CALC:BOMinBOMQtyTxt",
+   "label": "BOMinBOMQtyTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 151,
+   "van_ban": "BOM in BOM Quantity(%1) = Demand from %2",
+   "so_tham_so": 2,
+   "do_dac_trung": 26,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text011",
+   "label": "Text011",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 25,
+   "van_ban": "Adjust Record quantity from %1 to %2",
+   "so_tham_so": 2,
+   "do_dac_trung": 26,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:ParallelCalcWithJQTxt",
+   "label": "ParallelCalcWithJQTxt",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 850,
+   "van_ban": "Parallel calc. with Job Queue, %1",
+   "so_tham_so": 1,
+   "do_dac_trung": 24,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:ParallelCalcWithJQTxt"
+   ]
+  },
+  {
+   "id": "ADDITEMS:Text014",
+   "label": "Text014",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 784,
+   "van_ban": "Checking Item=%1 Variant=%2 Store=%3",
+   "so_tham_so": 3,
+   "do_dac_trung": 24,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:Text014",
+    "Add Comp. to Replen. Jrnl.report.al:Text014"
+   ]
+  },
+  {
+   "id": "CALC:FieldsNotConsideredDueToTxt",
+   "label": "FieldsNotConsideredDueToTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 84,
+   "van_ban": " (%1 and %2 are not considered due to %3)",
+   "so_tham_so": 3,
+   "do_dac_trung": 24,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text009",
+   "label": "Text009",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 24,
+   "van_ban": "Adjust Item quantity from %1 to %2.",
+   "so_tham_so": 2,
+   "do_dac_trung": 24,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDBOM:AOCreatedMsg",
+   "label": "AOCreatedMsg",
+   "file": "Add BOM to Replen. Jrnl.report.al",
+   "dong": 889,
+   "van_ban": "Assembly Order %1 was created.",
+   "so_tham_so": 1,
+   "do_dac_trung": 23,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:CleaningupMsg",
+   "label": "CleaningupMsg",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 849,
+   "van_ban": "Cleaning up Replen. Journal...",
+   "so_tham_so": 0,
+   "do_dac_trung": 23,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:CleaningupMsg",
+    "Add Comp. to Replen. Jrnl.report.al:CleaningupMsg"
+   ]
+  },
+  {
+   "id": "ADDITEMS:Text005",
+   "label": "Text005",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 776,
+   "van_ban": "Purchase Order %1 was created.",
+   "so_tham_so": 1,
+   "do_dac_trung": 23,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:PurchOrderCreatedMsg",
+    "Add Comp. to Replen. Jrnl.report.al:Text005"
+   ]
+  },
+  {
+   "id": "ADDITEMS:TransferNoCreatedMsg",
+   "label": "TransferNoCreatedMsg",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 780,
+   "van_ban": "Transfer Order %1 was created.",
+   "so_tham_so": 1,
+   "do_dac_trung": 23,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:TransferNoCreatedMsg",
+    "Add Comp. to Replen. Jrnl.report.al:TransferNoCreatedMsg"
+   ]
+  },
+  {
+   "id": "REDIST:TripsEndNoDemandTxt",
+   "label": "TripsEndNoDemandTxt",
+   "file": "Replen. Redist. Calculation.codeunit.al",
+   "dong": 20,
+   "van_ban": "Trips calculation ended - no %1.",
+   "so_tham_so": 1,
+   "do_dac_trung": 23,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "REDIST:TripsStartedDateTimeTxt",
+   "label": "TripsStartedDateTimeTxt",
+   "file": "Replen. Redist. Calculation.codeunit.al",
+   "dong": 14,
+   "van_ban": "Trips calculation started = %1.",
+   "so_tham_so": 1,
+   "do_dac_trung": 23,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:LocationNotFoundErr",
+   "label": "LocationNotFoundErr",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 91,
+   "van_ban": "This Location (%1) is not found.",
+   "so_tham_so": 1,
+   "do_dac_trung": 22,
+   "cung_xuat_hien": [
+    "Add Items to Replen. Jrnl.report.al:LocationNotFoundErr",
+    "Add BOM to Replen. Jrnl.report.al:LocationNotFoundErr",
+    "Add Comp. to Replen. Jrnl.report.al:LocationNotFoundErr"
+   ]
+  },
+  {
+   "id": "CALC:StockCoverStartDateTxt",
+   "label": "StockCoverStartDateTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 127,
+   "van_ban": "Stock Coverage Start Date",
+   "so_tham_so": 0,
+   "do_dac_trung": 22,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text133",
+   "label": "Text133",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 61,
+   "van_ban": "PStkD-Detail line written:",
+   "so_tham_so": 0,
+   "do_dac_trung": 22,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "MWH:AssignQtyBasedOnTxt",
+   "label": "AssignQtyBasedOnTxt",
+   "file": "Replen. Multi-Whse. Utils.codeunit.al",
+   "dong": 12,
+   "van_ban": "Assign quantity based on",
+   "so_tham_so": 0,
+   "do_dac_trung": 21,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "MWH:MoveToNextWhseTxt",
+   "label": "MoveToNextWhseTxt",
+   "file": "Replen. Multi-Whse. Utils.codeunit.al",
+   "dong": 11,
+   "van_ban": "Check the next warehouse.",
+   "so_tham_so": 0,
+   "do_dac_trung": 21,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "REDIST:TripCreatedTxt",
+   "label": "TripCreatedTxt",
+   "file": "Replen. Redist. Calculation.codeunit.al",
+   "dong": 16,
+   "van_ban": "Trip created from %1 (%2: %3) to %4 (%5: %6) with %7: %8.",
+   "so_tham_so": 8,
+   "do_dac_trung": 21,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "REDIST:TripsEndedDateTimeTxt",
+   "label": "TripsEndedDateTimeTxt",
+   "file": "Replen. Redist. Calculation.codeunit.al",
+   "dong": 15,
+   "van_ban": "Trips calculation ended = %1.",
+   "so_tham_so": 1,
+   "do_dac_trung": 21,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:SalesNoCreatedMsg",
+   "label": "SalesNoCreatedMsg",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 802,
+   "van_ban": "Sales Order %1 was created.",
+   "so_tham_so": 1,
+   "do_dac_trung": 20,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:SalesNoCreatedMsg",
+    "Add Comp. to Replen. Jrnl.report.al:SalesNoCreatedMsg"
+   ]
+  },
+  {
+   "id": "ADDITEMS:Text020",
+   "label": "Text020",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 786,
+   "van_ban": "Calculating Inventory...",
+   "so_tham_so": 0,
+   "do_dac_trung": 20,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:Text020",
+    "Add Comp. to Replen. Jrnl.report.al:CalcRIQ01Msg"
+   ]
+  },
+  {
+   "id": "CALC:CoverageProfileUsedTxt",
+   "label": "CoverageProfileUsedTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 93,
+   "van_ban": "%1 (%2) is used to calculate the %3 - %4 (%5), %6 (%7), %8 (%9).",
+   "so_tham_so": 9,
+   "do_dac_trung": 20,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:FieldNotConsideredDueToTxt",
+   "label": "FieldNotConsideredDueToTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 83,
+   "van_ban": " (%1 is not considered due to %2)",
+   "so_tham_so": 2,
+   "do_dac_trung": 20,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:StockCoverEndDateTxt",
+   "label": "StockCoverEndDateTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 128,
+   "van_ban": "Stock Coverage End Date",
+   "so_tham_so": 0,
+   "do_dac_trung": 20,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:ClosedDaysCalendarTxt",
+   "label": "ClosedDaysCalendarTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 103,
+   "van_ban": "Closed Days Calendar",
+   "so_tham_so": 0,
+   "do_dac_trung": 18,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:InbLocHandlTimeTxt",
+   "label": "InbLocHandlTimeTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 97,
+   "van_ban": "Inb. Loc. Handling Time (%1)",
+   "so_tham_so": 1,
+   "do_dac_trung": 18,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:InbWHLocHandlTimeTxt",
+   "label": "InbWHLocHandlTimeTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 98,
+   "van_ban": "Inb. Loc. [%1] Handling Time (%2)",
+   "so_tham_so": 2,
+   "do_dac_trung": 18,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:LeadTimeClosedDaysTxt",
+   "label": "LeadTimeClosedDaysTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 132,
+   "van_ban": "Lead Time Closed Days",
+   "so_tham_so": 0,
+   "do_dac_trung": 18,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:NextCalculationDayTxt",
+   "label": "NextCalculationDayTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 94,
+   "van_ban": "Next calculation day",
+   "so_tham_so": 0,
+   "do_dac_trung": 18,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:TotalCoverSalesTxt",
+   "label": "TotalCoverSalesTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 137,
+   "van_ban": "Total Coverage Sales",
+   "so_tham_so": 0,
+   "do_dac_trung": 18,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:ParallelMonitoringMsg3Txt",
+   "label": "ParallelMonitoringMsg3Txt",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 847,
+   "van_ban": "sessions completed",
+   "so_tham_so": 0,
+   "do_dac_trung": 17,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:ParallelMonitoringMsg3Txt"
+   ]
+  },
+  {
+   "id": "CALC:InvalidSourceType",
+   "label": "InvalidSourceType",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 5658,
+   "van_ban": "Invalid Source Type!",
+   "so_tham_so": 0,
+   "do_dac_trung": 17,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:LeadTimeStartDateTxt",
+   "label": "LeadTimeStartDateTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 129,
+   "van_ban": "Lead Time Start Date",
+   "so_tham_so": 0,
+   "do_dac_trung": 17,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "MWH:MultiplePrecisionTxt",
+   "label": "MultiplePrecisionTxt",
+   "file": "Replen. Multi-Whse. Utils.codeunit.al",
+   "dong": 13,
+   "van_ban": "multiple=%1, precision=%2",
+   "so_tham_so": 2,
+   "do_dac_trung": 17,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:IsChildLocationTxt",
+   "label": "IsChildLocationTxt",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 801,
+   "van_ban": "%1 %2 is a child location.",
+   "so_tham_so": 2,
+   "do_dac_trung": 16,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:IsChildLocationTxt",
+    "Add Comp. to Replen. Jrnl.report.al:IsChildLocationTxt"
+   ]
+  },
+  {
+   "id": "CALC:LocationLeadTimeTxt",
+   "label": "LocationLeadTimeTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 133,
+   "van_ban": "Location Lead Time",
+   "so_tham_so": 0,
+   "do_dac_trung": 16,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "REDIST:LocationSelectedTxt",
+   "label": "LocationSelectedTxt",
+   "file": "Replen. Redist. Calculation.codeunit.al",
+   "dong": 12,
+   "van_ban": "Location %1 selected (%2).",
+   "so_tham_so": 2,
+   "do_dac_trung": 16,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:TemplateFiltersTxt",
+   "label": "TemplateFiltersTxt",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 791,
+   "van_ban": "Template Filters: ",
+   "so_tham_so": 0,
+   "do_dac_trung": 15,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:Text101",
+    "Add Comp. to Replen. Jrnl.report.al:TemplateFiltersTxt"
+   ]
+  },
+  {
+   "id": "CALC:LeadTimeEndDateTxt",
+   "label": "LeadTimeEndDateTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 130,
+   "van_ban": "Lead Time End Date",
+   "so_tham_so": 0,
+   "do_dac_trung": 15,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text008",
+   "label": "Text008",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 23,
+   "van_ban": "%1 not within filter %2",
+   "so_tham_so": 2,
+   "do_dac_trung": 15,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:InsertingMsg1Txt",
+   "label": "InsertingMsg1Txt",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 841,
+   "van_ban": "Inserting items...",
+   "so_tham_so": 0,
+   "do_dac_trung": 14,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:InsertingMsg1Txt",
+    "Add Comp. to Replen. Jrnl.report.al:InsertingMsg1Txt"
+   ]
+  },
+  {
+   "id": "CALC:CalculatedFromTxt",
+   "label": "CalculatedFromTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 143,
+   "van_ban": "calculated from %1",
+   "so_tham_so": 1,
+   "do_dac_trung": 14,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text145",
+   "label": "Text145",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 68,
+   "van_ban": "Calendar change =",
+   "so_tham_so": 0,
+   "do_dac_trung": 14,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:ValueAdjustedTxt",
+   "label": "ValueAdjustedTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 99,
+   "van_ban": "%1 adjusted from %2 to %3.",
+   "so_tham_so": 3,
+   "do_dac_trung": 14,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:VendorLeadTimeTxt",
+   "label": "VendorLeadTimeTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 135,
+   "van_ban": "Vendor Lead Time",
+   "so_tham_so": 0,
+   "do_dac_trung": 14,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:IsMandatoryTxt",
+   "label": "IsMandatoryTxt",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 854,
+   "van_ban": "%1 cannot be blank.",
+   "so_tham_so": 1,
+   "do_dac_trung": 13,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:Text100",
+   "label": "Text100",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 790,
+   "van_ban": "Item is Blocked",
+   "so_tham_so": 0,
+   "do_dac_trung": 13,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:Text100",
+    "Add Comp. to Replen. Jrnl.report.al:Text100"
+   ]
+  },
+  {
+   "id": "REDIST:PreparingDataTxt",
+   "label": "PreparingDataTxt",
+   "file": "Replen. Redist. Calculation.codeunit.al",
+   "dong": 9,
+   "van_ban": "Preparing Data...",
+   "so_tham_so": 0,
+   "do_dac_trung": 13,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:LeadTimeDaysTxt",
+   "label": "LeadTimeDaysTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 131,
+   "van_ban": "Lead Time Days",
+   "so_tham_so": 0,
+   "do_dac_trung": 12,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text109",
+   "label": "Text109",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 46,
+   "van_ban": "NOT processed :",
+   "so_tham_so": 0,
+   "do_dac_trung": 12,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "REDIST:RedistMatrixCostTxt",
+   "label": "RedistMatrixCostTxt",
+   "file": "Replen. Redist. Calculation.codeunit.al",
+   "dong": 17,
+   "van_ban": "Redist. Matrix (%1 - %2) = %3 (%4).",
+   "so_tham_so": 4,
+   "do_dac_trung": 12,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:MasterBatchTxt",
+   "label": "MasterBatchTxt",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 851,
+   "van_ban": "Master Batch",
+   "so_tham_so": 0,
+   "do_dac_trung": 11,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:MasterBatchTxt"
+   ]
+  },
+  {
+   "id": "CALC:Text114",
+   "label": "Text114",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 48,
+   "van_ban": "Data Profile",
+   "so_tham_so": 0,
+   "do_dac_trung": 11,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:ChildBatchTxt",
+   "label": "ChildBatchTxt",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 852,
+   "van_ban": "Child Batch",
+   "so_tham_so": 0,
+   "do_dac_trung": 10,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:ChildBatchTxt"
+   ]
+  },
+  {
+   "id": "ADDITEMS:ProcessingMsg1Txt",
+   "label": "ProcessingMsg1Txt",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 839,
+   "van_ban": "Processing...",
+   "so_tham_so": 0,
+   "do_dac_trung": 10,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:ProcessingMsg1Txt",
+    "Add Comp. to Replen. Jrnl.report.al:ProcessingMsg1Txt"
+   ]
+  },
+  {
+   "id": "CALC:NotUsedTxt",
+   "label": "NotUsedTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 146,
+   "van_ban": "%1 not used for %2",
+   "so_tham_so": 2,
+   "do_dac_trung": 10,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text024",
+   "label": "Text024",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 39,
+   "van_ban": "See Details",
+   "so_tham_so": 0,
+   "do_dac_trung": 10,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text113",
+   "label": "Text113",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 47,
+   "van_ban": "Replen. Data",
+   "so_tham_so": 0,
+   "do_dac_trung": 10,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDCOMP:BOMReplenJrnlLbl",
+   "label": "BOMReplenJrnlLbl",
+   "file": "Add Comp. to Replen. Jrnl.report.al",
+   "dong": 546,
+   "van_ban": "BREPL-JRNL",
+   "so_tham_so": 0,
+   "do_dac_trung": 9,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:CrossDockTxt",
+   "label": "CrossDockTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 136,
+   "van_ban": "Cross Dock",
+   "so_tham_so": 0,
+   "do_dac_trung": 9,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:NotFoundTxt",
+   "label": "NotFoundTxt",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 853,
+   "van_ban": "%1 not found",
+   "so_tham_so": 1,
+   "do_dac_trung": 8,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:NotFoundTxt"
+   ]
+  },
+  {
+   "id": "ADDITEMS:Text105",
+   "label": "Text105",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 795,
+   "van_ban": "REPL-JRNL",
+   "so_tham_so": 0,
+   "do_dac_trung": 8,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:Text105"
+   ]
+  },
+  {
+   "id": "CALC:LeadTimeTxt",
+   "label": "LeadTimeTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 134,
+   "van_ban": "%1 Lead Time",
+   "so_tham_so": 1,
+   "do_dac_trung": 8,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:StartedTxt",
+   "label": "StartedTxt",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 783,
+   "van_ban": "Started",
+   "so_tham_so": 0,
+   "do_dac_trung": 7,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:Text013",
+    "Add Comp. to Replen. Jrnl.report.al:StartedTxt"
+   ]
+  },
+  {
+   "id": "ADDITEMS:Text019",
+   "label": "Text019",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 785,
+   "van_ban": "Filters:",
+   "so_tham_so": 0,
+   "do_dac_trung": 7,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:Text019",
+    "Add Comp. to Replen. Jrnl.report.al:Text019"
+   ]
+  },
+  {
+   "id": "MWH:CurrentTxt",
+   "label": "CurrentTxt",
+   "file": "Replen. Multi-Whse. Utils.codeunit.al",
+   "dong": 14,
+   "van_ban": "Current",
+   "so_tham_so": 0,
+   "do_dac_trung": 7,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:PstkDTxt",
+   "label": "PstkDTxt",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 800,
+   "van_ban": "PStkD-",
+   "so_tham_so": 0,
+   "do_dac_trung": 5,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text138",
+   "label": "Text138",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 64,
+   "van_ban": "PStkD- :",
+   "so_tham_so": 0,
+   "do_dac_trung": 5,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text014",
+   "label": "Text014",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 28,
+   "van_ban": "Type = %1/ %2 = %3/ %4 = %5/ %6 = %7/ %8 = %9",
+   "so_tham_so": 9,
+   "do_dac_trung": 4,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "ADDITEMS:ChildStartNo",
+   "label": "ChildStartNo",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 810,
+   "van_ban": "000",
+   "so_tham_so": 0,
+   "do_dac_trung": 3,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:ChildStartNo"
+   ]
+  },
+  {
+   "id": "ADDITEMS:ProgressTxt",
+   "label": "ProgressTxt",
+   "file": "Add Items to Replen. Jrnl.report.al",
+   "dong": 848,
+   "van_ban": "%1 of %2",
+   "so_tham_so": 2,
+   "do_dac_trung": 2,
+   "cung_xuat_hien": [
+    "Add BOM to Replen. Jrnl.report.al:ProgressTxt"
+   ]
+  },
+  {
+   "id": "CALC:CommaTxt",
+   "label": "CommaTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 152,
+   "van_ban": ", ",
+   "so_tham_so": 0,
+   "do_dac_trung": 0,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:EquationTxt",
+   "label": "EquationTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 27,
+   "van_ban": "%1 = %2",
+   "so_tham_so": 2,
+   "do_dac_trung": 0,
+   "cung_xuat_hien": [
+    "Add Items to Replen. Jrnl.report.al:EquationTxt",
+    "Replen. Multi-Whse. Utils.codeunit.al:EquationTxt",
+    "Replen. Redist. Calculation.codeunit.al:EquationTxt",
+    "Add BOM to Replen. Jrnl.report.al:Text102",
+    "Add Comp. to Replen. Jrnl.report.al:EquationTxt"
+   ]
+  },
+  {
+   "id": "CALC:PlusTxt",
+   "label": "PlusTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 153,
+   "van_ban": " + ",
+   "so_tham_so": 0,
+   "do_dac_trung": 0,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text050",
+   "label": "Text050",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 40,
+   "van_ban": "%1 = '%2', %3 = '%4'.",
+   "so_tham_so": 4,
+   "do_dac_trung": 0,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:Text146",
+   "label": "Text146",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 69,
+   "van_ban": "  %1 -> %2",
+   "so_tham_so": 2,
+   "do_dac_trung": 0,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "CALC:ValueInBracketTxt",
+   "label": "ValueInBracketTxt",
+   "file": "Replen. Calculation.codeunit.al",
+   "dong": 96,
+   "van_ban": "%1 (%2)",
+   "so_tham_so": 2,
+   "do_dac_trung": 0,
+   "cung_xuat_hien": []
+  },
+  {
+   "id": "MWH:FieldEquationValueTxt",
+   "label": "FieldEquationValueTxt",
+   "file": "Replen. Multi-Whse. Utils.codeunit.al",
+   "dong": 7,
+   "van_ban": "%1 [%2] = %3",
+   "so_tham_so": 3,
+   "do_dac_trung": 0,
+   "cung_xuat_hien": []
+  }
+ ]
+}

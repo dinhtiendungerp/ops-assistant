@@ -1,0 +1,19 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "marou-assistant",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "uvicorn",
+        "assistant.channels.web:app",
+        "--reload",
+        "--port",
+        "8188"
+      ],
+      "cwd": "python",
+      "port": 8188
+    }
+  ]
+}

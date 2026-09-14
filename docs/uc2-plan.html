@@ -1,0 +1,96 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>uc2 plan</title>
+<style>
+:root{
+  --ink:#1b1f24; --muted:#6b7280; --line:#d6dae0; --bg:#fff;
+  --al:#e8f2ea; --al-b:#7aa98a; --al-t:#1f4d33;
+  --ai:#fdf0dd; --ai-b:#d9a441; --ai-t:#7a4c07;
+  --neu:#f4f6f8; --neu-b:#c9cfd6;
+  --bc:#eaf0fa; --bc-b:#8ba6d4; --bc-t:#22406f;
+  --no:#f7e6e6; --no-b:#d08a8a; --no-t:#7a2a2a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 "Segoe UI",system-ui,sans-serif}
+.sheet{width:1440px;padding:34px 40px 28px}
+h1{font-size:22px;margin:0 0 2px}
+.sub{color:var(--muted);font-size:13px;margin:0 0 18px}
+.band{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:stretch;margin-bottom:12px}
+.bl{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);padding-top:12px;text-align:right;font-weight:600}
+.bl small{display:block;text-transform:none;letter-spacing:0;font-weight:400;font-size:11px;margin-top:3px}
+.box{border:1.5px solid var(--neu-b);background:var(--neu);border-radius:9px;padding:11px 14px}
+.box.al{background:var(--al);border-color:var(--al-b)}
+.box.ai{background:var(--ai);border-color:var(--ai-b)}
+.box.bc{background:var(--bc);border-color:var(--bc-b)}
+.box.no{background:var(--no);border-color:var(--no-b)}
+.box h3{margin:0 0 5px;font-size:14.5px}
+.box .d{font-size:12.3px;color:#414852}
+.row{display:flex;gap:12px}
+.row>*{flex:1}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:4px;margin-left:6px;vertical-align:2px}
+.tag.al{background:#cfe4d6;color:var(--al-t)} .tag.ai{background:#f6e0b8;color:var(--ai-t)}
+.tag.bc{background:#d5e1f5;color:var(--bc-t)} .tag.no{background:#efcaca;color:var(--no-t)}
+ul{margin:5px 0 0;padding-left:16px;font-size:12.3px;color:#414852}
+li{margin:1.5px 0}
+.legend{display:flex;gap:22px;margin-top:16px;font-size:12px;color:#414852;align-items:center}
+.sw{display:inline-block;width:13px;height:13px;border-radius:3px;margin-right:6px;vertical-align:-2px;border:1.5px solid}
+.spine{border:2px dashed var(--al-b);border-radius:12px;padding:10px 12px 4px;position:relative}
+.spine:before{content:"XƯƠNG SỐNG BẮT BUỘC · giai đoạn 0 tới 3 · không cần mô hình ngôn ngữ";position:absolute;top:-10px;left:16px;background:#fff;padding:0 8px;font-size:10.5px;letter-spacing:.08em;color:var(--al-t);font-weight:700}
+.opt{border:2px dashed var(--ai-b);border-radius:12px;padding:10px 12px 4px;position:relative;margin-bottom:18px}
+.opt:before{content:"LỚP HỘI THOẠI TUỲ CHỌN · giai đoạn 4 · chọn đúng một cửa, hoặc chưa chọn";position:absolute;top:-10px;left:16px;background:#fff;padding:0 8px;font-size:10.5px;letter-spacing:.08em;color:var(--ai-t);font-weight:700}
+.wk{font-size:11px;color:var(--muted);float:right;font-weight:400}
+</style></head><body>
+<div class="sheet" id="d1">
+<h1>UC2 Inventory Health: sản phẩm hoàn chỉnh và các cửa vào lớp AI</h1>
+<p class="sub">Xanh lá: AL trong Business Central, không cần model, chạy được kể cả khi phần AI trượt. Vàng: có model, tính phí theo lượng việc. Xanh dương: nền tảng Microsoft. Đỏ: không dùng cho POC này.</p>
+
+<div class="opt">
+<div class="row">
+  <div class="box ai"><h3>Cửa B · Copilot Studio + BC MCP Server<span class="tag bc">Teams</span></h3>
+    <div class="d">Agent low-code trong Copilot Studio, gọi thẳng API page NWV qua MCP Server (GA 04/2026). Publish lên Teams. Tính phí Copilot Credits, có trần theo agent.</div>
+    <ul><li>Nhanh nhất để có chat trên Teams</li><li>Cần Marou có M365 và licence Copilot Studio</li><li>Connector phía Copilot Studio còn nhãn Preview</li></ul></div>
+  <div class="box ai"><h3>Cửa C · Trợ lý do NaviWorld host<span class="tag">custom API + S2S</span></h3>
+    <div class="d">Chính prototype đang chạy ở 127.0.0.1:8088, đưa lên Azure. Model tự chọn (Claude hoặc Azure OpenAI). Kênh web, Teams bot, Zalo.</div>
+    <ul><li>Kiểm soát cao nhất, đo token thật</li><li>NaviWorld gánh hạ tầng và vận hành</li><li>Chỉ chọn khi cần Zalo hoặc không có M365</li></ul></div>
+  <div class="box ai"><h3>Cửa D · Copilot capability ngay trong BC<span class="tag bc">PromptDialog</span></h3>
+    <div class="d">Nút "Giải thích và đề xuất" trên page NWV Inv. Health, gọi Azure OpenAI qua AI module (GA). Không cần kênh chat, không cần Copilot Studio.</div>
+    <ul><li>Bước AI nhỏ nhất, nằm trong BC</li><li>Cần Azure OpenAI subscription, hoặc chờ BC AI resources GA</li><li>Không có brief chủ động</li></ul></div>
+  <div class="box no"><h3>Không dùng · Agent SDK for AL, Agent Designer<span class="tag no">preview</span></h3>
+    <div class="d">Agent Designer dời sang wave 2 (09/06/2026). Agent SDK for AL cho phép production từ 28.1 nhưng vẫn preview, billing chưa công bố.</div>
+    <ul><li>Không cam kết cho POC</li><li>Theo dõi lại sau 10/2026</li></ul></div>
+</div>
+</div>
+
+<div class="spine">
+<div class="band"><div class="bl">Giai đoạn 3<small>Đo lường</small></div>
+  <div class="row">
+    <div class="box al"><h3>NWV Inv. Health Snapshot<span class="wk">tuần 4 tới 5</span></h3><div class="d">Ảnh chụp mỗi lần chạy. Lần đầu trên dữ liệu thật là baseline, khoá lại. KPI page: tồn xấu hôm nay so với baseline, giá trị đã có hướng xử lý, thời gian từ phát hiện tới chứng từ, tỷ lệ duyệt không sửa.</div></div>
+    <div class="box al"><h3>Bảng lấy mẫu nghiệm thu</h3><div class="d">20 dòng ngẫu nhiên trải sáu tầng, hai bên cùng mở Item Ledger Entry và Lot No. Information đối chiếu. Đạt từ 95%.</div></div>
+  </div></div>
+<div class="band"><div class="bl">Giai đoạn 2<small>Hành động</small></div>
+  <div class="row">
+    <div class="box al"><h3>Transfer<span class="tag al">có sẵn</span><span class="wk">tuần 3 tới 4</span></h3><div class="d">Transfer Order trạng thái Open, người duyệt là người tạo.</div></div>
+    <div class="box al"><h3>Write-off<span class="tag al">mới</span></h3><div class="d">Dòng Item Journal trong batch NWV-WO, không post. Đi qua Item Journal Batch Approval Workflow chuẩn của BC v28.</div></div>
+    <div class="box al"><h3>Block Purchase<span class="tag al">mới</span></h3><div class="d">Đặt Purchasing Blocked trên Item, ghi log, gỡ được.</div></div>
+    <div class="box al"><h3>Markdown<span class="tag al">ghi nhận</span></h3><div class="d">Chỉ ghi đề xuất. Tạo Periodic Discount trong LS Central để giai đoạn sau.</div></div>
+  </div></div>
+<div class="band"><div class="bl">Giai đoạn 1<small>Lõi và trang BC</small></div>
+  <div class="row">
+    <div class="box al"><h3>NWV Inv. Health Calc<span class="tag al">có sẵn</span><span class="wk">tuần 2 tới 3</span></h3><div class="d">Cây sáu bậc, ngưỡng theo Item Category, cửa sổ ngoại lệ. Job Queue chạy 05:00 hằng ngày.</div></div>
+    <div class="box al"><h3>Page NWV Inv. Health Lines<span class="tag al">mới</span></h3><div class="d">List tô màu theo tầng, FactBox "con số này ở đâu ra", mở thẳng Item Ledger Entry và Lot. Open in Excel có sẵn.</div></div>
+    <div class="box al"><h3>Cue trên Role Center<span class="tag al">mới</span></h3><div class="d">Sáu ô giá trị theo tầng, so với baseline. Không cần Power BI.</div></div>
+    <div class="box bc"><h3>API page v1.0<span class="tag al">có sẵn</span></h3><div class="d">inventoryHealthLines, agentProposals (đã có bound action approve, reject), itemLedgerEntries, demandExceptions. Dùng chung cho mọi cửa B, C, D.</div></div>
+  </div></div>
+<div class="band"><div class="bl">Giai đoạn 0<small>Độ phủ dữ liệu</small></div>
+  <div class="row">
+    <div class="box al"><h3>NWV Data Readiness<span class="tag al">có sẵn</span><span class="wk">tuần 1</span></h3><div class="d">17 kiểm tra trên sandbox chép từ production. Kết quả quyết định tầng nào cam kết được: thiếu Expiration Date thì Near Expiry chỉ báo cáo độ phủ, không cam kết số.</div></div>
+    <div class="box bc"><h3>Xác nhận với Marou</h3><div class="d">Chu kỳ post Statement từ LS POS. Số tháng lịch sử. Item Category. Danh sách Location cửa hàng. Ai duyệt đề xuất hằng ngày.</div></div>
+  </div></div>
+</div>
+
+<div class="legend">
+  <span><i class="sw" style="background:var(--al);border-color:var(--al-b)"></i>AL, không cần model</span>
+  <span><i class="sw" style="background:var(--ai);border-color:var(--ai-b)"></i>Có model, phí theo lượng việc</span>
+  <span><i class="sw" style="background:var(--bc);border-color:var(--bc-b)"></i>Nền tảng Microsoft, cấu hình</span>
+  <span><i class="sw" style="background:var(--no);border-color:var(--no-b)"></i>Preview, không cam kết</span>
+</div>
+</div>
+</body></html>

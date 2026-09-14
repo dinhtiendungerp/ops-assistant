@@ -1,0 +1,22 @@
+{
+  "today": "2026-09-18",
+  "so_dong": 167,
+  "tier_counts": {
+    "Expired": 45,
+    "NearExpiry": 32,
+    "StockOutRisk": 47,
+    "SlowMoving": 4,
+    "Excess": 1,
+    "Healthy": 38
+  },
+  "tier_quantities": {
+    "Expired": 704.0,
+    "NearExpiry": 1009.0,
+    "StockOutRisk": 2780.0,
+    "SlowMoving": 49.0,
+    "Excess": 596.0,
+    "Healthy": 2150.0
+  },
+  "so_de_xuat_dieu_chuyen": 22,
+  "so_de_xuat_bi_chan_boi_han_dung": 18
+}

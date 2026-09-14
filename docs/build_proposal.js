@@ -1,0 +1,125 @@
+const { p, h1, h2, h3, bullet, num, table, pageBreak, build } = require("./lib");
+
+const children = [
+  h1("1. Tóm tắt đề xuất"),
+  p("NaviWorld đề xuất Marou chọn POC A (Planning & Inventory) cùng POC D (Executive & AI Cockpit) cho giai đoạn đầu, gộp thành một POC 8 tuần trên bốn use case: Demand Planning & Forecast (UC1), Inventory Health & Traceability (UC2), Store Replenishment Optimization (UC5) và Supply Chain & Retail AI Assistant (UC10). UC1, UC2, UC5 chạy trên dữ liệu đang có trong Business Central và LS Central; UC10 là trợ lý hỏi đáp trên chính các kết quả đó, kèm dashboard."),
+  p("Cách làm: dữ liệu sạch trước, logic nghiệp vụ trong Business Central sau, trợ lý AI cuối cùng. Phần logic tự nó đã cho ra dashboard tồn kho, bảng độ chính xác dự báo và đề xuất bổ sung của LS Replenishment với con số đo được. Trợ lý thêm vào lớp trên: trả lời câu hỏi đã phê duyệt bằng tiếng Việt, giải thích ngoại lệ, mở đúng trang Business Central, và soạn đề xuất cho người của Marou duyệt. Trợ lý không tự tạo chứng từ. Mọi đề xuất, lý do và số liệu đã đọc đều được lưu lại để kiểm tra."),
+  p("Kết quả đến cuối POC: bảng KPI so với baseline ghi từ tuần 2, gồm giá trị hàng cận date phát hiện sớm, tỷ lệ SKU đủ hàng tại cửa hàng, độ chính xác dự báo baseline, tỷ lệ câu hỏi trả lời được không cần model, số giờ nhân sự tiết kiệm và chi phí AI thực tế. Không có con số ước tính trước; mọi con số đo được trong hệ thống."),
+  p("Với POC B (Store Operations Control) và POC C (Loyalty Journey), NaviWorld nêu điều kiện ở mục 10 thay vì nhận trọn."),
+
+  h1("2. Hiểu biết về pain point theo use case"),
+  table(["Use case", "Pain point hiện tại theo RFP và theo dữ liệu NaviWorld đang thấy", "Kết quả kỳ vọng"], [
+    ["UC2 Inventory Health & Traceability", "Hàng cận date và hết hạn chỉ phát hiện khi kiểm kê. Hàng chậm luân chuyển và dư tồn không có báo cáo định kỳ. Lot và hạn dùng có trong BC nhưng chưa được khai thác.", "Mỗi sáng có danh sách lot cần xử lý, xếp theo mức rủi ro, kèm đề xuất hành động và người duyệt."],
+    ["UC5 Store Replenishment", "Điều phối hàng về cửa hàng làm tay trên Excel và chat. Không có days of cover theo cửa hàng. Cửa hàng hết hàng mới báo.", "Đề xuất bổ sung do LS Central Replenishment tính (theo tốc độ bán hoặc min-max), giới hạn theo tồn kho trung tâm, giải thích được từng con số, người điều phối chỉ duyệt."],
+    ["UC1 Demand Planning & Forecast", "Chưa có forecast đo được độ chính xác.", "Trong POC: forecast vs actual và độ chính xác (WAPE, bias) theo nhóm hàng và cửa hàng trên kỳ kiểm tra 28 ngày, danh sách ngoại lệ, làm mốc cho mọi mô hình sau này. Không hứa mô hình AI trong 8 tuần."],
+    ["UC10 Supply Chain & Retail AI Assistant", "Số liệu nằm rải ở nhiều màn hình; hỏi một câu phải nhờ người tổng hợp.", "Danh sách câu hỏi đã phê duyệt về kế hoạch, tồn kho và cửa hàng; câu trả lời có số liệu, giải thích ngoại lệ, link sang trang Business Central và đề xuất hành động có người duyệt."],
+  ], [1.3, 2.8, 2.2]),
+
+  h1("3. Phạm vi POC và kịch bản demo"),
+  h2("3.1 Phạm vi"),
+  bullet("Dữ liệu: một company BC, nhóm hàng và cửa hàng Marou chọn (đề xuất 3 đến 5 cửa hàng cùng kho trung tâm), tối thiểu 12 tháng lịch sử bán."),
+  bullet("UC2 và UC5: tính trong Business Central mỗi đêm; đề xuất chuyển hàng, hủy lô hết hạn đưa cho người phụ trách Marou duyệt."),
+  bullet("UC1: bảng forecast vs actual và độ chính xác baseline trên dữ liệu thật, danh sách ngoại lệ."),
+  bullet("UC10: trợ lý hỏi đáp trên web, 20 đến 30 câu hỏi đã phê duyệt, dashboard tồn kho, dự báo và đề xuất, link sang Business Central."),
+  bullet("Ngoài phạm vi: tự động tạo chứng từ giảm giá hay hủy hàng, discount governance (POC B), tích hợp OneTrace, Wallet Pass."),
+  h2("3.2 Hành trình người dùng"),
+  num("01:00 Business Central tính lại tồn kho theo lô, độ chính xác dự báo và đề xuất bổ sung của LS (Job Queue)."),
+  num("08:00 Người phụ trách mở trợ lý, xem brief theo vai trò, duyệt hoặc từ chối đề xuất, ghi lý do."),
+  num("Trong ngày, quản lý cửa hàng và Supply Chain hỏi bằng tiếng Việt: vì sao LS đề xuất số này, lô nào sắp hết hạn, dự báo đang sai ở đâu. Câu trả lời kèm link mở đúng trang Business Central."),
+  num("Khi duyệt đề xuất bổ sung, hệ thống tạo Transfer Order ở trạng thái mở. Kho release và giao như quy trình hiện tại."),
+  h2("3.3 Kịch bản demo tại buổi readout"),
+  table(["Kịch bản", "Người xem thấy gì"], [
+    ["Dự báo đang sai ở đâu", "Hỏi độ chính xác dự báo: WAPE gộp và theo cửa hàng, cặp mặt hàng vượt ngưỡng, biểu đồ thực tế và dự báo. Trợ lý nói rõ đây là baseline, chưa phải mô hình AI."],
+    ["Vì sao LS đề xuất con số này", "Hỏi vì sao đề xuất chuyển 82 hộp cho một cửa hàng: trợ lý đọc nhật ký tính của LS, nói từng bước bằng tiếng Việt và chỉ field nào phải sửa nếu muốn đổi kết quả."],
+    ["Lô bánh quá hạn", "Điều phối kho hỏi hàng hết hạn: danh sách lô theo địa điểm, đề xuất hủy có số lô. Truy xuất một lô: đã bán bao nhiêu, còn ở cửa hàng nào, thu hồi lấy lại ở đâu."],
+    ["Duyệt ra chứng từ", "Người duyệt sửa số lớn hơn tồn nguồn: hệ thống chặn. Duyệt số hợp lệ: Transfer Order xuất hiện trong Business Central."],
+    ["Câu hỏi chưa có trong danh sách", "Model dựng chuỗi tra cứu, câu trả lời ghi rõ nguồn là model và số token. Quản trị duyệt câu đó thành câu hỏi đã phê duyệt; lần sau trả lời không gọi model."],
+  ], [1.6, 4.4]),
+
+  h1("4. Kiến trúc mục tiêu và luồng dữ liệu"),
+  p("Toàn bộ dữ liệu và logic nằm trong Business Central của Marou. Agent chạy bên ngoài, xác thực bằng tài khoản ứng dụng Microsoft Entra riêng, đọc và ghi qua API do NaviWorld xây, với quyền chỉ đủ đọc kết quả và ghi đề xuất."),
+  table(["Lớp", "Thành phần", "Ghi chú"], [
+    ["Dữ liệu nguồn", "Item Ledger Entry (tồn, lot, hạn dùng, lịch sử bán), Transfer Line, log POS của LS Central", "Không sao chép ra ngoài. Discount log được chuẩn hóa vào một bảng trung gian trong BC."],
+    ["Logic nghiệp vụ", "Extension NaviWorld trong BC: phân tầng tồn kho theo lô, độ chính xác dự báo, bảng ngưỡng. Đề xuất bổ sung dùng module Replenishment có sẵn của LS Central.", "Ngưỡng và tham số bổ sung do Marou đặt trong Business Central, đổi không cần lập trình."],
+    ["API", "Custom API v1.0, xác thực service-to-service OAuth 2.0", "Tính năng ổn định của Business Central, không phải preview."],
+    ["Trợ lý AI", "Dịch vụ Python do NaviWorld host, web console, gọi Azure OpenAI (gpt-4.1-mini) trên subscription riêng", "Rule và câu hỏi đã phê duyệt trả lời trước, model chỉ dùng khi cần. Chỉ đọc số đã tính, chỉ ghi đề xuất. Có trần chi phí cứng và log từng bước."],
+    ["Con người", "Thẻ đề xuất trong trợ lý và trang đề xuất trong Business Central", "Duyệt, từ chối, ghi lý do. Chứng từ được tạo khi người của Marou duyệt."],
+  ], [1.2, 2.6, 2.2]),
+  p("Region xử lý của Azure OpenAI do NaviWorld chọn cho extension, không phụ thuộc Copilot chuẩn của Microsoft. Nếu Marou yêu cầu giữ dữ liệu trong khu vực, triển khai dạng Data Zone Standard, phạm vi Asia Pacific. Business Central MCP Server (public preview theo release plan 2025 wave 2) có thể mở thêm cho Copilot Studio sau POC; không nằm trong tiêu chí thành công."),
+  p("Yêu cầu dữ liệu và giả định chất lượng: lot và hạn dùng được nhập khi nhận hàng; Transfer Route giữa kho và cửa hàng đã setup; log POS có Staff ID và loại discount; tối thiểu 12 tháng lịch sử bán cho baseline forecast. Điểm nào chưa đạt, tuần 1 và 2 dành để xử lý trước khi bật agent."),
+
+  h1("5. Kế hoạch và milestone"),
+  table(["Tuần", "Việc", "Marou", "NaviWorld"], [
+    ["1", "Clarification, chốt cửa hàng và nhóm hàng pilot, tạo sandbox từ production", "Use-case owner, IT", "Consultant, PM"],
+    ["2", "Deploy logic, đặt ngưỡng cùng Marou, ghi baseline có xác nhận của use-case owner", "Supply Chain, Retail Ops", "Consultant, dev"],
+    ["3", "Nạp log POS 3 tháng, đăng ký tài khoản ứng dụng, chạy thử agent nội bộ", "IT", "Dev"],
+    ["4", "Agent chạy hằng ngày, người của Marou duyệt thật", "Người duyệt mỗi sáng 15 phút", "Consultant theo dõi"],
+    ["5 và 6", "Chỉnh ngưỡng theo phản hồi, đo chi phí AI thực tế, demo MCP nếu cần", "Phản hồi hằng tuần", "Consultant, dev"],
+    ["7", "Đo KPI so với baseline", "Xác nhận số", "Consultant"],
+    ["8", "Readout với ban lãnh đạo, đề xuất rollout", "Ban lãnh đạo", "PM, consultant"],
+  ], [0.6, 2.8, 1.3, 1.3]),
+
+  h1("6. Tiêu chí thành công và baseline"),
+  p("Baseline được ghi ở tuần 2, trước khi bật agent, và có xác nhận của use-case owner. Đến tuần 7 đo lại cùng chỉ số, cùng cách đo."),
+  table(["Use case", "Chỉ số kết quả kinh doanh", "Chỉ số năng suất", "Cách đo"], [
+    ["UC2", "Giá trị lot cận date được phát hiện trước hạn ≥ 30 ngày; giá trị hàng hết hạn phải hủy trong tháng", "Số phút rà tồn kho mỗi tuần của Supply Chain", "Bảng inventory health trong BC; Item Ledger Entry loại hủy; hỏi trực tiếp"],
+    ["UC5", "Tỷ lệ SKU tại cửa hàng pilot có days of cover ≥ ngưỡng; số lần hết hàng trong tuần", "Số giờ lập Transfer mỗi tuần; tỷ lệ đề xuất được duyệt không sửa số", "Bảng replenishment trong BC; trang đề xuất; hỏi trực tiếp"],
+    ["UC1", "WAPE baseline theo nhóm hàng và cửa hàng trên 28 ngày kiểm tra", "Không áp dụng", "Backtest trên dữ liệu thật"],
+    ["UC10", "Tỷ lệ câu hỏi đã phê duyệt trả lời đúng; tỷ lệ câu trả lời không cần gọi model", "Số lần phải nhờ người tổng hợp số liệu mỗi tuần", "Nhật ký trợ lý; đánh giá Trả lời đúng / Chưa đúng của người dùng; hỏi trực tiếp"],
+    ["Chung", "Chi phí AI thực tế mỗi ngày chạy", "Tỷ lệ đề xuất bị từ chối và lý do", "Usage của API; trang đề xuất"],
+  ], [0.7, 2.3, 1.6, 1.4]),
+  p("Nghiệm thu: POC được xem là đạt khi phần tính toán chạy liên tục 3 tuần không cần NaviWorld can thiệp tay, ít nhất một chỉ số kết quả kinh doanh của UC2 và UC5 cải thiện so với baseline, UC1 có bảng độ chính xác được use-case owner xác nhận, và Marou đọc được lý do của từng đề xuất mà không cần NaviWorld giải thích."),
+
+  h1("7. Bảo mật, phân quyền, governance và audit"),
+  bullet("Agent dùng tài khoản ứng dụng Microsoft Entra riêng, đăng ký trong Business Central, gán permission set chỉ đọc kết quả và ghi đề xuất. Không có quyền trên chứng từ, sổ cái, dữ liệu khách hàng."),
+  bullet("Chứng từ chỉ được tạo khi người của Marou duyệt, dưới tên người duyệt. Business Central ghi log thay đổi như bình thường."),
+  bullet("Tài khoản của agent bị chặn không thể duyệt đề xuất và không thể kết luận ngoại lệ discount. Ranh giới này nằm trong code và quyền, không nằm trong hướng dẫn cho mô hình."),
+  bullet("Mỗi đề xuất lưu tên agent, mô hình, mã lần chạy và số liệu agent đã đọc. Mỗi lần chạy có file log từng bước."),
+  bullet("Dữ liệu gửi ra ngoài Business Central là số liệu đã tính (mã hàng, kho, số lượng, ngày). Không gửi thông tin khách hàng. Với discount governance, Staff ID và số thẻ member có thể ẩn trước khi gửi nếu Marou yêu cầu."),
+  bullet("Ngưỡng và rule nằm trong Business Central, kiểm toán viên đọc được, đổi được mà không cần NaviWorld."),
+
+  h1("8. Rủi ro, ràng buộc và giả định"),
+  table(["Rủi ro hoặc giả định", "Ảnh hưởng", "Xử lý"], [
+    ["Lot và hạn dùng chưa nhập đầy đủ", "Tier cận date và hết hạn không hoạt động", "Kiểm tra tuần 1. Nếu thiếu, tuần 2 bổ sung dữ liệu, agent UC2 chạy từ tuần 3."],
+    ["Tham số LS Replenishment chưa cấu hình (Item Distribution, Sales Profile, số ngày phủ)", "Đề xuất bổ sung ra 0 hoặc sai", "Tuần 1 và 2 cấu hình cùng Marou; trợ lý chỉ ra field cần sửa khi con số bất thường."],
+    ["Câu hỏi của người dùng nằm ngoài danh sách đã phê duyệt", "Trợ lý phải gọi model, tốn token và câu trả lời kém ổn định hơn", "Câu trả lời ghi rõ nguồn; câu lặp lại được duyệt thành câu hỏi chính thức; có trần chi phí."],
+    ["Chất lượng đề xuất của mô hình chưa đạt", "Người duyệt từ chối nhiều", "Lớp logic vẫn giao dashboard và số cải thiện. Chỉnh prompt và ngưỡng tuần 5 và 6."],
+    ["Chi phí AI cao hơn kỳ vọng", "Không rollout được", "Đo thực tế ở pilot, có số trước khi quyết định. Có thể giảm tần suất hoặc thu hẹp item."],
+    ["Tính năng agent native của Microsoft (Agent Designer) còn preview, GA dự kiến tháng 10/2026", "Không ảnh hưởng POC vì không dùng", "Theo dõi. Nếu GA và billing rõ, giai đoạn rollout có thể chuyển agent vào trong Business Central, lớp logic không đổi."],
+    ["Chưa rõ OneTrace và MMV First", "Phần traceability và service category chưa thiết kế", "Hỏi ở clarification."],
+  ], [2, 1.8, 2.2]),
+
+  h1("9. Mô hình thương mại"),
+  p("Cấu trúc đề xuất, con số điền sau clarification:"),
+  table(["Khoản", "Cách tính", "Ghi chú"], [
+    ["Dịch vụ POC 8 tuần", "Trọn gói theo phạm vi mục 3", "Gồm consultant, dev, PM. Không gồm thay đổi phạm vi."],
+    ["License", "Không phát sinh license Business Central mới cho POC", "Extension NaviWorld cài trên tenant Marou. Không dùng tính năng preview của Microsoft trong phạm vi POC."],
+    ["Chi phí AI và hosting trợ lý", "Theo mức sử dụng thực tế, đo ở pilot", "NaviWorld ứng trong POC, báo cáo token và chi phí thực tế ở tuần 6, làm cơ sở cho rollout."],
+    ["Rollout (tùy chọn)", "Ước tính sau readout", "Mở rộng cửa hàng, thêm use case, vận hành agent."],
+  ], [1.5, 2, 2.5]),
+
+  h1("10. Điều kiện nếu Marou muốn NaviWorld nhận thêm POC B hoặc C"),
+  p("POC B (Store Operations Control): NaviWorld nhận phần discount governance trên log POS của LS Central (ngoại lệ theo rule, ghi chú audit, giải trình của nhân viên) và dashboard cửa hàng. Điều kiện: log POS có Staff ID và loại discount, Staff Permission Group đã cấu hình. Phần service category cho MMV First cần làm rõ trước."),
+  p("POC C (Loyalty Journey): phần loyalty rule và tích điểm nằm trong Member Management của LS Central, NaviWorld làm được. Phần Wallet Pass cần nhà cung cấp pass riêng và ứng dụng phía khách hàng; NaviWorld chỉ nhận phần tích hợp với LS Central nếu Marou đã chọn nhà cung cấp Wallet Pass."),
+  p("Cả hai trường hợp, NaviWorld đề nghị làm sau khi POC A và D có kết quả tuần 7, để tránh dàn trải người của Marou trong cùng 8 tuần."),
+
+  h1("11. Câu hỏi cho buổi clarification"),
+  num("Business Central SaaS hay on-premises, version nào."),
+  num("Lot và hạn dùng đã nhập đầy đủ khi nhận hàng chưa."),
+  num("Marou đã cấu hình LS Central Replenishment chưa, cửa hàng nào đang dùng."),
+  num("Staff Permission Group trên POS đã giới hạn discount chưa."),
+  num("Lịch sử dữ liệu bán trong Business Central có bao nhiêu tháng."),
+  num("OneTrace và MMV First là gì, ai cung cấp, dữ liệu ra sao."),
+  num("Ai là chủ sáng kiến phía Marou, và năm use case tài chính trong mail tháng 6 có còn trong phạm vi không."),
+  num("Danh sách câu hỏi Marou muốn trợ lý trả lời trước tiên, và ai phê duyệt danh sách đó."),
+  num("Marou có yêu cầu dữ liệu gửi sang Azure OpenAI phải xử lý trong khu vực Asia Pacific không."),
+  num("Có đưa Microsoft Fabric vào phạm vi không, ai trả capacity."),
+];
+
+build(
+  "Đề xuất Proof of Concept: Planning & Inventory và Executive & AI Cockpit",
+  "Phản hồi Request for POC Proposal của Marou Chocolate ngày 20/08/2026",
+  { header: "NaviWorld Vietnam | Đề xuất POC cho Marou Chocolate | Confidential", footer: "Bản nháp 0.2, 14/09/2026", cover: ["Gửi: Marou Chocolate, IT & Digital Transformation", "Từ: NaviWorld Vietnam", "Ngày: 14/09/2026", "Trạng thái: bản nháp nội bộ, chưa gửi. Mục 9 chưa có con số."] },
+  children,
+  __dirname + "/02 De xuat POC A+D - Marou (ban gui khach).docx",
+);

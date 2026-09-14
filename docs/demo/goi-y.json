@@ -1,0 +1,885 @@
+[
+ {
+  "user_id": "lan.s0001",
+  "ten": "Lan (QL Cửa hàng Quận 1, S0001)",
+  "role": "store_manager",
+  "store": "S0001",
+  "goi_y": [
+   {
+    "ten": "Brief sáng nay",
+    "mo": "Mặt hàng dưới ngưỡng, đề xuất chờ duyệt, CTKM sắp tới.",
+    "cau": "Tóm tắt những việc cần ưu tiên hôm nay.",
+    "uc": "UC10",
+    "icon": "brief",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "BRIEF",
+    "tra_loi_bc": "Cửa hàng S0001: 4 mặt hàng dưới ngưỡng (Choco nuts, Croissant - chocolate, Choco bowl, Flavored syrup). 0 đề xuất đang chờ điều phối duyệt."
+   },
+   {
+    "ten": "Tồn Choco nuts ở cửa hàng",
+    "mo": "Tồn tại cửa hàng mình và kho trung tâm.",
+    "cau": "Choco nuts ở cửa hàng tôi còn bao nhiêu",
+    "uc": "UC2",
+    "icon": "ton",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "STOCK_QUERY",
+    "tra_loi_bc": "Choco nuts tại S0001 đã hết, không còn dòng tồn nào. Nơi khác: S0002: 415 (41.2 ngày); S0005: 52 (9.1 ngày); S0010: 74 (9.1 ngày); W0003: 685 (12.9 ngày)."
+   },
+   {
+    "ten": "CTKM sắp tới",
+    "mo": "Chương trình của LS áp cho cửa hàng mình.",
+    "cau": "CTKM nào sắp tới ở cửa hàng tôi",
+    "uc": "UC10",
+    "icon": "km",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "PROMO",
+    "tra_loi_bc": "CTKM tại S0001: 2 sắp tới. 1 CTKM chưa có đủ nhu cầu trong LS Replenishment, xem chi tiết."
+   },
+   {
+    "ten": "Lô sắp hết hạn",
+    "mo": "Lô quá hạn và cận hạn tại cửa hàng.",
+    "cau": "cửa hàng tôi có lô nào sắp hết hạn không",
+    "uc": "UC2",
+    "icon": "han",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "EXPIRY",
+    "tra_loi_bc": "3 lô sắp hết hạn tại S0001, tổng tồn 11, giá trị 51,06. Từng lô ở bên dưới, bấm để ghi đề xuất cho người duyệt."
+   },
+   {
+    "ten": "Vì sao LS đề xuất Choco nuts",
+    "mo": "Đọc nhật ký tính của LS Replenishment.",
+    "cau": "vì sao LS đề xuất Choco nuts cho S0001",
+    "uc": "UC5",
+    "icon": "ls",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "REPLEN_WHY",
+    "tra_loi_bc": "LS đề xuất 82 Choco nuts cho S0001. Các bước dưới đây đọc từ nhật ký tính của LS, tôi không tính lại."
+   },
+   {
+    "ten": "Dự báo Choco nuts",
+    "mo": "Sai số, Holt-Winters, dự báo 7 ngày tới.",
+    "cau": "dự báo Choco nuts ở S0001 sai bao nhiêu",
+    "uc": "UC1",
+    "icon": "du_bao",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "FORECAST",
+    "tra_loi_bc": "Choco nuts tại S0001: sai 21,1% với trung bình cùng thứ 8 tuần."
+   },
+   {
+    "ten": "Đề xuất của tôi",
+    "mo": "Tiến độ đề xuất và chứng từ.",
+    "cau": "đề xuất của tôi đến đâu rồi",
+    "uc": "UC10",
+    "icon": "theo_doi",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "TRACKING",
+    "tra_loi_bc": "Đang chờ người duyệt, 4 việc:"
+   },
+   {
+    "ten": "Đơn mua chưa nhận",
+    "mo": "PO về cửa hàng quá ngày nhận.",
+    "cau": "đơn mua nào về cửa hàng tôi quá hạn chưa nhận",
+    "uc": "UC3",
+    "icon": "po",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "PO_OVERDUE",
+    "tra_loi_bc": "Tính đến 18/09/2026 có 4 đơn mua về Cửa hàng Quận 1 quá ngày nhận dự kiến mà Business Central chưa ghi nhận nhận hàng, 9 dòng. Trong đó 3 đơn trễ hơn 60 ngày, nhiều khả năng là đơn treo. Bạn xác nhận giúp từng đơn hàng đ"
+   }
+  ]
+ },
+ {
+  "user_id": "minh.s0002",
+  "ten": "Minh (QL Cửa hàng Hà Nội, S0002)",
+  "role": "store_manager",
+  "store": "S0002",
+  "goi_y": [
+   {
+    "ten": "Brief sáng nay",
+    "mo": "Mặt hàng dưới ngưỡng, đề xuất chờ duyệt, CTKM sắp tới.",
+    "cau": "Tóm tắt những việc cần ưu tiên hôm nay.",
+    "uc": "UC10",
+    "icon": "brief",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "BRIEF",
+    "tra_loi_bc": "Cửa hàng S0002: 2 mặt hàng dưới ngưỡng (Croissant - chocolate, Ice cream). 0 đề xuất đang chờ điều phối duyệt."
+   },
+   {
+    "ten": "Tồn Ice cream ở cửa hàng",
+    "mo": "Tồn tại cửa hàng mình và kho trung tâm.",
+    "cau": "Ice cream ở cửa hàng tôi còn bao nhiêu",
+    "uc": "UC2",
+    "icon": "ton",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "STOCK_QUERY",
+    "tra_loi_bc": "Ice cream tại S0002 còn 8, đủ 5.5 ngày. Nơi khác: S0001: 16 (10.1 ngày); S0005: 6 (8.7 ngày); S0010: 13 (13.9 ngày); W0003: 25 (5.2 ngày)."
+   },
+   {
+    "ten": "CTKM sắp tới",
+    "mo": "Chương trình của LS áp cho cửa hàng mình.",
+    "cau": "CTKM nào sắp tới ở cửa hàng tôi",
+    "uc": "UC10",
+    "icon": "km",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "PROMO",
+    "tra_loi_bc": "CTKM tại S0002: 2 sắp tới. 1 CTKM chưa có đủ nhu cầu trong LS Replenishment, xem chi tiết."
+   },
+   {
+    "ten": "Lô sắp hết hạn",
+    "mo": "Lô quá hạn và cận hạn tại cửa hàng.",
+    "cau": "cửa hàng tôi có lô nào sắp hết hạn không",
+    "uc": "UC2",
+    "icon": "han",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "EXPIRY",
+    "tra_loi_bc": "4 lô sắp hết hạn tại S0002, tổng tồn 44, giá trị 286,88. Từng lô ở bên dưới, bấm để ghi đề xuất cho người duyệt."
+   },
+   {
+    "ten": "Vì sao LS đề xuất Ice cream",
+    "mo": "Đọc nhật ký tính của LS Replenishment.",
+    "cau": "vì sao LS đề xuất Ice cream cho S0002",
+    "uc": "UC5",
+    "icon": "ls",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "REPLEN_WHY",
+    "tra_loi_bc": "LS đề xuất 11 Ice cream cho S0002. Các bước dưới đây đọc từ nhật ký tính của LS, tôi không tính lại."
+   },
+   {
+    "ten": "Dự báo Ice cream",
+    "mo": "Sai số, Holt-Winters, dự báo 7 ngày tới.",
+    "cau": "dự báo Ice cream ở S0002 sai bao nhiêu",
+    "uc": "UC1",
+    "icon": "du_bao",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "FORECAST",
+    "tra_loi_bc": "Ice cream tại S0002: sai 50,0% với trung bình cùng thứ 8 tuần."
+   },
+   {
+    "ten": "Đề xuất của tôi",
+    "mo": "Tiến độ đề xuất và chứng từ.",
+    "cau": "đề xuất của tôi đến đâu rồi",
+    "uc": "UC10",
+    "icon": "theo_doi",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "TRACKING",
+    "tra_loi_bc": "Đang chờ người duyệt, 2 việc:"
+   },
+   {
+    "ten": "Đơn mua chưa nhận",
+    "mo": "PO về cửa hàng quá ngày nhận.",
+    "cau": "đơn mua nào về cửa hàng tôi quá hạn chưa nhận",
+    "uc": "UC3",
+    "icon": "po",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "PO_OVERDUE",
+    "tra_loi_bc": "Tính đến 18/09/2026, không có dòng đơn mua nào về Cửa hàng Hà Nội quá ngày nhận dự kiến mà chưa nhận."
+   }
+  ]
+ },
+ {
+  "user_id": "tuan.s0005",
+  "ten": "Tuấn (QL Nhà hàng Thảo Điền, S0005)",
+  "role": "store_manager",
+  "store": "S0005",
+  "goi_y": [
+   {
+    "ten": "Brief sáng nay",
+    "mo": "Mặt hàng dưới ngưỡng, đề xuất chờ duyệt, CTKM sắp tới.",
+    "cau": "Tóm tắt những việc cần ưu tiên hôm nay.",
+    "uc": "UC10",
+    "icon": "brief",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "BRIEF",
+    "tra_loi_bc": "Cửa hàng S0005: 3 mặt hàng dưới ngưỡng (Blueberry muffin, Flavored syrup, Ice cream). 0 đề xuất đang chờ điều phối duyệt."
+   },
+   {
+    "ten": "Tồn Tiramisu ở cửa hàng",
+    "mo": "Tồn tại cửa hàng mình và kho trung tâm.",
+    "cau": "Tiramisu ở cửa hàng tôi còn bao nhiêu",
+    "uc": "UC2",
+    "icon": "ton",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "STOCK_QUERY",
+    "tra_loi_bc": "Tiramisu tại S0005 còn 6, đủ 5.9 ngày. Nơi khác: S0001: 12 (5.2 ngày); S0002: 35 (17.4 ngày); S0010: 6 (3.3 ngày); W0003: 31 (3.7 ngày)."
+   },
+   {
+    "ten": "CTKM sắp tới",
+    "mo": "Chương trình của LS áp cho cửa hàng mình.",
+    "cau": "CTKM nào sắp tới ở cửa hàng tôi",
+    "uc": "UC10",
+    "icon": "km",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "PROMO",
+    "tra_loi_bc": "CTKM tại S0005: 1 sắp tới. 1 CTKM chưa có đủ nhu cầu trong LS Replenishment, xem chi tiết."
+   },
+   {
+    "ten": "Lô sắp hết hạn",
+    "mo": "Lô quá hạn và cận hạn tại cửa hàng.",
+    "cau": "cửa hàng tôi có lô nào sắp hết hạn không",
+    "uc": "UC2",
+    "icon": "han",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "EXPIRY",
+    "tra_loi_bc": "5 lô sắp hết hạn tại S0005, tổng tồn 154, giá trị 338,52. Từng lô ở bên dưới, bấm để ghi đề xuất cho người duyệt."
+   },
+   {
+    "ten": "Vì sao LS đề xuất Ice cream",
+    "mo": "Đọc nhật ký tính của LS Replenishment.",
+    "cau": "vì sao LS đề xuất Ice cream cho S0005",
+    "uc": "UC5",
+    "icon": "ls",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "REPLEN_WHY",
+    "tra_loi_bc": "LS đề xuất 14 Ice cream cho S0005. Các bước dưới đây đọc từ nhật ký tính của LS, tôi không tính lại."
+   },
+   {
+    "ten": "Dự báo Tiramisu",
+    "mo": "Sai số, Holt-Winters, dự báo 7 ngày tới.",
+    "cau": "dự báo Tiramisu ở S0005 sai bao nhiêu",
+    "uc": "UC1",
+    "icon": "du_bao",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "FORECAST",
+    "tra_loi_bc": "Tiramisu tại S0005: sai 92,4% với trung bình 28 ngày."
+   },
+   {
+    "ten": "Đề xuất của tôi",
+    "mo": "Tiến độ đề xuất và chứng từ.",
+    "cau": "đề xuất của tôi đến đâu rồi",
+    "uc": "UC10",
+    "icon": "theo_doi",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "TRACKING",
+    "tra_loi_bc": "Đang chờ người duyệt, 2 việc:"
+   },
+   {
+    "ten": "Đơn mua chưa nhận",
+    "mo": "PO về cửa hàng quá ngày nhận.",
+    "cau": "đơn mua nào về cửa hàng tôi quá hạn chưa nhận",
+    "uc": "UC3",
+    "icon": "po",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "PO_OVERDUE",
+    "tra_loi_bc": "Tính đến 18/09/2026, không có dòng đơn mua nào về Nhà hàng Thảo Điền quá ngày nhận dự kiến mà chưa nhận."
+   },
+   {
+    "ten": "Tiệc 150 khách",
+    "mo": "Yêu cầu mở nhiều ràng buộc (bản ghi đã duyệt).",
+    "cau": "thứ Bảy này nhà hàng nhận tiệc 150 khách, mỗi khách một phần tráng miệng, ngân sách 600, trời nóng nên tránh kem, kho còn gì ghép được không",
+    "uc": "UC10",
+    "icon": "mo",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "HELP",
+    "tra_loi_bc": ""
+   }
+  ]
+ },
+ {
+  "user_id": "ha.s0010",
+  "ten": "Hà (QL Quán cà phê Đà Nẵng, S0010)",
+  "role": "store_manager",
+  "store": "S0010",
+  "goi_y": [
+   {
+    "ten": "Brief sáng nay",
+    "mo": "Mặt hàng dưới ngưỡng, đề xuất chờ duyệt, CTKM sắp tới.",
+    "cau": "Tóm tắt những việc cần ưu tiên hôm nay.",
+    "uc": "UC10",
+    "icon": "brief",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "BRIEF",
+    "tra_loi_bc": "Cửa hàng S0010: 4 mặt hàng dưới ngưỡng (Croissant - chocolate, Blueberry muffin, Choco bowl, Flavored syrup). 0 đề xuất đang chờ điều phối duyệt."
+   },
+   {
+    "ten": "Tồn Choco bowl ở cửa hàng",
+    "mo": "Tồn tại cửa hàng mình và kho trung tâm.",
+    "cau": "Choco bowl ở cửa hàng tôi còn bao nhiêu",
+    "uc": "UC2",
+    "icon": "ton",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "STOCK_QUERY",
+    "tra_loi_bc": "Choco bowl tại S0010 còn 34, đủ 9.4 ngày. Nơi khác: S0001: 48 (8.8 ngày); S0002: 35 (8.0 ngày); S0005: 177 (75.1 ngày); W0003: 186 (7.7 ngày)."
+   },
+   {
+    "ten": "CTKM sắp tới",
+    "mo": "Chương trình của LS áp cho cửa hàng mình.",
+    "cau": "CTKM nào sắp tới ở cửa hàng tôi",
+    "uc": "UC10",
+    "icon": "km",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "PROMO",
+    "tra_loi_bc": "CTKM tại S0010: 1 sắp tới. 1 CTKM chưa có đủ nhu cầu trong LS Replenishment, xem chi tiết."
+   },
+   {
+    "ten": "Lô sắp hết hạn",
+    "mo": "Lô quá hạn và cận hạn tại cửa hàng.",
+    "cau": "cửa hàng tôi có lô nào sắp hết hạn không",
+    "uc": "UC2",
+    "icon": "han",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "EXPIRY",
+    "tra_loi_bc": "6 lô sắp hết hạn tại S0010, tổng tồn 486, giá trị 580,10. 5 lô giá trị lớn nhất ở bên dưới, bấm để ghi đề xuất cho người duyệt."
+   },
+   {
+    "ten": "Vì sao LS đề xuất Choco bowl",
+    "mo": "Đọc nhật ký tính của LS Replenishment.",
+    "cau": "vì sao LS đề xuất Choco bowl cho S0010",
+    "uc": "UC5",
+    "icon": "ls",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "REPLEN_WHY",
+    "tra_loi_bc": "LS đề xuất 5 Choco bowl cho S0010. Các bước dưới đây đọc từ nhật ký tính của LS, tôi không tính lại."
+   },
+   {
+    "ten": "Dự báo Choco bowl",
+    "mo": "Sai số, Holt-Winters, dự báo 7 ngày tới.",
+    "cau": "dự báo Choco bowl ở S0010 sai bao nhiêu",
+    "uc": "UC1",
+    "icon": "du_bao",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "FORECAST",
+    "tra_loi_bc": "Choco bowl tại S0010: sai 28,8% với trung bình cùng thứ 8 tuần."
+   },
+   {
+    "ten": "Đề xuất của tôi",
+    "mo": "Tiến độ đề xuất và chứng từ.",
+    "cau": "đề xuất của tôi đến đâu rồi",
+    "uc": "UC10",
+    "icon": "theo_doi",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "TRACKING",
+    "tra_loi_bc": "Đang chờ người duyệt, 4 việc:"
+   },
+   {
+    "ten": "Đơn mua chưa nhận",
+    "mo": "PO về cửa hàng quá ngày nhận.",
+    "cau": "đơn mua nào về cửa hàng tôi quá hạn chưa nhận",
+    "uc": "UC3",
+    "icon": "po",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "PO_OVERDUE",
+    "tra_loi_bc": "Tính đến 18/09/2026, không có dòng đơn mua nào về Quán cà phê Đà Nẵng quá ngày nhận dự kiến mà chưa nhận."
+   }
+  ]
+ },
+ {
+  "user_id": "thao.s0013",
+  "ten": "Thảo (QL Cửa hàng trực tuyến, S0013)",
+  "role": "store_manager",
+  "store": "S0013",
+  "goi_y": [
+   {
+    "ten": "Brief sáng nay",
+    "mo": "Mặt hàng dưới ngưỡng, đề xuất chờ duyệt, CTKM sắp tới.",
+    "cau": "Tóm tắt những việc cần ưu tiên hôm nay.",
+    "uc": "UC10",
+    "icon": "brief",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "BRIEF",
+    "tra_loi_bc": "Cửa hàng S0013 sáng nay đủ hàng."
+   },
+   {
+    "ten": "Tồn Milk 1 liter ở cửa hàng",
+    "mo": "Tồn tại cửa hàng mình và kho trung tâm.",
+    "cau": "Milk 1 liter ở cửa hàng tôi còn bao nhiêu",
+    "uc": "UC2",
+    "icon": "ton",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "STOCK_QUERY",
+    "tra_loi_bc": "Milk 1 liter tại S0013 còn 47, đủ 5.5 ngày. Nơi khác: S0001: 98 (7.0 ngày); S0002: 50 (4.5 ngày); W0003: 131 (3.2 ngày)."
+   },
+   {
+    "ten": "CTKM sắp tới",
+    "mo": "Chương trình của LS áp cho cửa hàng mình.",
+    "cau": "CTKM nào sắp tới ở cửa hàng tôi",
+    "uc": "UC10",
+    "icon": "km",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "PROMO",
+    "tra_loi_bc": "Không có CTKM sắp tới tại S0013 trong LS."
+   },
+   {
+    "ten": "Lô sắp hết hạn",
+    "mo": "Lô quá hạn và cận hạn tại cửa hàng.",
+    "cau": "cửa hàng tôi có lô nào sắp hết hạn không",
+    "uc": "UC2",
+    "icon": "han",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "EXPIRY",
+    "tra_loi_bc": "Không có lô nào sắp hết hạn tại S0013 theo bảng Inventory Health."
+   },
+   {
+    "ten": "Dự báo Milk 1 liter",
+    "mo": "Sai số, Holt-Winters, dự báo 7 ngày tới.",
+    "cau": "dự báo Milk 1 liter ở S0013 sai bao nhiêu",
+    "uc": "UC1",
+    "icon": "du_bao",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "FORECAST",
+    "tra_loi_bc": "Milk 1 liter tại S0013: sai 24,0% với trung bình cùng thứ 8 tuần."
+   },
+   {
+    "ten": "Đề xuất của tôi",
+    "mo": "Tiến độ đề xuất và chứng từ.",
+    "cau": "đề xuất của tôi đến đâu rồi",
+    "uc": "UC10",
+    "icon": "theo_doi",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "TRACKING",
+    "tra_loi_bc": "Hiện chưa có đề xuất, chứng từ hay việc nào đang theo dõi. Khi Business Central tạo đề xuất, tôi sẽ báo bạn ở đây."
+   },
+   {
+    "ten": "Đơn mua chưa nhận",
+    "mo": "PO về cửa hàng quá ngày nhận.",
+    "cau": "đơn mua nào về cửa hàng tôi quá hạn chưa nhận",
+    "uc": "UC3",
+    "icon": "po",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "PO_OVERDUE",
+    "tra_loi_bc": "Tính đến 18/09/2026, không có dòng đơn mua nào về Cửa hàng trực tuyến quá ngày nhận dự kiến mà chưa nhận."
+   }
+  ]
+ },
+ {
+  "user_id": "hung.dieuphoi",
+  "ten": "Hùng (Điều phối kho)",
+  "role": "dispatcher",
+  "store": "",
+  "goi_y": [
+   {
+    "ten": "Brief điều phối",
+    "mo": "Ghi đề xuất chuyển hàng theo số LS, thẻ để duyệt.",
+    "cau": "Tóm tắt những việc cần ưu tiên hôm nay.",
+    "uc": "UC5",
+    "icon": "brief",
+    "can_ai": false,
+    "ghi_bc": true,
+    "intent": "BRIEF",
+    "tra_loi_bc": ""
+   },
+   {
+    "ten": "Hàng đã hết hạn",
+    "mo": "Lô quá hạn theo địa điểm, đề xuất hủy có số lô.",
+    "cau": "có mặt hàng nào đã hết hạn chưa",
+    "uc": "UC2",
+    "icon": "han",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "EXPIRY",
+    "tra_loi_bc": "45 lô đã hết hạn ở mọi địa điểm, tổng tồn 704, giá trị 1.273,32. Theo địa điểm: S0001 11 lô, S0002 13 lô, S0005 7 lô, S0010 7 lô, W0003 7 lô. 5 lô giá trị lớn nhất ở bên dưới, bấm để ghi đề xuất cho người duyệt."
+   },
+   {
+    "ten": "Truy xuất lô",
+    "mo": "Lô đi đâu, còn ở đâu, thu hồi chỗ nào.",
+    "cau": "truy xuất lô L260908-33170B",
+    "uc": "UC2",
+    "icon": "lo",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "TRACE",
+    "tra_loi_bc": "Lô L260908-33170B (Chocolate cake), hạn dùng 13/09/2026 (đã quá hạn, lô còn tồn): nhập lần đầu 08/09/2026 tại W0003, đã bán 8, còn 12 tại S0001, 2 tại S0002."
+   },
+   {
+    "ten": "CTKM sắp tới",
+    "mo": "Và cửa hàng LS chưa cộng nhu cầu khuyến mãi.",
+    "cau": "CTKM nào sắp tới",
+    "uc": "UC10",
+    "icon": "km",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "PROMO",
+    "tra_loi_bc": "CTKM: 2 sắp tới. 1 CTKM chưa có đủ nhu cầu trong LS Replenishment, xem chi tiết."
+   },
+   {
+    "ten": "Vì sao LS đề xuất Ice cream",
+    "mo": "Hàng min-max, kho không đủ nên LS chia lại.",
+    "cau": "vì sao LS đề xuất Ice cream cho S0002",
+    "uc": "UC5",
+    "icon": "ls",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "REPLEN_WHY",
+    "tra_loi_bc": "LS đề xuất 11 Ice cream cho S0002. Các bước dưới đây đọc từ nhật ký tính của LS, tôi không tính lại."
+   },
+   {
+    "ten": "Tồn Choco nuts các nơi",
+    "mo": "Tồn theo địa điểm và theo lô.",
+    "cau": "Choco nuts còn bao nhiêu",
+    "uc": "UC2",
+    "icon": "ton",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "STOCK_QUERY",
+    "tra_loi_bc": "Choco nuts: S0002: 415 (41.2 ngày); S0005: 52 (9.1 ngày); S0010: 74 (9.1 ngày); W0003: 685 (12.9 ngày)."
+   },
+   {
+    "ten": "Tiến độ đề xuất",
+    "mo": "Đề xuất đang chờ, đã duyệt, chứng từ.",
+    "cau": "tiến độ các đề xuất",
+    "uc": "UC10",
+    "icon": "theo_doi",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "TRACKING",
+    "tra_loi_bc": "Đang chờ người duyệt, 13 việc:"
+   }
+  ]
+ },
+ {
+  "user_id": "kho.w0003",
+  "ten": "Kho trung tâm W0003",
+  "role": "warehouse",
+  "store": "W0003",
+  "goi_y": [
+   {
+    "ten": "Brief kho",
+    "mo": "Đơn chờ ship hôm nay.",
+    "cau": "Tóm tắt những việc cần ưu tiên hôm nay.",
+    "uc": "UC10",
+    "icon": "brief",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "BRIEF",
+    "tra_loi_bc": "Sáng nay không có đơn nào chờ ship."
+   },
+   {
+    "ten": "Lô trong kho sắp hết hạn",
+    "mo": "Lô quá hạn và cận hạn tại W0003.",
+    "cau": "kho có lô nào sắp hết hạn không",
+    "uc": "UC2",
+    "icon": "han",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "EXPIRY",
+    "tra_loi_bc": "14 lô sắp hết hạn tại W0003, tổng tồn 314, giá trị 843,14. 5 lô giá trị lớn nhất ở bên dưới, bấm để ghi đề xuất cho người duyệt."
+   },
+   {
+    "ten": "Hàng mua chưa về",
+    "mo": "PO về kho quá ngày nhận.",
+    "cau": "đơn mua nào về kho quá hạn chưa nhận",
+    "uc": "UC3",
+    "icon": "po",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "PO_OVERDUE",
+    "tra_loi_bc": "Tính đến 18/09/2026 có 2 đơn mua về Kho trung tâm quá ngày nhận dự kiến mà Business Central chưa ghi nhận nhận hàng, 4 dòng. Bạn xác nhận giúp từng đơn hàng đã về chưa. Tôi không post nhận hàng; việc đó vẫn làm trên Purc"
+   },
+   {
+    "ten": "Tồn Flavored syrup",
+    "mo": "Tồn theo địa điểm.",
+    "cau": "Flavored syrup còn bao nhiêu",
+    "uc": "UC2",
+    "icon": "ton",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "STOCK_QUERY",
+    "tra_loi_bc": "Flavored syrup: S0001: 3 (4.0 ngày); S0002: 4 (6.7 ngày); S0005: 2 (8.4 ngày); W0003: 596 (221.7 ngày)."
+   },
+   {
+    "ten": "Truy xuất lô",
+    "mo": "Lô đi đâu, còn ở đâu.",
+    "cau": "truy xuất lô L260908-33170B",
+    "uc": "UC2",
+    "icon": "lo",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "TRACE",
+    "tra_loi_bc": "Lô L260908-33170B (Chocolate cake), hạn dùng 13/09/2026 (đã quá hạn, lô còn tồn): nhập lần đầu 08/09/2026 tại W0003, đã bán 8, còn 12 tại S0001, 2 tại S0002."
+   },
+   {
+    "ten": "Kho bị mưa dột",
+    "mo": "Sự cố không có mẫu (bản ghi đã duyệt).",
+    "cau": "góc kho bị mưa dột, mấy thùng Flavored syrup ướt nhãn chưa đếm được, giờ xử lý sao",
+    "uc": "UC10",
+    "icon": "mo",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "INVESTIGATE",
+    "tra_loi_bc": ""
+   }
+  ]
+ },
+ {
+  "user_id": "trang.sc",
+  "ten": "Trang (Supply Chain)",
+  "role": "supply_chain",
+  "store": "",
+  "goi_y": [
+   {
+    "ten": "Dự báo đang sai ở đâu",
+    "mo": "WAPE ba phương pháp, cặp vượt ngưỡng.",
+    "cau": "độ chính xác dự báo thế nào",
+    "uc": "UC1",
+    "icon": "du_bao",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "FORECAST",
+    "tra_loi_bc": "Đo trên 74 cặp mặt hàng và điểm bán, kỳ kiểm tra 22/08 đến 18/09: Holt-Winters sai 37,1%; trung bình 28 ngày sai 38,2%; trung bình cùng thứ 8 tuần sai 37,2%. Phương pháp tốt hơn là Holt-Winters. 20 cặp vượt ngưỡng cần xe"
+   },
+   {
+    "ten": "Vì sao LS đề xuất 82 Choco nuts",
+    "mo": "Average Usage đọc từ nhật ký tính LS.",
+    "cau": "vì sao LS đề xuất Choco nuts cho S0001",
+    "uc": "UC5",
+    "icon": "ls",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "REPLEN_WHY",
+    "tra_loi_bc": "LS đề xuất 82 Choco nuts cho S0001. Các bước dưới đây đọc từ nhật ký tính của LS, tôi không tính lại."
+   },
+   {
+    "ten": "Nhà cung cấp hay giao trễ",
+    "mo": "Scorecard đúng hạn, lead time.",
+    "cau": "nhà cung cấp nào hay giao trễ",
+    "uc": "UC3",
+    "icon": "ncc",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "SUPPLIER",
+    "tra_loi_bc": "Kỳ 22/03/2026 đến 18/09/2026, 2 nhà cung cấp có đơn đến hạn. 2 nhà cung cấp cần xem: AL-s Foods Ltd giao đúng hạn 48,7%; Dan-s Dairy Ltd giao đúng hạn 86,2%."
+   },
+   {
+    "ten": "CTKM đang chạy và sắp tới",
+    "mo": "Kèm cặp chưa có nhu cầu trong LS.",
+    "cau": "CTKM nào đang chạy và sắp tới",
+    "uc": "UC10",
+    "icon": "km",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "PROMO",
+    "tra_loi_bc": "CTKM: 3 đang chạy, 2 sắp tới. 2 CTKM chưa có đủ nhu cầu trong LS Replenishment, xem chi tiết."
+   },
+   {
+    "ten": "Dự báo Choco bowl tại S0010",
+    "mo": "Holt-Winters, dự báo ghi vào LS, sự kiện.",
+    "cau": "dự báo Choco bowl ở S0010 sai bao nhiêu",
+    "uc": "UC1",
+    "icon": "du_bao",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "FORECAST",
+    "tra_loi_bc": "Choco bowl tại S0010: sai 28,8% với trung bình cùng thứ 8 tuần."
+   },
+   {
+    "ten": "Vì sao LS đề xuất Choco bowl",
+    "mo": "Retail Forecast cộng khuyến mãi 23-25/09.",
+    "cau": "vì sao LS đề xuất Choco bowl cho S0010",
+    "uc": "UC5",
+    "icon": "ls",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "REPLEN_WHY",
+    "tra_loi_bc": "LS đề xuất 5 Choco bowl cho S0010. Các bước dưới đây đọc từ nhật ký tính của LS, tôi không tính lại."
+   },
+   {
+    "ten": "PO quá hạn",
+    "mo": "Đơn mua chưa nhận, hỏi người nhận hàng.",
+    "cau": "PO nào quá hạn chưa nhận",
+    "uc": "UC3",
+    "icon": "po",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "PO_OVERDUE",
+    "tra_loi_bc": "Tính đến 18/09/2026 có 6 đơn mua quá ngày nhận dự kiến mà Business Central chưa ghi nhận nhận hàng, 13 dòng. Trong đó 3 đơn trễ hơn 60 ngày, nhiều khả năng là đơn treo. Tôi vừa hỏi 2 nơi nhận hàng xem hàng đã về chưa; câ"
+   },
+   {
+    "ten": "Brief Supply Chain",
+    "mo": "Lô xấu cần xử lý, đơn quá hạn.",
+    "cau": "Tóm tắt những việc cần ưu tiên hôm nay.",
+    "uc": "UC2",
+    "icon": "brief",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "BRIEF",
+    "tra_loi_bc": "8 dòng tồn kho cần xử lý, xếp theo mức rủi ro:"
+   },
+   {
+    "ten": "Cửa hàng Quận 1 lại hết hàng",
+    "mo": "Bậc thang chẩn đoán khi đứt hàng lặp lại.",
+    "cau": "sao Cửa hàng Quận 1 cứ hết Chocolate ice cream",
+    "uc": "UC5",
+    "icon": "mo",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "INVESTIGATE",
+    "tra_loi_bc": ""
+   },
+   {
+    "ten": "Câu hỏi mở cho model",
+    "mo": "Planner tự chọn tra gì, cần bật AI.",
+    "cau": "so sánh tốc độ bán Flavored syrup giữa các cửa hàng 30 ngày qua, chỗ nào nên giữ ít hàng lại",
+    "uc": "UC10",
+    "icon": "mo",
+    "can_ai": true,
+    "ghi_bc": false,
+    "intent": "HELP",
+    "tra_loi_bc": ""
+   }
+  ]
+ },
+ {
+  "user_id": "thu.retailops",
+  "ten": "Thư (Retail Ops)",
+  "role": "retail_ops",
+  "store": "",
+  "goi_y": [
+   {
+    "ten": "Brief Retail Ops",
+    "mo": "Ngoại lệ chiết khấu POS cần giải trình.",
+    "cau": "Tóm tắt những việc cần ưu tiên hôm nay.",
+    "uc": "UC7",
+    "icon": "brief",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "BRIEF",
+    "tra_loi_bc": "Không có exception discount nào đang mở."
+   },
+   {
+    "ten": "CTKM đang chạy và sắp tới",
+    "mo": "Chương trình LS theo cửa hàng.",
+    "cau": "CTKM nào đang chạy và sắp tới",
+    "uc": "UC10",
+    "icon": "km",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "PROMO",
+    "tra_loi_bc": "CTKM: 3 đang chạy, 2 sắp tới. 2 CTKM chưa có đủ nhu cầu trong LS Replenishment, xem chi tiết."
+   },
+   {
+    "ten": "Croissant có giảm giá không",
+    "mo": "CTKM theo mặt hàng, giờ áp dụng.",
+    "cau": "croissant có giảm giá không",
+    "uc": "UC10",
+    "icon": "km",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "PROMO",
+    "tra_loi_bc": "CTKM cho croissant: 1 đang chạy. 1 CTKM chưa có đủ nhu cầu trong LS Replenishment, xem chi tiết."
+   },
+   {
+    "ten": "CTKM đã kết thúc",
+    "mo": "Chương trình vừa qua.",
+    "cau": "CTKM đã kết thúc",
+    "uc": "UC10",
+    "icon": "km",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "PROMO",
+    "tra_loi_bc": "CTKM: 1 đã kết thúc."
+   },
+   {
+    "ten": "Dự báo ở Nhà hàng Thảo Điền",
+    "mo": "Sai số dự báo theo cửa hàng.",
+    "cau": "độ chính xác dự báo ở S0005",
+    "uc": "UC1",
+    "icon": "du_bao",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "FORECAST",
+    "tra_loi_bc": "Đo trên 14 cặp mặt hàng tại S0005, kỳ kiểm tra 22/08 đến 18/09: Holt-Winters sai 47,6%; trung bình 28 ngày sai 47,8%; trung bình cùng thứ 8 tuần sai 48,2%. Phương pháp tốt hơn là Holt-Winters. 5 cặp vượt ngưỡng cần xem."
+   }
+  ]
+ },
+ {
+  "user_id": "dung.admin",
+  "ten": "Dũng (Quản trị hệ thống)",
+  "role": "admin",
+  "store": "",
+  "goi_y": [
+   {
+    "ten": "Tiến độ đề xuất",
+    "mo": "Mọi đề xuất trong BC.",
+    "cau": "tiến độ các đề xuất",
+    "uc": "UC10",
+    "icon": "theo_doi",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "TRACKING",
+    "tra_loi_bc": "Đang chờ người duyệt, 13 việc:"
+   },
+   {
+    "ten": "Trợ lý tự chấm điểm",
+    "mo": "Xem lại việc đã làm có đúng không.",
+    "cau": "tự chấm điểm lại việc đã làm",
+    "uc": "UC10",
+    "icon": "brief",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "SELF_REVIEW",
+    "tra_loi_bc": "Chưa có việc nào tôi đã xử lý để chấm lại."
+   },
+   {
+    "ten": "CTKM đang chạy và sắp tới",
+    "mo": "Và cặp chưa có nhu cầu trong LS.",
+    "cau": "CTKM nào đang chạy và sắp tới",
+    "uc": "UC10",
+    "icon": "km",
+    "can_ai": false,
+    "ghi_bc": false,
+    "intent": "PROMO",
+    "tra_loi_bc": "CTKM: 3 đang chạy, 2 sắp tới. 2 CTKM chưa có đủ nhu cầu trong LS Replenishment, xem chi tiết."
+   },
+   {
+    "ten": "Câu hỏi mở cho model",
+    "mo": "Planner tự dựng chuỗi tra cứu, cần bật AI.",
+    "cau": "so sánh tốc độ bán Flavored syrup giữa các cửa hàng 30 ngày qua, chỗ nào nên giữ ít hàng lại",
+    "uc": "UC10",
+    "icon": "mo",
+    "can_ai": true,
+    "ghi_bc": false,
+    "intent": "HELP",
+    "tra_loi_bc": ""
+   },
+   {
+    "ten": "Câu ngoài bản ghi",
+    "mo": "Thấy ranh giới rule và model.",
+    "cau": "tháng sau mình mở thêm cửa hàng ở Nha Trang thì nên đẩy bao nhiêu hàng ban đầu",
+    "uc": "UC10",
+    "icon": "mo",
+    "can_ai": true,
+    "ghi_bc": false,
+    "intent": "STOCK_QUERY",
+    "tra_loi_bc": ""
+   }
+  ]
+ }
+]

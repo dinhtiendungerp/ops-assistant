@@ -1,0 +1,40 @@
+# --- Secret va du lieu chay ---
+.env
+.env.*
+!.env.example
+runs/
+
+# --- Python ---
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# --- Node ---
+node_modules/
+
+# --- AL: goi build va symbol tai ve ---
+*.app
+.alpackages/
+**/out/
+.snapshots/
+
+# --- Source cua Microsoft va LS giai nen tu symbol: ban quyen cua ho, khong dua len repo ---
+unpacked/
+
+# --- Rac va ban cu ---
+_to_delete/
+Claude outputs/
+demo-data/
+demo-data-cronus/
+*.zip
+/app.json
+/*.png
+/cd python*.txt
+docs/*.pdf
+~$*
+.DS_Store
+Thumbs.db
+.vscode/.alcache/
+docs/*.visual-check.*

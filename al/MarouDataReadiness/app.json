@@ -1,0 +1,32 @@
+{
+  "id": "b47c9e02-5f18-4a63-8c7d-2e91a6d4f350",
+  "name": "NWV Marou Data Readiness",
+  "publisher": "NaviWorld Vietnam",
+  "version": "1.0.0.0",
+  "brief": "Kiem tra do phu du lieu truoc khi chot pham vi POC",
+  "description": "Extension doc lap, chay mot lan trong tuan dau cua POC de tra loi bon cau hoi ve do phu du lieu: ty le Item Ledger Entry co Lot No., ty le co Expiration Date, do dai lich su ban, va do day du cua master data. Khong phu thuoc extension nao khac, khong phu thuoc LS Central, khong can dang ky Entra app. Chi doc, khong ghi gi vao du lieu chuan.",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "https://naviworld.com.vn",
+  "logo": "",
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "27.0.0.0",
+  "idRanges": [
+    {
+      "from": 70050,
+      "to": 70069
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "15.0",
+  "features": [
+    "NoImplicitWith"
+  ]
+}

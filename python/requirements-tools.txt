@@ -1,0 +1,10 @@
+# Chi can cho mot so script trong tools/, khong can de chay tro ly hay test.
+#   tools/forecast_lab.py   thu mo hinh du bao (numpy, pandas, statsmodels, lightgbm, scikit-learn)
+#   tools/cat_linh_vat.py   cat anh linh vat (Pillow, numpy)
+# Cai: pip install -r requirements-tools.txt
+numpy>=1.26
+pandas>=2.2
+statsmodels>=0.14
+lightgbm>=4.3
+scikit-learn>=1.4
+pillow>=10.3

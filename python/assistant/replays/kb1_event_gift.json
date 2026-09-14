@@ -1,0 +1,121 @@
+{
+ "id": "KB-1",
+ "title": "Tiệc 150 khách ở nhà hàng, tráng miệng lấy từ kho",
+ "recorded": "Ghi lại từ một lần chạy model thật trong phiên thiết kế 07/09/2026, dựng lại trên bộ dữ liệu demo ngày 12/09/2026. Chuỗi tool được chạy lại thật trên dữ liệu hiện tại.",
+ "match": [
+  [
+   "tiec",
+   "tiệc",
+   "doan",
+   "đoàn",
+   "khach",
+   "khách"
+  ],
+  [
+   "trang mieng",
+   "tráng miệng",
+   "phan",
+   "phần"
+  ]
+ ],
+ "steps": [
+  {
+   "tool": "list_stock",
+   "args": {
+    "location": "W0003"
+   },
+   "why": "Xem kho trung tâm còn gì, giá vốn từng món, món nào đang xếp tồn xấu"
+  },
+  {
+   "tool": "stores_at_risk",
+   "args": {},
+   "why": "Rút hàng khỏi kho có đụng kế hoạch bổ sung của cửa hàng nào không"
+  },
+  {
+   "tool": "stock_by_item",
+   "args": {
+    "item_no": "33250"
+   },
+   "why": "Vanilla ice cream là món kho đang dư nhất, xem nó nằm ở đâu ngoài kho"
+  },
+  {
+   "tool": "ask_human",
+   "args": {
+    "question": "Tiệc có giữ lạnh được không? Nếu dùng được kem thì tôi ghép ngay từ tồn kho, còn không thì phải đặt làm thêm bánh, tôi cần biết để tính tiếp."
+   },
+   "why": "Không tool nào trả lời được, và nó quyết định toàn bộ phương án, nên hỏi thay vì đoán"
+  }
+ ],
+ "slots": {
+  "croi_qty": {
+   "step": 0,
+   "path": "#itemNo=33100.qty"
+  },
+  "croi_need": {
+   "step": 1,
+   "path": "?itemNo=33100.@sum:suggestedQty"
+  },
+  "muf_qty": {
+   "step": 0,
+   "path": "#itemNo=33116.qty"
+  },
+  "muf_need": {
+   "step": 1,
+   "path": "?itemNo=33116.@sum:suggestedQty"
+  },
+  "cake_qty": {
+   "step": 0,
+   "path": "#itemNo=33170.qty"
+  },
+  "pil_qty": {
+   "step": 0,
+   "path": "#itemNo=33310.qty"
+  },
+  "pil_cost": {
+   "step": 0,
+   "path": "#itemNo=33310.unitCost"
+  },
+  "van_qty": {
+   "step": 0,
+   "path": "#itemNo=33250.qty"
+  },
+  "van_cost": {
+   "step": 0,
+   "path": "#itemNo=33250.unitCost"
+  },
+  "van_s0002": {
+   "step": 2,
+   "path": "#locationCode=S0002.qty"
+  },
+  "van_s0002_doc": {
+   "step": 2,
+   "path": "#locationCode=S0002.daysOfCover"
+  },
+  "budget": {
+   "expr": "600",
+   "round": 0
+  },
+  "per_head": {
+   "expr": "600/150",
+   "round": 2
+  },
+  "pil_total": {
+   "expr": "pil_cost*150",
+   "round": 0
+  },
+  "van_total": {
+   "expr": "van_cost*150",
+   "round": 0
+  },
+  "croi_gap": {
+   "expr": "croi_need-croi_qty",
+   "round": 0
+  },
+  "muf_gap": {
+   "expr": "muf_need-muf_qty",
+   "round": 0
+  }
+ },
+ "answer": "Tôi đọc kho W0003, kế hoạch bổ sung của các cửa hàng và tồn từng nơi.\n\nMón không chảy thì kho không còn dư. Croissant thường kho còn {croi_qty} nhưng bốn cửa hàng đang chờ {croi_need} cái, thiếu {croi_gap} chứ không dư. Blueberry muffin còn {muf_qty}, đang chờ {muf_need}. Chocolate cake còn {cake_qty} nhưng hạn dùng chỉ 5 ngày và phần lớn lô đã quá hạn hoặc hết hạn hôm nay. Lấy 150 phần bánh từ kho là phá kế hoạch bổ sung của cửa hàng, tôi không đề xuất.\n\nChỗ dư thật sự nằm ở kem. Choco pillar kho còn {pil_qty}, giá vốn {pil_cost} một cái, 150 phần hết {pil_total}, nằm trong ngân sách {budget}. Vanilla ice cream kho còn {van_qty}, giá vốn {van_cost}, 150 phần hết {van_total} thì vượt ngân sách; nhưng S0002 đang giữ {van_s0002} cái, đủ bán {van_s0002_doc} ngày, dư xa mức mục tiêu 14 ngày, lấy từ đó thì không đụng kế hoạch của ai.\n\nNgân sách chia ra là {per_head} một phần. Nếu tiệc giữ lạnh được thì tôi ghép được ngay từ tồn kho. Nếu không thì phải đặt làm thêm bánh, và cần biết sớm vì bánh chỉ có hạn 3 đến 5 ngày.",
+ "question": "Tiệc có giữ lạnh được không? Nếu dùng được kem thì tôi ghép ngay từ tồn kho, còn không thì phải đặt làm thêm bánh. Tôi chưa ghi đề xuất nào vào BC vì hai đường đó ra hai kế hoạch khác hẳn nhau."
+}

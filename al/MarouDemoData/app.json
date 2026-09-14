@@ -1,0 +1,32 @@
+{
+  "id": "79fd99ee-aba1-4525-9ef8-b92905697ebe",
+  "name": "NWV Marou Demo Data",
+  "publisher": "NaviWorld Vietnam",
+  "version": "1.0.0.0",
+  "brief": "Sinh du lieu gia lap cho sandbox de demo UC2",
+  "description": "Chay mot lan tren sandbox. Tao 12 item chocolate co lot va han dung, 5 location, 120 ngay lich su ban post that qua Item Journal, kem cac tinh huong co chu y: lo het han, lo can date khong ban kip, hang cham luan chuyen, du ton, dut hang sau su kien. Khong phu thuoc extension nao khac. Khong dung tren production.",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "https://naviworld.com.vn",
+  "logo": "",
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "27.0.0.0",
+  "idRanges": [
+    {
+      "from": 70070,
+      "to": 70089
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "15.0",
+  "features": [
+    "NoImplicitWith"
+  ]
+}

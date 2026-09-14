@@ -1,0 +1,258 @@
+{
+ "so_cap": 74,
+ "ky_kiem_tra": [
+  "2026-08-22",
+  "2026-09-18"
+ ],
+ "tong": {
+  "MA28": {
+   "wape": 38.7,
+   "bias": 6.4
+  },
+  "SWA8": {
+   "wape": 41.2,
+   "bias": 9.3
+  },
+  "Seasonal naive": {
+   "wape": 48.6,
+   "bias": 4.9
+  },
+  "Holt-Winters (ETS)": {
+   "wape": 37.7,
+   "bias": 6.9
+  },
+  "SARIMA": {
+   "wape": 37.8,
+   "bias": 6.9
+  },
+  "Trần lý thuyết": {
+   "wape": 34.6,
+   "bias": 7.9
+  },
+  "LightGBM": {
+   "wape": 42.9,
+   "bias": 10.4
+  },
+  "Kết hợp ETS + LightGBM": {
+   "wape": 39.8,
+   "bias": 8.6
+  }
+ },
+ "theo_nhom": {
+  "BEVERAGES": {
+   "MA28": {
+    "wape": 82.3,
+    "bias": -1.1
+   },
+   "SWA8": {
+    "wape": 90.2,
+    "bias": -7.0
+   },
+   "Seasonal naive": {
+    "wape": 116.3,
+    "bias": -12.5
+   },
+   "Holt-Winters (ETS)": {
+    "wape": 86.2,
+    "bias": -4.3
+   },
+   "SARIMA": {
+    "wape": 83.9,
+    "bias": -2.0
+   },
+   "Trần lý thuyết": {
+    "wape": 81.9,
+    "bias": 3.5
+   },
+   "LightGBM": {
+    "wape": 80.7,
+    "bias": -10.9
+   },
+   "Kết hợp ETS + LightGBM": {
+    "wape": 83.2,
+    "bias": -7.6
+   }
+  },
+  "DAIRY": {
+   "MA28": {
+    "wape": 26.8,
+    "bias": -3.8
+   },
+   "SWA8": {
+    "wape": 26.9,
+    "bias": -3.7
+   },
+   "Seasonal naive": {
+    "wape": 34.3,
+    "bias": -7.7
+   },
+   "Holt-Winters (ETS)": {
+    "wape": 25.9,
+    "bias": -1.5
+   },
+   "SARIMA": {
+    "wape": 26.2,
+    "bias": -3.2
+   },
+   "Trần lý thuyết": {
+    "wape": 25.2,
+    "bias": -0.4
+   },
+   "LightGBM": {
+    "wape": 25.8,
+    "bias": -3.8
+   },
+   "Kết hợp ETS + LightGBM": {
+    "wape": 25.6,
+    "bias": -2.7
+   }
+  },
+  "DESSERTS": {
+   "MA28": {
+    "wape": 50.0,
+    "bias": 7.0
+   },
+   "SWA8": {
+    "wape": 50.1,
+    "bias": 3.7
+   },
+   "Seasonal naive": {
+    "wape": 63.9,
+    "bias": 5.3
+   },
+   "Holt-Winters (ETS)": {
+    "wape": 50.8,
+    "bias": 7.2
+   },
+   "SARIMA": {
+    "wape": 49.8,
+    "bias": 7.2
+   },
+   "Trần lý thuyết": {
+    "wape": 49.5,
+    "bias": 20.9
+   },
+   "LightGBM": {
+    "wape": 51.6,
+    "bias": 4.2
+   },
+   "Kết hợp ETS + LightGBM": {
+    "wape": 50.6,
+    "bias": 5.7
+   }
+  },
+  "FROZEN": {
+   "MA28": {
+    "wape": 36.1,
+    "bias": 7.3
+   },
+   "SWA8": {
+    "wape": 36.0,
+    "bias": 13.4
+   },
+   "Seasonal naive": {
+    "wape": 51.2,
+    "bias": -2.4
+   },
+   "Holt-Winters (ETS)": {
+    "wape": 38.1,
+    "bias": 12.4
+   },
+   "SARIMA": {
+    "wape": 39.0,
+    "bias": 11.7
+   },
+   "Trần lý thuyết": {
+    "wape": 32.6,
+    "bias": -2.0
+   },
+   "LightGBM": {
+    "wape": 38.9,
+    "bias": 22.3
+   },
+   "Kết hợp ETS + LightGBM": {
+    "wape": 37.7,
+    "bias": 17.3
+   }
+  },
+  "ICECREAM": {
+   "MA28": {
+    "wape": 31.9,
+    "bias": 14.5
+   },
+   "SWA8": {
+    "wape": 40.3,
+    "bias": 29.0
+   },
+   "Seasonal naive": {
+    "wape": 37.1,
+    "bias": 16.6
+   },
+   "Holt-Winters (ETS)": {
+    "wape": 27.9,
+    "bias": 13.4
+   },
+   "SARIMA": {
+    "wape": 29.1,
+    "bias": 15.2
+   },
+   "Trần lý thuyết": {
+    "wape": 20.2,
+    "bias": -2.5
+   },
+   "LightGBM": {
+    "wape": 44.9,
+    "bias": 31.3
+   },
+   "Kết hợp ETS + LightGBM": {
+    "wape": 35.8,
+    "bias": 22.4
+   }
+  }
+ },
+ "so_cap_thang_ma28": {
+  "MA28": 0,
+  "SWA8": 33,
+  "Seasonal naive": 6,
+  "Holt-Winters (ETS)": 43,
+  "SARIMA": 43,
+  "Trần lý thuyết": 45,
+  "LightGBM": 38,
+  "Kết hợp ETS + LightGBM": 42
+ },
+ "lightgbm_dac_trung_quan_trong": [
+  [
+   "tb56",
+   784324
+  ],
+  [
+   "tb14",
+   319516
+  ],
+  [
+   "tb28",
+   199463
+  ],
+  [
+   "item",
+   162785
+  ],
+  [
+   "ngay_trong_thang",
+   65499
+  ],
+  [
+   "cung_thu_tb",
+   47959
+  ],
+  [
+   "thu",
+   40280
+  ],
+  [
+   "thang",
+   29339
+  ]
+ ],
+ "lightgbm_so_dong_hoc": 46541
+}

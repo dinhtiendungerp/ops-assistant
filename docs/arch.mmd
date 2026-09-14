@@ -1,0 +1,38 @@
+flowchart TB
+  subgraph K["1. Kênh: người của Marou dùng cái này"]
+    direction LR
+    T["Teams hoặc Zalo<br/>chat, nút Duyệt / Sửa / Từ chối"]
+    E["Email<br/>brief buổi sáng"]
+    W["Web console<br/>đề xuất, KPI, log, ngưỡng"]
+  end
+  subgraph A["2. Ops Assistant: dịch vụ NaviWorld, chạy ngoài BC"]
+    direction LR
+    CH["Channel adapters<br/>Bot Framework, Zalo OA, Graph"]
+    O["Orchestrator<br/>Claude tool loop"]
+    S["Skills<br/>Replenishment · Inventory Health<br/>Discount Governance · Store Brief"]
+    P["Policy guard<br/>allow-list tool, chặn số lượng,<br/>ẩn PII, giới hạn đề xuất"]
+    SC["Scheduler và<br/>event listener"]
+    M[("Memory và audit<br/>Postgres")]
+    CH --> O --> S --> P
+    SC --> O
+    O --> M
+  end
+  subgraph B["3. Business Central + LS Central: system of record"]
+    direction LR
+    L["NWV Foundation (AL)<br/>logic, ngưỡng, bảng đề xuất, duyệt"]
+    API["Custom API v1.0<br/>S2S OAuth"]
+    STD["API v2.0 / OData<br/>items, ledger, transfer"]
+    MCP["BC MCP Server<br/>hỏi đáp tự do"]
+    SIF["Sales & Inventory Forecast<br/>Azure AI, cấp công ty"]
+    POS["LS Central POS<br/>Trans. Sales Entry"]
+    WH["Webhook<br/>subscriptions"]
+    POS --> L
+    L --- API
+  end
+  K --> CH
+  P -- "đọc số đã tính, ghi đề xuất" --> API
+  P -- "đọc dữ liệu thô" --> STD
+  O -. "câu hỏi ngoài kịch bản" .-> MCP
+  WH -- "exception mới, transfer đã ship" --> SC
+  SIF -- "forecast công ty, tách xuống store" --> S
+  T -- "Duyệt bằng token của người duyệt" --> API

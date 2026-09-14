@@ -1,0 +1,3122 @@
+{
+ "receivingLocation": "NCC-NHAN",
+ "orders": [
+  {
+   "key": "NCC-0001",
+   "vendorNo": "44030",
+   "orderDate": "2026-04-06",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10100",
+     "quantity": 72,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-04-09"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 84,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-04-09"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 96,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-04-09"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-04-09",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 72
+      },
+      {
+       "line": 1,
+       "quantity": 84
+      },
+      {
+       "line": 2,
+       "quantity": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0002",
+   "vendorNo": "44030",
+   "orderDate": "2026-04-09",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10045",
+     "quantity": 24,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-04-12"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 48,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-04-12"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 84,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-04-12"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-04-12",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 24
+      },
+      {
+       "line": 1,
+       "quantity": 48
+      },
+      {
+       "line": 2,
+       "quantity": 84
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0003",
+   "vendorNo": "44030",
+   "orderDate": "2026-04-13",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10000",
+     "quantity": 48,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-04-16"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 96,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-04-16"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-04-16",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 48
+      },
+      {
+       "line": 1,
+       "quantity": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0004",
+   "vendorNo": "44030",
+   "orderDate": "2026-04-16",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10000",
+     "quantity": 36,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-04-19"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 72,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-04-19"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 48,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-04-19"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-04-19",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 36
+      },
+      {
+       "line": 1,
+       "quantity": 72
+      },
+      {
+       "line": 2,
+       "quantity": 48
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0005",
+   "vendorNo": "44030",
+   "orderDate": "2026-04-20",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10045",
+     "quantity": 24,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-04-23"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 60,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-04-23"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-04-24",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 24
+      },
+      {
+       "line": 1,
+       "quantity": 60
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0006",
+   "vendorNo": "44030",
+   "orderDate": "2026-04-23",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10000",
+     "quantity": 48,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-04-26"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 60,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-04-26"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 96,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-04-26"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-04-26",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 48
+      },
+      {
+       "line": 1,
+       "quantity": 60
+      },
+      {
+       "line": 2,
+       "quantity": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0007",
+   "vendorNo": "44030",
+   "orderDate": "2026-04-27",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10000",
+     "quantity": 24,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-04-30"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 60,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-04-30"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 24,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-04-30"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-04-30",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 24
+      },
+      {
+       "line": 1,
+       "quantity": 60
+      },
+      {
+       "line": 2,
+       "quantity": 24
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0008",
+   "vendorNo": "44030",
+   "orderDate": "2026-04-30",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10070",
+     "quantity": 48,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-05-03"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 48,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-05-03"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-05-05",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 48
+      },
+      {
+       "line": 1,
+       "quantity": 48
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0009",
+   "vendorNo": "44030",
+   "orderDate": "2026-05-04",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10070",
+     "quantity": 84,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-05-07"
+    },
+    {
+     "itemNo": "10000",
+     "quantity": 24,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-05-07"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-05-07",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 84
+      },
+      {
+       "line": 1,
+       "quantity": 24
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0010",
+   "vendorNo": "44030",
+   "orderDate": "2026-05-07",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10100",
+     "quantity": 48,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-05-10"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 96,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-05-10"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 84,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-05-10"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-05-10",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 48
+      },
+      {
+       "line": 1,
+       "quantity": 96
+      },
+      {
+       "line": 2,
+       "quantity": 84
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0011",
+   "vendorNo": "44030",
+   "orderDate": "2026-05-11",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10045",
+     "quantity": 60,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-05-14"
+    },
+    {
+     "itemNo": "10000",
+     "quantity": 72,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-05-14"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 48,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-05-14"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-05-14",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 60
+      },
+      {
+       "line": 1,
+       "quantity": 72
+      },
+      {
+       "line": 2,
+       "quantity": 48
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0012",
+   "vendorNo": "44030",
+   "orderDate": "2026-05-14",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10000",
+     "quantity": 24,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-05-17"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 84,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-05-17"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 60,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-05-17"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-05-17",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 24
+      },
+      {
+       "line": 1,
+       "quantity": 84
+      },
+      {
+       "line": 2,
+       "quantity": 60
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0013",
+   "vendorNo": "44030",
+   "orderDate": "2026-05-18",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10045",
+     "quantity": 84,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-05-21"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 60,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-05-21"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-05-21",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 84
+      },
+      {
+       "line": 1,
+       "quantity": 60
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0014",
+   "vendorNo": "44030",
+   "orderDate": "2026-05-21",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10070",
+     "quantity": 60,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-05-24"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 24,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-05-24"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-05-24",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 60
+      },
+      {
+       "line": 1,
+       "quantity": 24
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0015",
+   "vendorNo": "44030",
+   "orderDate": "2026-05-25",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10000",
+     "quantity": 72,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-05-28"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 72,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-05-28"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-05-28",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 72
+      },
+      {
+       "line": 1,
+       "quantity": 72
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0016",
+   "vendorNo": "44030",
+   "orderDate": "2026-05-28",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10045",
+     "quantity": 48,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-05-31"
+    },
+    {
+     "itemNo": "10000",
+     "quantity": 60,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-05-31"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 72,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-05-31"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-05-31",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 48
+      },
+      {
+       "line": 1,
+       "quantity": 60
+      },
+      {
+       "line": 2,
+       "quantity": 72
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0017",
+   "vendorNo": "44030",
+   "orderDate": "2026-06-01",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10100",
+     "quantity": 60,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-06-04"
+    },
+    {
+     "itemNo": "10000",
+     "quantity": 72,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-06-04"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 60,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-06-04"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-06-04",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 60
+      },
+      {
+       "line": 1,
+       "quantity": 72
+      },
+      {
+       "line": 2,
+       "quantity": 60
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0018",
+   "vendorNo": "44030",
+   "orderDate": "2026-06-04",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10000",
+     "quantity": 24,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-06-07"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 96,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-06-07"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 48,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-06-07"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-06-07",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 24
+      },
+      {
+       "line": 1,
+       "quantity": 96
+      },
+      {
+       "line": 2,
+       "quantity": 48
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0019",
+   "vendorNo": "44030",
+   "orderDate": "2026-06-08",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10000",
+     "quantity": 60,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-06-11"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 84,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-06-11"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 24,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-06-11"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-06-11",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 60
+      },
+      {
+       "line": 1,
+       "quantity": 84
+      },
+      {
+       "line": 2,
+       "quantity": 24
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0020",
+   "vendorNo": "44030",
+   "orderDate": "2026-06-11",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10100",
+     "quantity": 60,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-06-14"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 72,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-06-14"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 36,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-06-14"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-06-14",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 60
+      },
+      {
+       "line": 1,
+       "quantity": 72
+      },
+      {
+       "line": 2,
+       "quantity": 36
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0021",
+   "vendorNo": "44030",
+   "orderDate": "2026-06-15",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10100",
+     "quantity": 96,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-06-18"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 60,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-06-18"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-06-18",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 96
+      },
+      {
+       "line": 1,
+       "quantity": 60
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0022",
+   "vendorNo": "44030",
+   "orderDate": "2026-06-18",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10045",
+     "quantity": 24,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-06-21"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 36,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-06-21"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-06-21",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 24
+      },
+      {
+       "line": 1,
+       "quantity": 36
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0023",
+   "vendorNo": "44030",
+   "orderDate": "2026-06-22",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10070",
+     "quantity": 60,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-06-25"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 72,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-06-25"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 36,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-06-25"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-06-25",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 60
+      },
+      {
+       "line": 1,
+       "quantity": 72
+      },
+      {
+       "line": 2,
+       "quantity": 36
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0024",
+   "vendorNo": "44030",
+   "orderDate": "2026-06-25",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10000",
+     "quantity": 48,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-06-28"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 36,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-06-28"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 24,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-06-28"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-06-28",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 48
+      },
+      {
+       "line": 1,
+       "quantity": 36
+      },
+      {
+       "line": 2,
+       "quantity": 24
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0025",
+   "vendorNo": "44030",
+   "orderDate": "2026-06-29",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10070",
+     "quantity": 60,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-07-02"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 48,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-07-02"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-07-02",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 60
+      },
+      {
+       "line": 1,
+       "quantity": 48
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0026",
+   "vendorNo": "44030",
+   "orderDate": "2026-07-02",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10070",
+     "quantity": 96,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-07-05"
+    },
+    {
+     "itemNo": "10000",
+     "quantity": 84,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-07-05"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 24,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-07-05"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-07-05",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 96
+      },
+      {
+       "line": 1,
+       "quantity": 84
+      },
+      {
+       "line": 2,
+       "quantity": 24
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0027",
+   "vendorNo": "44030",
+   "orderDate": "2026-07-06",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10070",
+     "quantity": 96,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-07-09"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 36,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-07-09"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 60,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-07-09"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-07-11",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 96
+      },
+      {
+       "line": 1,
+       "quantity": 36
+      },
+      {
+       "line": 2,
+       "quantity": 60
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0028",
+   "vendorNo": "44030",
+   "orderDate": "2026-07-09",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10100",
+     "quantity": 84,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-07-12"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 36,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-07-12"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-07-12",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 84
+      },
+      {
+       "line": 1,
+       "quantity": 36
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0029",
+   "vendorNo": "44030",
+   "orderDate": "2026-07-13",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10100",
+     "quantity": 36,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-07-16"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 96,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-07-16"
+    },
+    {
+     "itemNo": "10000",
+     "quantity": 60,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-07-16"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-07-16",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 36
+      },
+      {
+       "line": 1,
+       "quantity": 96
+      },
+      {
+       "line": 2,
+       "quantity": 60
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0030",
+   "vendorNo": "44030",
+   "orderDate": "2026-07-16",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10070",
+     "quantity": 84,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-07-19"
+    },
+    {
+     "itemNo": "10000",
+     "quantity": 72,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-07-19"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 48,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-07-19"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-07-19",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 84
+      },
+      {
+       "line": 1,
+       "quantity": 72
+      },
+      {
+       "line": 2,
+       "quantity": 48
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0031",
+   "vendorNo": "44030",
+   "orderDate": "2026-07-20",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10045",
+     "quantity": 60,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-07-23"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 72,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-07-23"
+    },
+    {
+     "itemNo": "10000",
+     "quantity": 24,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-07-23"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-07-23",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 60
+      },
+      {
+       "line": 1,
+       "quantity": 72
+      },
+      {
+       "line": 2,
+       "quantity": 24
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0032",
+   "vendorNo": "44030",
+   "orderDate": "2026-07-23",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10100",
+     "quantity": 96,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-07-26"
+    },
+    {
+     "itemNo": "10000",
+     "quantity": 24,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-07-26"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 72,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-07-26"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-07-26",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 96
+      },
+      {
+       "line": 1,
+       "quantity": 24
+      },
+      {
+       "line": 2,
+       "quantity": 72
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0033",
+   "vendorNo": "44030",
+   "orderDate": "2026-07-27",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10045",
+     "quantity": 60,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-07-30"
+    },
+    {
+     "itemNo": "10000",
+     "quantity": 36,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-07-30"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-07-30",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 60
+      },
+      {
+       "line": 1,
+       "quantity": 36
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0034",
+   "vendorNo": "44030",
+   "orderDate": "2026-07-30",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10000",
+     "quantity": 72,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-08-02"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 24,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-08-02"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-08-03",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 72
+      },
+      {
+       "line": 1,
+       "quantity": 24
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0035",
+   "vendorNo": "44030",
+   "orderDate": "2026-08-03",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10100",
+     "quantity": 60,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-08-06"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 96,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-08-06"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-08-06",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 60
+      },
+      {
+       "line": 1,
+       "quantity": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0036",
+   "vendorNo": "44030",
+   "orderDate": "2026-08-06",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10070",
+     "quantity": 72,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-08-09"
+    },
+    {
+     "itemNo": "10000",
+     "quantity": 24,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-08-09"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-08-10",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 72
+      },
+      {
+       "line": 1,
+       "quantity": 24
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0037",
+   "vendorNo": "44030",
+   "orderDate": "2026-08-10",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10000",
+     "quantity": 96,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-08-13"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 36,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-08-13"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 96,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-08-13"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-08-13",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 96
+      },
+      {
+       "line": 1,
+       "quantity": 36
+      },
+      {
+       "line": 2,
+       "quantity": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0038",
+   "vendorNo": "44030",
+   "orderDate": "2026-08-13",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10000",
+     "quantity": 72,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-08-16"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 84,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-08-16"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 60,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-08-16"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-08-16",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 72
+      },
+      {
+       "line": 1,
+       "quantity": 84
+      },
+      {
+       "line": 2,
+       "quantity": 60
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0039",
+   "vendorNo": "44030",
+   "orderDate": "2026-08-17",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10070",
+     "quantity": 48,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-08-20"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 96,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-08-20"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 96,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-08-20"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-08-21",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 48
+      },
+      {
+       "line": 1,
+       "quantity": 96
+      },
+      {
+       "line": 2,
+       "quantity": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0040",
+   "vendorNo": "44030",
+   "orderDate": "2026-08-20",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10100",
+     "quantity": 48,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-08-23"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 60,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-08-23"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 60,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-08-23"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-08-23",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 48
+      },
+      {
+       "line": 1,
+       "quantity": 60
+      },
+      {
+       "line": 2,
+       "quantity": 60
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0041",
+   "vendorNo": "44030",
+   "orderDate": "2026-08-24",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10000",
+     "quantity": 60,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-08-27"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 24,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-08-27"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-08-27",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 60
+      },
+      {
+       "line": 1,
+       "quantity": 24
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0042",
+   "vendorNo": "44030",
+   "orderDate": "2026-08-27",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10100",
+     "quantity": 24,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-08-30"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 96,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-08-30"
+    },
+    {
+     "itemNo": "10000",
+     "quantity": 84,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-08-30"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-08-30",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 24
+      },
+      {
+       "line": 1,
+       "quantity": 96
+      },
+      {
+       "line": 2,
+       "quantity": 84
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0043",
+   "vendorNo": "44030",
+   "orderDate": "2026-08-31",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10000",
+     "quantity": 36,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-09-03"
+    },
+    {
+     "itemNo": "10070",
+     "quantity": 36,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-09-03"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-09-03",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 36
+      },
+      {
+       "line": 1,
+       "quantity": 36
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0044",
+   "vendorNo": "44030",
+   "orderDate": "2026-09-03",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10000",
+     "quantity": 60,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-09-06"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 96,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-09-06"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 60,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-09-06"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-09-06",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 60
+      },
+      {
+       "line": 1,
+       "quantity": 96
+      },
+      {
+       "line": 2,
+       "quantity": 60
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0045",
+   "vendorNo": "44030",
+   "orderDate": "2026-09-07",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10070",
+     "quantity": 72,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-09-10"
+    },
+    {
+     "itemNo": "10100",
+     "quantity": 72,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-09-10"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 24,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-09-10"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-09-10",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 72
+      },
+      {
+       "line": 1,
+       "quantity": 72
+      },
+      {
+       "line": 2,
+       "quantity": 24
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0046",
+   "vendorNo": "44030",
+   "orderDate": "2026-09-14",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "10100",
+     "quantity": 36,
+     "unitCost": 1.7,
+     "expectedReceiptDate": "2026-09-17"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 96,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-09-17"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-09-17",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 36
+      },
+      {
+       "line": 1,
+       "quantity": 96
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0047",
+   "vendorNo": "44020",
+   "orderDate": "2026-04-07",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "30091",
+     "quantity": 60,
+     "unitCost": 2.8,
+     "expectedReceiptDate": "2026-04-14"
+    },
+    {
+     "itemNo": "18200",
+     "quantity": 36,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-04-14"
+    },
+    {
+     "itemNo": "18230",
+     "quantity": 72,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-04-14"
+    },
+    {
+     "itemNo": "33200",
+     "quantity": 60,
+     "unitCost": 4.2,
+     "expectedReceiptDate": "2026-04-14"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-04-14",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 36
+      },
+      {
+       "line": 1,
+       "quantity": 12
+      },
+      {
+       "line": 2,
+       "quantity": 48
+      },
+      {
+       "line": 3,
+       "quantity": 36
+      }
+     ]
+    },
+    {
+     "date": "2026-04-16",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 24
+      },
+      {
+       "line": 1,
+       "quantity": 24
+      },
+      {
+       "line": 2,
+       "quantity": 24
+      },
+      {
+       "line": 3,
+       "quantity": 24
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0048",
+   "vendorNo": "44020",
+   "orderDate": "2026-04-14",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "33120",
+     "quantity": 12,
+     "unitCost": 6.5,
+     "expectedReceiptDate": "2026-04-21"
+    },
+    {
+     "itemNo": "18200",
+     "quantity": 24,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-04-21"
+    },
+    {
+     "itemNo": "18230",
+     "quantity": 12,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-04-21"
+    },
+    {
+     "itemNo": "33200",
+     "quantity": 48,
+     "unitCost": 4.2,
+     "expectedReceiptDate": "2026-04-21"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-04-21",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 12
+      },
+      {
+       "line": 1,
+       "quantity": 24
+      },
+      {
+       "line": 2,
+       "quantity": 12
+      },
+      {
+       "line": 3,
+       "quantity": 48
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0049",
+   "vendorNo": "44020",
+   "orderDate": "2026-04-21",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "18230",
+     "quantity": 72,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-04-28"
+    },
+    {
+     "itemNo": "30091",
+     "quantity": 24,
+     "unitCost": 2.8,
+     "expectedReceiptDate": "2026-04-28"
+    },
+    {
+     "itemNo": "33200",
+     "quantity": 72,
+     "unitCost": 4.2,
+     "expectedReceiptDate": "2026-04-28"
+    },
+    {
+     "itemNo": "33150",
+     "quantity": 60,
+     "unitCost": 1.8,
+     "expectedReceiptDate": "2026-04-28"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-04-28",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 72
+      },
+      {
+       "line": 1,
+       "quantity": 24
+      },
+      {
+       "line": 2,
+       "quantity": 72
+      },
+      {
+       "line": 3,
+       "quantity": 60
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0050",
+   "vendorNo": "44020",
+   "orderDate": "2026-04-28",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "30091",
+     "quantity": 72,
+     "unitCost": 2.8,
+     "expectedReceiptDate": "2026-05-05"
+    },
+    {
+     "itemNo": "33150",
+     "quantity": 60,
+     "unitCost": 1.8,
+     "expectedReceiptDate": "2026-05-05"
+    },
+    {
+     "itemNo": "18230",
+     "quantity": 36,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-05-05"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-05-05",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 72
+      },
+      {
+       "line": 1,
+       "quantity": 60
+      },
+      {
+       "line": 2,
+       "quantity": 36
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0051",
+   "vendorNo": "44020",
+   "orderDate": "2026-05-05",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "33200",
+     "quantity": 60,
+     "unitCost": 4.2,
+     "expectedReceiptDate": "2026-05-12"
+    },
+    {
+     "itemNo": "33250",
+     "quantity": 12,
+     "unitCost": 3.1,
+     "expectedReceiptDate": "2026-05-12"
+    },
+    {
+     "itemNo": "30091",
+     "quantity": 36,
+     "unitCost": 2.8,
+     "expectedReceiptDate": "2026-05-12"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-05-12",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 60
+      },
+      {
+       "line": 1,
+       "quantity": 12
+      },
+      {
+       "line": 2,
+       "quantity": 36
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0052",
+   "vendorNo": "44020",
+   "orderDate": "2026-05-12",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "18200",
+     "quantity": 12,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-05-19"
+    },
+    {
+     "itemNo": "33150",
+     "quantity": 72,
+     "unitCost": 1.8,
+     "expectedReceiptDate": "2026-05-19"
+    },
+    {
+     "itemNo": "33250",
+     "quantity": 36,
+     "unitCost": 3.1,
+     "expectedReceiptDate": "2026-05-19"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-05-21",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 12
+      },
+      {
+       "line": 1,
+       "quantity": 72
+      },
+      {
+       "line": 2,
+       "quantity": 36
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0053",
+   "vendorNo": "44020",
+   "orderDate": "2026-05-19",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "33150",
+     "quantity": 72,
+     "unitCost": 1.8,
+     "expectedReceiptDate": "2026-05-26"
+    },
+    {
+     "itemNo": "18200",
+     "quantity": 60,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-05-26"
+    },
+    {
+     "itemNo": "33200",
+     "quantity": 60,
+     "unitCost": 4.2,
+     "expectedReceiptDate": "2026-05-26"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-05-26",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 72
+      },
+      {
+       "line": 1,
+       "quantity": 60
+      },
+      {
+       "line": 2,
+       "quantity": 60
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0054",
+   "vendorNo": "44020",
+   "orderDate": "2026-05-26",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "33120",
+     "quantity": 12,
+     "unitCost": 6.5,
+     "expectedReceiptDate": "2026-06-02"
+    },
+    {
+     "itemNo": "18200",
+     "quantity": 36,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-06-02"
+    },
+    {
+     "itemNo": "33250",
+     "quantity": 72,
+     "unitCost": 3.1,
+     "expectedReceiptDate": "2026-06-02"
+    },
+    {
+     "itemNo": "18230",
+     "quantity": 60,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-06-02"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-06-05",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 12
+      },
+      {
+       "line": 1,
+       "quantity": 36
+      },
+      {
+       "line": 2,
+       "quantity": 72
+      },
+      {
+       "line": 3,
+       "quantity": 60
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0055",
+   "vendorNo": "44020",
+   "orderDate": "2026-06-02",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "33150",
+     "quantity": 48,
+     "unitCost": 1.8,
+     "expectedReceiptDate": "2026-06-09"
+    },
+    {
+     "itemNo": "30091",
+     "quantity": 36,
+     "unitCost": 2.8,
+     "expectedReceiptDate": "2026-06-09"
+    },
+    {
+     "itemNo": "33200",
+     "quantity": 24,
+     "unitCost": 4.2,
+     "expectedReceiptDate": "2026-06-09"
+    },
+    {
+     "itemNo": "18230",
+     "quantity": 72,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-06-09"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-06-09",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 48
+      },
+      {
+       "line": 1,
+       "quantity": 36
+      },
+      {
+       "line": 2,
+       "quantity": 24
+      },
+      {
+       "line": 3,
+       "quantity": 72
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0056",
+   "vendorNo": "44020",
+   "orderDate": "2026-06-09",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "33120",
+     "quantity": 48,
+     "unitCost": 6.5,
+     "expectedReceiptDate": "2026-06-16"
+    },
+    {
+     "itemNo": "33250",
+     "quantity": 48,
+     "unitCost": 3.1,
+     "expectedReceiptDate": "2026-06-16"
+    },
+    {
+     "itemNo": "33150",
+     "quantity": 36,
+     "unitCost": 1.8,
+     "expectedReceiptDate": "2026-06-16"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-06-19",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 24
+      },
+      {
+       "line": 1,
+       "quantity": 24
+      },
+      {
+       "line": 2,
+       "quantity": 12
+      }
+     ]
+    },
+    {
+     "date": "2026-06-23",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 24
+      },
+      {
+       "line": 1,
+       "quantity": 24
+      },
+      {
+       "line": 2,
+       "quantity": 24
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0057",
+   "vendorNo": "44020",
+   "orderDate": "2026-06-16",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "33120",
+     "quantity": 24,
+     "unitCost": 6.5,
+     "expectedReceiptDate": "2026-06-23"
+    },
+    {
+     "itemNo": "33200",
+     "quantity": 12,
+     "unitCost": 4.2,
+     "expectedReceiptDate": "2026-06-23"
+    },
+    {
+     "itemNo": "33150",
+     "quantity": 48,
+     "unitCost": 1.8,
+     "expectedReceiptDate": "2026-06-23"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-06-23",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 24
+      },
+      {
+       "line": 1,
+       "quantity": 12
+      },
+      {
+       "line": 2,
+       "quantity": 48
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0058",
+   "vendorNo": "44020",
+   "orderDate": "2026-06-23",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "18230",
+     "quantity": 24,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-06-30"
+    },
+    {
+     "itemNo": "33120",
+     "quantity": 12,
+     "unitCost": 6.5,
+     "expectedReceiptDate": "2026-06-30"
+    },
+    {
+     "itemNo": "33200",
+     "quantity": 12,
+     "unitCost": 4.2,
+     "expectedReceiptDate": "2026-06-30"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-07-03",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 24
+      },
+      {
+       "line": 1,
+       "quantity": 12
+      },
+      {
+       "line": 2,
+       "quantity": 12
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0059",
+   "vendorNo": "44020",
+   "orderDate": "2026-06-30",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "33150",
+     "quantity": 36,
+     "unitCost": 1.8,
+     "expectedReceiptDate": "2026-07-07"
+    },
+    {
+     "itemNo": "33250",
+     "quantity": 72,
+     "unitCost": 3.1,
+     "expectedReceiptDate": "2026-07-07"
+    },
+    {
+     "itemNo": "33120",
+     "quantity": 60,
+     "unitCost": 6.5,
+     "expectedReceiptDate": "2026-07-07"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-07-07",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 36
+      },
+      {
+       "line": 1,
+       "quantity": 72
+      },
+      {
+       "line": 2,
+       "quantity": 60
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0060",
+   "vendorNo": "44020",
+   "orderDate": "2026-07-07",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "18230",
+     "quantity": 36,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-07-14"
+    },
+    {
+     "itemNo": "18200",
+     "quantity": 24,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-07-14"
+    },
+    {
+     "itemNo": "33120",
+     "quantity": 60,
+     "unitCost": 6.5,
+     "expectedReceiptDate": "2026-07-14"
+    },
+    {
+     "itemNo": "30091",
+     "quantity": 36,
+     "unitCost": 2.8,
+     "expectedReceiptDate": "2026-07-14"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-07-17",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 36
+      },
+      {
+       "line": 1,
+       "quantity": 24
+      },
+      {
+       "line": 2,
+       "quantity": 60
+      },
+      {
+       "line": 3,
+       "quantity": 36
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0061",
+   "vendorNo": "44020",
+   "orderDate": "2026-07-14",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "18230",
+     "quantity": 12,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-07-21"
+    },
+    {
+     "itemNo": "33150",
+     "quantity": 24,
+     "unitCost": 1.8,
+     "expectedReceiptDate": "2026-07-21"
+    },
+    {
+     "itemNo": "18200",
+     "quantity": 60,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-07-21"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-07-21",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 12
+      },
+      {
+       "line": 1,
+       "quantity": 24
+      },
+      {
+       "line": 2,
+       "quantity": 60
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0062",
+   "vendorNo": "44020",
+   "orderDate": "2026-07-21",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "33200",
+     "quantity": 12,
+     "unitCost": 4.2,
+     "expectedReceiptDate": "2026-07-28"
+    },
+    {
+     "itemNo": "33250",
+     "quantity": 36,
+     "unitCost": 3.1,
+     "expectedReceiptDate": "2026-07-28"
+    },
+    {
+     "itemNo": "18200",
+     "quantity": 24,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-07-28"
+    },
+    {
+     "itemNo": "30091",
+     "quantity": 24,
+     "unitCost": 2.8,
+     "expectedReceiptDate": "2026-07-28"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-07-28",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 12
+      },
+      {
+       "line": 1,
+       "quantity": 36
+      },
+      {
+       "line": 2,
+       "quantity": 24
+      },
+      {
+       "line": 3,
+       "quantity": 24
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0063",
+   "vendorNo": "44020",
+   "orderDate": "2026-07-28",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "33200",
+     "quantity": 36,
+     "unitCost": 4.2,
+     "expectedReceiptDate": "2026-08-04"
+    },
+    {
+     "itemNo": "30091",
+     "quantity": 60,
+     "unitCost": 2.8,
+     "expectedReceiptDate": "2026-08-04"
+    },
+    {
+     "itemNo": "33120",
+     "quantity": 36,
+     "unitCost": 6.5,
+     "expectedReceiptDate": "2026-08-04"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-08-04",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 36
+      },
+      {
+       "line": 1,
+       "quantity": 60
+      },
+      {
+       "line": 2,
+       "quantity": 36
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0064",
+   "vendorNo": "44020",
+   "orderDate": "2026-08-04",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "18230",
+     "quantity": 72,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-08-11"
+    },
+    {
+     "itemNo": "18120",
+     "quantity": 36,
+     "unitCost": 1.0,
+     "expectedReceiptDate": "2026-08-11"
+    },
+    {
+     "itemNo": "30091",
+     "quantity": 24,
+     "unitCost": 2.8,
+     "expectedReceiptDate": "2026-08-11"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-08-11",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 48
+      },
+      {
+       "line": 1,
+       "quantity": 12
+      },
+      {
+       "line": 2,
+       "quantity": 12
+      }
+     ]
+    },
+    {
+     "date": "2026-08-15",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 24
+      },
+      {
+       "line": 1,
+       "quantity": 24
+      },
+      {
+       "line": 2,
+       "quantity": 12
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0065",
+   "vendorNo": "44020",
+   "orderDate": "2026-08-11",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "18120",
+     "quantity": 36,
+     "unitCost": 1.0,
+     "expectedReceiptDate": "2026-08-18"
+    },
+    {
+     "itemNo": "18230",
+     "quantity": 48,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-08-18"
+    },
+    {
+     "itemNo": "18200",
+     "quantity": 48,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-08-18"
+    },
+    {
+     "itemNo": "33120",
+     "quantity": 12,
+     "unitCost": 6.5,
+     "expectedReceiptDate": "2026-08-18"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-08-18",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 12
+      },
+      {
+       "line": 1,
+       "quantity": 24
+      },
+      {
+       "line": 2,
+       "quantity": 24
+      },
+      {
+       "line": 3,
+       "quantity": 12
+      }
+     ]
+    },
+    {
+     "date": "2026-08-22",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 24
+      },
+      {
+       "line": 1,
+       "quantity": 24
+      },
+      {
+       "line": 2,
+       "quantity": 24
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0066",
+   "vendorNo": "44020",
+   "orderDate": "2026-08-18",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "33250",
+     "quantity": 36,
+     "unitCost": 3.1,
+     "expectedReceiptDate": "2026-08-25"
+    },
+    {
+     "itemNo": "18120",
+     "quantity": 12,
+     "unitCost": 1.0,
+     "expectedReceiptDate": "2026-08-25"
+    },
+    {
+     "itemNo": "30091",
+     "quantity": 48,
+     "unitCost": 2.8,
+     "expectedReceiptDate": "2026-08-25"
+    },
+    {
+     "itemNo": "33150",
+     "quantity": 24,
+     "unitCost": 1.8,
+     "expectedReceiptDate": "2026-08-25"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-08-29",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 24
+      },
+      {
+       "line": 1,
+       "quantity": 12
+      },
+      {
+       "line": 2,
+       "quantity": 24
+      },
+      {
+       "line": 3,
+       "quantity": 12
+      }
+     ]
+    },
+    {
+     "date": "2026-09-02",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 12
+      },
+      {
+       "line": 2,
+       "quantity": 24
+      },
+      {
+       "line": 3,
+       "quantity": 12
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-0067",
+   "vendorNo": "44020",
+   "orderDate": "2026-08-25",
+   "locationCode": "NCC-NHAN",
+   "lines": [
+    {
+     "itemNo": "18200",
+     "quantity": 24,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-09-01"
+    },
+    {
+     "itemNo": "33200",
+     "quantity": 60,
+     "unitCost": 4.2,
+     "expectedReceiptDate": "2026-09-01"
+    },
+    {
+     "itemNo": "33150",
+     "quantity": 60,
+     "unitCost": 1.8,
+     "expectedReceiptDate": "2026-09-01"
+    },
+    {
+     "itemNo": "33250",
+     "quantity": 72,
+     "unitCost": 3.1,
+     "expectedReceiptDate": "2026-09-01"
+    }
+   ],
+   "receipts": [
+    {
+     "date": "2026-09-07",
+     "lines": [
+      {
+       "line": 0,
+       "quantity": 24
+      },
+      {
+       "line": 1,
+       "quantity": 60
+      },
+      {
+       "line": 2,
+       "quantity": 60
+      },
+      {
+       "line": 3,
+       "quantity": 72
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "NCC-MO-01",
+   "vendorNo": "44020",
+   "orderDate": "2026-09-01",
+   "locationCode": "W0003",
+   "lines": [
+    {
+     "itemNo": "30091",
+     "quantity": 36,
+     "unitCost": 2.8,
+     "expectedReceiptDate": "2026-09-08"
+    },
+    {
+     "itemNo": "18200",
+     "quantity": 48,
+     "unitCost": 0.95,
+     "expectedReceiptDate": "2026-09-08"
+    }
+   ],
+   "receipts": []
+  },
+  {
+   "key": "NCC-MO-02",
+   "vendorNo": "44020",
+   "orderDate": "2026-09-08",
+   "locationCode": "W0003",
+   "lines": [
+    {
+     "itemNo": "33200",
+     "quantity": 60,
+     "unitCost": 4.2,
+     "expectedReceiptDate": "2026-09-15"
+    },
+    {
+     "itemNo": "33250",
+     "quantity": 48,
+     "unitCost": 3.1,
+     "expectedReceiptDate": "2026-09-15"
+    }
+   ],
+   "receipts": []
+  },
+  {
+   "key": "NCC-MO-03",
+   "vendorNo": "44020",
+   "orderDate": "2026-09-11",
+   "locationCode": "S0005",
+   "lines": [
+    {
+     "itemNo": "33120",
+     "quantity": 12,
+     "unitCost": 6.5,
+     "expectedReceiptDate": "2026-09-18"
+    }
+   ],
+   "receipts": []
+  },
+  {
+   "key": "NCC-MO-04",
+   "vendorNo": "44030",
+   "orderDate": "2026-09-10",
+   "locationCode": "S0001",
+   "lines": [
+    {
+     "itemNo": "10070",
+     "quantity": 36,
+     "unitCost": 0.5,
+     "expectedReceiptDate": "2026-09-13"
+    }
+   ],
+   "receipts": []
+  },
+  {
+   "key": "NCC-MO-05",
+   "vendorNo": "44030",
+   "orderDate": "2026-09-15",
+   "locationCode": "S0010",
+   "lines": [
+    {
+     "itemNo": "10000",
+     "quantity": 48,
+     "unitCost": 0.9,
+     "expectedReceiptDate": "2026-09-18"
+    },
+    {
+     "itemNo": "10045",
+     "quantity": 24,
+     "unitCost": 0.45,
+     "expectedReceiptDate": "2026-09-18"
+    }
+   ],
+   "receipts": []
+  }
+ ]
+}

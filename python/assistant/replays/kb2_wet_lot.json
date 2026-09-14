@@ -1,0 +1,119 @@
+{
+ "id": "KB-2",
+ "title": "Hàng trong kho bị ướt",
+ "recorded": "Ghi lại từ một lần chạy model thật trong phiên thiết kế 07/09/2026, dựng lại trên bộ dữ liệu demo ngày 12/09/2026. Chuỗi tool được chạy lại thật trên dữ liệu hiện tại.",
+ "match": [
+  [
+   "syrup",
+   "si ro",
+   "siro",
+   "30091"
+  ],
+  [
+   "am",
+   "ẩm",
+   "uot",
+   "ướt",
+   "rach",
+   "rách",
+   "mua dot",
+   "mưa dột",
+   "dot",
+   "dột"
+  ]
+ ],
+ "steps": [
+  {
+   "tool": "stock_by_item",
+   "args": {
+    "item_no": "30091"
+   },
+   "why": "Syrup nằm ở đâu, kho giữ bao nhiêu, cửa hàng giữ bao nhiêu"
+  },
+  {
+   "tool": "list_stock",
+   "args": {
+    "location": "W0003",
+    "category": "BEVERAGES"
+   },
+   "why": "Giá trị sổ sách và phân tầng của syrup ở kho"
+  },
+  {
+   "tool": "sales_rate",
+   "args": {
+    "item_no": "30091",
+    "days": 90
+   },
+   "why": "Thiệt hại thật phụ thuộc hàng này có bán được không, không phải giá trị trên sổ"
+  },
+  {
+   "tool": "ask_human",
+   "args": {
+    "question": "Ước chừng bao nhiêu chai bị ướt nhãn?"
+   },
+   "why": "Không đếm được từ dữ liệu, mà con số này quyết định mức xử lý"
+  }
+ ],
+ "slots": {
+  "wh_qty": {
+   "step": 0,
+   "path": "#locationCode=W0003.qty"
+  },
+  "wh_doc": {
+   "step": 0,
+   "path": "#locationCode=W0003.daysOfCover"
+  },
+  "store_total": {
+   "step": 0,
+   "path": "@sum:qty"
+  },
+  "val": {
+   "step": 1,
+   "path": "#itemNo=30091.value"
+  },
+  "tier": {
+   "step": 1,
+   "path": "#itemNo=30091.tier.0"
+  },
+  "net_sold": {
+   "step": 2,
+   "path": "totalQty"
+  },
+  "per_day": {
+   "expr": "net_sold/90",
+   "round": 1
+  },
+  "outside": {
+   "expr": "store_total-wh_qty",
+   "round": 0
+  },
+  "months": {
+   "expr": "wh_qty/(net_sold/90)/30",
+   "round": 1
+  },
+  "days_all": {
+   "expr": "wh_qty/(net_sold/90)",
+   "round": 0
+  }
+ },
+ "answer": "Flavored syrup (30091) nằm gần hết ở kho W0003: {wh_qty} chai, giá trị sổ sách {val}, đã xếp {tier}. Các cửa hàng cộng lại chỉ giữ {outside} chai, nên lô trong kho gần như là toàn bộ syrup của hệ thống.\n\nHai điều tôi nghĩ bạn nên biết trước khi quyết.\n\nThứ nhất, dư nhưng không phải dư nhiều năm. Cả hệ thống tiêu thụ {net_sold} chai trong 90 ngày, tức {per_day} chai một ngày, và {wh_qty} chai trong kho là khoảng {days_all} ngày, chừng {months} tháng. Bảng kết quả ghi days of cover {wh_doc} ngày, cùng một cách tính. Nghĩa là số chai ướt nhãn nếu thay nhãn được thì vẫn bán hết được trong năm, không nên vội đề nghị huỷ.\n\nThứ hai, số chai hỏng thật mới quyết định cách xử lý: ướt nhãn thì thay nhãn bán tiếp, hỏng nắp hay vào nước thì phải đề nghị điều chỉnh sổ, và giá trị thiệt hại lúc đó là số chai hỏng nhân giá vốn, không phải {val}.\n\nTrước mắt tôi đề xuất chặn xuất tới khi đếm xong, để không chai ướt nào ra cửa hàng. Song song đó dừng đặt mua thêm syrup: kho còn khoảng {months} tháng tiêu thụ.",
+ "question": "Ước chừng bao nhiêu chai bị ướt nhãn? Con số thô cũng được, tôi cần để biết là thay nhãn rồi bán tiếp hay phải đề nghị điều chỉnh sổ.",
+ "drafts": [
+  {
+   "action_type": "ReviewOnly",
+   "item_no": "30091",
+   "from_location": "W0003",
+   "to_location": "W0003",
+   "quantity": "{wh_qty}",
+   "rationale": "Chặn xuất Flavored syrup ở W0003 tới khi đếm xong phần bị ướt. Kho giữ {wh_qty} chai, giá trị {val}, đã xếp {tier}."
+  },
+  {
+   "action_type": "BlockPurchase",
+   "item_no": "30091",
+   "from_location": "W0003",
+   "to_location": "W0003",
+   "quantity": 0,
+   "rationale": "Dừng đặt mua thêm Flavored syrup. Tồn {wh_qty} chai, cả hệ thống tiêu thụ {net_sold} chai trong 90 ngày, còn khoảng {months} tháng."
+  }
+ ]
+}

@@ -1,0 +1,44 @@
+[
+ {
+  "id": "spg-S0001-ALL",
+  "store": "S0001",
+  "priceGroupCode": "ALL",
+  "priority": 0
+ },
+ {
+  "id": "spg-S0001-FOOD",
+  "store": "S0001",
+  "priceGroupCode": "FOOD",
+  "priority": 0
+ },
+ {
+  "id": "spg-S0002-ALL",
+  "store": "S0002",
+  "priceGroupCode": "ALL",
+  "priority": 0
+ },
+ {
+  "id": "spg-S0002-FOOD",
+  "store": "S0002",
+  "priceGroupCode": "FOOD",
+  "priority": 0
+ },
+ {
+  "id": "spg-S0005-ALL",
+  "store": "S0005",
+  "priceGroupCode": "ALL",
+  "priority": 0
+ },
+ {
+  "id": "spg-S0010-ALL",
+  "store": "S0010",
+  "priceGroupCode": "ALL",
+  "priority": 0
+ },
+ {
+  "id": "spg-S0013-ALL",
+  "store": "S0013",
+  "priceGroupCode": "ALL",
+  "priority": 0
+ }
+]

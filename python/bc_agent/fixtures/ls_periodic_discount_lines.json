@@ -1,0 +1,72 @@
+[
+ {
+  "id": "pdl-MR2607-CP-1",
+  "offerNo": "MR2607-CP",
+  "lineNo": 10000,
+  "type": "Item",
+  "no": "33310",
+  "variantCode": "",
+  "description": "Choco pillar",
+  "dealPriceDiscPct": 20,
+  "offerPrice": 0,
+  "standardPrice": 0,
+  "exclude": false,
+  "status": "Disabled"
+ },
+ {
+  "id": "pdl-MR2609-CP-1",
+  "offerNo": "MR2609-CP",
+  "lineNo": 10000,
+  "type": "Item",
+  "no": "33310",
+  "variantCode": "",
+  "description": "Choco pillar",
+  "dealPriceDiscPct": 20,
+  "offerPrice": 0,
+  "standardPrice": 0,
+  "exclude": false,
+  "status": "Enabled"
+ },
+ {
+  "id": "pdl-MR2609-CB-1",
+  "offerNo": "MR2609-CB",
+  "lineNo": 10000,
+  "type": "Item",
+  "no": "33341",
+  "variantCode": "",
+  "description": "Choco bowl",
+  "dealPriceDiscPct": 15,
+  "offerPrice": 0,
+  "standardPrice": 0,
+  "exclude": false,
+  "status": "Enabled"
+ },
+ {
+  "id": "pdl-MR2609-CR-1",
+  "offerNo": "MR2609-CR",
+  "lineNo": 10000,
+  "type": "Item",
+  "no": "33110",
+  "variantCode": "",
+  "description": "Croissant - chocolate",
+  "dealPriceDiscPct": 30,
+  "offerPrice": 0,
+  "standardPrice": 0,
+  "exclude": false,
+  "status": "Enabled"
+ },
+ {
+  "id": "pdl-MR2609-CR-2",
+  "offerNo": "MR2609-CR",
+  "lineNo": 20000,
+  "type": "Item",
+  "no": "33100",
+  "variantCode": "",
+  "description": "Croissant - plain",
+  "dealPriceDiscPct": 30,
+  "offerPrice": 0,
+  "standardPrice": 0,
+  "exclude": false,
+  "status": "Enabled"
+ }
+]

@@ -1,0 +1,128 @@
+[
+ {
+  "id": "it-10000",
+  "itemNo": "10000",
+  "description": "Milk 1 liter",
+  "itemCategoryCode": "DAIRY"
+ },
+ {
+  "id": "it-10045",
+  "itemNo": "10045",
+  "description": "Cream 250 ml",
+  "itemCategoryCode": "DAIRY"
+ },
+ {
+  "id": "it-10070",
+  "itemNo": "10070",
+  "description": "Yogurt strawberry",
+  "itemCategoryCode": "DAIRY"
+ },
+ {
+  "id": "it-10100",
+  "itemNo": "10100",
+  "description": "Butter",
+  "itemCategoryCode": "DAIRY"
+ },
+ {
+  "id": "it-18120",
+  "itemNo": "18120",
+  "description": "Frozen waffles",
+  "itemCategoryCode": "FROZEN"
+ },
+ {
+  "id": "it-18200",
+  "itemNo": "18200",
+  "description": "Ice cream blueberry",
+  "itemCategoryCode": "FROZEN"
+ },
+ {
+  "id": "it-18230",
+  "itemNo": "18230",
+  "description": "Ice cream strawberry",
+  "itemCategoryCode": "FROZEN"
+ },
+ {
+  "id": "it-30091",
+  "itemNo": "30091",
+  "description": "Flavored syrup",
+  "itemCategoryCode": "BEVERAGES"
+ },
+ {
+  "id": "it-33100",
+  "itemNo": "33100",
+  "description": "Croissant - plain",
+  "itemCategoryCode": "DESSERTS"
+ },
+ {
+  "id": "it-33110",
+  "itemNo": "33110",
+  "description": "Croissant - chocolate",
+  "itemCategoryCode": "DESSERTS"
+ },
+ {
+  "id": "it-33116",
+  "itemNo": "33116",
+  "description": "Blueberry muffin",
+  "itemCategoryCode": "DESSERTS"
+ },
+ {
+  "id": "it-33120",
+  "itemNo": "33120",
+  "description": "Pecan pie",
+  "itemCategoryCode": "DESSERTS"
+ },
+ {
+  "id": "it-33130",
+  "itemNo": "33130",
+  "description": "Tiramisu",
+  "itemCategoryCode": "DESSERTS"
+ },
+ {
+  "id": "it-33150",
+  "itemNo": "33150",
+  "description": "Ice cream",
+  "itemCategoryCode": "DESSERTS"
+ },
+ {
+  "id": "it-33160",
+  "itemNo": "33160",
+  "description": "Carrot cake",
+  "itemCategoryCode": "DESSERTS"
+ },
+ {
+  "id": "it-33170",
+  "itemNo": "33170",
+  "description": "Chocolate cake",
+  "itemCategoryCode": "DESSERTS"
+ },
+ {
+  "id": "it-33200",
+  "itemNo": "33200",
+  "description": "Chocolate ice cream",
+  "itemCategoryCode": "DESSERTS"
+ },
+ {
+  "id": "it-33250",
+  "itemNo": "33250",
+  "description": "Vanilla ice cream",
+  "itemCategoryCode": "DESSERTS"
+ },
+ {
+  "id": "it-33310",
+  "itemNo": "33310",
+  "description": "Choco pillar",
+  "itemCategoryCode": "ICECREAM"
+ },
+ {
+  "id": "it-33323",
+  "itemNo": "33323",
+  "description": "Choco nuts",
+  "itemCategoryCode": "ICECREAM"
+ },
+ {
+  "id": "it-33341",
+  "itemNo": "33341",
+  "description": "Choco bowl",
+  "itemCategoryCode": "ICECREAM"
+ }
+]

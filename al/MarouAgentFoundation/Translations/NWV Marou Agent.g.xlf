@@ -1,0 +1,1924 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="en-US" original="NWV Marou Agent">
+    <body>
+      <group id="body">
+        <trans-unit id="Table 2085949398 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Agent Proposal</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 1060207642 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Action Type</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Action Type - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 2570673311 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Created At</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Created At - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 2401573406 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Created By Agent</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Created By Agent - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 883711285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 917073965 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>So lieu agent da doc khi ra de xuat, de audit lai sau nay.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Evidence JSON - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 917073965 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Evidence JSON</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Evidence JSON - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 3473541370 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>From Location Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field From Location Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 1482668068 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Lot No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Lot No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 2853950796 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Model Name</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Model Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 302045870 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Priority Score</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Priority Score - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 1087576723 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Proposal Id</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Proposal Id - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 2704404533 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 3375244257 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ly do agent viet, dua tren so lieu da tinh. Nguoi duyet doc cai nay.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Rationale - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 3375244257 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Rationale</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Rationale - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 1834143832 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Khoa cua dong nguon: Item|Location|Lot voi inventory health, Store|Staff|Date voi discount governance.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Reference Key - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 1834143832 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Reference Key</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Reference Key - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 730432307 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Result Document No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Result Document No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 3607070218 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Result Document Type</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Result Document Type - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 922885515 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Review Comment</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Review Comment - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 1139238338 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Reviewed At</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Reviewed At - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 2188429124 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Reviewed By</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Reviewed By - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 3633922808 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Run Id</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Run Id - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 910027226 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Scenario</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Scenario - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 513339096 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Status</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Status - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 3790035013 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>To Location Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field To Location Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Agent Setup</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 2566803841 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ten user (Entra app) ma agent dung khi ghi de xuat, de audit tach nguoi va agent.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Agent User Name - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 2566803841 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Agent User Name</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Agent User Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 7234109 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Location cap hang cho cac store (Transfer-from).</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Central Warehouse Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 7234109 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Central Warehouse Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Central Warehouse Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 807535280 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Days of cover lon hon nguong nay thi xep vao Excess.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Excess Days - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 807535280 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Excess Days of Cover</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Excess Days - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 1667274983 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Du bao lech mot phia (cao hoac thap) qua nguong nay vao danh sach ngoai le. 0 = 30.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Forecast Bias Warn % - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 1667274983 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Forecast Bias Warn %</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Forecast Bias Warn % - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 250896151 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>So ngay cuoi lich su dung de do do chinh xac: du bao lap tu du lieu truoc do roi so voi ban thuc te. 0 = 28.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Forecast Holdout Days - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 250896151 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Forecast Holdout Days</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Forecast Holdout Days - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 351705701 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>So ngay toi duoc du bao bang Holt-Winters va ghi vao LSC Forecast Entry. Phai phu lead time cong so ngay phu ton cua LS. 0 = 28, toi da 90.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Forecast Horizon Days - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 351705701 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Forecast Horizon Days</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Forecast Horizon Days - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 619714005 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cap ban it hon so nay trong ky do khong xet ngoai le, vi WAPE tren so nho khong co y nghia. 0 = 20.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Forecast Min Actual Qty - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 619714005 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Forecast Min Actual Qty</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Forecast Min Actual Qty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 31321505 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cap mat hang x dia diem co WAPE vuot nguong nay vao danh sach ngoai le. 0 = 50.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Forecast WAPE Warn % - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 31321505 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Forecast WAPE Warn %</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Forecast WAPE Warn % - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 2138768538 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Last Discount Governance Run</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Last Discount Gov. Run - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 3172050100 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Last Forecast Accuracy Run</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Last Forecast Run - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 2889366060 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Last Inventory Health Run</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Last Inv. Health Run - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 2856371949 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Last Supplier Scorecard Run</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Last Supplier Scorecard Run - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 328730789 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ty trong doanh so co manual discount tren mot staff trong ngay vuot % nay thi tao exception muc Medium.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Manual Disc. Share Warn % - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 328730789 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Manual Discount Share Warning %</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Manual Disc. Share Warn % - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 1027095570 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Manual discount vuot % nay thi tao exception muc High.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Max Manual Discount % - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 1027095570 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Max Manual Discount %</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Max Manual Discount % - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 2542834940 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Lot co Expiration Date trong vong so ngay nay tinh tu hom nay thi xep vao Near Expiry.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Near Expiry Days - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 2542834940 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Near Expiry Days</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Near Expiry Days - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 1699172417 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Hang ve tre khong qua so ngay nay so voi Expected Receipt Date van tinh la dung han.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field On-time Tolerance Days - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 1699172417 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>On-time Tolerance Days</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field On-time Tolerance Days - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 1663593181 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Primary Key</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Primary Key - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 4056350879 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Bat thi moi lan tinh ghi du bao Holt-Winters cua cac cap cua hang vao LSC Forecast Entry (xoa du bao cu tu ngay mai tro di). Mat hang dat LSC Replen. Calculation Type = Retail Forecast se bo sung hang theo du bao nay, cong Planned Sales Demand.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Publish LS Forecast - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 4056350879 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Publish LS Forecast</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Publish LS Forecast - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 3715011907 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Mot staff dung manual discount qua so lan nay trong mot ngay thi tao exception.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Repeat Discount Count - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 3715011907 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Repeat Discount Count per Day</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Repeat Discount Count - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 210771927 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>So ngay lich su ban (Item Ledger Entry, Entry Type = Sale) dung de tinh toc do ban binh quan.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Sales History Days - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 210771927 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sales History Days</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Sales History Days - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 1193940595 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Khong co dong ban nao trong so ngay nay thi xep vao Slow-moving.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Slow-moving Days - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 1193940595 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Slow-moving No-Sale Days</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Slow-moving Days - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 3263331785 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Days of cover nho hon nguong nay thi xep vao Stock-out Risk.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Stock-out Risk Days - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 3263331785 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Stock-out Risk Days of Cover</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Stock-out Risk Days - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 2120795790 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Filter tren Location Code de xac dinh dau la store, vi du S001..S099.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Store Location Filter - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 2120795790 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Store Location Filter</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Store Location Filter - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 333331019 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Chi xet dong don mua co Expected Receipt Date trong so ngay gan nhat nay. 0 = 180.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Supplier History Days - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 333331019 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Supplier History Days</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Supplier History Days - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 2919805478 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nha cung cap co ty le giao dung han duoi nguong nay bi danh dau can xem. 0 = 80.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Supplier On-time Warn % - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 479121427 - Field 2919805478 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Supplier On-time Warn %</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Setup - Field Supplier On-time Warn % - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3705802116 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Category Threshold</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Category Threshold - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3705802116 - Field 807535280 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Days of cover cao hơn ngần này thì xếp vào Excess. Để 0 thì dùng ngưỡng chung.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Category Threshold - Field Excess Days - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 3705802116 - Field 807535280 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Excess Days</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Category Threshold - Field Excess Days - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3705802116 - Field 1037119892 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Category Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Category Threshold - Field Item Category Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3705802116 - Field 2542834940 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Còn ít hơn ngần này ngày tới hạn thì xếp vào Near Expiry. Để 0 thì dùng ngưỡng chung.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Category Threshold - Field Near Expiry Days - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 3705802116 - Field 2542834940 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Near Expiry Days</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Category Threshold - Field Near Expiry Days - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3705802116 - Field 3369789712 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ghi lại vì sao nhóm này cần ngưỡng khác, để người sau đọc còn hiểu.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Category Threshold - Field Reason - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 3705802116 - Field 3369789712 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Lý do đặt riêng</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Category Threshold - Field Reason - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3705802116 - Field 1193940595 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Không có dòng bán nào trong ngần này ngày thì xếp vào Slow Moving. Để 0 thì dùng ngưỡng chung.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Category Threshold - Field Slow-moving Days - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 3705802116 - Field 1193940595 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Slow-moving Days</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Category Threshold - Field Slow-moving Days - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1201201977 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Daily Move Buffer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Daily Move Buffer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1201201977 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Daily Move Buffer - Field Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1201201977 - Field 2161572060 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Location Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Daily Move Buffer - Field Location Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1201201977 - Field 144545847 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Tong Quantity co dau cua moi Item Ledger Entry trong ngay, moi loai.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Daily Move Buffer - Field Move Qty - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 1201201977 - Field 144545847 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Move Qty</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Daily Move Buffer - Field Move Qty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1201201977 - Field 3670984918 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Tong luong xuat trong ngay: Sale, Negative Adjmt., Transfer, Consumption, Output.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Daily Move Buffer - Field Out Qty - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 1201201977 - Field 3670984918 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Out Qty</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Daily Move Buffer - Field Out Qty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1201201977 - Field 3710982960 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Posting Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Daily Move Buffer - Field Posting Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1201201977 - Field 2896401905 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Tong luong ban trong ngay, chi dong Sale co Quantity am, lay tri tuyet doi.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Daily Move Buffer - Field Sale Qty - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 1201201977 - Field 2896401905 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sale Qty</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Daily Move Buffer - Field Sale Qty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2958252425 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Demand Exception</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Exception - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2958252425 - NamedType 4182279705" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ngày kết thúc không được sớm hơn ngày bắt đầu.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Exception - NamedType DateOrderErr</note>
+        </trans-unit>
+        <trans-unit id="Table 2958252425 - Field 883711285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Exception - Field Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2958252425 - Field 1796357073 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Bật thì những ngày này không được tính vào tốc độ bán bình quân.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Exception - Field Exclude From Demand - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 2958252425 - Field 1796357073 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Bỏ khỏi phép tính nhu cầu</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Exception - Field Exclude From Demand - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2958252425 - Field 2110632758 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>From Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Exception - Field From Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2958252425 - Field 568743302 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Để trống nghĩa là áp cho mọi mặt hàng tại địa điểm này.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Exception - Field Item No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 2958252425 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Exception - Field Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2958252425 - Field 2161572060 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Để trống nghĩa là áp cho mọi địa điểm.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Exception - Field Location Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 2958252425 - Field 2161572060 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Location Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Exception - Field Location Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2958252425 - Field 3369789712 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Chuyện gì đã xảy ra trong khoảng ngày này. Viết đủ để người sau đọc còn hiểu.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Exception - Field Reason - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 2958252425 - Field 3369789712 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Lý do</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Exception - Field Reason - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2958252425 - Field 1347138047 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ghi nhận lúc</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Exception - Field Registered At - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2958252425 - Field 1146129605 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Người ghi nhận</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Exception - Field Registered By - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2958252425 - Field 2565971985 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>To Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Exception - Field To Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3792971901 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Demand Profile Buffer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Profile Buffer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3792971901 - Field 3581136771 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Avg Daily</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Profile Buffer - Field Avg Daily - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3792971901 - Field 545916854 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nhu cau tinh tren dong Sale, hay tren tong luong xuat neu dia diem khong he ban.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Profile Buffer - Field Basis - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 3792971901 - Field 545916854 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Basis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Profile Buffer - Field Basis - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3792971901 - Field 545916854 - Property 62802879" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sale,Outflow</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Profile Buffer - Field Basis - Property OptionCaption</note>
+        </trans-unit>
+        <trans-unit id="Table 3792971901 - Field 1399743132 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>So ngay trong cua so khong con hang va cung khong ban duoc gi. Bi loai khoi mau so.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Profile Buffer - Field Days Censored - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 3792971901 - Field 1399743132 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Days Censored</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Profile Buffer - Field Days Censored - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3792971901 - Field 1257252087 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Days Counted</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Profile Buffer - Field Days Counted - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3792971901 - Field 4004428459 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dia diem nay co it nhat mot dong Sale trong toan bo lich su.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Profile Buffer - Field Has Sale - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 3792971901 - Field 4004428459 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Has Sale</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Profile Buffer - Field Has Sale - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3792971901 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Profile Buffer - Field Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3792971901 - Field 2971512735 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Last Sale Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Profile Buffer - Field Last Sale Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3792971901 - Field 2161572060 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Location Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Profile Buffer - Field Location Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3792971901 - Field 3835260082 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Qty</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Demand Profile Buffer - Field Total Qty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1696105335 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Discount Exception</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Discount Exception - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1696105335 - Field 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Discount Exception - Field Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1696105335 - Field 3062288909 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Detected At</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Discount Exception - Field Detected At - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1696105335 - Field 1267560475 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Discount Amount</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Discount Exception - Field Discount Amount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1696105335 - Field 883711285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Discount Exception - Field Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1696105335 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Discount Exception - Field Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1696105335 - Field 3342757601 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Metric Value</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Discount Exception - Field Metric Value - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1696105335 - Field 1009239592 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Occurrence Count</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Discount Exception - Field Occurrence Count - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1696105335 - Field 1098346073 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>POS Terminal No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Discount Exception - Field POS Terminal No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1696105335 - Field 1834143832 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Reference Key</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Discount Exception - Field Reference Key - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1696105335 - Field 3990251341 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Rule Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Discount Exception - Field Rule Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1696105335 - Field 3618771765 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Severity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Discount Exception - Field Severity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1696105335 - Field 3368806013 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Staff ID</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Discount Exception - Field Staff ID - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1696105335 - Field 513339096 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Status</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Discount Exception - Field Status - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1696105335 - Field 3019550948 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Store No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Discount Exception - Field Store No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1696105335 - Field 1790568392 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Threshold Value</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Discount Exception - Field Threshold Value - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1696105335 - Field 985039452 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transaction Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Discount Exception - Field Trans. Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1696105335 - Field 3319631365 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transaction No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Discount Exception - Field Transaction No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Forecast Accuracy</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 119655456 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Abs Error Qty</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Abs Error Qty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 4207111542 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Actual Qty</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Actual Qty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 345933321 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>As Of Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field As Of Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 1001671696 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Tong du bao tru tong thuc te, chia tong thuc te, nhan 100. Duong la du bao cao hon ban.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Bias % - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 1001671696 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Bias %</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Bias % - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 3553430423 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Calculated At</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Calculated At - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 720485825 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Muc ban mot ngay ma phuong phap nay du bao (MA28), hoac trung binh cac thu (SWA8).</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Daily Level - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 720485825 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Daily Level</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Daily Level - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 1399743132 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ngay het hang ma khong ban duoc gi: nhu cau that khong do duoc nen khong tinh sai so.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Days Censored - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 1399743132 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Days Censored</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Days Censored - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 2756014412 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Days Evaluated</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Days Evaluated - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 1140699767 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ngay co dong LSC Replen. Planned Sales Demand dang Enabled hoac nam trong NWV Demand Exception: su kien da khai, khong tinh sai so va khong dua vao du lieu hoc.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Days Excluded - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 1140699767 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Days Excluded</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Days Excluded - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 2198112791 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Demand Basis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Demand Basis - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 2198112791 - Property 62802879" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sale,Outflow</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Demand Basis - Property OptionCaption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 1412321877 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Exception Reason</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Exception Reason - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 1659395225 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Forecast Qty</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Forecast Qty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 2877317129 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Holdout From</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Holdout From - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 2573048326 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Holdout To</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Holdout To - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 2436859559 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Is Exception</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Is Exception - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 1037119892 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Category Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Item Category Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 2842094365 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Item Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 2161572060 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Location Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Location Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 4132733409 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>MA28: trung binh 28 ngay con hang gan nhat. SWA8: trung binh cung thu trong tuan, 8 tuan gan nhat. HW: Holt-Winters mua vu tuan.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Method - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 4132733409 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Method</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Method - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 2100190663 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Tham so Holt-Winters da chon tren du lieu hoc (alpha, gamma, xu huong). Trong voi MA28 va SWA8.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Model Parameters - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 2100190663 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Model Parameters</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field Model Parameters - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 2561428698 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Tong sai so tuyet doi chia tong ban thuc te, nhan 100. Thap la tot.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field WAPE % - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 367965395 - Field 2561428698 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>WAPE %</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Accuracy - Field WAPE % - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3846894839 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Forecast Daily</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Daily - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3846894839 - Field 4207111542 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Actual Qty</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Daily - Field Actual Qty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3846894839 - Field 4110100721 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Censored</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Daily - Field Censored - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3846894839 - Field 3192175264 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Daily - Field Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3846894839 - Field 963147798 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Excluded</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Daily - Field Excluded - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3846894839 - Field 1659395225 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Forecast Qty</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Daily - Field Forecast Qty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3846894839 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Daily - Field Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3846894839 - Field 2161572060 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Location Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Daily - Field Location Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3846894839 - Field 4132733409 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Method</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Forecast Daily - Field Method - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Inventory Health Line</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 345933321 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ngay neo cua lan tinh, la Work Date luc chay. Days To Expiry va Days Since Last Sale tinh tu ngay nay.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field As Of Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 345933321 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>As Of Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field As Of Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 1053602047 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Avg Daily Sales Qty</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Avg Daily Sales Qty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 411531942 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Base Unit of Measure</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Base Unit of Measure - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 3553430423 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Calculated At</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Calculated At - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 1399743132 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>So ngay trong cua so lich su khong con hang va khong ban duoc gi, da loai khoi phep tinh binh quan.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Days Censored - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 1399743132 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Days Censored</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Days Censored - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 1946378405 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>9999 nghia la khong co ban trong ky nen khong tinh duoc.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Days of Cover - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 1946378405 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Days of Cover</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Days of Cover - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 2277872048 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Days Since Last Sale</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Days Since Last Sale - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 285490637 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Days To Expiry</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Days To Expiry - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 2198112791 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sale: nhu cau tinh tren dong ban. Outflow: dia diem khong he ban, tinh tren tong luong xuat, thuong la kho trung tam.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Demand Basis - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 2198112791 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Demand Basis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Demand Basis - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 2198112791 - Property 62802879" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sale,Outflow</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Demand Basis - Property OptionCaption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 1579714849 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Expiration Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Expiration Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 1539106347 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inventory Value (LCY)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Inventory Value - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 1037119892 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Category Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Item Category Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 2842094365 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Item Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 2971512735 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Last Sale Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Last Sale Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 2161572060 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Location Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Location Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 1482668068 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Lot No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Lot No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 1365470147 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantity on Hand</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Quantity on Hand - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 3434385073 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Risk Reason</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Risk Reason - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 2963131589 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>0..100. Cang cao cang can xu ly som. Cong thuc trong codeunit NWV Inv. Health Calc.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Risk Score - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 2963131589 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Risk Score</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Risk Score - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 648423286 - Field 4047221286 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Tier</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Inv. Health Line - Field Tier - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV POS Discount Log</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 3310956332 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Discount %</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Discount % - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 1267560475 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Discount Amount</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Discount Amount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 2390037895 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Discount Type</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Discount Type - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 883711285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 471669354 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Gross Amount</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Gross Amount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 900727289 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Infocode Reason</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Infocode Reason - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 3320823955 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Line No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Line No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 1721491945 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Manager Override</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Manager Override - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 2402029925 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Member Card No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Member Card No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 11342033 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Offer No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Offer No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 1098346073 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>POS Terminal No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field POS Terminal No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 2704404533 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 2253333645 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Receipt No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Receipt No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 3049371658 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Khoa dong nguon o LS Central de truy nguoc: Store|Terminal|TransNo|LineNo.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Source Entry Key - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 3049371658 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Source Entry Key</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Source Entry Key - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 3267086732 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Source System</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Source System - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 3368806013 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Staff ID</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Staff ID - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 3019550948 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Store No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Store No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 985039452 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transaction Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Trans. Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 3890180923 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transaction Time</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Trans. Time - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1226640638 - Field 3319631365 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transaction No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV POS Discount Log - Field Transaction No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2475871287 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Shelf Life Buffer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Shelf Life Buffer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2475871287 - Field 883711285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Shelf Life Buffer - Field Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2475871287 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Shelf Life Buffer - Field Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2475871287 - Field 2816008541 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Span Days</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Shelf Life Buffer - Field Span Days - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Supplier Scorecard</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 345933321 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>As Of Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field As Of Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 3141419926 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Attention Reason</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Attention Reason - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 2223253577 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Ngay nhan du hang tru Order Date, tren dong da nhan du.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Avg Actual Lead Time - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 2223253577 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Avg Actual Lead Time (Days)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Avg Actual Lead Time - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 1007266718 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Trung binh so ngay tre tren nhung dong tre, tinh ca dong qua han chua nhan du (den ngay neo).</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Avg Delay Days - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 1007266718 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Avg Delay Days</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Avg Delay Days - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 1692609614 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Expected Receipt Date tru Order Date.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Avg Promised Lead Time - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 1692609614 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Avg Promised Lead Time (Days)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Avg Promised Lead Time - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 3553430423 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Calculated At</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Calculated At - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 1683293750 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dong nhan du so luong ngay trong lan giao dau tien, chia cho dong da nhan it nhat mot lan.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field First Delivery Complete % - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 1683293750 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>First Delivery Complete %</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field First Delivery Complete % - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 1037119892 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Rong la dong tong cua nha cung cap.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Item Category Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 1037119892 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Category Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Item Category Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 3833602198 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Last Receipt Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Last Receipt Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 1783458996 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Lines Completed</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Lines Completed - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 3158548707 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dong don mua co Expected Receipt Date trong ky va khong sau ngay neo.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Lines Due - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 3158548707 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Lines Due</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Lines Due - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 3212971043 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Lines On Time</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Lines On Time - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 2456599393 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Needs Attention</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Needs Attention - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 2480972584 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dong nhan du hang khong tre qua On-time Tolerance Days, chia cho dong den han.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field On-time % - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 2480972584 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>On-time %</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field On-time % - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 1835562147 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Open Lines</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Open Lines - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 4131374522 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Overdue Amount</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Overdue Amount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 328886777 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dong con so luong chua nhan va da qua Expected Receipt Date cong dung sai.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Overdue Lines - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 328886777 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Overdue Lines</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Overdue Lines - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 3715835090 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Overdue Qty</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Overdue Qty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 1898100669 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Period From</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Period From - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 4223413042 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Period To</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Period To - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 3119688693 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Vendor Name</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Vendor Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4071617625 - Field 1527594213 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Vendor No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Supplier Scorecard - Field Vendor No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1753186934 - NamedType 735125030" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The agent user %1 is not allowed to approve proposals.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = user id</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Agent Proposal Mgt. - NamedType AgentCannotApproveErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1753186934 - NamedType 1059098542" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Proposal %1 lacks From/To Location or Quantity for a Transfer.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Proposal Id</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Agent Proposal Mgt. - NamedType MissingTransferDataErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1753186934 - NamedType 3393982524" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Proposal %1 is not in status Proposed (current: %2).</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Proposal Id, %2 = Status</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Agent Proposal Mgt. - NamedType NotProposedErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 913976095 - NamedType 2708612618" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Demand Calc chua duoc Build.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Demand Calc - NamedType NotBuiltErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4177649256 - NamedType 3769106935" size-unit="char" translate="yes" xml:space="preserve">
+          <source>WAPE %1% vượt ngưỡng %2%.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = wape, %2 = nguong</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Forecast Accuracy Calc - NamedType HighWapeTxt</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4177649256 - NamedType 446205882" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dự báo cao hơn bán thực tế %1%.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = bias</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Forecast Accuracy Calc - NamedType OverTxt</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 4177649256 - NamedType 1348667900" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dự báo thấp hơn bán thực tế %1%.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = bias</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Forecast Accuracy Calc - NamedType UnderTxt</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2410736051 - NamedType 1536342137" size-unit="char" translate="yes" xml:space="preserve">
+          <source> Đã loại %1 ngày hết hàng khỏi phép tính.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = so ngay</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Inv. Health Calc - NamedType CensoredTxt</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2410736051 - NamedType 4200637237" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Days of cover %1 vượt ngưỡng %2.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = days of cover, %2 = nguong</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Inv. Health Calc - NamedType ExcessTxt</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2410736051 - NamedType 340344825" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Lô đã hết hạn %1 ngày.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = so ngay</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Inv. Health Calc - NamedType ExpiredTxt</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2410736051 - NamedType 1250599743" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Trong ngưỡng.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Inv. Health Calc - NamedType HealthyTxt</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2410736051 - NamedType 1723856090" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Còn %1 ngày đến hạn, chưa có dòng bán nào để ước lượng.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = so ngay</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Inv. Health Calc - NamedType NearNoDemandTxt</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2410736051 - NamedType 1971917239" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Còn %1 ngày đến hạn nhưng days of cover là %2, sẽ không bán hết.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = so ngay, %2 = days of cover</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Inv. Health Calc - NamedType NearWillNotSellTxt</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2410736051 - NamedType 1502446380" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Còn %1 ngày đến hạn, dự kiến bán hết trước hạn.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = so ngay</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Inv. Health Calc - NamedType NearWillSellTxt</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2410736051 - NamedType 4202582507" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Không có dòng bán nào trong cửa sổ lịch sử.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Inv. Health Calc - NamedType SlowNoDemandTxt</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2410736051 - NamedType 3223572015" size-unit="char" translate="yes" xml:space="preserve">
+          <source>%1 ngày không có dòng bán. Giá trị tồn %2.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = so ngay, %2 = gia tri</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Inv. Health Calc - NamedType SlowNoSaleTxt</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2410736051 - NamedType 1331875066" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Days of cover %1 dưới ngưỡng %2. Bán bình quân %3 một ngày (%4).</source>
+          <note from="Developer" annotates="general" priority="2">%1 = days of cover, %2 = nguong, %3 = binh quan, %4 = co so</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Inv. Health Calc - NamedType StockOutTxt</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1537387664 - NamedType 43408466" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Template %1 dang dat Create Orders Automatically = %2. Tro ly khong chay tinh journal khi LS se tu tao chung tu; doi ve "Do Not Create Orders Automatically" truoc.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = template, %2 = value</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Replen. Service - NamedType AutoCreateErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1537387664 - NamedType 927039822" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Khong tim thay Replenishment Journal Batch %1 / %2.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = template, %2 = batch</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Replen. Service - NamedType BatchNotFoundErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1537387664 - NamedType 1037243000" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Bang %1 khong co field ten "%2".</source>
+          <note from="Developer" annotates="general" priority="2">%1 = table no., %2 = field name</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Replen. Service - NamedType FieldNotFoundErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1537387664 - NamedType 2957784316" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Bang %1 khong nam trong danh sach duoc doc qua NWVReplenService.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = table no.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Replen. Service - NamedType NotAllowedErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 918065750 - NamedType 427136548" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Giao đúng hạn %1%, dưới ngưỡng %2%.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = ty le, %2 = nguong</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Supplier Scorecard Calc - NamedType LowOnTimeTxt</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 918065750 - NamedType 1875196686" size-unit="char" translate="yes" xml:space="preserve">
+          <source>%1 dòng quá hạn chưa nhận đủ.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = so dong</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Supplier Scorecard Calc - NamedType OverdueTxt</note>
+        </trans-unit>
+        <trans-unit id="Page 3430929966 - Method 3530100688 - NamedType 2094749251" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Only proposals in status Proposed can be modified through the API.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Proposal API - Method OnModifyRecord - NamedType ProposedOnlyErr</note>
+        </trans-unit>
+        <trans-unit id="Page 3430929966 - Control 4144156157 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Evidence JSON</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Proposal API - Control evidenceJson - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4288647747 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Agent Proposals</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Proposals - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4288647747 - NamedType 724885003" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Da xoa %1 de xuat.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = so de xuat</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Proposals - NamedType DeleteAllDoneMsg</note>
+        </trans-unit>
+        <trans-unit id="Page 4288647747 - NamedType 688848490" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Xoa %1 de xuat dang hien theo bo loc hien tai?\De xuat da duyet cung bi xoa; Transfer Order da tao van giu nguyen trong BC. Khong hoan tac duoc.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = so de xuat</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Proposals - NamedType DeleteAllQst</note>
+        </trans-unit>
+        <trans-unit id="Page 4288647747 - Action 803889193 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Duyet de xuat. Voi Transfer, he thong tao Transfer Order o trang thai Open.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Proposals - Action Approve - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4288647747 - Action 803889193 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Approve</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Proposals - Action Approve - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4288647747 - Action 389138476 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Xoa tat ca de xuat dang hien theo bo loc hien tai. Transfer Order da tao van giu nguyen.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Proposals - Action DeleteAll - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4288647747 - Action 389138476 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Delete All</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Proposals - Action DeleteAll - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4288647747 - Action 113888489 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Tu choi de xuat. Ghi ly do de agent hoc rule (thu cong, POC).</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Proposals - Action Reject - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4288647747 - Action 113888489 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Reject</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Proposals - Action Reject - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4288647747 - Action 1720633348 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Xem so lieu agent da doc khi ra de xuat nay.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Proposals - Action ShowEvidence - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4288647747 - Action 1720633348 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Show Evidence</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Proposals - Action ShowEvidence - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 479121427 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Agent Setup</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Setup - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 479121427 - Control 972110707 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Agent</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Setup - Control Agent - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 479121427 - Control 3388069477 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Discount Governance</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Setup - Control DiscountGovernance - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 479121427 - Control 3452445781 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Demand Forecast (UC1)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Setup - Control Forecast - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 479121427 - Control 1504448762 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inventory Health</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Setup - Control InventoryHealth - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 479121427 - Control 890861418 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dia diem</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Setup - Control Locations - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 479121427 - Control 55222080 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Supplier Performance (UC3)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Setup - Control Supplier - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 479121427 - Action 1314347086 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quet NWV POS Discount Log va tao exception.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Setup - Action RunDiscountGov - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 479121427 - Action 1314347086 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Run Discount Governance</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Setup - Action RunDiscountGov - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 479121427 - Action 1550816054 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Tinh lai do chinh xac du bao baseline (UC1).</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Setup - Action RunForecast - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 479121427 - Action 1550816054 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Run Forecast Accuracy</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Setup - Action RunForecast - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 479121427 - Action 2142618081 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Tinh lai bang NWV Inv. Health Line cho toan bo item/location.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Setup - Action RunInventoryHealth - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 479121427 - Action 2142618081 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Run Inventory Health</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Setup - Action RunInventoryHealth - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 479121427 - Action 1896168559 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Tinh lai scorecard nha cung cap (UC3).</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Setup - Action RunSupplier - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 479121427 - Action 1896168559 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Run Supplier Scorecard</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Agent Setup - Action RunSupplier - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4081776101 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Category Thresholds</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Category Thresholds - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3036844320 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Demand Exceptions</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Demand Exceptions - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 661556847 - Method 3530100688 - NamedType 2161587028" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Agent may only set status to Under Review. Confirmed/Dismissed/Explained are reserved for human reviewers.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Discount Exception API - Method OnModifyRecord - NamedType AgentStatusErr</note>
+        </trans-unit>
+        <trans-unit id="Page 3449224578 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Discount Exceptions</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Discount Exceptions - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 367965395 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Forecast Accuracy</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Forecast Accuracy - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 367965395 - Action 38359347 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Du bao va ban thuc te tung ngay trong ky kiem tra.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Forecast Accuracy - Action Daily - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 367965395 - Action 38359347 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Forecast vs Actual by Day</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Forecast Accuracy - Action Daily - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 367965395 - Action 2986646893 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Tinh lai do chinh xac du bao baseline theo Work Date.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Forecast Accuracy - Action Recalculate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 367965395 - Action 2986646893 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Run Forecast Accuracy</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Forecast Accuracy - Action Recalculate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3846894839 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Forecast vs Actual</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Forecast Daily - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4005947555 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Inventory Health</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Inv. Health Lines - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2553348150 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Item API</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Item API - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3399001694 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Item Category API</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Item Category API - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2996306949 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Item Ledger Entry API</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Item Ledger Entry API - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3409452670 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Location API</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Location API - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2296073589 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Lot No. Information API</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Lot No. Information API - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 94382832 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Purchase Order Line API</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Purchase Order Line API - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2992962537 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Sales Order Line API</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Sales Order Line API - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4116592726 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Stockkeeping Unit API</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Stockkeeping Unit API - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4071617625 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Supplier Scorecard</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Supplier Scorecard - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4071617625 - Action 1715743499 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dong don mua cua nha cung cap nay.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Supplier Scorecard - Action OpenOrders - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4071617625 - Action 1715743499 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Purchase Order Lines</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Supplier Scorecard - Action OpenOrders - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4071617625 - Action 2986646893 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Tinh lai scorecard nha cung cap theo Work Date.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Supplier Scorecard - Action Recalculate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4071617625 - Action 2986646893 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Run Supplier Scorecard</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Supplier Scorecard - Action Recalculate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2169764716 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Value Entry API</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page NWV Value Entry API - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1633140956 - EnumValue 3388069477 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Discount Governance</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Agent Scenario - EnumValue DiscountGovernance - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1633140956 - EnumValue 1504448762 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inventory Health</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Agent Scenario - EnumValue InventoryHealth - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1633140956 - EnumValue 1302128097 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Store Replenishment</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Agent Scenario - EnumValue StoreReplenishment - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1346276677 - EnumValue 3116416530 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>High</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Exception Severity - EnumValue High - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1346276677 - EnumValue 3592530208 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Low</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Exception Severity - EnumValue Low - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1346276677 - EnumValue 432767615 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Medium</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Exception Severity - EnumValue Medium - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1374814440 - EnumValue 4141588837 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Confirmed</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Exception Status - EnumValue Confirmed - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1374814440 - EnumValue 2564980717 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Dismissed</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Exception Status - EnumValue Dismissed - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1374814440 - EnumValue 4176894442 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Explained</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Exception Status - EnumValue Explained - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1374814440 - EnumValue 4259830144 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Open</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Exception Status - EnumValue Open - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1374814440 - EnumValue 3182193902 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Under Review</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Exception Status - EnumValue UnderReview - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 683266746 - EnumValue 3376511709 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Excess</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Inv. Health Tier - EnumValue Excess - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 683266746 - EnumValue 1481297009 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Expired</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Inv. Health Tier - EnumValue Expired - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 683266746 - EnumValue 3431250135 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Healthy</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Inv. Health Tier - EnumValue Healthy - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 683266746 - EnumValue 3704722265 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Near Expiry</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Inv. Health Tier - EnumValue NearExpiry - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 683266746 - EnumValue 3524010085 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Slow-moving</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Inv. Health Tier - EnumValue SlowMoving - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 683266746 - EnumValue 867149063 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Stock-out Risk</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Inv. Health Tier - EnumValue StockOutRisk - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1181652226 - EnumValue 2204248084 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Coupon</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV POS Discount Type - EnumValue Coupon - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1181652226 - EnumValue 3126270496 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Manual Line Discount</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV POS Discount Type - EnumValue ManualLine - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1181652226 - EnumValue 1593946772 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Manual Total Discount</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV POS Discount Type - EnumValue ManualTotal - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1181652226 - EnumValue 69905980 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Member Discount</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV POS Discount Type - EnumValue Member - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1181652226 - EnumValue 1946612796 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Offer / Promotion</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV POS Discount Type - EnumValue Offer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1181652226 - EnumValue 2573919283 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Price Override</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV POS Discount Type - EnumValue PriceOverride - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 964245463 - EnumValue 296314928 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Adjust Parameter</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Proposal Action - EnumValue AdjustParameter - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 964245463 - EnumValue 1394839815 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Audit Note</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Proposal Action - EnumValue AuditNote - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 964245463 - EnumValue 3840281710 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Block Purchase</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Proposal Action - EnumValue BlockPurchase - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 964245463 - EnumValue 2748324060 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Escalate</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Proposal Action - EnumValue Escalate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 964245463 - EnumValue 1113875961 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Markdown</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Proposal Action - EnumValue Markdown - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 964245463 - EnumValue 187689882 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Review Only</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Proposal Action - EnumValue ReviewOnly - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 964245463 - EnumValue 4224198349 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transfer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Proposal Action - EnumValue Transfer - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 964245463 - EnumValue 2852845006 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Write-off</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Proposal Action - EnumValue WriteOff - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1315336985 - EnumValue 2913119229 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Approved</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Proposal Status - EnumValue Approved - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1315336985 - EnumValue 3605958501 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Executed</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Proposal Status - EnumValue Executed - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1315336985 - EnumValue 3826689261 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Failed</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Proposal Status - EnumValue Failed - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1315336985 - EnumValue 2483819212 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Proposed</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Proposal Status - EnumValue Proposed - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 1315336985 - EnumValue 496445946 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Rejected</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Proposal Status - EnumValue Rejected - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PermissionSet 2146442280 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Agent - LS Replenishment Calculate</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PermissionSet NWV AGENT LS CALC - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PermissionSet 2560772301 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Agent - LS Replenishment Read</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PermissionSet NWV AGENT LS READ - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PermissionSet 2880086384 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Agent - Reviewer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PermissionSet NWV AGENT REVIEW - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PermissionSet 4093397489 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Agent - Run (API)</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PermissionSet NWV AGENT RUN - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PermissionSet 2095331101 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Marou Data API</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PermissionSet NWV Marou Data API - Property Caption</note>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

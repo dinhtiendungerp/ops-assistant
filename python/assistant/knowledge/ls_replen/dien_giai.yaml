@@ -1,0 +1,504 @@
+# Dien giai tieng Viet cho tung cau log cua LS Replenishment. Khoa la `id` trong mau_log.json (sinh tu source).
+#
+# Truong:
+#   buoc   : nhom buoc tinh, dung de xep va dat tieu de (xem `buoc` o cuoi file).
+#   noi    : cau tieng Viet. {1}..{9} la gia tri LS in ra dung vi tri %1..%9 cua Label.
+#            {3|ten} doi caption LS (vd "Effective Inventory") sang ten tieng Viet trong tham_so.yaml.
+#   doi_so : true neu dong nay lam THAY DOI so luong (de tom tat vi sao so cuoi khac so cong thuc).
+#   tham_so: caption lien quan, tra y nghia va noi sua trong tham_so.yaml.
+#   nguon  : thu tuc trong source LS da doc.
+# Cau nao chua co o day van duoc nhan dang (co trong mau_log.json) va hien nguyen van, danh dau "chua co dien giai".
+
+buoc:
+  pham_vi: Phạm vi tính
+  tham_so: Tham số LS dùng
+  ton: Tồn khả dụng
+  phu: Cửa sổ phủ hàng
+  nhu_cau: Nhu cầu và hệ số dự báo
+  cong_thuc: Công thức ra số đề xuất
+  dieu_chinh: Điều chỉnh theo Reorder Point và Maximum Inventory
+  lam_tron: Làm tròn theo bội số
+  gioi_han_kho: Giới hạn theo tồn kho cấp hàng
+  nha_cung_cap: Nhà cung cấp
+  cross_dock: Cross dock
+  psd: Nhu cầu đã lên kế hoạch
+  bo_qua: Không tính
+  he_thong: Thiết lập chung của lần tính
+
+mau:
+  # ---------- pham vi va bo qua
+  ADDITEMS:Text014:
+    buoc: pham_vi
+    noi: "LS bắt đầu xét mặt hàng {1} tại {3}."
+  CALC:Text105:
+    buoc: pham_vi
+    noi: "Cửa hàng {1} nằm trong bộ lọc cửa hàng của template, nên được tính."
+    tham_so: [Store Group Filter]
+    nguon: Replen. Calculation.InsertItem
+  CALC:Text104:
+    buoc: bo_qua
+    noi: "Cửa hàng {1} không nằm trong bộ lọc cửa hàng của template ({2}), LS bỏ qua."
+    tham_so: [Store Group Filter]
+    nguon: Replen. Calculation.IsSkip_InStoreGroupFilter
+  CALC:Text102:
+    buoc: bo_qua
+    noi: "Mặt hàng không được phân phối (range) cho địa điểm {1}, LS bỏ qua."
+    tham_so: [Range in Location]
+    nguon: Replen. Calculation.IsSkip_ItemIsInRange
+  CALC:Text106:
+    buoc: bo_qua
+    noi: "Mặt hàng bị loại khỏi bổ sung (Exclude from Replenishment), LS không tính."
+    tham_so: [Exclude from Replenishment]
+    nguon: Replen. Calculation.IsItemExcludedFromReplenishment
+  CALC:Text109:
+    buoc: bo_qua
+    noi: "LS không xử lý dòng này vì nơi nhận hàng mua không khớp kiểu đơn mua của template."
+    tham_so: [Purch. Order Delivery, Purchase Order Type]
+    nguon: Replen. Calculation.ProcessRecord
+  CALC:Text210:
+    buoc: bo_qua
+    noi: "Mặt hàng tại địa điểm này đang bị chặn {1} theo Item Status Link, LS không tính."
+    nguon: Replen. Calculation.IsItemBlockedInProcessRecord
+  CALC:Text008:
+    buoc: bo_qua
+    noi: "{1} nằm ngoài bộ lọc {2} của template, LS bỏ qua."
+    nguon: Replen. Calculation.IsVendorNotWithinReplenTemplateVendorFilter
+  ADDITEMS:Text100:
+    buoc: bo_qua
+    noi: "Mặt hàng đang bị Blocked, LS bỏ qua."
+  ADDITEMS:Text103:
+    buoc: bo_qua
+    noi: "Mặt hàng bị chặn tạo đơn mua, LS bỏ qua."
+  ADDITEMS:Text104:
+    buoc: bo_qua
+    noi: "Mặt hàng bị chặn tạo lệnh chuyển, LS bỏ qua."
+  ADDITEMS:Text106:
+    buoc: bo_qua
+    noi: "Mặt hàng không thuộc bộ lọc Item Dynamic Hierarchy của template."
+  ADDITEMS:Text107:
+    buoc: bo_qua
+    noi: "Mặt hàng không thuộc Special Group của template."
+  ADDITEMS:Text108:
+    buoc: bo_qua
+    noi: "Mặt hàng không thuộc bộ lọc thuộc tính của template."
+  ADDITEMS:ExcludeILEDataSourceLocation:
+    buoc: bo_qua
+    noi: "Địa điểm {1} lấy dữ liệu kiểu {2}, LS không bổ sung cho địa điểm này."
+  CALC:Text151:
+    buoc: pham_vi
+    noi: "Địa điểm là cửa hàng nhưng có Item Store Record của kho; journal mua không tính riêng dòng cửa hàng này."
+    nguon: Replen. Calculation.InsertItem
+  CALC:StoreNotFoundErr:
+    buoc: bo_qua
+    noi: "Không tìm thấy LS Store cho địa điểm {1}, nên không tính được lead time chuyển hàng."
+  CALC:LocationNotFoundErr:
+    buoc: bo_qua
+    noi: "Không tìm thấy địa điểm {1}."
+  CALC:ILEDataSourceQtySetToZeroTxt:
+    buoc: cross_dock
+    doi_so: true
+    noi: "Địa điểm {1} lấy dữ liệu kiểu {2}, nên {3} bị đặt về 0."
+
+  # ---------- thiet lap chung
+  ADDITEMS:StartedTxt:
+    buoc: he_thong
+    noi: "Bắt đầu lần tính journal."
+  ADDITEMS:TemplateFiltersTxt:
+    buoc: he_thong
+    noi: "Bộ lọc của template."
+  ADDITEMS:Text019:
+    buoc: he_thong
+    noi: "Bộ lọc áp dụng cho lần tính."
+
+  # ---------- ton hieu dung
+  CALC:StoreWhseEffInvTxt:
+    buoc: ton
+    noi: "Tồn khả dụng tại cửa hàng là {1}; tồn khả dụng của kho cấp hàng là {2}."
+    tham_so: [Effective Inventory, Warehouse Effective Inventory]
+    nguon: Replen. Calculation.InsertWorksheetDetail, CalculateEffectiveInventory
+  CALC:FieldNotConsideredDueToTxt:
+    buoc: ton
+    noi: "Tồn khả dụng không cộng {1|ten} vì thiết lập trên {2}."
+    tham_so: [Quantity on Purchase Order]
+    nguon: Replen. Calculation.CalculateEffectiveInventory (Eff. Inv. PO Excl. Trans. Jour)
+  CALC:FieldsNotConsideredDueToTxt:
+    buoc: ton
+    noi: "Tồn khả dụng không tính {1|ten} và {2|ten} vì thiết lập trên {3}."
+    nguon: Replen. Calculation.CalculateEffectiveInventory
+  CALC:ValueAdjustedTxt:
+    buoc: dieu_chinh
+    doi_so: true
+    noi: "{1|ten} được chỉnh từ {2} thành {3}."
+
+  # ---------- cua so phu, lead time
+  CALC:StockCoverDaysMsg:
+    buoc: phu
+    noi: "Số ngày phủ {1} ({2}), cửa sổ phủ từ {3} đến {4}."
+  CALC:CrossDockStockCoverDaysMsg:
+    buoc: phu
+    noi: "Số ngày phủ cho cross dock {1} ({2}), cửa sổ từ {3} đến {4}."
+  CALC:CoverageProfileUsedTxt:
+    buoc: phu
+    noi: "Dùng {1} {2} để tính {3}: {4} {5}, {6} {7}, {8} {9}."
+    tham_so: [Store Coverage Days Profile, Wareh Coverage Days Profile]
+    nguon: Replen. Calculation.UpdateDynamicCoverageDays
+  CALC:DaysUntilNextCalcTxt:
+    buoc: phu
+    noi: "Số ngày tới lần tính kế tiếp: {1}."
+  CALC:LSFCCoverClosedDaysMsg:
+    buoc: phu
+    doi_so: true
+    noi: "{1} ngày đóng cửa trong cửa sổ phủ, {2} của những ngày đó tính bằng 0."
+  CALC:LSFCLeadTimeClosedDaysMsg:
+    buoc: phu
+    doi_so: true
+    noi: "{1} ngày đóng cửa trong thời gian chờ hàng, {2} của những ngày đó tính bằng 0."
+
+  # ---------- nhu cau, he so du bao
+  CALC:Text142:
+    buoc: nhu_cau
+    noi: "Hệ số dự báo so hai giai đoạn năm trước: giai đoạn vừa qua {1} đến {2}, giai đoạn sắp tới {3} đến {4}."
+    tham_so: [Store Forward Sales Profile, Forward Sales Forecast Factor]
+    nguon: Replen. Calculation.CalculateForecastFactor
+  CALC:Text144:
+    buoc: nhu_cau
+    noi: "Năm trước giai đoạn sắp tới bán {1} trong {2} ngày, giai đoạn vừa qua bán {3} trong {4} ngày. Hệ số dự báo = {6} / {7} = {5}."
+    tham_so: [Forward Sales Forecast Factor]
+    nguon: Replen. Calculation.CalculateForecastFactor
+  CALC:ForwardFactorReplacedText:
+    buoc: nhu_cau
+    doi_so: true
+    noi: "Hệ số dự báo {1} vượt Maximum Forward Factor nên bị hạ về {2}."
+    nguon: Replen. Calculation.CalculateForecastFactor
+  CALC:Text145:
+    buoc: nhu_cau
+    noi: "Lịch ngày tương ứng năm trước đã được dời."
+  CALC:LSForecastSetupNotFoundMsg:
+    buoc: nhu_cau
+    noi: "Chưa có Retail Forecast Setup, kiểu tính Retail Forecast không có số dự báo."
+  CALC:LSForecastEntryFoundMsg:
+    buoc: nhu_cau
+    noi: "Tìm thấy dòng dự báo: tổng {1} là {2}, trong đó {3} cộng thêm do dimension bổ sung."
+  CALC:LSForecastNoEntryFoundUsedZeroMsg:
+    buoc: nhu_cau
+    doi_so: true
+    noi: "Thiếu dòng dự báo trong cửa sổ phủ {1} đến {2}; {3} tính bằng 0 cho {4} ngày."
+  CALC:LSForecastNoEntryFoundUseAvgMsg:
+    buoc: nhu_cau
+    doi_so: true
+    noi: "Thiếu dòng dự báo trong cửa sổ phủ {1} đến {2}; {3} lấy bằng bán bình quân ({4}) cho {5} ngày."
+  CALC:SafetyStockCalcEnabledMsg:
+    buoc: nhu_cau
+    noi: "{1} đang bật, {2} dùng giá trị cận trên."
+
+  # ---------- cong thuc
+  CALC:Text015:
+    buoc: cong_thuc
+    noi: "Số hệ thống đề xuất {1} = bán bình quân {2}/ngày × {3|ten} {4} × hệ số dự báo {5} − {6|ten} {7}, làm tròn lên."
+    tham_so: [Daily Sales, Store Stock Cover Reqd (Days), Forward Sales Forecast Factor, Effective Inventory]
+    nguon: Replen. Calculation.CalcAveMan
+  CALC:SSQWithoutEffInventoryTxt:
+    buoc: cong_thuc
+    noi: "Số hệ thống đề xuất {1} = bán bình quân {2}/ngày × {3|ten} {4} × hệ số dự báo {5}. Loại journal này không trừ tồn khả dụng."
+    nguon: Replen. Calculation.CalcAveMan
+  CALC:Text012:
+    buoc: cong_thuc
+    noi: "Số cross dock {1} = bán bình quân {2}/ngày × số ngày phủ {3} × hệ số dự báo {6} − {4|ten} {5}."
+    nguon: Replen. Calculation.CalcAveMan (cross dock)
+  CALC:SSQWithPSDTxt:
+    buoc: psd
+    noi: "Số hệ thống đề xuất {1} = tổng nhu cầu trong cửa sổ phủ {2} (đã gồm nhu cầu kế hoạch) × hệ số dự báo {3} − {4|ten} {5}."
+    tham_so: [Forward Sales Forecast Factor]
+    nguon: Replen. Calculation.CheckPlannedSalesDemandAndUpdateQty
+  CALC:SSQWithPSDWithoutEffInventoryTxt:
+    buoc: psd
+    noi: "Số hệ thống đề xuất {1} = tổng nhu cầu trong cửa sổ phủ {2} (đã gồm nhu cầu kế hoạch) × hệ số dự báo {3}."
+  CALC:XDockWithPSDTxt:
+    buoc: psd
+    noi: "Số cross dock {1} = tổng nhu cầu trong cửa sổ phủ {2} − {3|ten} {4}."
+  CALC:PlannedSalesDemandCoverFoundTxt:
+    buoc: psd
+    doi_so: true
+    noi: "Có {1} trong cửa sổ phủ {2} đến {3}; LS chỉnh nhu cầu từng ngày theo kế hoạch: thay thế, cộng số lượng hoặc cộng % (Planned Demand Type)."
+    nguon: Replen. Calculation.CheckPlannedSalesDemandAndUpdateQty, GetTotalSalesWithPSD
+  CALC:PlannedSalesDemandLeadTimeFoundTxt:
+    buoc: psd
+    doi_so: true
+    noi: "Có {1} trong thời gian chờ hàng {2} đến {3}; phần bán trong thời gian chờ được tính lại."
+  CALC:Text125:
+    buoc: cong_thuc
+    noi: "Kiểu Stock Levels: tồn khả dụng {1} cao hơn Reorder Point {2} nên số hệ thống đề xuất là {3}."
+    tham_so: [Reorder Point, Maximum Inventory]
+    nguon: Replen. Calculation.Calc-StockLevels
+  CALC:Text123:
+    buoc: cong_thuc
+    noi: "Maximum Inventory {1} − tồn khả dụng {2} = {3}."
+    tham_so: [Maximum Inventory]
+  CALC:Text124:
+    buoc: cong_thuc
+    noi: "Reorder Point {1} − tồn khả dụng {2} = {3}."
+    tham_so: [Reorder Point]
+  CALC:ComponentSSQTxt:
+    buoc: cong_thuc
+    noi: "Số đề xuất {1} = nhu cầu thành phần {2} − {3|ten} {4}."
+  CALC:ComponentQtyTxt:
+    buoc: nhu_cau
+    noi: "Nhu cầu thành phần {1} lấy từ {2}."
+  CALC:BOMinBOMSSQTxt:
+    buoc: cong_thuc
+    noi: "Số đề xuất {1} = nhu cầu BOM lồng {2}."
+  CALC:BOMinBOMQtyTxt:
+    buoc: nhu_cau
+    noi: "Nhu cầu BOM lồng {1} lấy từ {2}."
+  CALC:SSQFormulaMsg:
+    buoc: cong_thuc
+    noi: "Số hệ thống đề xuất {1} = tổng {2} {3} − {4} {5}."
+  CALC:SSQFormulaWithoutEffInventoryMsg:
+    buoc: cong_thuc
+    noi: "Số hệ thống đề xuất {1} = tổng {2} {3}."
+  CALC:Text118:
+    buoc: cong_thuc
+    doi_so: true
+    noi: "Kết quả công thức {1} âm, tức tồn đã đủ cho số ngày phủ, nên LS đưa về 0 (mã CA100)."
+    nguon: Replen. Calculation.InsertWorksheetDetail
+  CALC:Text021:
+    buoc: cong_thuc
+    doi_so: true
+    noi: "Số lượng âm được đưa về 0."
+  CALC:NotUsedTxt:
+    buoc: ton
+    noi: "{1} không dùng cho {2}."
+  CALC:OnlyConsideredInComponentJournalTxt:
+    buoc: ton
+    noi: "{1} chỉ tính trong Component Journal cho {2}."
+
+  # ---------- quyet dinh theo Reorder Point / Maximum Inventory
+  CALC:DecisionQtyBecauseReorderLessThanDemandTxt:
+    buoc: dieu_chinh
+    noi: "Quyết định: {1}. Giữ số đề xuất {2} vì tồn sau khi bổ sung ({5}) không thấp hơn Reorder Point {3}."
+    tham_so: [Reorder Point]
+    nguon: Replen. Calculation.ApplyRoPMaxInv
+  CALC:DecisionQtyBecauseReorderLessThanTxt:
+    buoc: dieu_chinh
+    noi: "Không bổ sung: số lượng {2} vì {4|ten} {5} đã cao hơn Reorder Point {3}."
+    tham_so: [Reorder Point]
+    nguon: Replen. Calculation.ApplyRoPMaxInv
+  CALC:DecisionQtyReorderPointTxt:
+    buoc: dieu_chinh
+    doi_so: true
+    noi: "Quyết định: {1}. Nâng số lượng lên {2} = Reorder Point {3} − {4|ten} {5}, vì theo nhu cầu thì tồn vẫn dưới Reorder Point."
+    tham_so: [Reorder Point]
+    nguon: Replen. Calculation.ApplyRoPMaxInv
+  CALC:DecisionQtyReorderPointWithoutEffInventoryTxt:
+    buoc: dieu_chinh
+    doi_so: true
+    noi: "Quyết định: {1}. Số lượng {2} bằng Reorder Point {3}."
+    tham_so: [Reorder Point]
+  CALC:DecisionQtyMaxInvTxt:
+    buoc: dieu_chinh
+    doi_so: true
+    noi: "Quyết định: {1}. Hạ số lượng xuống {2} = Maximum Inventory {3} − {4|ten} {5}, vì tồn sau bổ sung sẽ vượt trần."
+    tham_so: [Maximum Inventory]
+    nguon: Replen. Calculation.ApplyRoPMaxInv
+  CALC:DecisionQtyMaxInvWithoutEffInventoryTxt:
+    buoc: dieu_chinh
+    doi_so: true
+    noi: "Quyết định: {1}. Số lượng {2} bằng Maximum Inventory {3}."
+    tham_so: [Maximum Inventory]
+  CALC:DecisionQtyBecauseMaxInvLessThanTxt:
+    buoc: dieu_chinh
+    doi_so: true
+    noi: "Không bổ sung: số lượng {2} vì {4|ten} {5} đã vượt Maximum Inventory {3}."
+    tham_so: [Maximum Inventory]
+  CALC:DecisionSSQStoreEffInvQtyTxt:
+    buoc: dieu_chinh
+    noi: "Quyết định: {1}. Số lượng {4} = số hệ thống đề xuất {2} − tồn khả dụng cửa hàng {3}."
+    nguon: Replen. Calculation.InsertWorksheetDetail (Stock Levels)
+  CALC:DecisionSSQSWithoutStoreEffInvQtyTxt:
+    buoc: dieu_chinh
+    noi: "Quyết định: {1}. Số hệ thống đề xuất {2}."
+  CALC:DecisionSSQStoreEffInvQtyToXDockTxt:
+    buoc: cross_dock
+    noi: "Quyết định: {1}. Số cross dock {4} = số hệ thống đề xuất {2} − tồn khả dụng cửa hàng {3}."
+
+  # ---------- lam tron boi so
+  CALC:Text147:
+    buoc: lam_tron
+    doi_so: true
+    noi: "Làm tròn theo bội số: từ {1} thành {2} (bội số {3}, độ chính xác {4})."
+    tham_so: [Transfer Multiple, Purchase Order Multiple]
+    nguon: Replen. Calculation.MultipleRoundAndCheckRoPAndMax
+  CALC:FirstItemStoreRecPickedTxt:
+    buoc: lam_tron
+    doi_so: true
+    noi: "Làm tròn theo bội số: từ {1} thành {2} (bội số {3}, độ chính xác {4}); các cửa hàng có bội số khác nhau nên LS lấy bội số đầu tiên từ {5}."
+  MWH:QtyMultipleRoundedTxt:
+    buoc: lam_tron
+    doi_so: true
+    noi: "Làm tròn từ {1} thành {2} (bội số {3}, độ chính xác {4})."
+  CALC:TotalQtyRoundedToOrderMultipleTxt:
+    buoc: lam_tron
+    doi_so: true
+    noi: "Tổng số mua làm tròn từ {1} thành {2} theo Order Multiple {3}."
+    tham_so: [Purchase Order Multiple]
+  CALC:QtyToXDockRoundedTxt:
+    buoc: lam_tron
+    doi_so: true
+    noi: "Số cross dock làm tròn từ {1} thành {2} theo Transfer Multiple {3}."
+  CALC:Text224:
+    buoc: lam_tron
+    doi_so: true
+    noi: "Sau làm tròn, {1} cộng tồn {2} vẫn dưới Reorder Point {3}, nên LS cộng thêm một bội số {4}: số lượng {5}."
+    tham_so: [Reorder Point, Transfer Multiple]
+    nguon: Replen. Calculation.MultipleRoundAndCheckRoPAndMax
+  CALC:Text225:
+    buoc: lam_tron
+    doi_so: true
+    noi: "Sau làm tròn, {1} cộng tồn {2} vượt Maximum Inventory {3}, nên LS bớt một bội số {4}: số lượng {5}."
+    tham_so: [Maximum Inventory, Transfer Multiple]
+
+  # ---------- gioi han theo kho cap hang
+  CALC:Text009:
+    buoc: gioi_han_kho
+    noi: "Tổng số lượng của mặt hàng trên dòng journal, cộng mọi cửa hàng, đổi từ {1} thành {2} sau khi đối chiếu tồn kho."
+    nguon: Replen. Calculation.UpdQtyInDetailLinesLog
+  CALC:Text011:
+    buoc: gioi_han_kho
+    doi_so: true
+    noi: "Phần của cửa hàng này đổi từ {1} thành {2}: tổng mới được chia lại theo tỷ lệ số cần của từng cửa hàng rồi làm tròn."
+    nguon: Replen. Calculation.UpdQtyInDetailLinesTO, UpdQtyInDetailLinesPO, UpdQtyInDetailLinesLog
+  CALC:Text201:
+    buoc: gioi_han_kho
+    doi_so: true
+    noi: "Kho cấp hàng có tồn khả dụng {1}, không còn hàng, nên toàn bộ số chuyển về 0 (mã A201)."
+    tham_so: [Warehouse Effective Inventory]
+    nguon: Replen. Calculation.AssignNewQtyByWHInv
+  CALC:Text203:
+    buoc: gioi_han_kho
+    doi_so: true
+    noi: "Kho cấp hàng chỉ còn {1}, ít hơn tổng các cửa hàng cần ({2}), nên LS chỉ chuyển {1} và chia lại cho các cửa hàng theo tỷ lệ (mã AD203)."
+    tham_so: [Warehouse Effective Inventory]
+    nguon: Replen. Calculation.AssignNewQtyByWHInv, UpdQtyInDetailLinesTO
+  CALC:AdjQtyWHEffInvLessThanQtyTxt:
+    buoc: gioi_han_kho
+    doi_so: true
+    noi: "Tổng số chuyển của mặt hàng từ {1} thành {2}: kho cấp hàng còn {3}, ít hơn số cần {4}, nên số lượng {5} − tồn kho {6} = {7}."
+    tham_so: [Warehouse Effective Inventory]
+  CALC:AdjQtyWHEffInvGreaterEqualQtyTxt:
+    buoc: gioi_han_kho
+    noi: "Tổng số của mặt hàng từ {1} thành {2}: kho cấp hàng còn {3}, đủ cho số cần {4}, nên giữ {5}."
+    tham_so: [Warehouse Effective Inventory]
+  CALC:Text202:
+    buoc: gioi_han_kho
+    doi_so: true
+    noi: "Journal mua: kho đã có sẵn {1} ({4|ten}), ít hơn tổng nhu cầu {2}, nên chỉ mua phần thiếu {3} = {2} − {1} (mã AD202)."
+    tham_so: [Warehouse Effective Inventory]
+    nguon: Replen. Calculation.UpdQtyInDetailLinesPO
+  CALC:Text204:
+    buoc: gioi_han_kho
+    doi_so: true
+    noi: "Journal mua: kho đã có sẵn {1} ({3|ten}), đủ cho tổng nhu cầu {2}, nên không mua (mã AD204)."
+    tham_so: [Warehouse Effective Inventory]
+    nguon: Replen. Calculation.UpdQtyInDetailLinesPO
+  CALC:Text205:
+    buoc: gioi_han_kho
+    doi_so: true
+    noi: "Journal mua: tồn kho âm {1} ({4|ten}), nên mua thêm để bù: {3} = {2} − ({1}) (mã AD205)."
+    nguon: Replen. Calculation.UpdQtyInDetailLinesPO
+  MWH:AssignQtyFromWhseTxt:
+    buoc: gioi_han_kho
+    noi: "Lấy {1} từ kho {2}."
+  MWH:AssignRemainingWhseQtyTxt:
+    buoc: gioi_han_kho
+    noi: "Lấy phần còn lại {1} từ kho {2}."
+  MWH:MoveToNextWhseTxt:
+    buoc: gioi_han_kho
+    noi: "Kho này không đủ, LS xét kho kế tiếp."
+
+  # ---------- nha cung cap
+  CALC:NoAvailableVendorTxt:
+    buoc: nha_cung_cap
+    noi: "Không tìm được nhà cung cấp nào, dòng mua không có Vendor No."
+    tham_so: [Vendor No.]
+    nguon: Replen. Calculation.ProcessRecord
+  CALC:VendorOnVacationTxt:
+    buoc: nha_cung_cap
+    noi: "Nhà cung cấp {1} đang nghỉ theo lịch nên bị loại khỏi lần tính."
+  CALC:VendorWithShortestLeadTimeTxt:
+    buoc: nha_cung_cap
+    noi: "Chọn nhà cung cấp {1} vì lead time ngắn nhất."
+  CALC:SelectLowestPriceVendorIncludedTxt:
+    buoc: nha_cung_cap
+    noi: "Xét giá thấp nhất: nhà cung cấp {1} được đưa vào so sánh."
+  CALC:SelectLowestPriceVendorExcludedTxt:
+    buoc: nha_cung_cap
+    noi: "Xét giá thấp nhất: nhà cung cấp {1} đang nghỉ nên bị loại."
+  CALC:SelectLowestPriceVendorByTxt:
+    buoc: nha_cung_cap
+    noi: "Xét giá thấp nhất theo {1}."
+  ADDITEMS:LowestPriceVendorTxt:
+    buoc: nha_cung_cap
+    noi: "Chọn {1} {2} vì giá thấp nhất."
+
+  # ---------- cross dock
+  CALC:QtyToCrossDockFormulaMsg:
+    buoc: cross_dock
+    noi: "Số cross dock {1} = số hệ thống đề xuất {2} − {3} {4}."
+  CALC:Text016:
+    buoc: cross_dock
+    doi_so: true
+    noi: "Số cross dock {1} âm nên đưa về 0."
+  CALC:SSQAdjToQtyToXDockTxt:
+    buoc: cross_dock
+    doi_so: true
+    noi: "Số hệ thống đề xuất được gán bằng số cross dock {1}."
+  CALC:QtyAdjustedToQtyToXDockTxt:
+    buoc: cross_dock
+    doi_so: true
+    noi: "Số lượng được gán bằng số cross dock {1}."
+  CALC:QtyToXDockMoreThanQtyTxt:
+    buoc: cross_dock
+    doi_so: true
+    noi: "Tổng số cross dock {1} lớn hơn tổng số lượng {2}."
+  CALC:AdjQtyToXDockTxt:
+    buoc: cross_dock
+    doi_so: true
+    noi: "Số cross dock từ {1} thành {2}, số lượng từ {3} thành {4}."
+
+  # ---------- planned stock demand (Buyer's Push, Allocation)
+  CALC:Text128:
+    buoc: psd
+    noi: "Xử lý Planned Stock Demand số {1}: mặt hàng {2}, địa điểm {4}, hiệu lực từ {5}, số lượng {6}."
+  CALC:Text129:
+    buoc: bo_qua
+    noi: "Planned Stock Demand chưa tới ngày hiệu lực ({1} so với Work Date {2})."
+  CALC:Text130:
+    buoc: bo_qua
+    noi: "Planned Stock Demand trỏ tới mặt hàng không tồn tại ({1})."
+  CALC:Text131:
+    buoc: bo_qua
+    noi: "Planned Stock Demand của cửa hàng {1} nằm ngoài bộ lọc cửa hàng."
+  CALC:Text132:
+    buoc: bo_qua
+    noi: "Planned Stock Demand nằm ngoài bộ lọc {1}."
+  CALC:ItemIsBlocked:
+    buoc: bo_qua
+    noi: "Planned Stock Demand không xử lý: mặt hàng bị chặn ({1})."
+  CALC:ItemIsBlockedFromPurchasing:
+    buoc: bo_qua
+    noi: "Planned Stock Demand không xử lý: mặt hàng bị chặn mua ({1})."
+  CALC:ItemIsBlockedFromTransferring:
+    buoc: bo_qua
+    noi: "Planned Stock Demand không xử lý: mặt hàng bị chặn chuyển ({1})."
+  CALC:ItemIsBlockedFromPurchasingAndTransferring:
+    buoc: bo_qua
+    noi: "Planned Stock Demand không xử lý: mặt hàng bị chặn mua và chuyển ({1})."
+  CALC:Text133:
+    buoc: psd
+    noi: "Đã ghi dòng chi tiết cho Planned Stock Demand."
+  CALC:Text134:
+    buoc: psd
+    noi: "Đã tạo dòng Planned Stock Demand mới."
+  CALC:Text135:
+    buoc: psd
+    noi: "Số lượng cũ {1}, số lượng dòng mới {2}."

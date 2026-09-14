@@ -1,0 +1,38 @@
+[
+ {
+  "id": "vp-260701",
+  "validationId": "260701",
+  "description": "Choco pillar -20% thang 7",
+  "startingDate": "2026-07-06",
+  "endingDate": "2026-07-19",
+  "startingTime": "00:00:00",
+  "endingTime": "00:00:00"
+ },
+ {
+  "id": "vp-260901",
+  "validationId": "260901",
+  "description": "Choco pillar -20% 23-25/09",
+  "startingDate": "2026-09-23",
+  "endingDate": "2026-09-25",
+  "startingTime": "00:00:00",
+  "endingTime": "00:00:00"
+ },
+ {
+  "id": "vp-260902",
+  "validationId": "260902",
+  "description": "Choco bowl -15% 23-25/09",
+  "startingDate": "2026-09-23",
+  "endingDate": "2026-09-25",
+  "startingTime": "00:00:00",
+  "endingTime": "00:00:00"
+ },
+ {
+  "id": "vp-260903",
+  "validationId": "260903",
+  "description": "Banh sung bo -30% sau 19h",
+  "startingDate": "2026-09-01",
+  "endingDate": "2026-09-30",
+  "startingTime": "19:00:00",
+  "endingTime": "22:00:00"
+ }
+]

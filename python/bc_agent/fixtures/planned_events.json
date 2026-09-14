@@ -1,0 +1,46 @@
+[
+ {
+  "id": "pe-KM-CHOCOPILLAR-07",
+  "eventCode": "KM-CHOCOPILLAR-07",
+  "description": "Khuyen mai 33310 thang 7 (ban x3)",
+  "startDate": "2026-07-06",
+  "endDate": "2026-07-19",
+  "status": "Enabled",
+  "noOfLines": 28,
+  "sourceType": "Discount",
+  "sourceCode": "MR2607-CP"
+ },
+ {
+  "id": "pe-SK-ICECREAM-08",
+  "eventCode": "SK-ICECREAM-08",
+  "description": "Su kien 33200 tai S0001 thang 8 (ban x2.4)",
+  "startDate": "2026-08-08",
+  "endDate": "2026-08-24",
+  "status": "Enabled",
+  "noOfLines": 17,
+  "sourceType": "Manual",
+  "sourceCode": ""
+ },
+ {
+  "id": "pe-KM-CHOCOPILLAR-09",
+  "eventCode": "KM-CHOCOPILLAR-09",
+  "description": "Khuyen mai Choco pillar 23-25/09 (demo, sap toi)",
+  "startDate": "2026-09-23",
+  "endDate": "2026-09-25",
+  "status": "Enabled",
+  "noOfLines": 6,
+  "sourceType": "Discount",
+  "sourceCode": "MR2609-CP"
+ },
+ {
+  "id": "pe-KM-CHOCOBOWL-09",
+  "eventCode": "KM-CHOCOBOWL-09",
+  "description": "Khuyen mai Choco bowl 23-25/09 (demo, sap toi)",
+  "startDate": "2026-09-23",
+  "endDate": "2026-09-25",
+  "status": "Enabled",
+  "noOfLines": 6,
+  "sourceType": "Discount",
+  "sourceCode": "MR2609-CB"
+ }
+]

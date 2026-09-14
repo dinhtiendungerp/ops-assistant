@@ -1,0 +1,165 @@
+{
+ "id": "KB-3",
+ "title": "Sếp chốt dùng kem và đổi số khách, tính lại kế hoạch",
+ "recorded": "Ghi lại từ một lần chạy model thật trong phiên thiết kế 07/09/2026, dựng lại trên bộ dữ liệu demo ngày 12/09/2026. Chuỗi tool được chạy lại thật trên dữ liệu hiện tại.",
+ "requires_prev": "KB-1",
+ "match": [
+  [
+   "220"
+  ]
+ ],
+ "steps": [
+  {
+   "tool": "list_stock",
+   "args": {
+    "location": "W0003"
+   },
+   "why": "Đọc lại kho, không dùng số của lần trước"
+  },
+  {
+   "tool": "stores_at_risk",
+   "args": {},
+   "why": "Kế hoạch bổ sung có thay đổi gì từ lúc nãy không"
+  },
+  {
+   "tool": "stock_by_item",
+   "args": {
+    "item_no": "33310"
+   },
+   "why": "Choco pillar còn ở đâu ngoài kho, lô nào cận date"
+  },
+  {
+   "tool": "draft_proposal",
+   "args": {
+    "action_type": "Transfer",
+    "item_no": "33310",
+    "from_location": "S0010",
+    "to_location": "S0005",
+    "quantity": 100,
+    "rationale": "Tiec 220 khach o S0005. Lay 100 Choco pillar tu lo can date L260829-33310-SD dang nam o S0010, cua hang do ban khong kip truoc han."
+   },
+   "why": "Soạn đề xuất nguồn một: giải quyết luôn lô cận date"
+  },
+  {
+   "tool": "draft_proposal",
+   "args": {
+    "action_type": "Transfer",
+    "item_no": "33310",
+    "from_location": "W0003",
+    "to_location": "S0005",
+    "quantity": 120,
+    "rationale": "Tiec 220 khach o S0005. 120 Choco pillar con lai lay tu kho trung tam, kho van tren muc bo sung."
+   },
+   "why": "Soạn đề xuất nguồn hai"
+  },
+  {
+   "tool": "draft_proposal",
+   "args": {
+    "action_type": "Transfer",
+    "item_no": "33323",
+    "from_location": "W0003",
+    "to_location": "S0005",
+    "quantity": 220,
+    "rationale": "Tiec 220 khach o S0005. Vien thu hai la Choco nuts, lay tu kho sau khi da tru phan S0001 dang cho."
+   },
+   "why": "Soạn đề xuất viên thứ hai"
+  }
+ ],
+ "slots": {
+  "pil_qty": {
+   "step": 0,
+   "path": "#itemNo=33310.qty"
+  },
+  "pil_cost": {
+   "step": 0,
+   "path": "#itemNo=33310.unitCost"
+  },
+  "pil_avg": {
+   "step": 0,
+   "path": "#itemNo=33310.avgDailySalesQty"
+  },
+  "nut_qty": {
+   "step": 0,
+   "path": "#itemNo=33323.qty"
+  },
+  "nut_cost": {
+   "step": 0,
+   "path": "#itemNo=33323.unitCost"
+  },
+  "nut_need": {
+   "step": 1,
+   "path": "?itemNo=33323.@sum:suggestedQty"
+  },
+  "sd_qty": {
+   "step": 2,
+   "path": "#locationCode=S0010.lots.#lot=L260829-33310-SD.qty"
+  },
+  "sd_dte": {
+   "step": 2,
+   "path": "#locationCode=S0010.lots.#lot=L260829-33310-SD.daysToExpiry"
+  },
+  "s0010_doc": {
+   "step": 2,
+   "path": "#locationCode=S0010.daysOfCover"
+  },
+  "per_head": {
+   "expr": "600/220",
+   "round": 2
+  },
+  "pair_cost": {
+   "expr": "pil_cost+nut_cost",
+   "round": 2
+  },
+  "total": {
+   "expr": "(pil_cost+nut_cost)*220",
+   "round": 0
+  },
+  "left": {
+   "expr": "600-(pil_cost+nut_cost)*220",
+   "round": 0
+  },
+  "nut_after": {
+   "expr": "nut_qty-nut_need-220",
+   "round": 0
+  },
+  "pil_doc_if_all": {
+   "expr": "(pil_qty-220)/pil_avg",
+   "round": 1
+  },
+  "pil_wh_after": {
+   "expr": "pil_qty-120",
+   "round": 0
+  },
+  "pil_doc_after": {
+   "expr": "(pil_qty-120)/pil_avg",
+   "round": 1
+  }
+ },
+ "answer": "220 khách, mỗi phần hai viên kem: Choco pillar và Choco nuts. Giá vốn {pair_cost} một phần, tổng {total}, còn dư {left} trong ngân sách 600, tức {per_head} một phần.\n\nChoco nuts: kho còn {nut_qty}, nhưng S0001 đang hết sạch và chờ {nut_need} cái. Trừ phần đó và 220 cho tiệc thì kho còn {nut_after}, vẫn trên mức bổ sung. Lấy thẳng từ kho.\n\nChoco pillar thì tôi không lấy hết từ kho, dù kho lấy được: còn {pil_qty}, cắt 220 vẫn đủ {pil_doc_if_all} ngày. Lý do là S0010 đang giữ lô L260829-33310-SD {sd_qty} cái, còn {sd_dte} ngày đến hạn, trong khi cửa hàng đó đang có đủ hàng bán {s0010_doc} ngày, tức lô này chắc chắn không bán kịp trước hạn. Lấy 100 cái từ lô đó là giải quyết luôn một lô cận date. 120 cái còn lại lấy từ kho, kho còn {pil_wh_after}, đủ {pil_doc_after} ngày.\n\nKhông cửa hàng nào tụt xuống dưới ngưỡng, và lô bổ sung của S0001 không bị động vào.\n\nTôi soạn sẵn ba đề xuất dưới đây. Policy sẽ tự lọc: lô nào trong hạn mức tôi tự làm, lô nào vượt hạn mức hoặc chuyển giữa hai cửa hàng thì chờ điều phối duyệt.",
+ "drafts": [
+  {
+   "action_type": "Transfer",
+   "item_no": "33310",
+   "from_location": "S0010",
+   "to_location": "S0005",
+   "quantity": 100,
+   "rationale": "Tiệc 220 khách ở S0005. Lấy 100 Choco pillar từ lô cận date L260829-33310-SD đang nằm ở S0010: lô còn {sd_qty} cái, {sd_dte} ngày đến hạn, cửa hàng bán không kịp."
+  },
+  {
+   "action_type": "Transfer",
+   "item_no": "33310",
+   "from_location": "W0003",
+   "to_location": "S0005",
+   "quantity": 120,
+   "rationale": "Tiệc 220 khách ở S0005. 120 Choco pillar còn lại lấy từ kho trung tâm, kho còn {pil_wh_after} cái, đủ {pil_doc_after} ngày."
+  },
+  {
+   "action_type": "Transfer",
+   "item_no": "33323",
+   "from_location": "W0003",
+   "to_location": "S0005",
+   "quantity": 220,
+   "rationale": "Tiệc 220 khách ở S0005. Viên thứ hai là Choco nuts, kho còn {nut_qty}, đã trừ {nut_need} cái S0001 đang chờ thì vẫn còn {nut_after}."
+  }
+ ]
+}

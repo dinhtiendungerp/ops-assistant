@@ -1,0 +1,21 @@
+sequenceDiagram
+  autonumber
+  participant CH as Cửa hàng (Teams/Zalo)
+  participant AG as Ops Assistant
+  participant BC as Business Central
+  participant DP as Điều phối
+  participant KH as Kho
+  CH->>AG: "Calmette sắp hết Mini bar"
+  AG->>BC: đọc tồn store, tốc độ bán, tồn kho HCM, hàng đang về, forecast 14 ngày
+  BC-->>AG: 12 cái, 17/ngày, kho còn 400, không có hàng đang về
+  AG->>BC: ghi đề xuất Transfer 235 (Proposed)
+  AG->>DP: card: "Chuyển 235 Mini bar HCM → Calmette, đủ 14 ngày. Thảo Điền cũng sắp hết, gộp chuyến?" [Duyệt] [Sửa số] [Từ chối]
+  DP->>AG: Duyệt (token của điều phối)
+  AG->>BC: approve → tạo Transfer Order TO-1023 (Open) dưới tên điều phối
+  AG->>CH: "Đã lên đơn TO-1023, dự kiến về ngày mai"
+  AG->>KH: "TO-1023 cần ship hôm nay"
+  Note over AG,BC: Sáng hôm sau, scheduler kiểm tra TO-1023
+  AG->>BC: TO-1023 đã ship chưa?
+  BC-->>AG: chưa
+  AG->>KH: nhắc lần 2, đồng gửi điều phối
+  AG->>AG: ghi kết quả: thời gian từ yêu cầu đến ship, để đo KPI

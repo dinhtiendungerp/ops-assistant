@@ -1,0 +1,1857 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Marou Operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Bang mau lay tu Marou-Chat-Design (marou-chat.tokens.css). Sat voi ban cu, chi dam
+       hon mot chut o do va am hon o nen. `--icon` la mau rieng cho icon chuc nang, vang nhat
+       khong du tuong phan. */
+    --bg:#faf7f1; --panel:#fffdfa; --panel2:#f7f2ea; --line:#e5dace; --line2:#efe7da;
+    --ink:#352a24; --muted:#76685e; --faint:#a89d93;
+    --red:#921e19; --red2:#7b1915; --redsoft:#f5e5e0; --gold:#b68b50; --goldsoft:#f4ead6;
+    --icon:#91662f;
+    --ok:#2f7d4f; --oksoft:#e3f0e6; --warn:#a56a00; --warnsoft:#fbf1d6; --bad:#a4262c; --badsoft:#f9e5e5;
+    --serif:"Playfair Display", Georgia, "Times New Roman", serif;
+    --sans:"Inter", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  }
+  * { box-sizing:border-box; }
+  html, body { height:100%; }
+  body { margin:0; font:14px/1.5 var(--sans); color:var(--ink); background:var(--bg);
+         display:grid; grid-template-columns:250px 1fr 340px; grid-template-rows:64px auto 1fr; height:100vh; }
+  h1, h2, h3, .serif { font-family:var(--serif); font-weight:600; letter-spacing:.005em; }
+  button { font:inherit; cursor:pointer; }
+  input[type=text], input[type=number] { font:inherit; padding:8px 10px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); }
+  input:focus { outline:2px solid var(--goldsoft); border-color:var(--gold); }
+  [hidden] { display:none !important; }
+  .hint { color:var(--muted); font-size:12.5px; }
+  .faint { color:var(--faint); }
+  .kicker { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:600; margin:18px 0 8px; }
+
+  /* ---------- top bar ---------- */
+  #top { grid-column:1 / -1; display:grid; grid-template-columns:250px 1fr 340px; align-items:center; background:var(--panel); border-bottom:1px solid var(--line); }
+  #brand { padding:0 22px; display:flex; flex-direction:column; justify-content:center; height:64px; border-right:1px solid var(--line); }
+  #brand b { font-family:var(--serif); font-size:26px; color:var(--red); letter-spacing:.06em; line-height:1; }
+  #brand small { font-size:8.2px; letter-spacing:.105em; text-transform:uppercase; color:var(--gold);
+                 margin-top:5px; white-space:nowrap; }
+  #crumb { padding:0 26px; display:flex; align-items:baseline; gap:14px; }
+  #crumb .path { font-family:var(--serif); font-size:22px; }
+  #crumb .path span { color:var(--red); }
+  #crumb .tag { font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); border-left:1px solid var(--line); padding-left:14px; }
+  #me { display:flex; align-items:center; justify-content:flex-end; gap:12px; padding:0 22px; border-left:1px solid var(--line); height:64px; }
+  #me .name { text-align:right; line-height:1.2; }
+  #me .name b { display:block; font-size:14px; }
+  #me .name small { color:var(--muted); font-size:12px; }
+  .avatar { width:36px; height:36px; border-radius:50%; background:var(--goldsoft); color:var(--red); font-weight:700; font-size:12px;
+            display:inline-flex; align-items:center; justify-content:center; letter-spacing:.02em; flex:none; }
+  .avatar.big { width:40px; height:40px; background:var(--red); color:#fff; }
+  .bell { width:34px; height:34px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; color:var(--muted); }
+  /* Dai bao nguon du lieu. Luon nhin thay, khong nam trong khay demo: cau hoi "dang chay that
+     hay chay mo phong" phai tra loi duoc bang mot cai liec mat. */
+  #srcbar { grid-column:1 / -1; display:flex; align-items:center; gap:14px; padding:8px 26px;
+            border-bottom:1px solid var(--line); font-size:13px; }
+  #srcbar.mock { background:var(--warnsoft); color:#6b4a05; }
+  #srcbar.live { background:var(--oksoft); color:#1c5c38; }
+  #srcbar.warn { background:var(--badsoft); color:var(--bad); }
+  #srcbar b { font-weight:600; }
+  #srcbar .seg { margin-left:auto; display:flex; border:1px solid rgba(0,0,0,.18); border-radius:999px; overflow:hidden; background:#fff; }
+  #srcbar .seg button { border:0; background:transparent; padding:6px 14px; font-size:12.5px; color:var(--ink); }
+  #srcbar .seg button.on { background:var(--red); color:#fff; font-weight:600; }
+  #srcbar .seg button:disabled { opacity:.5; }
+
+  /* ---------- left nav ---------- */
+  #nav { background:var(--panel); border-right:1px solid var(--line); padding:14px 16px 20px; overflow:auto; }
+  .navbtn { display:flex; align-items:center; gap:10px; width:100%; padding:10px 12px; margin-bottom:4px; border:1px solid transparent; border-radius:10px;
+            background:transparent; color:var(--ink); text-align:left; }
+  .navbtn:hover { background:var(--panel2); }
+  .navbtn.on { background:var(--red); color:#fff; }
+  .navbtn svg { width:18px; height:18px; flex:none; }
+  .user { display:flex; align-items:center; gap:10px; padding:7px 10px; border-radius:10px; cursor:pointer; margin-bottom:2px; }
+  .user:hover { background:var(--panel2); }
+  .user.active { background:var(--redsoft); }
+  .user.active .avatar { background:var(--red); color:#fff; }
+  .user b { font-weight:600; display:block; line-height:1.15; }
+  .user small { color:var(--muted); font-size:11.5px; }
+  .scn { display:flex; align-items:center; gap:8px; width:100%; padding:8px 10px; margin-bottom:5px; border:1px solid var(--line); border-radius:9px; background:#fff; text-align:left; font-size:13px; }
+  .scn .lb { flex:1; min-width:0; }
+  .user .moi { flex:none; min-width:20px; height:20px; padding:0 6px; border-radius:10px; background:var(--red);
+               color:#fff; font-size:11px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; }
+  .scn:hover { border-color:var(--gold); }
+  .scn.hot { border-color:var(--red); color:var(--red); }
+  .scn.on { background:var(--red); border-color:var(--red); color:#fff; font-weight:600; }
+  .scn .tt { flex:none; font-size:11px; color:var(--muted); }
+  .scn.on .tt { color:#f3d9d6; }
+  /* Kich ban noi tiep nhan bang chu "tiep theo" o ben phai, khong thut vao nua: thut vao thi
+     nhin nhu the bi lech chu khong doc ra la no phu thuoc cai tren. */
+  .scn.sub .tt { color:var(--red); }
+  details.how { margin-top:18px; border-top:1px solid var(--line); padding-top:12px; }
+  details.how summary { cursor:pointer; font-weight:600; font-size:13px; list-style:none; display:flex; justify-content:space-between; }
+  details.how summary::after { content:"⌄"; color:var(--muted); }
+  details.how[open] summary::after { content:"⌃"; }
+  .chain { margin-top:8px; font-size:12.5px; }
+  .chain b { display:block; margin-top:8px; }
+  .chain .arrow { color:var(--gold); margin:2px 0 0 4px; }
+  #foot { margin-top:26px; text-align:center; font-size:9.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); }
+
+  /* ---------- main ---------- */
+  #main { display:flex; flex-direction:column; min-width:0; overflow:hidden; }
+  #tabs { display:flex; gap:26px; padding:0 30px; border-bottom:1px solid var(--line); background:var(--panel); }
+  .tab { padding:16px 2px 12px; border:0; border-bottom:2px solid transparent; background:transparent; color:var(--muted); font-weight:500; font-size:14px; display:flex; align-items:center; gap:8px; }
+  .tab.on { color:var(--red); border-bottom-color:var(--red); font-weight:600; }
+  /* Thanh doan chat: mot vai tro co the co nhieu doan, giong cac tro ly khac. Tin cu khong mat,
+     hop thu chi loc theo doan dang mo. */
+  #doanbar { display:flex; align-items:center; gap:8px; padding:8px 30px; border-bottom:1px solid var(--line2);
+             background:var(--panel2); font-size:13px; flex-wrap:wrap; }
+  #doanbar .nhan { color:var(--muted); }
+  #doanbar select { max-width:340px; }
+  #doanbar .btn { padding:5px 11px; font-size:12.5px; }
+  #view { flex:1; min-height:0; overflow:auto; padding:22px 30px 30px; display:flex; flex-direction:column; }
+  #chat { display:flex; flex-direction:column; gap:14px; max-width:920px; }
+  .msg { display:flex; gap:12px; align-items:flex-start; }
+  .msg.in { justify-content:flex-end; }
+  .msg.tam .bubble { opacity:.75; }
+  .bclinks { display:flex; flex-wrap:wrap; gap:6px 14px; margin-top:10px; font-size:13px; }
+  .bclinks a { color:var(--red); text-decoration:none; border-bottom:1px dotted var(--red); }
+  .bclinks a:hover { border-bottom-style:solid; }
+  .msg .bubble { max-width:80%; padding:10px 14px; border-radius:14px; background:var(--panel); border:1px solid var(--line); white-space:pre-wrap; }
+  .msg.in .bubble { background:var(--red); color:#fff; border-color:var(--red); border-bottom-right-radius:4px; }
+  .msg.out .bubble { border-top-left-radius:4px; }
+  /* Dau linh vat thay cho hai chu "AI". Anh dat trong mot vong tron kem, phan chan bi cat bot
+     nen chi con khuon mat, giong avatar. */
+  .msg .ai { width:38px; height:38px; border-radius:50%; background:var(--goldsoft); flex:none;
+             margin-top:2px; overflow:hidden; display:flex; align-items:flex-start; justify-content:center; }
+  .msg .ai img { width:35px; height:auto; margin-top:2px; display:block; }
+  .ts { display:block; font-size:11px; color:var(--faint); margin-top:6px; }
+  /* Nut Tra loi: an di, chi hien khi ro chuot vao tin, de khong lam roi hoi thoai. */
+  .msg .traloi { border:0; background:transparent; color:var(--muted); font-size:12px; padding:2px 6px;
+                 border-radius:6px; opacity:0; transition:opacity 120ms; }
+  .msg:hover .traloi, .msg .traloi:focus-visible { opacity:1; }
+  .msg .traloi:hover { background:var(--goldsoft); color:var(--red); }
+  /* Trich dan cua tin dang duoc tra loi, hien ngay tren bong bong. */
+  .trich { border-left:3px solid var(--gold); padding:2px 0 2px 9px; margin-bottom:6px;
+           color:var(--muted); font-size:12.5px; line-height:1.4; }
+  .msg.in .trich { border-left-color:#f3d9d6; color:#f3d9d6; }
+  #dangtraloi { display:none; gap:10px; align-items:flex-start; margin-bottom:8px; padding:8px 10px;
+                background:var(--goldsoft); border-radius:9px; font-size:12.5px; color:var(--ink); }
+  #dangtraloi.on { display:flex; }
+  #dangtraloi .n { flex:1; min-width:0; }
+  #dangtraloi .n b { display:block; color:var(--red); font-size:11.5px; letter-spacing:.04em; }
+  #dangtraloi .x { flex:none; border:0; background:transparent; color:var(--muted); font-size:16px; line-height:1; }
+  /* Mot vai viec mat hon chuc giay (brief cua dieu phoi ghi 10 de xuat vao BC). Khong co dau
+     hieu gi thi man hinh nhin nhu treo. */
+  .bubble.cho { display:flex; align-items:center; gap:10px; color:var(--muted); font-style:italic; }
+  .cham { display:inline-flex; gap:4px; flex:none; }
+  .cham i { width:6px; height:6px; border-radius:50%; background:var(--gold); animation:nhay 1.1s infinite ease-in-out; }
+  .cham i:nth-child(2) { animation-delay:.16s; }
+  .cham i:nth-child(3) { animation-delay:.32s; }
+  @keyframes nhay { 0%, 70%, 100% { opacity:.25; } 35% { opacity:1; } }
+  @media (prefers-reduced-motion: reduce) { .cham i { animation:none; opacity:.6; } }
+  .msg.in .ts { color:#f3d9d6; }
+  .stack { flex:1; min-width:0; max-width:820px; }
+
+  /* ---------- man hinh chao, chi hien khi hoi thoai con trong ---------- */
+  #hero { width:min(100%, 920px); margin:auto; padding:10px 0 4px; }
+  #hero .top { display:grid; grid-template-columns:minmax(0,1fr) minmax(110px, 150px); align-items:center; gap:20px; }
+  #hero .over { color:var(--icon); font-size:12px; letter-spacing:.16em; font-weight:600; }
+  /* Loi chao gop lam mot dong. Ban hai dong day ca luoi goi y xuong duoi man hinh. */
+  #hero h1 { margin:6px 0 4px; font-family:var(--serif); font-size:clamp(22px, 2.5vw, 30px);
+             line-height:1.2; color:var(--red); font-weight:600; }
+  #hero h1 span { color:var(--ink); }
+  #hero p { margin:0; font-size:14px; line-height:1.5; color:var(--muted); max-width:34em; }
+  #hero img { display:block; width:100%; max-width:130px; height:auto; margin-inline:auto;
+              object-fit:contain; pointer-events:none; }
+  #hero .rule { position:relative; height:1px; margin:12px 0; background:var(--gold); }
+  #hero .rule::after { content:""; position:absolute; width:8px; height:8px; top:50%; left:50%;
+                       background:var(--gold); transform:translate(-50%,-50%) rotate(45deg); }
+  #hero .grid { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; margin-top:10px; }
+  .goi { display:flex; align-items:center; gap:14px; min-height:66px; padding:12px 16px; width:100%;
+         border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--ink);
+         text-align:left; font:inherit; transition:background-color 160ms, border-color 160ms; }
+  .goi:hover { border-color:var(--gold); background:#f7f0e6; }
+  .goi svg { width:26px; height:26px; flex:none; color:var(--icon); }
+  .goi .t { flex:1; min-width:0; }
+  .goi .t b { display:block; font-size:15px; font-weight:600; }
+  .goi .t span { display:block; margin-top:2px; font-size:13px; line-height:1.4; color:var(--muted); }
+  .goi .mt { flex:none; color:var(--gold); }
+  #hero .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+  .chip { border:1px solid var(--line); border-radius:999px; background:var(--panel); color:var(--ink); font:inherit;
+          font-size:13px; padding:6px 12px; cursor:pointer; }
+  .chip:hover { border-color:var(--gold); background:#f7f0e6; }
+  .chip i { font-style:normal; font-size:11px; color:var(--muted); margin-left:4px; }
+  @media (max-width: 1150px) {
+    #hero .top { grid-template-columns:minmax(0,1fr) 190px; gap:16px; }
+  }
+  @media (max-width: 900px) {
+    #hero .top, #hero .grid { grid-template-columns:minmax(0,1fr); }
+    #hero img { display:none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .goi { transition:none; } }
+
+  /* ---------- man hinh hep ----------
+     Khung ba cot la 250px + 1fr + 340px co dinh, nen duoi 1180px cot giua bi bop va duoi 900px
+     ca trang tran ngang. Hai moc duoi day xep chong lai thay vi lam drawer: it code hon, khong
+     dung vao dieu huong hay quyen, va buoi demo chay tren laptop chu khong tren dien thoai. */
+  @media (max-width: 1180px) {
+    body { grid-template-columns:250px 1fr; }
+    #top { grid-template-columns:250px 1fr auto; }
+    #side { grid-column:1 / -1; border-left:0; border-top:1px solid var(--line); max-height:44vh; }
+  }
+  @media (max-width: 860px) {
+    /* Mot cot, va de ca trang cuon thay vi khoa cung 100vh: dat hang tay chu khong de grid tu
+       xep, neu khong `#main` va `#side` roi nham hang va man hinh chat bien mat. */
+    body { grid-template-columns:1fr; grid-template-rows:auto auto auto auto minmax(340px,1fr) auto;
+           height:auto; min-height:100dvh; }
+    /* Grid item mac dinh la `min-width:auto`, nen mot phan tu con rong hon man hinh se keo ca
+       cot rong theo va trang tran ngang 12px. */
+    #top, #srcbar, #loibar, #nav, #main, #side { min-width:0; }
+    #top { grid-template-columns:minmax(0,1fr) auto; }
+    #brand { border-right:0; padding:0 16px; }
+    #crumb { display:none; }
+    #srcbar { padding:8px 14px; flex-wrap:wrap; }
+    #srcbar .seg { margin-left:0; }
+    #nav { grid-row:4; max-height:32vh; border-right:0; border-bottom:1px solid var(--line); }
+    #main { grid-row:5; }
+    #side { grid-row:6; max-height:none; }
+    #view { padding:16px; }
+    #composer { padding:10px 12px max(14px, env(safe-area-inset-bottom)); }
+  }
+
+  /* the: khung chung */
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin-top:8px; box-shadow:0 1px 0 rgba(0,0,0,.02); }
+  .card .head { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .card h3 { margin:0; font-size:22px; }
+  .card .meta { color:var(--muted); font-size:12px; margin-top:4px; }
+  .pill { display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600; background:var(--panel2); color:var(--muted); white-space:nowrap; }
+  .pill.shadow { background:var(--warnsoft); color:var(--warn); }
+  .pill.auto, .pill.Executed, .pill.Shipped, .pill.Received, .pill.ok { background:var(--oksoft); color:var(--ok); }
+  .pill.Rejected, .pill.Cancelled, .pill.bad { background:var(--badsoft); color:var(--bad); }
+  .pill.Proposed, .pill.Open, .pill.open { background:var(--warnsoft); color:var(--warn); }
+  .pill.info { background:var(--goldsoft); color:var(--red); }
+  .lead { margin:14px 0; padding:14px 16px; background:var(--panel2); border-radius:12px; font-size:15px; line-height:1.55; white-space:pre-wrap; }
+  .facts { display:grid; grid-template-columns:auto 1fr; gap:6px 18px; font-size:13.5px; margin:12px 0 4px; }
+  .facts .k { color:var(--muted); }
+  .facts .v { font-weight:500; }
+  .card .prose { white-space:pre-wrap; margin:10px 0 4px; }
+  .actions { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:14px; }
+  .actions.stack { flex-direction:column; flex-wrap:nowrap; align-items:stretch; gap:12px; }
+  .actions.stack .inputs { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }
+  .actions.stack .inputs .field { flex:1 1 230px; }
+  .actions.stack .inputs .field input { width:100%; }
+  .actions.stack .buttons { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .btn { padding:9px 16px; border-radius:9px; border:1px solid var(--line); background:#fff; color:var(--ink); font-weight:500; display:inline-flex; align-items:center; gap:8px; }
+  .btn:hover { border-color:var(--gold); }
+  .btn.positive { background:var(--red); border-color:var(--red); color:#fff; font-weight:600; }
+  .btn.positive:hover { background:var(--red2); }
+  .btn.destructive { color:var(--red); border-color:var(--red); background:#fff; }
+  .btn:disabled { opacity:.45; cursor:default; }
+  .btn.sm { padding:6px 11px; font-size:13px; }
+  #composer { flex:none; padding:12px 30px 16px; background:var(--panel); border-top:1px solid var(--line); }
+  #soan { max-width:920px; margin:auto; padding:12px 14px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+  #soan:focus-within { border-color:var(--red); }
+  #soan .hang1 { display:flex; gap:10px; align-items:flex-start; }
+  #soan .ic { width:22px; height:22px; flex:none; color:var(--icon); margin-top:6px; }
+  #text { flex:1; min-width:0; min-height:44px; max-height:160px; border:0; background:transparent;
+          color:var(--ink); font:inherit; line-height:1.5; resize:none; padding:10px 0; }
+  #text:focus { outline:none; }
+  #text::placeholder { color:var(--muted); opacity:1; }
+  #soan .hang2 { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:6px; }
+  #soan .mach { margin-left:auto; color:var(--muted); font-size:12.5px; }
+  .field { display:flex; flex-direction:column; gap:4px; }
+  .field label { font-size:12.5px; color:var(--muted); font-weight:500; }
+  .src { color:var(--faint); font-size:12px; border-top:1px solid var(--line2); margin-top:14px; padding-top:10px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .src .dot::before { content:"·"; margin:0 2px; }
+
+  /* the de xuat chuyen hang */
+  .prop .item { display:flex; align-items:center; gap:14px; margin-top:16px; }
+  .prop .thumb { width:56px; height:56px; border-radius:10px; background:var(--red); color:#f7e6c9; display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-size:11px; letter-spacing:.08em; flex:none; }
+  .prop .item h4 { margin:0; font-family:var(--serif); font-size:20px; }
+  .prop .item .code { color:var(--muted); font-size:12.5px; }
+  .prop .policy { margin-left:auto; text-align:right; font-size:12.5px; color:var(--muted); border:1px solid var(--line); border-radius:10px; padding:8px 12px; background:var(--panel2); }
+  .prop .policy b { display:block; color:var(--ink); font-size:12.5px; }
+  .route { display:grid; grid-template-columns:1fr 36px 1fr; gap:10px; align-items:center; margin-top:14px; }
+  .route .loc { border:1px solid var(--line); border-radius:12px; padding:12px 14px; display:flex; gap:12px; align-items:center; background:#fff; }
+  .route .loc .ic { width:36px; height:36px; border-radius:9px; background:var(--goldsoft); color:var(--red); display:inline-flex; align-items:center; justify-content:center; flex:none; }
+  .route .loc small { display:block; color:var(--muted); font-size:11.5px; }
+  .route .loc b { font-family:var(--serif); font-size:19px; }
+  .route .loc .sub { color:var(--muted); font-size:12px; }
+  .route .arr { text-align:center; color:var(--gold); font-size:22px; }
+  .nums { display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:0; margin-top:14px; border-top:1px solid var(--line2); border-bottom:1px solid var(--line2); }
+  .nums > div { padding:12px 14px 12px 0; }
+  .nums > div + div { border-left:1px solid var(--line2); padding-left:14px; }
+  .nums small { display:block; color:var(--muted); font-size:12px; }
+  .nums .n { font-family:var(--serif); font-size:34px; line-height:1.1; margin-top:2px; }
+  .nums .n.big { font-size:46px; color:var(--red); }
+  .nums .n em { font-style:normal; font-family:var(--sans); font-size:13px; color:var(--muted); margin-left:6px; }
+  .prop .ctl { display:grid; grid-template-columns:1fr auto; gap:14px; margin-top:14px; align-items:start; }
+  .prop .ctl .inputs { display:flex; flex-direction:column; gap:10px; }
+  .prop .ctl .row { display:flex; gap:8px; align-items:flex-end; flex-wrap:wrap; }
+  .prop .ctl .buttons { display:flex; flex-direction:column; gap:8px; min-width:210px; }
+  .prop .ctl .buttons .btn { justify-content:center; padding:12px 18px; }
+
+  /* ---------- right panel ---------- */
+  #side { background:var(--panel); border-left:1px solid var(--line); display:flex; flex-direction:column; overflow:hidden; }
+  #side .top { padding:18px 20px 8px; border-bottom:1px solid var(--line2); }
+  #side .top h2 { margin:0; font-size:20px; }
+  #side .scroll { flex:1; overflow:auto; padding:6px 20px 16px; }
+  .blk { padding:14px 0; border-bottom:1px solid var(--line2); }
+  .blk h3 { margin:0 0 8px; font-size:15px; display:flex; align-items:center; gap:8px; }
+  .blk h3 svg { width:16px; height:16px; color:var(--gold); }
+  .empty { padding:8px 0 4px 24px; }
+  .empty b { display:block; font-weight:500; color:var(--muted); }
+  .empty span { font-size:12px; color:var(--faint); }
+  .row2 { display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-top:1px dashed var(--line2); font-size:13px; }
+  .row2:first-of-type { border-top:0; }
+  .row2 .pill { padding:3px 9px; font-size:11px; }
+  .row2 .t { flex:1; min-width:0; }
+  .row2 .t small { display:block; color:var(--muted); font-size:12px; }
+  .done { opacity:.5; }
+  details.tray { margin:0 12px 12px; border:1px solid var(--line); border-radius:12px; background:var(--panel2); font-size:12.5px; }
+  details.tray summary { cursor:pointer; list-style:none; padding:11px 14px; font-weight:600; color:var(--muted); display:flex; justify-content:space-between; align-items:center; }
+  details.tray summary::after { content:"⌃"; }
+  details.tray[open] summary::after { content:"⌄"; }
+  details.tray .in { padding:0 14px 12px; max-height:46vh; overflow:auto; }
+  details.tray h4 { margin:12px 0 6px; font-size:12.5px; }
+  details.tray .btn { padding:6px 10px; font-size:12.5px; }
+  details.tray .actions { margin-top:6px; }
+  .stopbanner { background:var(--badsoft); color:var(--bad); border-radius:10px; padding:8px 10px; font-weight:600; }
+  /* Loi cua may chu phai hien ra. Truoc day `post()` nuot 500 va man hinh trong tron, nguoi
+     dung bam nut ma khong biet la no da chay hay chua. */
+  #loibar { display:none; grid-column:1 / -1; gap:12px; align-items:flex-start; background:var(--badsoft);
+            border-bottom:1px solid var(--bad); color:#6b1a1e; padding:10px 22px; font-size:13px; }
+  #loibar.on { display:flex; }
+  #loibar b { color:var(--bad); }
+  #loibar .x { margin-left:auto; flex:none; border:0; background:transparent; color:var(--bad); font-size:18px; line-height:1; }
+  /* Cung dai do, mau xanh, cho viec chay xong. Nut bam ma khong bao gi thi nguoi dung khong
+     biet no da chay hay chua. */
+  #loibar.ok { background:var(--oksoft); border-bottom-color:var(--ok); color:#1e5334; }
+  #loibar.ok b, #loibar.ok .x { color:var(--ok); }
+
+  /* ---------- Suc khoe ton kho ---------- */
+  .pagehead { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .pagehead h1 { margin:0; font-size:38px; line-height:1.1; }
+  .pagehead .sub { color:var(--muted); margin-top:6px; max-width:720px; }
+  .pagehead .right { display:flex; gap:8px; align-items:center; }
+  .bignum { display:flex; align-items:center; gap:22px; margin:22px 0 18px; }
+  .bignum .n { font-family:var(--serif); font-size:62px; color:var(--red); line-height:1; font-weight:700; }
+  .bignum .lbl b { display:block; font-size:16px; }
+  .bignum .lbl span { color:var(--muted); font-size:13.5px; }
+  .bignum .sep { width:1px; height:56px; background:var(--line); }
+  .tiles { display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; }
+  .tile { display:flex; gap:12px; padding:14px 16px; background:var(--panel); border:1px solid var(--line); border-radius:12px; cursor:pointer; }
+  .tile:hover { border-color:var(--gold); }
+  .tile.sel { border-color:var(--red); box-shadow:0 0 0 2px var(--redsoft); }
+  .tile .bar { width:5px; border-radius:3px; flex:none; }
+  .tile b { display:block; font-size:14.5px; }
+  .tile .st { display:flex; gap:14px; margin-top:6px; font-size:13px; color:var(--muted); }
+  .tile .st strong { color:var(--ink); font-weight:600; }
+  .sev-Expired { background:#8c1d18; } .sev-NearExpiry { background:#d2691e; } .sev-StockOutRisk { background:#d4a017; }
+  .sev-SlowMoving { background:#8a7c2a; } .sev-Excess { background:#6d8a52; } .sev-Healthy { background:#2f7d4f; }
+  .toolbar { display:flex; gap:8px; align-items:center; margin:18px 0 12px; flex-wrap:wrap; }
+  .toolbar .btn.on { background:var(--red); border-color:var(--red); color:#fff; }
+  .toolbar .search { margin-left:auto; min-width:260px; }
+  /* ---------- Cai dat ---------- */
+  .cards { display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:12px; margin:18px 0 4px; }
+  .kpi { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
+  .kpi small { display:block; color:var(--muted); font-size:12.5px; }
+  .kpi .n { font-family:var(--serif); font-size:34px; line-height:1.15; margin-top:4px; }
+  .kpi .n.red { color:var(--red); }
+  .kpi .n em { font-style:normal; font-family:var(--sans); font-size:13px; color:var(--muted); margin-left:5px; }
+  .kpi .un { color:var(--muted); font-size:12.5px; margin-top:3px; }
+  /* ---------- Nhat ky agent: lap kich ban ---------- */
+  .kbxem { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-top:12px; }
+  .kbxem textarea { width:100%; min-height:130px; font:13.5px/1.55 var(--sans); padding:10px 12px; border:1px solid var(--line);
+                    border-radius:8px; box-sizing:border-box; resize:vertical; }
+  .kbxem .canh { background:var(--badsoft); color:var(--bad); border-radius:8px; padding:10px 12px; margin:10px 0; font-size:13px; }
+  .kbxem .canh li { margin:3px 0; }
+  .kbxem code { background:var(--panel2); padding:1px 5px; border-radius:4px; font-size:12.5px; }
+  .grid td.wrap { white-space:normal; max-width:420px; }
+  .sw { display:flex; align-items:center; gap:16px; background:var(--panel); border:1px solid var(--line);
+        border-radius:12px; padding:16px 18px; }
+  .sw.off { background:var(--panel2); }
+  .sw .t { flex:1; min-width:0; }
+  .sw .t b { display:block; font-size:16px; }
+  .sw .t span { display:block; color:var(--muted); font-size:13px; }
+  .sw .btn { flex:none; }
+  .bar2 { height:8px; border-radius:5px; background:var(--line2); overflow:hidden; margin-top:8px; }
+  .bar2 i { display:block; height:100%; background:var(--gold); }
+  .bar2 i.hot { background:var(--red); }
+  .tran { display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; }
+  select { font:inherit; padding:7px 9px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); }
+  textarea { font:inherit; width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:9px;
+             background:#fff; color:var(--ink); resize:vertical; min-height:74px; }
+  textarea:focus { outline:2px solid var(--goldsoft); border-color:var(--gold); }
+  .cm { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin-bottom:10px; }
+  .cm h4 { margin:0 0 2px; font-size:14.5px; }
+  .cm .why { color:var(--muted); font-size:12.5px; margin-bottom:8px; }
+  .cm .hang { display:flex; gap:8px; align-items:center; margin-top:8px; }
+  .sua { font-size:11px; color:var(--gold); font-weight:600; }
+  table.grid { width:100%; border-collapse:separate; border-spacing:0; background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  table.grid th { text-align:left; font-size:12px; color:var(--muted); font-weight:600; padding:10px 12px; background:var(--panel2); border-bottom:1px solid var(--line); }
+  table.grid td { padding:10px 12px; font-size:13.5px; border-bottom:1px solid var(--line2); vertical-align:middle; }
+  table.grid tr:last-child td { border-bottom:0; }
+  table.grid tr.row:hover td { background:#fbf5ec; cursor:pointer; }
+  .num { text-align:right; font-variant-numeric:tabular-nums; }
+  .score { display:inline-block; min-width:36px; text-align:center; border-radius:6px; padding:3px 6px; font-size:12px; font-weight:700; }
+  .tfoot { display:flex; justify-content:space-between; color:var(--muted); font-size:12.5px; padding:10px 4px; }
+  .vd-Đạt { color:var(--ok); font-weight:600; } .vd-Chặn { color:var(--bad); font-weight:600; } .vd-Thông { color:var(--muted); } .vd-Cần { color:var(--warn); font-weight:600; }
+  /* chi tiet lo */
+  /* Bang chay kich ban: phai noi ro dang o buoc nao va buoc do chung minh dieu gi, neu khong
+     thi man hinh tu nhay va nguoi xem khong biet dang xem cai gi. */
+  #scnbar { display:none; gap:14px; align-items:center; background:var(--goldsoft); border:1px solid var(--gold);
+            border-radius:12px; padding:12px 16px; margin-bottom:14px; }
+  #scnbar.on { display:flex; }
+  #scnbar .no { width:34px; height:34px; border-radius:50%; background:var(--red); color:#fff; font-weight:700;
+                display:inline-flex; align-items:center; justify-content:center; flex:none; }
+  #scnbar .t { flex:1; min-width:0; }
+  #scnbar .t b { display:block; }
+  #scnbar .t span { color:#6b4a05; font-size:12.5px; }
+  .crumbs { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:13px; }
+  .crumbs b { color:var(--ink); font-weight:500; }
+  .back { color:var(--red); background:none; border:0; padding:8px 0; font-weight:500; display:inline-flex; gap:6px; align-items:center; }
+  .lothead { display:flex; gap:20px; align-items:center; margin:8px 0 18px; flex-wrap:wrap; }
+  .lothead .thumb { width:96px; height:96px; border-radius:12px; background:linear-gradient(135deg,#5a2d1e,#8c1d18); color:#f7e6c9; display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-size:12px; letter-spacing:.06em; }
+  .lothead h1 { margin:0; font-size:40px; line-height:1.05; }
+  .lothead .code { color:var(--muted); margin-top:4px; }
+  .lothead .kv { display:flex; gap:20px; margin-left:auto; }
+  .lothead .kv div { border-left:1px solid var(--line); padding-left:14px; font-size:13px; }
+  .lothead .kv small { display:block; color:var(--muted); font-size:11.5px; }
+  .sec { margin-top:22px; }
+  .sec h2 { font-size:19px; margin:0 0 10px; display:flex; align-items:center; gap:10px; }
+  .sec h2 small { font-family:var(--sans); font-weight:400; color:var(--muted); font-size:13px; }
+  table.grid tr.hit td { background:var(--redsoft); }
+  table.grid tr.hit td:first-child { border-left:3px solid var(--red); }
+  table.grid tr.skipd td { color:var(--faint); }
+</style>
+</head>
+<body>
+
+<div id="top">
+  <div id="brand"><b>MAROU</b><small>Faiseurs de chocolat au Việt Nam</small></div>
+  <div id="crumb"><div class="path"><span>MAROU</span> / Operations</div><div class="tag">Một trải nghiệm Sô-Cô-La hoàn chỉnh</div></div>
+  <div id="me">
+    <span class="bell" title="Thông báo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21a2 2 0 0 0 4 0"/></svg></span>
+    <div class="name"><b id="who">…</b><small id="whorole"></small></div>
+    <span class="avatar big" id="whoav">·</span>
+  </div>
+</div>
+
+<div id="loibar"><span id="loitext"></span><button class="x" onclick="anLoi()" title="Đóng">×</button></div>
+
+<div id="srcbar" class="mock"><span id="srctext">Đang đọc nguồn nào…</span>
+  <span class="seg">
+    <button id="segMock" onclick="setMode('mock')">Dữ liệu mô phỏng</button>
+    <button id="segLive" onclick="setMode('live')">Business Central</button>
+  </span>
+</div>
+
+<nav id="nav">
+  <div class="kicker" style="margin-top:6px">Không gian làm việc</div>
+  <button class="navbtn on" id="navChat" onclick="showTab('chat')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5h16v11H8l-4 4z"/></svg>Trò chuyện</button>
+  <button class="navbtn" id="navUc2" onclick="showTab('uc2')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Sức khỏe tồn kho</button>
+  <button class="navbtn" id="navUc1" onclick="showTab('uc1')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 17l5-6 4 3 7-8"/><path d="M3 21h18"/></svg>Dự báo</button>
+  <button class="navbtn" id="navUc3" onclick="showTab('uc3')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>Nhà cung cấp</button>
+  <button class="navbtn" id="navNhatky" onclick="showTab('nhatky')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6L16.3 7.7M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg>Nhật ký agent</button>
+  <button class="navbtn" id="navCaidat" onclick="showTab('caidat')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>Cài đặt AI</button>
+
+  <div class="kicker">Chọn vai trò</div>
+  <div id="users"></div>
+
+  <div class="kicker">Kịch bản demo</div>
+  <div id="poc"></div>
+  <div id="ladder"></div>
+  <div id="quick"></div>
+  <p class="hint" style="margin-top:8px">Nhóm đầu đi theo thứ tự đề bài POC: dự báo, khuyến mãi, bổ sung hàng, hạn dùng và truy xuất lô, nhà cung cấp. Các câu còn lại là kịch bản NaviWorld dựng trên bộ dữ liệu demo, không phải sự cố thật của Marou; câu cuối cố tình nằm ngoài bản ghi để thấy ranh giới giữa rule và model.</p>
+
+  <details class="how">
+    <summary>Cách hệ thống hoạt động</summary>
+    <div class="chain">
+      <b>Business Central</b><span class="hint">Job Queue 05:00 tính tồn theo Item, Location, Lô rồi xếp tầng. Không có model nào ở bước này.</span>
+      <div class="arrow">↓</div>
+      <b>Trợ lý</b><span class="hint">Đọc bảng kết quả, gửi đúng người, trả lời bằng tiếng Việt. Không tự tính lại số.</span>
+      <div class="arrow">↓</div>
+      <b>Người duyệt</b><span class="hint">Bấm Duyệt thì BC tạo chứng từ dưới quyền người bấm. Trợ lý không post được gì.</span>
+    </div>
+  </details>
+  <div id="foot">Good chocolate<br>Brighter tomorrows</div>
+</nav>
+
+<div id="main">
+  <div id="tabs">
+    <button class="tab on" id="tabChat" onclick="showTab('chat')">Trò chuyện</button>
+    <button class="tab" id="tabUc2" onclick="showTab('uc2')">Sức khỏe tồn kho</button>
+    <button class="tab" id="tabUc1" onclick="showTab('uc1')">Dự báo</button>
+    <button class="tab" id="tabUc3" onclick="showTab('uc3')">Nhà cung cấp</button>
+    <button class="tab" id="tabNhatky" onclick="showTab('nhatky')">Nhật ký agent</button>
+    <button class="tab" id="tabCaidat" onclick="showTab('caidat')">Cài đặt AI</button>
+  </div>
+  <div id="doanbar" hidden></div>
+  <div id="view">
+    <div id="hero" hidden></div>
+    <div id="chat"></div>
+    <div id="uc2" hidden></div>
+    <div id="uc1" hidden></div>
+    <div id="uc3" hidden></div>
+    <div id="nhatky" hidden></div>
+    <div id="caidat" hidden></div>
+  </div>
+  <div id="composer">
+    <div id="soan">
+      <div id="dangtraloi"><div class="n"><b>ĐANG TRẢ LỜI</b><span id="trichtext"></span></div>
+        <button class="x" onclick="thoiTraLoi()" title="Bỏ trả lời">×</button></div>
+      <div class="hang1">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5h16v11H8l-4 4z"/></svg>
+        <textarea id="text" rows="1" placeholder="Nhập yêu cầu, tên hàng hoặc mã cửa hàng…"
+                  oninput="caoText(this)" onkeydown="phimSoan(event)"></textarea>
+      </div>
+      <div class="hang2">
+        <button class="btn sm" id="btnBrief" onclick="brief()" title="Trợ lý tóm tắt việc cần làm sáng nay cho vai trò đang chọn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7"/></svg>Brief sáng nay</button>
+        <span class="mach">Enter để gửi · Shift + Enter để xuống dòng</span>
+        <button class="btn positive" onclick="send()">Gửi →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<aside id="side">
+  <div class="top"><h2>Theo dõi xử lý</h2><span class="hint">Cập nhật từ Business Central</span></div>
+  <div class="scroll">
+    <div class="blk"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l4 4v14H6z"/></svg>Đề xuất trong BC</h3><div id="proposals"></div></div>
+    <div class="blk"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h11l3 3-3 3H4M20 17H9l-3-3 3-3h11"/></svg>Transfer Order</h3><div id="transfers"></div></div>
+    <div class="blk" style="border-bottom:0"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Việc đang theo dõi</h3><div id="followups"></div></div>
+  </div>
+  <details class="tray">
+    <summary>Điều khiển demo (không thuộc sản phẩm)</summary>
+    <div class="in">
+      <h4>Mức tự chủ, để thử ranh giới</h4>
+      <div id="autonomy"></div>
+      <div class="actions">
+        <button class="btn" onclick="setAut({shadow:true,kill:false})">Shadow (chỉ báo trước)</button>
+        <button class="btn" onclick="setAut({shadow:false,kill:false})">Cho tự làm</button>
+        <button class="btn destructive" onclick="setAut({kill:true})">Dừng khẩn cấp</button>
+      </div>
+      <p class="hint">Mặc định là Shadow. "Cho tự làm" chỉ mở trong phạm vi policy đã chốt, để thấy ranh giới khi demo, không phải cấu hình khuyến nghị.</p>
+      <h4>Đồng hồ ảo</h4>
+      <div class="hint">Giờ hệ thống: <b id="now"></b></div>
+      <div class="actions">
+        <button class="btn" onclick="clock(6)">+6 giờ</button><button class="btn" onclick="clock(24)">+24 giờ (sáng hôm sau)</button>
+      </div>
+      <h4>Công cụ nhanh</h4>
+      <div class="actions">
+        <button class="btn" onclick="post('/api/brief_all')">Brief sáng cho mọi người</button>
+        <button class="btn" onclick="post('/api/self_review',{user:me,text:''}).then(poll)">Trợ lý tự chấm điểm</button>
+        <button class="btn" onclick="post('/api/kpi',{user:me,text:''}).then(poll)">Baseline và kết quả</button>
+        <button class="btn" onclick="post('/api/reset').then(()=>{lastId={};location.reload()})">Reset</button>
+      </div>
+      <h4>Chế độ đang chạy</h4>
+      <div class="hint">Nguồn dữ liệu đổi ở dải trên cùng màn hình.</div>
+      <div class="hint" id="mode"></div>
+      <div class="hint" id="planner" style="margin-top:4px"></div>
+      <div id="budget" style="margin-top:6px"></div>
+    </div>
+  </details>
+</aside>
+
+<script>
+let me = null, users = [], lastId = {}, tab = 'chat';
+// `sau` la chi so cua kich ban phai chay truoc. Kich ban 220 khach la cau noi tiep cua tiec
+// 150 khach: bam thang vao no ma chua co ke hoach truoc thi tro ly tra loi khong hieu, nen o
+// day tu chay cai truoc roi moi chay cai sau.
+const QUICK = [
+  {ten: "Tiệc 150 khách", ai: "tuan.s0005", text: "thứ Bảy này nhà hàng nhận tiệc 150 khách, mỗi khách một phần tráng miệng, ngân sách 600, trời nóng nên tránh kem, kho còn gì ghép được không"},
+  {ten: "Sếp chốt kem, 220 khách", ai: "tuan.s0005", sau: 0, text: "sếp chốt dùng kem được, nhưng thành 220 khách, mỗi khách hai viên, ngân sách giữ nguyên nhé"},
+  {ten: "Kho bị mưa dột", ai: "kho.w0003", text: "góc kho bị mưa dột, mấy thùng Flavored syrup ướt nhãn chưa đếm được, giờ xử lý sao"},
+  {ten: "Câu ngoài bản ghi", ai: "trang.sc", text: "tháng sau mình mở thêm cửa hàng ở Nha Trang thì nên đẩy bao nhiêu hàng ban đầu"},
+];
+const LADDER = [
+  {ten: "Cửa hàng Quận 1 lại hết hàng", ai: "trang.sc", text: "sao Cửa hàng Quận 1 cứ hết Chocolate ice cream"},
+];
+// Thu tu theo kich ban demo POC A + D. Cau "vi sao LS" can du lieu BC that (nhat ky tinh cua LS).
+const POC = [
+  {ten: "Dự báo đang sai ở đâu", ai: "trang.sc", text: "độ chính xác dự báo thế nào"},
+  {ten: "CTKM đang chạy và sắp tới", ai: "trang.sc", text: "CTKM nào đang chạy và sắp tới"},
+  {ten: "Vì sao LS đề xuất 82 Choco nuts", ai: "trang.sc", text: "vì sao LS đề xuất Choco nuts cho S0001"},
+  {ten: "Hàng min-max: Ice cream", ai: "trang.sc", text: "vì sao LS đề xuất Ice cream cho S0002"},
+  {ten: "Kho hỏi hàng hết hạn", ai: "hung.dieuphoi", text: "có mặt hàng nào đã hết hạn chưa"},
+  {ten: "Truy xuất lô bánh quá hạn", ai: "hung.dieuphoi", text: "truy xuất lô L260908-33170B"},
+  {ten: "Nhà cung cấp hay giao trễ", ai: "trang.sc", text: "nhà cung cấp nào hay giao trễ"},
+];
+let scnChon = "";        // "quick:1" hoac "ladder:0", de to dung cai vua bam
+const ROLE_VI = {store_manager:"Quản lý cửa hàng", dispatcher:"Điều phối kho", warehouse:"Kho trung tâm", supply_chain:"Supply Chain", retail_ops:"Retail Ops", admin:"Quản trị hệ thống"};
+const VAI_QUAN_TRI = ['admin'];
+function laQuanTri() {
+  const u = users.find(x => x.user_id === me);
+  return !!u && VAI_QUAN_TRI.includes(u.role);
+}
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const initials = n => (n||'').replace(/\(.*\)/, '').trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase() || '·';
+const money = n => Number(n||0).toLocaleString('vi-VN', {maximumFractionDigits: 1});
+const dmy = iso => iso ? iso.slice(8,10) + '/' + iso.slice(5,7) + '/' + iso.slice(0,4) : '';
+// May chu luu gio theo UTC. Truoc 13/09/2026 hoi thoai cat thang chuoi ISO nen hien gio UTC, lech 7
+// tieng so voi dong ho cua nguoi dung. Hien theo gio Viet Nam co dinh, khong theo mui gio cua may dang
+// mo trang, de may demo o dau cung hien cung mot gio.
+const MUI_GIO = 'Asia/Ho_Chi_Minh';
+function gioTin(iso) {
+  const d = new Date(iso);
+  if (isNaN(d)) return '';
+  const p = Object.fromEntries(new Intl.DateTimeFormat('vi-VN', {timeZone: MUI_GIO, hour: '2-digit', minute: '2-digit',
+    day: '2-digit', month: '2-digit', year: 'numeric', hour12: false}).formatToParts(d).map(x => [x.type, x.value]));
+  return `${p.hour}:${p.minute} · ${p.day}/${p.month}/${p.year}`;
+}
+let hetBao = null;
+function baoLoi(cau) {
+  const b = $('#loibar');
+  if (!b) return;
+  clearTimeout(hetBao);
+  $('#loitext').innerHTML = `<b>Không chạy được.</b> ${esc(cau)}`;
+  b.className = 'on';                 // loi thi de nguyen den khi nguoi dung dong
+}
+// Viec chay xong cung phai bao, roi tu tat sau vai giay.
+function baoOk(cau) {
+  const b = $('#loibar');
+  if (!b) return;
+  clearTimeout(hetBao);
+  $('#loitext').innerHTML = `<b>Xong.</b> ${esc(cau)}`;
+  b.className = 'on ok';
+  hetBao = setTimeout(anLoi, 5000);
+}
+function anLoi() { clearTimeout(hetBao); $('#loibar')?.classList.remove('on'); }
+
+// Moi loi cua may chu deu phai hien ra dai do. Nuot loi thi nguoi dung bam nut, khong thay gi,
+// va khong biet la trong that hay hong that.
+async function post(url, body) {
+  let r, d = null;
+  try {
+    r = await fetch(url, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body||{})});
+  } catch (e) {
+    matKetNoi = true;          // vong poll ke tiep thanh cong thi tu tat dai do
+    baoLoi('Không kết nối được trợ lý. Cửa sổ chạy trợ lý còn mở không?');
+    return {loi: String(e)};
+  }
+  try { d = await r.json(); } catch (e) { /* body rong hoac khong phai JSON */ }
+  if (!r.ok) {
+    baoLoi((d && (d.loi || d.detail)) || `Trợ lý trả về lỗi ${r.status}.`);
+    return {loi: (d && (d.loi || d.detail)) || `HTTP ${r.status}`};
+  }
+  anLoi();
+  return d ?? {};
+}
+
+// Moc so sanh lay luc thay nguoi do lan dau, nen cham do chi bao viec den SAU khi mo man hinh,
+// khong bao ca dong lich su cu.
+let nenTin = {};
+function soTinMoi(uid) {
+  const n = tinRa[uid] || 0;
+  if (nenTin[uid] === undefined) nenTin[uid] = n;
+  return uid === me ? 0 : Math.max(0, n - nenTin[uid]);
+}
+
+async function loadUsers() {
+  users = await (await fetch('/api/users')).json();
+  veDanhSachVaiTro();
+  if (!me) switchUser(users[0].user_id);
+  renderQuick();
+  veQuyenQuanTri();
+}
+
+// Ve lai danh sach vai tro tu `users` da co. Vong poll goi ham nay chu khong goi `loadUsers`,
+// de khong hoi lai danh sach nguoi dung moi hai giay.
+function veDanhSachVaiTro() {
+  if (!users.length) return;
+  $('#users').innerHTML = users.map(u => { const moi = soTinMoi(u.user_id);
+    return `<div class="user ${me===u.user_id?'active':''}" onclick="switchUser('${u.user_id}')">
+      <span class="avatar">${initials(u.display_name)}</span>
+      <div style="flex:1; min-width:0"><b>${esc(u.display_name.replace(/\s*\(.*\)/,''))}</b><small>${esc(ROLE_VI[u.role]||u.role)}${u.store_code? ' · '+esc(u.store_code):''}</small></div>
+      ${moi ? `<span class="moi" title="${moi} tin mới">${moi}</span>` : ''}</div>`; }).join('');
+}
+function veQuyenQuanTri() {
+  const duoc = laQuanTri();
+  // Nhat ky agent cung chi cho quan tri: no hien cau hoi cua moi vai tro va cho luu kich ban.
+  ['navCaidat', 'tabCaidat', 'navNhatky', 'tabNhatky'].forEach(id => { $('#' + id).hidden = !duoc; });
+  if (!duoc && (tab === 'caidat' || tab === 'nhatky')) showTab('chat');
+}
+function switchUser(id) {
+  // Doi vai tro thi ve Tro chuyen: nguoi moi vao can thay hoi thoai cua minh truoc, khong phai
+  // man hinh cua nguoi truoc de lai.
+  if (tab !== 'chat') showTab('chat');
+  me = id; lastId[me] = 0; nenTin[id] = tinRa[id] || 0;
+  $('#chat').innerHTML = ''; daTaiHopThu = false; veHero(); taiDoanChat();
+  const u = users.find(x=>x.user_id===id) || {display_name:id, role:''};
+  $('#who').textContent = u.display_name.replace(/\s*\(.*\)/,'');
+  $('#whorole').textContent = (ROLE_VI[u.role]||u.role) + (u.store_code ? ' · ' + u.store_code : '');
+  $('#whoav').textContent = initials(u.display_name);
+  loadUsers(); poll();
+}
+function renderQuick() {
+  const ve = (q, i, ho) => {
+    const key = `${ho}:${i}`;
+    const cls = ['scn', ho === 'ladder' ? 'hot' : '', scnChon === key ? 'on' : '', q.sau !== undefined ? 'sub' : ''].filter(Boolean).join(' ');
+    const tt = q.sau !== undefined ? `<span class="tt">tiếp theo</span>` : '';
+    return `<button class="${cls}" onclick="runQuick(${i},'${ho}')"><span class="lb">${ho === 'ladder' ? '⟳' : '◇'} ${esc(q.ten)}</span>${tt}</button>`;
+  };
+  $('#poc').innerHTML = POC.map((q,i)=>ve(q,i,'poc')).join('');
+  $('#ladder').innerHTML = LADDER.map((q,i)=>ve(q,i,'ladder')).join('');
+  $('#quick').innerHTML = QUICK.map((q,i)=>ve(q,i,'quick')).join('');
+}
+async function guiKichBan(q) {
+  showTab('chat');
+  if (me !== q.ai) { switchUser(q.ai); await new Promise(r=>setTimeout(r,150)); }
+  $('#text').value = q.text;
+  await send();
+}
+async function runQuick(i, ho) {
+  const src = ho === 'ladder' ? LADDER : ho === 'poc' ? POC : QUICK;
+  const q = src[i];
+  scnChon = `${ho}:${i}`; renderQuick();
+  // Kich ban noi tiep: chay cai truoc no da, neu khong tro ly khong co ngu canh de hieu.
+  if (q.sau !== undefined) { await guiKichBan(src[q.sau]); await new Promise(r=>setTimeout(r,600)); }
+  await guiKichBan(q);
+}
+let bcMode = '', bcInfo = null, dangDoiNguon = false;
+function renderSrcBar() {
+  const b = bcInfo; if (!b) return;
+  const bar = $('#srcbar');
+  const thieuDuLieu = b.live && !b.san_sang;
+  bar.className = b.loi || thieuDuLieu ? 'warn' : (b.live ? 'live' : 'mock');
+  let t;
+  if (b.loi) t = `<b>Không đọc được Business Central.</b> ${esc(b.loi)} Đang chạy trên dữ liệu mô phỏng.`;
+  else if (thieuDuLieu) t = `<b>Đang đọc Business Central ${esc(b.nguon)}</b>, nhưng hai bảng kết quả còn rỗng. `
+      + `Mở trang NWV Agent Setup, đặt Work Date rồi bấm Run Inventory Health và Run Store Replenishment.`;
+  // Dai nay chi tra loi mot cau: so tren man hinh den tu dau. So dong, ngay chot va chuyen
+  // che do da co cho khac, de o day thi nguoi xem phai doc mot doan dai moi biet dieu do.
+  else if (b.live) t = `<b>Đang đọc Business Central ${esc(b.nguon)}.</b>`;
+  else t = `<b>Đang chạy trên dữ liệu mô phỏng.</b>`;
+  $('#srctext').innerHTML = t;
+  $('#segMock').classList.toggle('on', !b.live);
+  $('#segLive').classList.toggle('on', !!b.live);
+  $('#segMock').disabled = $('#segLive').disabled = dangDoiNguon;
+}
+async function setMode(bc) {
+  if (dangDoiNguon) return;
+  dangDoiNguon = true;
+  // Doi sang BC that mat khoang 20 giay: dung tro ly moi va chot lai so nen tren du lieu that.
+  // Noi ro con so do, neu khong 20 giay im lang nhin y het treo may.
+  $('#srctext').innerHTML = bc === 'live'
+    ? '<b>Đang kết nối Business Central…</b> Trợ lý đọc lại hai bảng kết quả và chốt số nền trên dữ liệu thật. Mất khoảng 20 giây.'
+    : '<b>Đang chuyển về dữ liệu mô phỏng…</b>';
+  renderSrcBar();
+  try {
+    bcInfo = await post('/api/mode', {bc});
+    if (!bcInfo.loi) baoOk(bcInfo.live
+      ? `Đã chuyển sang Business Central ${bcInfo.nguon}: ${bcInfo.so_dong_ket_qua} dòng kết quả, chốt ngày ${dmy(bcInfo.as_of)}.`
+      : 'Đã chuyển về dữ liệu mô phỏng.');
+  } finally { dangDoiNguon = false; }
+  lastId = {}; $('#chat').innerHTML = ''; uc2Sum = null;
+  renderSrcBar();
+  await loadUsers();
+  if (tab === 'uc2') loadUC2();
+  poll();
+}
+// Nguon theo skill da tra loi. NWV Repl. Suggestion da xoa tu app 1.2.0.0; bo sung hang doc LS Replenishment.
+const NGUON_SKILL = {
+  du_bao: 'bảng NWV Forecast Accuracy',
+  nha_cung_cap: 'bảng NWV Supplier Scorecard', po_qua_han: 'Purchase Line',
+  truy_xuat: 'Item Ledger Entry của lô',
+  khuyen_mai: 'Periodic Discount và Planned Event của LS',
+  ls_giai_thich: 'journal và nhật ký tính của LS Replenishment',
+  replenishment: 'LS Replenishment và bảng NWV Inv. Health Line',
+};
+function srcLine(skill) {
+  const bang = NGUON_SKILL[skill] || 'bảng NWV Inv. Health Line và LS Replenishment';
+  return bcMode === 'live'
+    ? `Số lấy từ ${bang} trong Business Central. Trợ lý đọc lại, không tự tính.`
+    : `Dữ liệu mô phỏng của ${bang}. Trên hệ thống thật, Business Central tính. Trợ lý đọc lại, không tự tính.`;
+}
+// Nhan nut lay tu chinh hanh dong ma skill gui len; bang nay chi la duong lui khi skill khong
+// dat nhan. Truoc day bang nay de len het, nen the "De xuat huy" hien nut "Duyet chuyen hang".
+const LABEL = {approve:'Duyệt', edit:'Sửa số lượng', reject:'Từ chối', undo:'Hoàn tác', ack:'Đã nhận',
+               ship:'Đã ship', inv_apply:'Áp dụng đề xuất', inv_steps:'Xem tôi đã tra gì'};
+const INPUT = {quantity:'Số lượng chuyển', reason:'Lý do từ chối (nếu có)', text:'Chuyện gì đã xảy ra', comment:'Ghi chú'};
+const GOI_Y = {quantity:'vd: 12', reason:'vd: cửa hàng bên kia cũng đang thiếu',
+               text:'vd: hai tuần đó tủ đông hỏng nên phải ngừng bán',
+               comment:'vd: đã gọi báo kho trung tâm'};
+function actionsHtml(c, mid) {
+  if (!c.actions?.length) return '';
+  const inputs = c.actions.filter(a => a.needs_input);
+  const btn = a => `<button class="btn ${a.style==='positive'?'positive':(a.style==='destructive'?'destructive':'')}" onclick="act('${a.id}','${esc(c.ref)}',${mid},${a.needs_input?`'${a.needs_input}'`:'null'},${JSON.stringify(a.payload||{}).replace(/"/g,'&quot;')})">${esc(a.label || LABEL[a.id] || a.id)}</button>`;
+  const oNhap = inputs.map(a => `<span class="field"><label>${esc(INPUT[a.needs_input]||a.needs_input)}</label>`
+    + `<input type="text" id="in-${mid}-${a.id}" placeholder="${esc(GOI_Y[a.needs_input]||'')}"></span>`).join('');
+  return `<div class="actions stack" id="act-${mid}">`
+    + (oNhap ? `<div class="inputs">${oNhap}</div>` : '')
+    + `<div class="buttons">${c.actions.map(btn).join('')}</div></div>`;
+}
+// Lien ket mo trang Business Central da loc san, de nguoi dung doi chieu con so ngay tai goc.
+function linksHtml(c) {
+  if (!c.links?.length) return '';
+  return `<div class="bclinks">${c.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">↗ ${esc(l.label)}</a>`).join('')}</div>`;
+}
+function factMap(c) { const m = {}; (c.facts||[]).forEach(f => m[f.label] = f.value); return m; }
+// So ngay ban tinh tu chinh hai o tren the (so luong chia ban binh quan). Truoc day ghi cung "14 ngay"
+// trong khi LS phu 7 ngay cho Choco nuts.
+// The ghi ca "11.7" (so thap phan) lan "1.234" (hang nghin kieu Viet), nen doc theo tung dang.
+function docSo(x) {
+  const s = String(x || '').replace('/ngày', '').trim();
+  if (s.includes(',')) return parseFloat(s.replace(/\./g, '').replace(',', '.'));
+  if (/^\d{1,3}(\.\d{3})+$/.test(s)) return parseFloat(s.replace(/\./g, ''));
+  return parseFloat(s);
+}
+function ngayBan(f) {
+  const q = docSo(f['Số lượng']), b = docSo(f['Bán bình quân']);
+  return q > 0 && b > 0 ? Math.round(q / b) : 0;
+}
+function propHtml(c, mid, ts) {
+  const f = factMap(c);
+  const [desc, code] = (f['Mặt hàng']||'').match(/^(.*?)\s*\(([^)]*)\)\s*$/)?.slice(1) || [f['Mặt hàng'], ''];
+  const body = (c.body||'').split('\n');
+  const shadow = /shadow/i.test(c.body||'');
+  const lead = body.filter(l => !/^\[Shadow/.test(l)).join('\n').trim();
+  const [onhand, doc] = (f['Tồn store / ngày']||'').split('/').map(s=>s.trim());
+  const pol = policyRule[c.ref] || null;
+  const st = statusOf[c.ref] || (shadow ? 'Chờ người duyệt' : 'Chờ người duyệt');
+  const acts = c.actions || [];
+  const qtyAct = acts.find(a=>a.id==='edit'), rejAct = acts.find(a=>a.id==='reject'), okAct = acts.find(a=>a.id==='approve');
+  const other = acts.filter(a => !['edit','reject','approve'].includes(a.id));
+  return `<div class="card prop">
+    <div class="head"><div><h3>${esc(c.title)}</h3><div class="meta">${pol ? esc(pol.code) + ' · ' : ''}Từ trợ lý vận hành</div></div>
+      <span class="pill ${shadow?'shadow':'info'}">🕓 ${shadow ? 'Shadow mode · ' : ''}${esc(st)}</span></div>
+    ${lead ? `<div class="lead">${esc(lead)}</div>` : ''}
+    <div class="item"><div class="thumb">MAROU</div><div><h4>${esc(desc)}</h4><div class="code">Mã hàng: ${esc(code)}</div></div>
+      ${pol ? `<div class="policy"><b>Chính sách đề xuất</b>${esc(pol.description)}</div>` : ''}</div>
+    ${f['Từ'] ? `<div class="route">
+      <div class="loc"><span class="ic">⌂</span><div><small>Từ (kho nguồn)</small><b>${esc(f['Từ'])}</b><div class="sub">${esc(locName(f['Từ']))}</div></div></div>
+      <div class="arr">→</div>
+      <div class="loc"><span class="ic">⌂</span><div><small>Đến (kho nhận)</small><b>${esc(f['Đến'])}</b><div class="sub">${esc(locName(f['Đến']))}</div></div></div>
+    </div>` : ''}
+    <div class="nums">
+      <div><small>Số lượng đề xuất</small><div class="n big">${esc(f['Số lượng']||'')}${ngayBan(f) ? `<em>đủ bán khoảng ${ngayBan(f)} ngày</em>` : ''}</div></div>
+      ${onhand !== undefined ? `<div><small>Tồn cửa hàng</small><div class="n">${esc(onhand)}</div></div>` : ''}
+      ${f['Bán bình quân'] ? `<div><small>Bán bình quân</small><div class="n">${esc(f['Bán bình quân'].replace('/ngày','').trim())}<em>/ ngày</em></div></div>` : ''}
+      ${f['Kho còn'] ? `<div><small>Kho còn (tại nguồn)</small><div class="n">${esc(f['Kho còn'])}</div></div>` : ''}
+    </div>
+    ${acts.length ? `<div class="ctl" id="act-${mid}">
+      <div class="inputs">
+        ${qtyAct ? `<span class="field"><label>Số lượng chuyển (sửa được, rồi bấm Duyệt)</label>
+          <input type="number" id="in-${mid}-edit" value="${esc(f['Số lượng']||'')}" data-goc="${esc(f['Số lượng']||'')}" style="width:140px"></span>` : ''}
+        ${rejAct ? `<span class="field"><label>Lý do từ chối (nếu có)</label><input type="text" id="in-${mid}-reject" placeholder="${esc(GOI_Y.reason)}" style="width:100%"></span>` : ''}
+      </div>
+      <div class="buttons">
+        ${okAct ? `<button class="btn positive" onclick="duyet('${esc(c.ref)}',${mid},${qtyAct ? 'true' : 'false'})">✓ Duyệt chuyển hàng</button>` : ''}
+        ${rejAct ? `<button class="btn destructive" onclick="act('reject','${esc(c.ref)}',${mid},'reason',{})">✕ Từ chối</button>` : ''}
+        ${other.map(a=>`<button class="btn ${a.style==='positive'?'positive':(a.style==='destructive'?'destructive':'')}" onclick="act('${a.id}','${esc(c.ref)}',${mid},null,{})">${esc(a.label || LABEL[a.id] || a.id)}</button>`).join('')}
+      </div></div>` : ''}
+    ${linksHtml(c)}
+    <div class="src">ⓘ ${bcMode==='live' ? 'Số do Business Central tính' : 'Dữ liệu mô phỏng'}<span class="dot"></span>trợ lý đọc lại, không tự tính<span class="dot"></span>${esc(ts)}</div>
+  </div>`;
+}
+function locName(code) {
+  if (code === 'W0003') return 'Kho trung tâm';
+  const u = users.find(x => x.store_code === code);
+  return u ? u.display_name.replace(/^.*QL\s*/,'').replace(/,.*\)$/,'').replace(/\)$/,'') : '';
+}
+function renderCard(c, mid, ts, skill) {
+  const f = factMap(c);
+  if (c.kind === 'proposal' && f['Từ'] !== undefined && f['Số lượng'] !== undefined) return propHtml(c, mid, ts);
+  let h = `<div class="card"><div class="head"><h3 style="font-size:19px">${esc(c.title)}</h3>${c.kind ? `<span class="pill info">${esc({info:'Thông tin', brief:'Brief', proposal:'Đề xuất'}[c.kind]||c.kind)}</span>` : ''}</div>`;
+  if (c.body) h += `<div class="prose">${esc(c.body)}</div>`;
+  if (c.facts?.length) h += `<div class="facts">${c.facts.map(x=>`<span class="k">${esc(x.label)}</span><span class="v">${esc(x.value)}</span>`).join('')}</div>`;
+  h += actionsHtml(c, mid);
+  h += linksHtml(c);
+  if (c.facts?.length || c.actions?.length) h += `<div class="src">ⓘ ${esc(srcLine(skill))}<span class="dot"></span>${esc(ts)}</div>`;
+  return h + '</div>';
+}
+let policyRule = {}, statusOf = {};
+// Man hinh poll moi 2 giay. Tren Business Central that mot vong poll co luc lau hon 2 giay,
+// nen cac vong chong len nhau, tin ve khong dung thu tu va BC bi hoi lien tuc. Cho chay mot
+// vong tai mot thoi diem, va xep dung MOT vong ke tiep: goi `poll()` sau khi vua gui tin thi
+// van chac chan co mot vong doc lai sau do, nhung hang doi khong dai ra vo han.
+let tinRa = {};               // {user_id: so tin tro ly da gui}, de cham dau nguoi co tin moi
+let daTaiHopThu = false;      // chua tai xong thi chua duoc ve man hinh chao
+let pollChay = null, pollXep = null;
+let matKetNoi = false;
+function poll() {
+  if (!me) return Promise.resolve();
+  if (!pollChay) {
+    pollChay = _poll().finally(() => { pollChay = null; });
+    return pollChay;
+  }
+  if (!pollXep) {
+    pollXep = pollChay.catch(() => {}).then(() => { pollXep = null; return poll(); });
+  }
+  return pollXep;
+}
+async function _poll() {
+  const doc = async (url) => {
+    const r = await fetch(url);
+    if (!r.ok) {
+      let d = null; try { d = await r.json(); } catch (e) {}
+      throw new Error((d && (d.loi || d.detail)) || `${url} trả về lỗi ${r.status}`);
+    }
+    return r.json();
+  };
+  let rows, st, rules;
+  try {
+    rows = await doc(`/api/inbox?user=${me}&after=${lastId[me]||0}`);
+    st = await doc('/api/state');
+    rules = (await doc('/api/policy')).rules;
+  } catch (e) {
+    // fetch nem TypeError ("Failed to fetch") khi khong toi duoc may chu: thuong la uvicorn --reload dang khoi dong lai
+    // sau khi sua file Python, vai giay la xong. Noi ro la dang thu lai, va vong poll thanh cong ke tiep tu tat dai do.
+    // Truoc 14/09/2026 dai "Khong chay duoc. Failed to fetch" nam lai mai du tro ly da chay binh thuong.
+    if (e instanceof TypeError) {
+      matKetNoi = true;
+      baoLoi('Mất kết nối tới trợ lý, có thể máy chủ đang khởi động lại. Tôi tự thử lại mỗi vài giây.');
+    } else {
+      baoLoi(e.message);     // vong poll sau tu thu lai, khong can lam gi them
+    }
+    return;
+  }
+  if (matKetNoi) { matKetNoi = false; baoOk('Đã kết nối lại với trợ lý.'); }
+  bcMode = st.mode.bc;
+  bcInfo = st.bc; renderSrcBar();
+  st.proposals.forEach(p => { if (p.policy_rule) policyRule[p.proposal_id] = rules.find(r=>r.code===p.policy_rule) || {code:p.policy_rule, description:''}; statusOf[p.proposal_id] = {Proposed:'Chờ người duyệt', Executed:'Đã thực thi', Rejected:'Đã từ chối'}[p.status] || p.status; });
+  for (const m of rows) {
+    lastId[me] = m.id;
+    if (m.direction === 'in') {
+      // Tin that ve thi bo bong bong tam cung noi dung, dung cho cu, de khong hien hai lan.
+      const tam = [...document.querySelectorAll('#chat .msg.tam')].find(x => x.dataset.text === (m.text || '').trim());
+      if (tam) tam.remove();
+    }
+    const div = document.createElement('div');
+    div.className = 'msg ' + (m.direction==='in' ? 'in' : 'out');
+    const ts = gioTin(m.ts);
+    const dup = m.card && m.text && ((m.card.title||'').includes(m.text.trim()) || m.text.trim().includes((m.card.title||'').trim()) || (m.card.body||'').includes(m.text.trim()));
+    // Trich dan tin da tra loi, de doc lai khong phai cuon nguoc len tim.
+    const trich = m.trich ? `<div class="trich">${esc(m.trich)}</div>` : '';
+    if (m.direction === 'in') {
+      div.innerHTML = `<div class="bubble">${trich}${esc(m.text)}<span class="ts">${ts}</span></div>`;
+    } else {
+      const tom = (m.text || m.card?.title || '').replace(/\s+/g, ' ').trim().slice(0, 90);
+      const nut = tom ? `<button class="traloi" onclick="traLoi(${m.id}, ${JSON.stringify(tom).replace(/"/g, '&quot;')})">↩ Trả lời</button>` : '';
+      const body = (m.text && !dup) ? `<div class="bubble">${esc(m.text)}<span class="ts">Trợ lý · ${ts}${m.skill?' · '+esc(m.skill):''}${nut}</span></div>` : '';
+      div.innerHTML = `${DAU_AI('san-sang')}<div class="stack">${body}${m.card ? renderCard(m.card, m.id, ts, m.skill) : ''}</div>`;
+    }
+    $('#chat').appendChild(div);
+  }
+  if (rows.length && tab !== 'uc2') $('#chat').lastElementChild?.scrollIntoView({behavior:'smooth'});
+  tinRa = st.tin_ra || {};
+  nenTin[me] = tinRa[me] || 0;        // dang mo hop thu cua ai thi nguoi do luon la da doc
+  veDanhSachVaiTro();
+  const bongBong = $('#dangxuly');
+  if (bongBong) $('#chat').appendChild(bongBong);   // tin moi vua them, day no xuong cuoi lai
+  if (rows.length) taiDoanChat();                   // co tin moi thi ten doan co the doi theo
+  daTaiHopThu = true;
+  veHero();
+  $('#now').textContent = st.now.replace('T',' ').slice(0,16) + ' UTC';
+  $('#mode').innerHTML = st.mode.llm === 'live'
+    ? `<b>Mô hình: đang gọi thật.</b> ${esc(st.mode.model)}`
+    : `<b>Mô hình: đang tắt.</b> Câu chữ do rule dựng sẵn, không tốn lượt gọi nào.`;
+  $('#planner').innerHTML = st.mode.planner === 'live'
+    ? '<b>Planner: model thật.</b> Trợ lý tự dựng chuỗi tra cứu cho câu bất kỳ.'
+    : `<b>Planner: bản ghi (${(st.mode.replays||[]).join(', ')}).</b> Chuỗi tool cố định, dữ liệu đọc lại thật mỗi lần chạy. Câu ngoài bản ghi bị từ chối thẳng.`;
+  const b = st.budget;
+  const detail = Object.entries(b.by_purpose||{}).map(([k,v])=>`${k} $${v.toFixed(3)}`).join(' · ') || 'chưa gọi model';
+  $('#budget').innerHTML = `<b>Chi phí hôm nay: $${b.spent_usd.toFixed(3)}</b> (trần $${b.cap_usd}) · ${b.calls} lượt gọi<br><span class="hint">${detail}</span>`
+    + (b.blocked ? `<br><span class="pill bad">Đã chạm trần, đang chạy bằng rule</span>` : '');
+  const a = st.policy;
+  $('#autonomy').innerHTML = a.kill ? '<div class="stopbanner">⛔ Đã dừng khẩn cấp. Mọi việc đều hỏi người dùng trước khi thực hiện.</div>'
+    : (a.shadow ? '<span class="pill shadow">Shadow mode</span> <span class="hint">trợ lý chỉ nói sẽ làm gì, chưa tự làm</span>'
+                : `<span class="pill ok">Đang tự làm</span> <span class="hint">trong phạm vi policy · đã tự xử lý ${a.auto_today}/${a.cap} việc hôm nay</span>`);
+  $('#proposals').innerHTML = st.proposals.map(p=>{
+    const auto = (p.approver||'').startsWith('agent:');
+    return `<div class="row2"><span class="pill ${p.status}">${esc(p.status)}</span><div class="t">${esc(p.action_type)} · ${esc(p.item_desc||p.item_no)}
+      <small>${esc(p.item_no)} ${esc(p.from_loc||'')}${p.to_loc?' → '+esc(p.to_loc):''} × ${esc(p.quantity)}${p.policy_rule?' · '+esc(p.policy_rule):''}${auto?' · trợ lý tự làm':''}${p.result_doc?' · '+esc(p.result_doc):''}</small>
+      ${p.outcome?`<span class="pill ${p.outcome==='good'?'ok':'bad'}">${p.outcome==='good'?'đạt':'chưa đạt'}</span>`:''}</div></div>`;
+  }).join('') || '<div class="empty"><b>Chưa có đề xuất nào.</b><span>Khi Business Central tạo đề xuất, thông tin sẽ hiển thị ở đây.</span></div>';
+  $('#transfers').innerHTML = st.transfers.map(t=>`<div class="row2"><span class="pill ${t.status}">${esc(t.status)}</span><div class="t">${esc(t.no)}<small>${esc(t.itemNo)} × ${esc(t.quantity)} → ${esc(t.toLocationCode)} · tạo bởi ${esc(t.createdBy)}</small></div></div>`).join('')
+    || '<div class="empty"><b>Chưa có chứng từ chuyển hàng.</b><span>Sau khi duyệt, chứng từ sẽ được tạo trong Business Central.</span></div>';
+  $('#followups').innerHTML = st.followups.map(f=>`<div class="row2 ${f.status==='done'?'done':''}"><span class="pill ${f.status}">${esc(f.status)}</span><div class="t">${esc(f.kind)} · ${esc(f.ref)}<small>hạn ${esc(f.due_at.replace('T',' ').slice(5,16))} · nhắc ${f.attempts} lần</small></div></div>`).join('')
+    || '<div class="empty"><b>Chưa có việc nào.</b><span>Các đề xuất, chứng từ và yêu cầu của bạn sẽ hiển thị tại đây.</span></div>';
+}
+async function send() {
+  const el = $('#text');
+  const t = (el.value || '').trim();
+  if (!t) return;                       // chuoi toan khoang trang khong tinh la mot cau
+  // Doi nguon dung tro ly moi; tin gui giua chung bi mat cung bo nho cu. Giu nguyen cau trong o nhap.
+  if (dangDoiNguon) { baoLoi('Đang đổi nguồn dữ liệu, chờ dải trên cùng báo xong rồi gửi lại.'); return; }
+  el.value = ''; caoText(el);
+  showTab('chat');
+  veHero();                             // bo man hinh chao ngay, dung doi vong poll
+  // Hien ngay cau vua go. Truoc day cau chi hien khi vong poll doc lai tu /api/inbox, ma server chi ghi tin vao
+  // hop thu sau khi xu ly xong, nen go Enter la cau bien mat den luc tro ly tra loi. Dung bat ngay 14/09/2026.
+  // Bong bong tam nay bi thay bang tin that khi vong poll ve (xem _poll).
+  const tam = document.createElement('div');
+  tam.className = 'msg in tam'; tam.dataset.text = t;
+  tam.innerHTML = `<div class="bubble">${esc(t)}<span class="ts">đang gửi…</span></div>`;
+  $('#chat').appendChild(tam);
+  dangXuLy('Đang đọc dữ liệu và soạn câu trả lời…');
+  let hong = true;
+  try {
+    const r = await post('/api/message', {user: me, text: t, reply_to: traLoiTin});
+    hong = !!(r && r.loi);
+    if (hong) { el.value = t; caoText(el); }   // gui hong thi tra lai cau da go
+    else thoiTraLoi();
+    await poll();
+  } finally {
+    thoiXuLy();
+    if (hong) tam.remove();             // khong de lai cau chua gui duoc trong hoi thoai
+  }
+}
+// Duyet la mot nut. Nguoi duyet sua so ngay trong o roi bam Duyet; khong bat ho bam them mot
+// nut "sua so" nua. So khac so de xuat thi di duong `edit`, ben duoi van kiem tran ton kho nguon.
+async function duyet(ref, mid, coSoLuong) {
+  const el = coSoLuong ? document.getElementById(`in-${mid}-edit`) : null;
+  if (!el) return act('approve', ref, mid, null, {});
+  const goc = (el.dataset.goc || '').trim(), moi = (el.value || '').trim();
+  if (!moi || Number(moi) <= 0) { alert('Số lượng phải lớn hơn 0'); return; }
+  if (moi === goc) return act('approve', ref, mid, null, {});
+  return act('edit', ref, mid, 'quantity', {});
+}
+async function act(verb, ref, mid, inputName, payload) {
+  payload = payload || {};
+  if (inputName) { const el = document.getElementById(`in-${mid}-${verb}`); const v = el ? el.value : ''; if (!v && inputName !== 'reason') { alert('Nhập ' + (INPUT[inputName]||inputName)); return; } payload[inputName] = v; }
+  const nut = document.querySelectorAll(`#act-${mid} button`);
+  nut.forEach(b => b.disabled = true);
+  const GHI_VAO_BC = ['approve', 'edit', 'reject', 'lad_approve', 'plan_apply', 'inv_apply', 'ih_propose', 'ih_transfer_fast'];
+  if (GHI_VAO_BC.includes(verb)) dangXuLy('Đang ghi vào Business Central…');
+  try {
+    const r = await post('/api/action', {user: me, verb, ref, payload});
+    await poll();
+    // Tro ly tu choi thi de xuat van o Proposed: mo lai nut de nguoi duyet sua roi bam tiep.
+    if (r && r.con_mo) nut.forEach(b => b.disabled = false);
+  } finally { thoiXuLy(); }
+}
+// ---------------------------- nhat ky agent
+// Thay cho "ca dem" (bo ngay 13/09/2026): ca dem chi chay lai Brief theo lo, khong goi model, nen
+// dem ra tra loi "agent o dau" la tu nhan agent chi la kich ban. Man hinh nay doc lai viec THAT
+// trong ngay, va cho thay vong hoc: cau ngoai kich ban, model tu dung chuoi, nguoi quan tri duyet
+// thanh kich ban, lan sau tra loi khong ton token.
+let kbXem = null;          // ban xem truoc dang mo: {cau_hoi_id, ...}
+const TOOL_VI = {list_stock:'Tồn một địa điểm', stock_by_item:'Tồn một mặt hàng', find_item:'Tra mã hàng',
+  stores_at_risk:'Cửa hàng dưới ngưỡng', sales_rate:'Tốc độ bán', lot_info:'Thông tin lô',
+  open_discount_exceptions:'Chiết khấu chờ giải trình', ask_human:'Hỏi lại người dùng'};
+const gio = ts => gioTin(ts).replace(/\/\d{4}$/, '');     // bang Nhat ky: bo nam cho gon
+
+async function loadNhatky() {
+  const r = await fetch('/api/nhat-ky?user=' + encodeURIComponent(me));
+  if (!r.ok) { $('#nhatky').innerHTML = ''; showTab('chat'); return; }
+  const d = await r.json();
+  const t = d.tong || {}, qt = laQuanTri();
+  const the = (nhan, con_so, phu) => `<div class="kpi"><small>${nhan}</small>
+    <div class="n">${con_so}</div><div class="un">${phu}</div></div>`;
+
+  const cachTraLoi = g => [g.goi_model ? `model ${g.goi_model}` : '', g.chay_kich_ban ? `kịch bản ${g.chay_kich_ban}` : '',
+    g.khong_tra_loi ? `không trả lời ${g.khong_tra_loi}` : '', (g.so_lan - g.goi_model - g.chay_kich_ban - g.khong_tra_loi) ? `bản ghi ${g.so_lan - g.goi_model - g.chay_kich_ban - g.khong_tra_loi}` : '']
+    .filter(Boolean).join(' · ');
+  const oLuu = g => g.kich_ban_id ? `<span class="pill ok">${esc(g.kich_ban_id)}</span>`
+    : g.luu_duoc_tu ? (qt ? `<button class="btn sm positive" onclick="xemTruocKichBan(${g.luu_duoc_tu})">Lưu thành kịch bản</button>`
+                          : '<span class="hint">Quản trị duyệt</span>')
+    : g.khong_tra_loi === g.so_lan ? '<span class="hint">Thiếu dữ liệu hoặc công cụ</span>' : '<span class="hint">—</span>';
+
+  $('#nhatky').innerHTML = `<div class="pagehead"><div>
+      <h1>Nhật ký agent</h1>
+      <div class="sub">Việc trợ lý đã làm trong ngày và lý do của từng việc. Câu hỏi nằm ngoài kịch bản,
+        và những câu đã được duyệt thành kịch bản để lần sau trả lời không tốn token.</div>
+    </div><div class="right"><button class="btn" onclick="loadNhatky()">Đọc lại</button></div></div>
+
+    <div class="cards">
+      ${the('Câu hỏi ngoài rule', so(t.cau_ngoai_rule), 'rule không đọc được, phải tìm cách khác')}
+      ${the('Model tự dựng chuỗi', so(t.goi_model), 'tốn token, mỗi lần một chuỗi tra cứu mới')}
+      ${the('Trả lời bằng kịch bản', so(t.chay_kich_ban), `${so(t.kich_ban_bat)} kịch bản đang bật, 0 token mỗi lần`)}
+      ${the('Token tiết kiệm ước tính', so(t.token_tiet_kiem), `khoảng ${Number(t.usd_tiet_kiem || 0).toFixed(4)} USD`)}
+    </div>
+
+    <div class="sec"><h2>Câu hỏi ngoài kịch bản <small>gom câu giống nhau, câu hỏi nhiều nhất lên đầu</small></h2>
+      ${(d.cau_hoi || []).length ? `<div style="overflow-x:auto"><table class="grid"><thead><tr><th>Câu hỏi gần nhất</th><th class="num">Số lần</th>
+        <th>Cách trả lời</th><th>Người hỏi đánh giá</th><th class="num">Token đã tốn</th><th style="width:170px"></th></tr></thead><tbody>
+        ${d.cau_hoi.map(g => `<tr><td class="wrap">${esc(g.cau_moi_nhat)}<div class="hint">${gio(g.ts)}</div></td>
+          <td class="num">${so(g.so_lan)}</td><td class="hint">${esc(cachTraLoi(g))}</td>
+          <td class="hint">${g.dung ? `đúng ${g.dung}` : ''}${g.dung && g.sai ? ' · ' : ''}${g.sai ? `<span style="color:var(--bad)">chưa đúng ${g.sai}</span>` : ''}${!g.dung && !g.sai ? '—' : ''}</td>
+          <td class="num">${so(g.token)}</td><td>${oLuu(g)}</td></tr>`).join('')}
+      </tbody></table></div>` : `<p class="hint">Chưa có câu nào. Bật AI rồi hỏi một câu không nằm trong rule, ví dụ
+        “tình hình Choco nuts trên toàn hệ thống thế nào”.</p>`}
+      <div id="kbxem"></div>
+    </div>
+
+    <div class="sec"><h2>Kịch bản đã duyệt <small>chạy lại chuỗi tra cứu trên dữ liệu hiện tại, không gọi model</small></h2>
+      ${(d.kich_ban || []).length ? `<div style="overflow-x:auto"><table class="grid"><thead><tr><th style="width:70px">Mã</th><th>Câu mẫu</th>
+        <th>Cần biết</th><th class="num">Đã chạy</th><th>Đánh giá</th><th class="num">Token tiết kiệm</th><th>Duyệt bởi</th><th></th></tr></thead><tbody>
+        ${d.kich_ban.map(k => `<tr><td><b>${esc(k.id)}</b></td><td class="wrap">${esc(k.cau_mau)}
+            ${k.canh_bao && k.canh_bao.length ? `<div class="hint" style="color:var(--bad)">${k.canh_bao.length} lưu ý khi duyệt</div>` : ''}</td>
+          <td class="hint">${esc((k.bien_can || []).filter(b => ['item_no', 'location'].includes(b)).map(b => b === 'item_no' ? 'mặt hàng' : 'địa điểm').join(', ') || 'không')}</td>
+          <td class="num">${so(k.so_lan_chay)}</td>
+          <td class="hint">${k.dung ? `đúng ${k.dung}` : ''}${k.dung && k.sai ? ' · ' : ''}${k.sai ? `<span style="color:var(--bad)">chưa đúng ${k.sai}</span>` : ''}${!k.dung && !k.sai ? '—' : ''}</td>
+          <td class="num">${so(k.token_tiet_kiem)}</td><td class="hint">${esc(k.duyet_boi)}<br>${gio(k.ts)}</td>
+          <td>${qt ? `<button class="btn sm" onclick="batKichBan('${esc(k.id)}', ${k.bat ? 'false' : 'true'})">${k.bat ? 'Tắt' : 'Bật lại'}</button>`
+                   : `<span class="pill ${k.bat ? 'ok' : ''}">${k.bat ? 'Đang bật' : 'Đã tắt'}</span>`}</td></tr>`).join('')}
+      </tbody></table></div>` : '<p class="hint">Chưa có kịch bản nào được duyệt.</p>'}
+    </div>
+
+    <div class="sec"><h2>Từng quyết định <small>mới nhất lên đầu, mỗi dòng truy về một dòng policy hoặc một chuỗi tra cứu</small></h2>
+      ${(d.quyet_dinh || []).length ? `<div style="overflow-x:auto"><table class="grid"><thead><tr><th style="width:95px">Lúc</th><th style="width:150px">Việc</th>
+        <th>Đề xuất hoặc câu hỏi</th><th>Nơi</th><th class="num">Số lượng</th><th>Policy</th><th>Ai</th><th>Ghi chú</th></tr></thead><tbody>
+        ${d.quyet_dinh.map(q => `<tr><td class="hint">${gio(q.ts)}</td>
+          <td><span class="pill ${q.loai === 'ok' ? 'ok' : q.loai === 'cho' ? 'Proposed' : q.loai === 'loi' ? 'bad' : ''}">${esc(q.viec)}</span></td>
+          <td class="wrap"><b style="font-weight:600">${esc(q.doi_tuong)}</b>${q.hanh_dong ? `<div class="hint">${esc(q.hanh_dong)}${q.ma && q.ma !== q.doi_tuong ? ' · ' + esc(q.ma) : ''}</div>` : ''}</td>
+          <td>${esc(locName(q.noi) || q.noi || '')}</td><td class="num">${q.so_luong ? so(q.so_luong) : '—'}</td>
+          <td>${q.policy ? `<b>${esc(q.policy)}</b>` : '—'}</td><td class="hint">${esc(q.ai_quyet || '')}</td>
+          <td class="hint wrap">${esc(q.ghi_chu)}${q.chung_tu ? ` Chứng từ ${esc(q.chung_tu)}.` : ''}</td></tr>`).join('')}
+      </tbody></table></div>` : '<p class="hint">Hôm nay trợ lý chưa soạn đề xuất hay trả lời câu hỏi nào.</p>'}
+    </div>
+
+    <div class="sec"><h2>Ranh giới <small>để nói rõ khi demo</small></h2>
+      <table class="grid" style="max-width:820px"><thead><tr><th style="width:230px">Việc</th><th>Ai làm</th></tr></thead><tbody>
+        <tr><td>Tính tồn, xếp tầng, tính số cần chuyển</td><td>Business Central, bằng AL, Job Queue chạy trước giờ làm</td></tr>
+        <tr><td>Quyết định tự làm hay hỏi người</td><td>Bảng chính sách của Marou, sửa được ở tab Cài đặt AI</td></tr>
+        <tr><td>Tạo chứng từ chuyển hàng</td><td>Business Central, dưới quyền của người duyệt</td></tr>
+        <tr><td>Hiểu câu hỏi tự do, tự dựng chuỗi tra cứu cho câu chưa gặp, hỏi lại khi thiếu</td><td>Model, chỉ khi rule và kịch bản không trả lời được</td></tr>
+        <tr><td>Biến câu trả lời đúng thành kịch bản</td><td>Người quản trị duyệt; code kiểm từng con số có truy được về dữ liệu không</td></tr>
+        <tr><td>Tự nghĩ ra con số</td><td class="hint">Không ai. Số model tự tính bị chỉ ra lúc duyệt kịch bản.</td></tr>
+      </tbody></table>
+    </div>`;
+  if (kbXem) veXemTruoc();
+}
+
+async function xemTruocKichBan(id) {
+  const d = await post('/api/kich-ban/xem-truoc', {user: me, cau_hoi_id: id});
+  if (d.loi) return;
+  kbXem = {...d, cau_hoi_id: id};
+  veXemTruoc();
+  $('#kbxem').scrollIntoView({behavior: 'smooth', block: 'nearest'});
+}
+
+function veXemTruoc() {
+  const k = kbXem, o = $('#kbxem');
+  if (!o) return;
+  if (!k) { o.innerHTML = ''; return; }
+  const buoc = k.buoc || [];
+  const laSo = c => c.startsWith('“');          // canh bao so co dang “12” trong “…”
+  const soLa = (k.canh_bao || []).filter(laSo), khac = (k.canh_bao || []).filter(c => !laSo(c));
+  o.innerHTML = `<div class="kbxem">
+    <h3 style="margin:0 0 6px">Xem trước kịch bản</h3>
+    <p class="hint" style="margin:0 0 10px">Câu gốc: “${esc(k.cau_hoi.cau)}”. Lần đó model tốn ${so(k.cau_hoi.token)} token.
+      Mỗi lần kịch bản này chạy thay model là tiết kiệm chừng ấy.</p>
+    <p style="margin:6px 0"><b>Chuỗi tra cứu giữ lại:</b> ${buoc.map((s, i) => `${i + 1}. ${esc(TOOL_VI[s.tool] || s.tool)}`).join(' · ')}</p>
+    <p style="margin:6px 0"><b>Cần biết trong câu hỏi:</b> ${(k.bien_can || []).filter(b => ['item_no', 'location'].includes(b)).map(b => b === 'item_no' ? 'tên mặt hàng' : 'tên địa điểm').join(', ') || 'không cần'}.
+      Câu hỏi mới phải nêu đúng tên, trợ lý không đoán.</p>
+    ${soLa.length ? `<div class="canh"><b>Con số không truy được về dữ liệu, tức model tự tính.</b>
+      Kịch bản sẽ giữ nguyên chữ số này cho mọi lần chạy. Sửa mẫu dưới đây để bỏ đi, hoặc giữ nếu đó là hằng số.
+      <ul style="margin:6px 0 0 18px;padding:0">${soLa.map(c => `<li>${esc(c)}</li>`).join('')}</ul></div>` : ''}
+    ${khac.length ? `<div class="canh"><b>Kịch bản điền lại con số, không suy luận lại.</b>
+      Những câu dưới đây được viết cho mặt hàng gốc; hỏi mặt hàng khác thì chúng vẫn lặp nguyên văn và có thể sai. Nên sửa thành câu trung tính hoặc bỏ.
+      <ul style="margin:6px 0 0 18px;padding:0">${khac.map(c => `<li>${esc(c.replace(/^Câu kết luận viết cố định, lặp lại nguyên văn cho mặt hàng khác: /, ''))}</li>`).join('')}</ul></div>` : ''}
+    <p style="margin:10px 0 4px"><b>Mẫu câu trả lời.</b> <span class="hint">Chỗ <code>{s1}</code>, <code>{s2}</code>… là con số đọc lại từ dữ liệu lúc chạy;
+      <code>{item_desc}</code>, <code>{location_name}</code> là tên trong câu hỏi mới.</span></p>
+    <textarea id="kbmau">${esc(k.tra_loi_mau)}</textarea>
+    <p class="hint" style="margin:6px 0">${Object.entries(k.slots || {}).map(([ten, s]) => `<code>{${esc(ten)}}</code> ${esc(TOOL_VI[buoc[s.step]?.tool] || '')}: ${esc(s.path)}`).join(' · ')}</p>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button class="btn positive" onclick="luuKichBan()">Lưu và bật kịch bản</button>
+      <button class="btn" onclick="kbXem=null;veXemTruoc()">Huỷ</button>
+    </div></div>`;
+}
+
+async function luuKichBan() {
+  if (!kbXem) return;
+  const d = await post('/api/kich-ban', {user: me, cau_hoi_id: kbXem.cau_hoi_id, tra_loi_mau: $('#kbmau').value});
+  if (d.loi) return;
+  kbXem = null;
+  baoOk(`Đã lưu kịch bản ${d.id}. Câu tương tự lần sau trả lời không gọi model.`);
+  loadNhatky();
+}
+
+async function batKichBan(id, bat) {
+  const d = await post('/api/kich-ban/bat', {user: me, id, bat});
+  if (d.loi) return;
+  baoOk(bat ? `Đã bật lại ${id}.` : `Đã tắt ${id}. Câu tương tự sẽ quay về model.`);
+  loadNhatky();
+}
+
+// ---------------------------- tra loi mot tin cu the
+// Tro ly hoi mot cau, chua kip tra loi thi da co tin khac chen vao, va cau tra loi bi gan nham
+// vao cau hoi moi nhat. Bam Tra loi vao dung tin do thi may chu biet no thuoc ve viec nao.
+let traLoiTin = null;
+
+function traLoi(id, tom) {
+  traLoiTin = id;
+  $('#trichtext').textContent = tom;
+  $('#dangtraloi').classList.add('on');
+  $('#text').focus();
+}
+function thoiTraLoi() {
+  traLoiTin = null;
+  $('#dangtraloi').classList.remove('on');
+}
+
+// ---------------------------- doan chat
+let cacDoan = [];
+
+async function taiDoanChat() {
+  if (!me) return;
+  try { cacDoan = await (await fetch('/api/doan-chat?user=' + encodeURIComponent(me))).json(); }
+  catch (e) { return; }
+  veDoanBar();
+}
+
+function veDoanBar() {
+  const b = $('#doanbar');
+  if (!b) return;
+  // Luc moi tai trang chua ai goi `showTab`, nen thanh nay con `hidden` tu HTML. Tu quyet dinh
+  // an hien theo tab dang mo.
+  b.hidden = !(tab === 'chat' || tab === 'brief');
+  const dangMo = cacDoan.find(d => d.dang_mo) || cacDoan[0];
+  b.innerHTML = `<span class="nhan">Đoạn chat</span>
+    <select onchange="moDoan(this.value)">
+      ${cacDoan.map(d => `<option value="${esc(d.conv_id)}"${d.dang_mo ? ' selected' : ''}>`
+        + `${esc(d.ten)}${d.so_tin ? ' · ' + d.so_tin + ' tin' : ''}</option>`).join('')}
+    </select>
+    <button class="btn" onclick="doanMoi()">+ Đoạn mới</button>
+    ${dangMo && dangMo.so_tin ? `<span class="hint">Đoạn cũ vẫn giữ, chọn lại trong danh sách.</span>` : ''}`;
+}
+
+async function moDoan(conv_id) {
+  const r = await post('/api/doan-chat', {user: me, conv_id});
+  if (r.loi) return;
+  cacDoan = r.doan;
+  lastId[me] = 0; $('#chat').innerHTML = ''; daTaiHopThu = false;
+  veDoanBar(); await poll();
+}
+
+async function doanMoi() {
+  const r = await post('/api/doan-chat', {user: me});
+  if (r.loi) return;
+  cacDoan = r.doan;
+  lastId[me] = 0; $('#chat').innerHTML = ''; daTaiHopThu = false;
+  veDoanBar(); await poll();
+  baoOk('Đã mở đoạn chat mới. Đoạn cũ vẫn còn trong danh sách.');
+}
+
+// ---------------------------- bao dang xu ly
+// Mot bong bong tam trong hoi thoai, bo di khi cau tra loi that ve. Dat trong chinh hoi thoai
+// chu khong phai popup: nguoi dung dang nhin cho do, va popup thi che mat cai ho vua go.
+const DAU_AI = ten => `<span class="ai"><img src="/mascot-${ten}.png" alt="" aria-hidden="true"></span>`;
+
+function dangXuLy(cau) {
+  let el = $('#dangxuly');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'dangxuly'; el.className = 'msg out';
+  }
+  // Luon dat cuoi hoi thoai. Truoc day no nam trước cau vua go, vi vong poll them tin cua nguoi
+  // dung vao sau khi bong bong da duoc chen.
+  $('#chat').appendChild(el);
+  el.innerHTML = DAU_AI('suy-nghi') + `<div class="stack"><div class="bubble cho">`
+    + `<span class="cham"><i></i><i></i><i></i></span>${esc(cau)}</div></div>`;
+  el.scrollIntoView({behavior: 'smooth', block: 'end'});
+  return el;
+}
+function thoiXuLy() { $('#dangxuly')?.remove(); }
+
+// ---------------------------- man hinh chao
+// Chi hien khi hoi thoai dang chon con trong. Bam mot the la DIEN san cau vao o nhap roi dat
+// con tro o cuoi, khong tu gui: nguoi dung con phai noi ro mat hang hay cua hang nao. Neu o
+// nhap dang co ban nhap thi giu nguyen, chi dua con tro vao.
+// Prompt mau theo vai tro lay tu /api/goi-y (assistant/goi_y.py), mot nguon voi test va tai lieu demo. Bon cau dau la
+// the lon, phan con lai la nut nho. Chua tai xong hoac loi thi dung bon the chung duoi day.
+const ICON_GOI_Y = {
+  brief: '<path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7"/>',
+  ton: '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/>',
+  ls: '<path d="M2 7h11v9H2zM13 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.7"/><circle cx="17" cy="18" r="1.7"/>',
+  theo_doi: '<path d="M9 5h11M9 12h11M9 19h11"/><path d="M3 5l1.6 1.6L7.2 4M3 12l1.6 1.6L7.2 11M3 19l1.6 1.6L7.2 18"/>',
+  du_bao: '<path d="M3 20h18"/><path d="M4 16l5-6 4 3 7-8"/>',
+  km: '<path d="M3 12l9-9h7v7l-9 9z"/><circle cx="15.5" cy="7.5" r="1.4"/>',
+  han: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/>',
+  lo: '<circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/>',
+  po: '<path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/>',
+  ncc: '<path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/>',
+  mo: '<path d="M4 5h16v11H8l-4 4z"/><path d="M9 10h6"/>',
+  hoi: '<circle cx="12" cy="12" r="9"/><path d="M12 16v.5M10 9.5a2 2 0 1 1 3 1.7c-.7.4-1 .9-1 1.8"/>',
+};
+const GOI_Y_CHUNG = [
+  {ten: "Brief sáng nay", mo: "Tóm tắt những việc cần ưu tiên.", cau: "Tóm tắt những việc cần ưu tiên hôm nay.", icon: "brief"},
+  {ten: "Tra cứu tồn kho", mo: "Kiểm tra hàng tại kho và cửa hàng.", cau: "Tôi muốn kiểm tra tồn kho của ", icon: "ton"},
+  {ten: "CTKM đang chạy và sắp tới", mo: "Chương trình khuyến mãi của LS.", cau: "CTKM nào đang chạy và sắp tới", icon: "km"},
+  {ten: "Theo dõi xử lý", mo: "Xem tiến độ đề xuất và chứng từ.", cau: "tiến độ các đề xuất", icon: "theo_doi"},
+];
+let goiY = {};           // user_id -> danh sach prompt mau
+async function taiGoiY(uid) {
+  if (!uid || goiY[uid]) return;
+  try {
+    const r = await fetch(`/api/goi-y?user=${encodeURIComponent(uid)}`);
+    if (r.ok) { goiY[uid] = await r.json(); if (uid === me) veHero(); }
+  } catch (e) { /* mat ket noi thi dung the chung, vong poll se bao loi */ }
+}
+function dsGoiY() { const d = goiY[me]; return d && d.length ? d : GOI_Y_CHUNG; }
+
+function tenNguoiDung() {
+  const u = users.find(x => x.user_id === me);
+  return u ? u.display_name.replace(/\s*\(.*\)/, "").trim() : "";
+}
+
+function veHero() {
+  const h = $('#hero');
+  if (!h) return;
+  // Con dang tai lich su thi khong nhay man hinh chao ra roi lai bo di.
+  const trong = tab === 'chat' && daTaiHopThu && !$('#chat').children.length;
+  h.hidden = !trong;
+  if (!trong) return;
+  const ten = tenNguoiDung();
+  const ds = dsGoiY();
+  taiGoiY(me);
+  h.innerHTML = `<div class="top"><div>
+      <div class="over">MAROU OPERATIONS</div>
+      <h1>${ten ? 'Chào ' + esc(ten) + ',' : 'Xin chào,'} <span>hôm nay cần hỗ trợ gì?</span></h1>
+      <p>Tra cứu tồn kho, chuẩn bị điều chuyển và theo dõi công việc trong một cuộc trò chuyện.</p>
+    </div>
+    <img src="/mascot.png" alt="" aria-hidden="true"></div>
+    <div class="rule"></div>
+    <div class="over">BẮT ĐẦU TỪ MỘT VIỆC CỤ THỂ</div>
+    <div class="grid">${ds.slice(0, 4).map((g, i) => `<button class="goi" onclick="chonGoiY(${i})" title="${esc(g.cau)}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${ICON_GOI_Y[g.icon] || ICON_GOI_Y.hoi}</svg>
+      <span class="t"><b>${esc(g.ten)}</b><span>${esc(g.mo)}</span></span>
+      <svg class="mt" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+    </button>`).join('')}</div>
+    ${ds.length > 4 ? `<div class="over" style="margin-top:14px">GỢI Ý KHÁC CHO VAI NÀY</div>
+    <div class="chips">${ds.slice(4).map((g, j) => `<button class="chip" onclick="chonGoiY(${j + 4})" title="${esc(g.cau)}">${esc(g.ten)}${g.can_ai ? ' <i>cần bật AI</i>' : ''}${g.ghi_bc ? ' <i>ghi vào BC</i>' : ''}</button>`).join('')}</div>` : ''}
+    <p class="hint" style="text-align:center; margin-top:10px">Bấm một gợi ý để điền câu vào ô nhập, sửa nếu cần rồi Enter.</p>`;
+}
+
+function chonGoiY(i) {
+  const el = $('#text');
+  const g = dsGoiY()[i];
+  if (g && !el.value.trim()) el.value = g.cau;   // dang co ban nhap thi giu nguyen
+  el.focus();
+  el.setSelectionRange(el.value.length, el.value.length);
+  caoText(el);
+}
+
+function caoText(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(160, Math.max(44, el.scrollHeight)) + 'px';
+}
+
+function phimSoan(e) {
+  // isComposing: dang go tieng Viet bang bo go, Enter luc do la chon tu chu khong phai gui.
+  if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); send(); }
+}
+
+async function brief() {
+  showTab('chat');                       // ket qua brief di vao hoi thoai, phai dang o do moi thay
+  const b = $('#btnBrief');
+  if (b) b.disabled = true;
+  dangXuLy('Đang tổng hợp việc sáng nay. Với vai điều phối kho, tôi còn ghi từng đề xuất vào '
+           + 'Business Central nên bước này mất khoảng 15 giây…');
+  try { await post('/api/brief', {user: me, text: ''}); await poll(); }
+  finally { thoiXuLy(); if (b) b.disabled = false; }
+}
+async function clock(h) { await post('/api/clock', {hours:h}); poll(); }
+async function setAut(o) { await post('/api/autonomy', o); poll(); }
+
+const TAB = {chat:'Chat', uc2:'Uc2', uc1:'Uc1', uc3:'Uc3', nhatky:'Nhatky', caidat:'Caidat'};
+function showTab(t) {
+  tab = t;
+  const chatLike = t === 'chat' || t === 'brief';
+  Object.entries(TAB).forEach(([k, hoa]) => {
+    const on = k === t;
+    $('#tab'+hoa).classList.toggle('on', on); $('#nav'+hoa).classList.toggle('on', on);
+  });
+  $('#chat').hidden = !chatLike; $('#composer').hidden = !chatLike;
+  $('#doanbar').hidden = !chatLike;
+  $('#uc2').hidden = t !== 'uc2'; $('#caidat').hidden = t !== 'caidat';
+  $('#uc1').hidden = t !== 'uc1'; $('#uc3').hidden = t !== 'uc3';
+  $('#nhatky').hidden = t !== 'nhatky';
+  veHero();
+  if (t === 'uc2') loadUC2();
+  if (t === 'uc1') loadUC1();
+  if (t === 'uc3') loadUC3();
+  if (t === 'nhatky') loadNhatky();
+  if (t === 'caidat') loadCaidat();
+}
+
+// ============================ Cai dat AI ============================
+// Trang nay tra loi ba cau: AI dang bat hay tat, da tieu bao nhieu, con bao nhieu.
+// Token la so dem that, doc lai tu phan hoi cua model. Tien la uoc tinh theo bang gia cong bo.
+let dangLuuCaidat = false;
+const so = n => (n ?? 0).toLocaleString('vi-VN');
+// Mot luot goi het khoang 0,0001 do. Lam tron bon chu so thi phan lon so ve 0,0001 het,
+// nhin khong biet cai nao dat cai nao re, nen so nho thi giu them hai chu so.
+const usd = n => '$' + (n ?? 0).toFixed(n >= 1 ? 2 : (n >= 0.01 ? 4 : 6));
+const gia = n => '$' + (n ?? 0).toFixed(2);        // don gia cong bo, luon hai chu so
+const VIEC = {nlu:'Hiểu câu người dùng', rationale:'Viết lại câu trả lời', planner:'Tự dựng chuỗi tra cứu',
+              evidence:'Đọc câu giải trình', agent:'Vòng lặp agent'};
+
+async function lamMoi() {
+  const b = $('#btnLamMoi');
+  if (b) { b.disabled = true; b.textContent = 'Đang đọc lại…'; }
+  try {
+    const r = await post('/api/lam-moi');
+    await loadUC2(); await poll();
+    if (!r.loi) baoOk(`Đã đọc lại từ Business Central: ${r.so_dong_ket_qua} dòng kết quả, `
+                      + `${r.so_dong_de_xuat} dòng đề xuất, chốt ngày ${dmy(r.as_of)}.`);
+  } finally { const c = $('#btnLamMoi'); if (c) { c.disabled = false; c.textContent = '↻ Đọc lại từ BC'; } }
+}
+
+async function loadCaidat() {
+  const r = await fetch('/api/usage?user=' + encodeURIComponent(me));
+  if (!r.ok) {
+    // 403 la sai vai tro, 404 la may chu con chay ban cu. Hai chuyen khac nhau, noi khac nhau.
+    const cau = r.status === 403
+      ? 'Trang này chỉ mở cho vai trò quản trị hệ thống. Chọn Dũng ở cột bên trái nếu bạn cần vào đây.'
+      : 'Trợ lý đang chạy bản cũ nên chưa có trang này. Tắt cửa sổ đang chạy trợ lý rồi mở lại, sau đó F5 trang này.';
+    $('#caidat').innerHTML = `<div class="pagehead"><div><h1>Cài đặt AI</h1>
+      <div class="sub">${cau}</div></div></div>`;
+    return;
+  }
+  const u = await r.json();
+  const pol = await (await fetch('/api/policy-setup?user=' + encodeURIComponent(me))).json();
+  const ai = u.ai, tr = u.tran, hn = u.hom_nay, cd = u.cong_don;
+  const pctNgay = tr.ngay_usd > 0 ? Math.min(100, hn.usd / tr.ngay_usd * 100) : 0;
+  const pctTong = tr.cong_don_usd > 0 ? Math.min(100, cd.usd / tr.cong_don_usd * 100) : 0;
+  const khoa = (!ai.bat_duoc && !ai.dang_bat) || dangLuuCaidat;
+
+  const congTac = `<div class="sw ${ai.dang_bat ? '' : 'off'}">
+    <div class="t"><b>${ai.dang_bat ? 'AI đang bật' : 'AI đang tắt'}</b>
+      <span>${ai.dang_bat
+        ? esc(ai.nha_cung_cap) + ' · ' + esc(ai.model) + '. Trợ lý hiểu được câu hỏi tự do, tự dựng chuỗi tra cứu và viết lại câu trả lời.'
+        : 'Trợ lý chạy bằng rule và câu mẫu. Không gọi model lần nào, không tốn thêm đồng nào.'}</span>
+      ${ai.loi ? `<span style="color:var(--bad)">${esc(ai.loi)}</span>` : ''}
+      ${!ai.bat_duoc && !ai.dang_bat ? '<span style="color:var(--bad)">Chưa có đường tới model nên nút bật đang khoá.</span>' : ''}</div>
+    <button class="btn ${ai.dang_bat ? 'destructive' : 'positive'}" id="btnAi" ${khoa ? 'disabled' : ''}
+      onclick="doiAi(${ai.dang_bat ? 'false' : 'true'})">${ai.dang_bat ? 'Tắt AI' : 'Bật AI'}</button>
+  </div>
+  <p class="hint" style="margin:10px 0 0">Tắt AI không làm sai con số nào. Mọi con số trên màn hình đều do
+  Business Central tính bằng AL; model chỉ hiểu câu hỏi và diễn đạt lại kết luận đã có. Tắt thì trợ lý vẫn
+  chạy được các kịch bản, chỉ kém linh hoạt với câu hỏi ngoài kịch bản.</p>`;
+
+  const the = (nhan, con_so, don, phu, do_) => `<div class="kpi"><small>${nhan}</small>
+    <div class="n ${do_ ? 'red' : ''}">${con_so}${don ? `<em>${don}</em>` : ''}</div>
+    <div class="un">${phu}</div></div>`;
+
+  $('#caidat').innerHTML = `<div class="pagehead"><div>
+      <h1>Cài đặt AI</h1>
+      <div class="sub">Bật tắt phần AI, xem đã dùng bao nhiêu token và tốn khoảng bao nhiêu tiền.
+        Trần chi phí là chỗ chặn thật: chạm trần thì trợ lý tự quay về rule chứ không báo lỗi giữa buổi demo.</div>
+    </div></div>
+
+    <div class="sec">${congTac}</div>
+
+    <div class="sec"><h2>Hôm nay <small>${dmy(u.ngay)}</small></h2>
+      <div class="cards">
+        ${the('Chi phí ước tính hôm nay', usd(hn.usd), '', `trần ${usd(tr.ngay_usd)}, còn ${usd(tr.con_lai_ngay_usd)}`, pctNgay >= 80)}
+        ${the('Token hôm nay', so(hn.token_tong), '', `${so(hn.token_vao)} vào, ${so(hn.token_ra)} ra`)}
+        ${the('Số lượt gọi model', so(hn.luot), '', hn.luot ? 'trung bình ' + so(Math.round(hn.token_tong / hn.luot)) + ' token một lượt' : 'chưa gọi lần nào')}
+      </div>
+      <div class="bar2"><i class="${pctNgay >= 80 ? 'hot' : ''}" style="width:${pctNgay}%"></i></div>
+    </div>
+
+    <div class="sec"><h2>Cộng dồn <small>từ lượt gọi đầu tiên, không reset theo ngày</small></h2>
+      <div class="cards">
+        ${the('Chi phí ước tính cộng dồn', usd(cd.usd), '', `trần ${usd(tr.cong_don_usd)}, còn ${usd(tr.con_lai_cong_don_usd)}`, pctTong >= 80)}
+        ${the('Token cộng dồn', so(cd.token_tong), '', `${so(cd.token_vao)} vào, ${so(cd.token_ra)} ra, ${so(cd.cache_doc)} đọc lại từ cache`)}
+        ${the('Còn chạy được khoảng', so(u.uoc_tinh_con_chay_duoc.token), 'token', `theo tỉ lệ vào/ra đang đo được, ${usd(u.uoc_tinh_con_chay_duoc.gia_hon_hop_moi_trieu)} một triệu token`)}
+      </div>
+      <div class="bar2"><i class="${pctTong >= 80 ? 'hot' : ''}" style="width:${pctTong}%"></i></div>
+      ${tr.dang_chan && ai.dang_bat ? '<p class="hint" style="color:var(--bad); margin-top:8px"><b>Đang chạm trần.</b> Trợ lý đã tự quay về rule. Nâng trần bên dưới nếu muốn chạy tiếp.</p>' : ''}
+    </div>
+
+    <div class="sec"><h2>Trần chi phí <small>vượt cái nào cũng chặn</small></h2>
+      <div class="tran">
+        <span class="field"><label>Trần một ngày (USD)</label>
+          <input type="number" id="tranNgay" step="0.5" min="0" value="${tr.ngay_usd}" style="width:130px"></span>
+        <span class="field"><label>Trần cộng dồn (USD)</label>
+          <input type="number" id="tranTong" step="1" min="0" value="${tr.cong_don_usd}" style="width:130px"></span>
+        <button class="btn positive" onclick="luuTran()" ${dangLuuCaidat ? 'disabled' : ''}>Lưu trần</button>
+      </div>
+      <p class="hint" style="margin-top:8px">Đặt 0 là bỏ trần đó. Trần đặt ở đây có tác dụng ngay và trở về
+      mặc định khi khởi động lại trợ lý.</p>
+    </div>
+
+    ${u.dinh_tuyen && u.dinh_tuyen.tong ? `<div class="sec">
+      <h2>Câu nào cần model <small>từ lúc khởi động trợ lý</small></h2>
+      <div class="cards">
+        ${the('Trả lời bằng dữ liệu', so(u.dinh_tuyen.bang_du_lieu), '', 'không gọi model, không tốn đồng nào')}
+        ${the('Phải gọi model', so(u.dinh_tuyen.goi_model), '', 'rule không đủ chắc nên đẩy sang model')}
+        ${the('Tỉ lệ tiết kiệm', u.dinh_tuyen.ty_le_tiet_kiem + '%', '', 'phần câu hỏi không cần đến model')}
+      </div>
+      <table class="grid" style="margin-top:12px; max-width:640px"><thead><tr><th>Lý do</th><th class="num">Số câu</th></tr></thead><tbody>
+        ${Object.entries(u.dinh_tuyen.ly_do).map(([k, v]) => `<tr><td>${esc(k)}</td><td class="num">${so(v)}</td></tr>`).join('')}
+      </tbody></table>
+      <p class="hint" style="margin-top:8px">Rule chạy trước và không tốn gì. Model chỉ được gọi khi rule
+      không chắc: chưa phân loại được việc, hoặc biết việc mà chưa tra ra mã mặt hàng. Đoán sai còn đắt hơn
+      gọi model, nên chỗ nào còn nghi ngờ thì vẫn đẩy sang model.</p>
+    </div>` : ''}
+
+    <div class="sec"><h2>Tiêu vào việc gì <small>cộng dồn</small></h2>
+      ${u.theo_viec.length ? `<table class="grid"><thead><tr><th>Việc</th><th class="num">Lượt</th>
+        <th class="num">Token vào</th><th class="num">Token ra</th><th class="num">Ước tính</th></tr></thead><tbody>
+        ${u.theo_viec.map(r => `<tr><td>${esc(VIEC[r.viec] || r.viec)}</td><td class="num">${so(r.luot)}</td>
+          <td class="num">${so(r.token_vao)}</td><td class="num">${so(r.token_ra)}</td>
+          <td class="num"><b>${usd(r.usd)}</b></td></tr>`).join('')}
+      </tbody></table>` : '<div class="hint">Chưa gọi model lần nào.</div>'}
+    </div>
+
+    <div class="sec"><h2>Theo ngày <small>14 ngày gần nhất</small></h2>
+      ${u.theo_ngay.length ? `<table class="grid"><thead><tr><th>Ngày</th><th class="num">Lượt</th>
+        <th class="num">Token</th><th class="num">Ước tính</th></tr></thead><tbody>
+        ${u.theo_ngay.map(r => `<tr><td>${dmy(r.ngay)}</td><td class="num">${so(r.luot)}</td>
+          <td class="num">${so(r.token_tong)}</td><td class="num"><b>${usd(r.usd)}</b></td></tr>`).join('')}
+      </tbody></table>` : '<div class="hint">Chưa có ngày nào phát sinh.</div>'}
+    </div>
+
+    <div class="sec"><h2>Chính sách <small>trợ lý được tự làm tới đâu</small></h2>
+      <div class="sw ${pol.shadow ? 'off' : ''}">
+        <div class="t"><b>${pol.shadow ? 'Shadow mode đang bật' : 'Trợ lý đang được tự làm'}</b>
+          <span>${pol.shadow
+            ? 'Trợ lý chỉ nói "nếu được phép tôi đã làm X", mọi việc vẫn đưa người duyệt. Đây là cách chạy an toàn lúc đầu.'
+            : 'Những dòng để "Trợ lý tự làm" bên dưới sẽ chạy thẳng, có ghi lại dòng chính sách nào cho phép.'}</span></div>
+        <button class="btn ${pol.shadow ? 'positive' : 'destructive'}"
+          onclick="luuPolicy({shadow: ${pol.shadow ? 'false' : 'true'}})">${pol.shadow ? 'Cho tự làm' : 'Về Shadow mode'}</button>
+      </div>
+      <div class="tran" style="margin-top:12px">
+        <span class="field"><label>Trần số việc tự làm mỗi ngày</label>
+          <input type="number" id="tranTuLam" min="0" value="${pol.tran_tu_lam}" style="width:130px"></span>
+        <button class="btn" onclick="luuPolicy({tran_tu_lam: parseInt(document.getElementById('tranTuLam').value)})">Lưu</button>
+        <span class="hint">Hôm nay đã tự làm ${pol.da_tu_lam} việc.</span>
+      </div>
+      <table class="grid" style="margin-top:14px"><thead><tr><th style="width:64px">Mã</th><th>Việc</th>
+        <th style="width:170px">Trợ lý làm gì</th><th style="width:130px">Trần giá trị</th><th></th></tr></thead><tbody>
+        ${pol.rules.map(r => `<tr>
+          <td style="white-space:nowrap"><b>${esc(r.code)}</b>${r.da_sua ? '<div class="sua">đã sửa</div>' : ''}</td>
+          <td>${esc(r.description)}<div class="hint">${esc(r.scenario)} · ${esc(r.action)}${r.from_locations.length ? ' · từ ' + esc(r.from_locations.join('/')) : ''}</div></td>
+          <td><select id="md-${esc(r.code)}">
+            ${Object.entries(pol.mode_labels).map(([k, v]) => `<option value="${k}"${r.mode === k ? ' selected' : ''}>${esc(v)}</option>`).join('')}
+          </select></td>
+          <td><input type="number" id="gt-${esc(r.code)}" step="10" min="0" value="${r.max_value_vnd ?? ''}" placeholder="không giới hạn" style="width:110px"></td>
+          <td><button class="btn sm" onclick="luuRule('${esc(r.code)}')">Lưu</button></td></tr>`).join('')}
+      </tbody></table>
+      <p class="hint" style="margin-top:8px">Trần giá trị tính theo giá vốn của công ty NWV. Để trống là không
+      giới hạn. Trên hệ thống thật, bảng này là bảng của Business Central và sửa trên page, không phải trong trợ lý.</p>
+    </div>
+
+    <div class="sec"><h2>Câu chữ của trợ lý <small>sửa được, có hiệu lực ngay</small></h2>
+      ${pol.cau_mau.map(c => `<div class="cm">
+        <h4>${esc(c.nhan)}${c.da_sua ? ' <span class="sua">đã sửa</span>' : ''}</h4>
+        <div class="why">${esc(c.giai_thich)}</div>
+        <textarea id="cm-${esc(c.key)}">${esc(c.text)}</textarea>
+        <div class="hang"><button class="btn sm positive" onclick="luuCau('${esc(c.key)}')">Lưu</button>
+          <button class="btn sm" onclick="luuCau('${esc(c.key)}', true)">Về câu gốc</button></div>
+      </div>`).join('')}
+      <p class="hint">Những câu gắn với con số và mã hàng nằm trong từng nghiệp vụ, không sửa ở đây được,
+      vì sửa sai một chỗ là sai cả cách đọc số.</p>
+    </div>
+
+    <div class="sec"><h2>Cách tính tiền</h2>
+      <table class="grid" style="max-width:660px"><tbody>
+        <tr><td>Model</td><td><b>${esc(u.don_gia.model)}</b></td></tr>
+        <tr><td>Token vào</td><td><b>${gia(u.don_gia.vao_moi_trieu)}</b> một triệu token</td></tr>
+        <tr><td>Token ra</td><td><b>${gia(u.don_gia.ra_moi_trieu)}</b> một triệu token</td></tr>
+        <tr><td>Nguồn đơn giá</td><td class="hint">${esc(u.don_gia.nguon)}</td></tr>
+      </tbody></table>
+      <p class="hint" style="margin-top:8px">Số token là số đếm thật, đọc lại từ phản hồi của model sau mỗi lượt gọi.
+      Tiền là ước tính theo bảng giá ở trên. Hoá đơn thật của Azure vẫn là con số cuối cùng.</p>
+    </div>`;
+}
+
+async function doiAi(on) {
+  if (dangLuuCaidat) return;
+  dangLuuCaidat = true;
+  const b = $('#btnAi');
+  if (b) { b.disabled = true; b.textContent = on ? 'Đang bật…' : 'Đang tắt…'; }
+  try {
+    const r = await post('/api/ai', {on, user: me});
+    if (!r.loi) baoOk(r.dang_bat ? `AI đã bật, đang dùng ${r.model}.`
+                                 : 'AI đã tắt. Trợ lý chạy bằng rule, không gọi model lần nào.');
+  } finally { dangLuuCaidat = false; }
+  await loadCaidat();
+  poll();                       // khay dieu khien demo doc lai trang thai moi
+}
+
+async function luuPolicy(o) {
+  if (dangLuuCaidat) return;
+  dangLuuCaidat = true;
+  try {
+    const r = await post('/api/policy-setup', Object.assign({user: me}, o));
+    if (!r.loi) baoOk(o.cau_mau_key ? 'Đã lưu câu chữ, có hiệu lực ngay.'
+                    : (o.code ? `Đã lưu chính sách ${o.code}.`
+                    : (o.shadow !== undefined ? (r.shadow ? 'Đã về Shadow mode.' : 'Trợ lý được tự làm trong phạm vi policy.')
+                    : `Đã lưu trần ${r.tran_tu_lam} việc tự làm mỗi ngày.`)));
+  } finally { dangLuuCaidat = false; }
+  await loadCaidat();
+  poll();                       // the dang hien tren hoi thoai doc lai dong policy moi
+}
+function luuRule(code) {
+  const gt = document.getElementById('gt-' + code).value.trim();
+  return luuPolicy({code, mode: document.getElementById('md-' + code).value,
+                    max_value_vnd: gt === '' ? null : parseFloat(gt), bo_tran_gia_tri: gt === ''});
+}
+function luuCau(key, veGoc) {
+  // De trong la quay ve ban goc, khong phai la mot cau rong: `caidat.cau()` bo qua chuoi rong.
+  return luuPolicy({cau_mau_key: key,
+                    cau_mau_text: veGoc ? '' : document.getElementById('cm-' + key).value});
+}
+
+async function luuTran() {
+  if (dangLuuCaidat) return;
+  dangLuuCaidat = true;
+  try {
+    const r = await post('/api/tran', {user: me, ngay_usd: parseFloat($('#tranNgay').value),
+                                       cong_don_usd: parseFloat($('#tranTong').value)});
+    if (!r.loi) baoOk(`Đã lưu trần chi phí: ${usd(r.tran.ngay_usd)} một ngày, ${usd(r.tran.cong_don_usd)} cộng dồn.`);
+  } finally { dangLuuCaidat = false; }
+  await loadCaidat();
+}
+
+// ============================ Sức khỏe tồn kho ============================
+let uc2Tier = '', uc2Sum = null, uc2Mode = 'lines', uc2Rows = [], uc2Q = '';
+const TIER_VI = {Expired:'Đã quá hạn', NearExpiry:'Cận date', StockOutRisk:'Sắp hết hàng', SlowMoving:'Chậm luân chuyển', Excess:'Dư tồn', Healthy:'Trong ngưỡng'};
+async function loadUC2() {
+  uc2Sum = await (await fetch('/api/uc2/summary')).json();
+  uc2Rows = await (await fetch('/api/uc2/lines?tier=' + encodeURIComponent(uc2Tier))).json();
+  renderUC2();
+}
+function scoreStyle(sc) {
+  if (sc >= 80) return 'background:var(--badsoft);color:var(--bad)';
+  if (sc >= 50) return 'background:var(--warnsoft);color:var(--warn)';
+  if (sc > 0)   return 'background:#f4f0dc;color:#6b5f18';
+  return 'background:var(--oksoft);color:var(--ok)';
+}
+function renderUC2() {
+  const s = uc2Sum;
+  const rows = uc2Q ? uc2Rows.filter(r => (r.itemDescription+' '+r.itemNo+' '+(r.lotNo||'')+' '+r.locationCode).toLowerCase().includes(uc2Q)) : uc2Rows;
+  let h = `<div id="scnbar" class="${dangChay ? 'on' : ''}"></div><div class="pagehead"><div><h1>Sức khỏe tồn kho</h1>
+      <div class="sub">Đánh giá các mặt hàng cần chú ý theo lô, kho và tốc độ bán. ${bcMode==='live' ? 'Business Central tính bằng AL, trợ lý đọc lại.' : 'Ở bản demo này là dữ liệu mô phỏng; trên hệ thống thật, Business Central tính bằng AL.'}</div></div>
+    <div class="right"><span class="pill">📅 Chốt ngày ${dmy(s.asOf)}</span><span class="pill ${bcMode==='live'?'ok':''}">${bcMode==='live'?'Business Central':'Dữ liệu mô phỏng'}</span></div></div>
+  <div class="bignum"><div class="n">${money(s.badValue)}</div><div class="sep"></div>
+    <div class="lbl"><b>Giá trị ở bốn tầng có vấn đề</b><span>${String(s.badPct).replace('.',',')}% của ${money(s.totalValue)} tồn kho · ${s.badLines} / ${s.totalLines} dòng theo Item, Location, Lô</span></div></div>
+  <div class="tiles">` + s.tiers.map(t => `
+    <div class="tile ${uc2Tier === t.tier ? 'sel' : ''}" onclick="selTier('${t.tier}')"><span class="bar sev-${t.tier}"></span>
+      <div><b>${esc(t.label)}</b><div class="st"><span><strong>${t.lines}</strong> dòng</span><span><strong>${money(t.value)}</strong></span><span>${s.totalValue ? (100*t.value/s.totalValue).toFixed(1).replace('.',',') : '0'}%</span></div></div></div>`).join('') + '</div>';
+  h += `<div class="toolbar">
+    <button class="btn ${uc2Mode==='lines' && !uc2Tier ? 'on' : ''}" onclick="selTier('')">Tất cả các tầng</button>
+    <button class="btn ${uc2Mode==='readiness' ? 'on' : ''}" onclick="loadReadiness()">Độ phủ dữ liệu</button>
+    <button class="btn ${dangChay ? 'on' : ''}" onclick="runDemo()">${dangChay ? '■ Dừng kịch bản' : '▶ Chạy kịch bản demo'}</button>
+    <button class="btn" id="btnLamMoi" onclick="lamMoi()" title="Bỏ bản nhớ và đọc lại từ Business Central. Bấm sau khi vừa chạy Run Inventory Health trong BC.">↻ Đọc lại từ BC</button>
+    <input class="search" type="text" id="uc2q" value="${esc(uc2Q)}" placeholder="🔍 Tìm mặt hàng, mã, lô…" oninput="uc2Q=this.value.toLowerCase(); renderUC2(); document.getElementById('uc2q').focus(); document.getElementById('uc2q').setSelectionRange(99,99)">
+  </div>`;
+  if (uc2Mode === 'readiness') h += readinessHtml;
+  else {
+    h += `<table class="grid"><thead><tr><th>Điểm</th><th>Mặt hàng</th><th>Kho</th><th>Lô</th><th class="num">Tồn</th><th class="num">Giá trị</th><th class="num">Ngày đủ bán</th><th class="num">Hạn còn</th><th>Lý do</th></tr></thead><tbody>` +
+      rows.map(r => `<tr class="row" onclick="openTrace('${r.id}')">
+        <td><span class="score" style="${scoreStyle(r.riskScore)}">${r.riskScore}</span></td>
+        <td><b style="font-weight:600">${esc(r.itemDescription)}</b><div class="hint">${esc(TIER_VI[r.tier] || r.tier)}</div></td>
+        <td>${esc(r.locationCode)}</td><td>${esc(r.lotNo || '')}</td>
+        <td class="num">${r.quantityOnHand}</td><td class="num">${money(r.inventoryValue)}</td>
+        <td class="num">${r.daysOfCover >= 9999 ? 'không bán' : String(r.daysOfCover).replace('.',',')}</td>
+        <td class="num">${r.daysToExpiry == null ? '' : r.daysToExpiry}</td>
+        <td class="hint">${esc(r.riskReason || '')}</td></tr>`).join('') + '</tbody></table>' +
+      `<div class="tfoot"><span>Hiển thị ${rows.length} dòng${uc2Tier ? ' · tầng ' + esc(TIER_VI[uc2Tier]) : ''} (${bcMode==='live'?'từ Business Central':'từ dữ liệu mô phỏng'})</span><span>Bấm một dòng để xem con số đến từ đâu</span></div>`;
+  }
+  $('#uc2').innerHTML = h;
+}
+function selTier(t) { uc2Tier = (uc2Tier === t) ? '' : t; uc2Mode = 'lines'; loadUC2(); }
+
+async function openTrace(id) {
+  const d = await (await fetch('/api/uc2/trace?line_id=' + encodeURIComponent(id))).json();
+  const L = d.line;
+  const badge = L.tier === 'Expired' ? `Đã quá hạn ${-L.daysToExpiry} ngày` : (TIER_VI[L.tier] || L.tier);
+  $('#uc2').innerHTML = `
+    <div id="scnbar" class="${dangChay ? 'on' : ''}"></div>
+    <div class="crumbs"><span>Sức khỏe tồn kho</span><span>/</span><b>Chi tiết lô</b><button class="back" style="margin-left:auto" onclick="renderUC2()">✕ Đóng</button></div>
+    <button class="back" onclick="renderUC2()">← Quay lại</button>
+    <div class="lothead"><div class="thumb">MAROU</div>
+      <div><h1>${esc(L.itemDescription)}</h1><div class="code">${esc(L.locationCode)} · ${esc(L.lotNo || 'không có lô')}</div>
+        <div style="margin-top:8px"><span class="pill ${L.tier==='Expired'||L.tier==='NearExpiry'?'bad':(L.tier==='Healthy'?'ok':'shadow')}">! ${esc(badge)}</span></div></div>
+      <div class="kv"><div><small>Kho</small>${esc(L.locationCode)}</div><div><small>Mã lô</small>${esc(L.lotNo||'—')}</div><div><small>Mặt hàng</small>${esc(L.itemNo)}</div></div></div>
+    <div class="sec"><h2>Nguồn số liệu</h2>
+      <table class="grid"><thead><tr><th style="width:200px">Chỉ tiêu</th><th style="width:160px">Giá trị</th><th>Cách xác định</th></tr></thead><tbody>
+      ${d.calc.map(c => `<tr><td>${esc(c.label)}</td><td><b>${esc(c.value)}</b></td><td class="hint">${esc(c.formula)}</td></tr>`).join('')}</tbody></table></div>
+    <div class="sec"><h2>Quy tắc phân tầng <small>dừng tại điều kiện đầu tiên khớp</small></h2>
+      <table class="grid"><thead><tr><th style="width:50px">#</th><th style="width:170px">Tên quy tắc</th><th>Điều kiện</th><th style="width:150px">Kết quả</th></tr></thead><tbody>
+      ${d.cascade.map(st => `<tr class="${st.hit ? 'hit' : (st.state === 'khong xet' ? 'skipd' : '')}">
+        <td>${String(st.step).padStart(2,'0')}</td><td>${esc(st.tier)}</td><td>${esc(st.test)}${st.actual ? ' · ' + esc(st.actual) : ''}</td>
+        <td>${st.hit ? '<span class="pill bad">Khớp</span>' : (st.state === 'khong xet' ? '<span class="faint">Không xét</span>' : '<span class="hint">Không khớp</span>')}</td></tr>`).join('')}</tbody></table></div>
+    <div class="sec"><h2>${esc(d.doiChieu?.nhan || 'Đã bán')} theo ngày <small>để bạn cộng tay và đối chiếu</small></h2>
+      <div class="hint" style="margin-bottom:8px">${esc(d.doiChieu?.giaiThich || '')}</div>
+      ${d.doiChieu?.dong?.length ? `<table class="grid" style="max-width:520px"><thead><tr><th>Ngày</th><th class="num">Số lượng</th></tr></thead><tbody>
+        ${d.doiChieu.dong.map(x => `<tr><td>${dmy(x.date)}</td><td class="num">${x.qty}</td></tr>`).join('')}
+        <tr><td><b>Tổng ${d.doiChieu.soNgay} ngày</b></td><td class="num"><b>${d.doiChieu.tong}</b></td></tr>
+      </tbody></table>` : '<div class="hint">Không có dòng nào trong cửa sổ dữ liệu.</div>'}</div>
+    <div class="sec" id="hanhtrinh"></div>`;
+  $('#view').scrollTo({top:0, behavior:'smooth'});
+  if (L.lotNo) veHanhTrinh(L.lotNo);
+}
+// UC2 truy xuat: moi dong Item Ledger Entry cua lo, gom theo dia diem. Cung du lieu voi cau "truy xuat lo ..." trong chat.
+async function veHanhTrinh(lot) {
+  const h = await (await fetch('/api/uc2/lo?lot=' + encodeURIComponent(lot))).json();
+  const noi = Object.entries(h.noi || {});
+  const conTon = noi.filter(([, v]) => (v._ton || 0) > 0.0001);
+  const ban = noi.reduce((t, [, v]) => t - (v.Sale || 0), 0);
+  $('#hanhtrinh').innerHTML = `<h2>Hành trình lô <small>truy xuất từ Item Ledger Entry</small></h2>
+    <div class="hint" style="margin-bottom:8px">Hạn dùng ${esc(h.han || 'không ghi')}. Đã bán ${ban}.
+      ${conTon.length ? 'Nếu phải thu hồi: lấy lại ' + conTon.map(([l, v]) => `${v._ton} tại ${esc(l)}`).join(', ') + '.' : 'Không còn tồn ở đâu.'}</div>
+    <table class="grid" style="max-width:720px"><thead><tr><th>Ngày</th><th>Địa điểm</th><th>Loại</th><th class="num">Số lượng</th></tr></thead><tbody>
+      ${(h.moc || []).map(m => `<tr><td>${dmy(m.date)}</td><td>${esc(m.location)}</td><td>${esc(m.label)}</td><td class="num">${m.qty}</td></tr>`).join('')}
+    </tbody></table>${linksHtml({links: h.links})}`;
+}
+
+// ============================ UC1 Du bao ============================
+// So do Business Central tinh (codeunit NWV Forecast Accuracy Calc), man hinh chi doc lai va ve.
+let uc1 = null, uc1Chon = null, uc1Q = '';
+const pct = v => v == null ? '—' : String(Number(v).toFixed(1)).replace('.', ',') + '%';
+async function loadUC1() {
+  uc1 = await (await fetch('/api/uc1/tong-hop')).json();
+  renderUC1();
+}
+function renderUC1() {
+  const d = uc1, tot = d.tot_nhat, ten = m => d.tenPP[m] || m;
+  if (!d.rows.length) { $('#uc1').innerHTML = '<div class="empty"><b>Chưa có kết quả đo dự báo.</b><span>Trên BC chạy Run Forecast Accuracy (NWV Agent Setup) hoặc Job Queue tham số FORECAST.</span></div>'; return; }
+  const rows = d.rows.filter(r => r.method === tot && (!uc1Q || (r.itemDescription + ' ' + r.itemNo + ' ' + r.locationCode + ' ' + r.itemCategoryCode).toLowerCase().includes(uc1Q)))
+    .sort((a, b) => (b.isException - a.isException) || (b.absErrorQty - a.absErrorQty));
+  let h = `<div class="pagehead"><div><h1>Độ chính xác dự báo</h1>
+      <div class="sub">Dự báo lập từ dữ liệu trước kỳ kiểm tra rồi so với bán thực tế trong ${dmy(d.ky[0])} đến ${dmy(d.ky[1])}. Ngày hết hàng và ngày có Planned Sales Demand của LS bị bỏ khỏi phép tính. Trung bình 28 ngày và trung bình cùng thứ là mốc; Holt-Winters là mô hình thống kê chuỗi thời gian, dự báo 28 ngày tới được ghi vào Retail Forecast Entry của LS để bổ sung hàng.</div></div>
+    <div class="right"><span class="pill ${bcMode==='live'?'ok':''}">${bcMode==='live'?'Business Central':'Dữ liệu mô phỏng'}</span></div></div>
+  <div class="tiles">` + d.methods.map(m => `<div class="tile ${m===tot?'sel':''}"><span class="bar"></span><div><b>${esc(ten(m))}</b>
+      <div class="st"><span>WAPE <strong>${pct(d.tong[m])}</strong></span>${m===tot?'<span>tốt hơn</span>':''}</div></div></div>`).join('')
+    + `<div class="tile"><span class="bar sev-Expired"></span><div><b>Cần xem</b><div class="st"><span><strong>${d.ngoai_le.length}</strong> / ${d.so_cap} cặp</span></div></div></div></div>`;
+  h += `<div class="sec"><h2>Theo điểm bán và nhóm hàng <small>${esc(ten(tot))}, WAPE gộp</small></h2><div style="display:flex;gap:24px;flex-wrap:wrap">
+    <table class="grid" style="max-width:320px"><thead><tr><th>Điểm bán</th>${d.methods.map(m => `<th class="num">${esc(m)}</th>`).join('')}</tr></thead><tbody>
+      ${Object.entries(d.theo_noi).map(([k, v]) => `<tr><td>${esc(k)}</td>${d.methods.map(m => `<td class="num">${pct(v[m])}</td>`).join('')}</tr>`).join('')}</tbody></table>
+    <table class="grid" style="max-width:320px"><thead><tr><th>Nhóm hàng</th>${d.methods.map(m => `<th class="num">${esc(m)}</th>`).join('')}</tr></thead><tbody>
+      ${Object.entries(d.theo_nhom).map(([k, v]) => `<tr><td>${esc(k || '(trống)')}</td>${d.methods.map(m => `<td class="num">${pct(v[m])}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>`;
+  h += `<div class="toolbar"><input class="search" type="text" id="uc1q" value="${esc(uc1Q)}" placeholder="🔍 Tìm mặt hàng, điểm bán, nhóm…"
+      oninput="uc1Q=this.value.toLowerCase(); renderUC1(); document.getElementById('uc1q').focus(); document.getElementById('uc1q').setSelectionRange(99,99)">
+      ${d.link ? `<a class="btn" href="${esc(d.link)}" target="_blank" rel="noopener">↗ Mở trong Business Central</a>` : ''}</div>`;
+  h += `<div id="uc1chart"></div><table class="grid"><thead><tr><th>Mặt hàng</th><th>Điểm bán</th><th class="num">Bán thực tế</th><th class="num">Dự báo</th><th class="num">WAPE</th><th class="num">Bias</th><th class="num">Ngày tính</th><th>Cần xem</th></tr></thead><tbody>`
+    + rows.map(r => `<tr class="row" onclick="chonDuBao('${esc(r.itemNo)}','${esc(r.locationCode)}','${esc(r.method)}')">
+      <td><b style="font-weight:600">${esc(r.itemDescription)}</b><div class="hint">${esc(r.itemNo)} · ${esc(r.itemCategoryCode)}</div></td><td>${esc(r.locationCode)}</td>
+      <td class="num">${r.actualQty}</td><td class="num">${Math.round(r.forecastQty)}</td><td class="num">${pct(r.wapePct)}</td><td class="num">${pct(r.biasPct)}</td>
+      <td class="num">${r.daysEvaluated}${r.daysCensored ? ` <span class="hint">(−${r.daysCensored} hết hàng)</span>` : ''}</td>
+      <td class="hint">${esc(r.exceptionReason || '')}</td></tr>`).join('') + '</tbody></table>'
+    + `<div class="tfoot"><span>${rows.length} cặp, phương pháp ${esc(ten(tot))}</span><span>Bấm một dòng để xem dự báo và thực tế từng ngày</span></div>`;
+  $('#uc1').innerHTML = h;
+  if (uc1Chon) chonDuBao(...uc1Chon);
+}
+async function chonDuBao(item, loc, method) {
+  uc1Chon = [item, loc, method];
+  const d = await (await fetch(`/api/uc1/ngay?item=${encodeURIComponent(item)}&loc=${encodeURIComponent(loc)}&method=${encodeURIComponent(method)}`)).json();
+  const rs = d.rows, r0 = uc1.rows.find(r => r.itemNo === item && r.locationCode === loc && r.method === method) || {};
+  if (!rs.length) return;
+  // Truc ngang: 28 ngay kiem tra (ban that va du bao lap truoc ky) roi 28 ngay toi (du bao Holt-Winters da ghi vao LS).
+  const toi = (d.toi || []).map(r => ({date: String(r.date).slice(0, 10), forecastQty: +r.forecastQuantity}));
+  const skNgay = new Set((d.su_kien || []).flatMap(s => s.ngay));
+  const all = rs.concat(toi.map(r => ({...r, tuongLai: true})));
+  const W = 900, H = 210, P = 30, max = Math.max(1, ...all.map(r => Math.max(r.actualQty || 0, r.forecastQty || 0)));
+  const x = i => P + i * (W - 2 * P) / Math.max(1, all.length - 1), y = v => H - P - v * (H - 2 * P) / max;
+  const duong = (k, loc) => all.map((r, i) => [r, i]).filter(([r]) => loc(r)).map(([r, i], n) => `${n ? 'L' : 'M'}${x(i).toFixed(1)},${y(r[k]).toFixed(1)}`).join(' ');
+  const bo = all.map((r, i) => (r.censored || r.excluded) ? `<rect x="${(x(i) - 5).toFixed(1)}" y="${P}" width="10" height="${H - 2 * P}" fill="#eee"/>`
+      : skNgay.has(r.date) ? `<rect x="${(x(i) - 5).toFixed(1)}" y="${P}" width="10" height="${H - 2 * P}" fill="#f6e7c8"/>` : '').join('');
+  const moc = rs.length && toi.length ? `<line x1="${x(rs.length - 0.5).toFixed(1)}" y1="${P - 6}" x2="${x(rs.length - 0.5).toFixed(1)}" y2="${H - P}" stroke="#bbb" stroke-dasharray="2 3"/>
+      <text x="${(x(rs.length - 0.5) + 4).toFixed(1)}" y="${P + 10}" font-size="11" fill="#777">ngày tới, đã ghi vào LS</text>` : '';
+  const sk = (d.su_kien || []).map(s => `Sự kiện ${esc(s.ma)}: ${esc(s.loai)} ${esc(s.muc)} từ ${dmy(s.tu)} đến ${dmy(s.den)}, LS cộng vào dự báo khi tính bổ sung.`).join('<br>');
+  $('#uc1chart').innerHTML = `<div class="sec"><h2>${esc(r0.itemDescription || item)} tại ${esc(loc)} <small>${esc(uc1.tenPP[method] || method)}, WAPE ${pct(r0.wapePct)}${r0.modelParameters ? ' · ' + esc(r0.modelParameters) : ''}</small></h2>
+    <svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:${W}px;background:#fff;border:1px solid var(--line,#e5ded6);border-radius:8px">
+      ${bo}${moc}<path d="${duong('actualQty', r => !r.tuongLai)}" fill="none" stroke="var(--red)" stroke-width="2"/>
+      <path d="${duong('forecastQty', r => !r.tuongLai)}" fill="none" stroke="var(--gold)" stroke-width="2" stroke-dasharray="5 4"/>
+      ${toi.length ? `<path d="${duong('forecastQty', r => r.tuongLai)}" fill="none" stroke="#6f58a8" stroke-width="2" stroke-dasharray="5 4"/>` : ''}
+      <text x="${P}" y="16" font-size="12" fill="var(--red)">— bán thực tế</text><text x="${P + 100}" y="16" font-size="12" fill="#8a6a3a">- - dự báo kỳ kiểm tra</text>
+      ${toi.length ? `<text x="${P + 250}" y="16" font-size="12" fill="#6f58a8">- - Holt-Winters ngày tới</text>` : ''}
+      <text x="${P}" y="${H - 8}" font-size="11" fill="#999">${dmy(all[0].date)}</text><text x="${W - P - 40}" y="${H - 8}" font-size="11" fill="#999">${dmy(all[all.length - 1].date)}</text>
+      <text x="4" y="${P + 4}" font-size="11" fill="#999">${Math.round(max)}</text></svg>
+    <div class="hint" style="margin-top:6px">Ô xám: ngày hết hàng hoặc có sự kiện, không tính sai số. Ô vàng: ngày có Planned Sales Demand của LS.${sk ? '<br>' + sk : ''}</div>
+    <div class="bclinks">${d.link ? `<a href="${esc(d.link)}" target="_blank" rel="noopener">↗ Dự báo và thực tế từng ngày trong Business Central</a>` : ''}
+      ${d.link_ls && toi.length ? `<a href="${esc(d.link_ls)}" target="_blank" rel="noopener">↗ Retail Forecast Entries của LS</a>` : ''}</div></div>`;
+}
+
+// ============================ UC3 Nha cung cap ============================
+async function loadUC3() {
+  const d = await (await fetch('/api/uc3/scorecard')).json();
+  const tong = d.rows.filter(r => !r.itemCategoryCode).sort((a, b) => (b.needsAttention - a.needsAttention) || (a.onTimePct - b.onTimePct));
+  const nhom = v => d.rows.filter(r => r.vendorNo === v && r.itemCategoryCode);
+  let h = `<div class="pagehead"><div><h1>Nhà cung cấp</h1>
+      <div class="sub">Scorecard do Business Central tính từ dòng đơn mua và phiếu nhận đã post: giao đúng hạn, giao đủ lần đầu, lead time hứa và thực tế. Đơn quá hạn chưa nhận thì trợ lý hỏi đúng người nhận hàng, không tự post.</div></div>
+    <div class="right">${d.link ? `<a class="btn" href="${esc(d.link)}" target="_blank" rel="noopener">↗ Mở trong Business Central</a>` : ''}</div></div>`;
+  if (!tong.length) h += '<div class="empty"><b>Chưa có scorecard.</b><span>Trên BC chạy Run Supplier Scorecard hoặc Job Queue tham số SUPPLIER.</span></div>';
+  h += tong.map(r => `<div class="card" style="margin-bottom:14px"><div class="head"><h3 style="font-size:19px">${esc(r.vendorName || r.vendorNo)} <span class="hint">${esc(r.vendorNo)}</span></h3>
+      <span class="pill ${r.needsAttention ? 'bad' : 'ok'}">${r.needsAttention ? 'Cần xem' : 'Đạt'}</span></div>
+      ${r.attentionReason ? `<div class="prose">${esc(r.attentionReason)}</div>` : ''}
+      <div class="facts"><span class="k">Giao đúng hạn</span><span class="v">${pct(r.onTimePct)} (${r.linesOnTime}/${r.linesDue} dòng)</span>
+        <span class="k">Giao đủ lần đầu</span><span class="v">${pct(r.firstDeliveryCompletePct)}</span>
+        <span class="k">Lead time hứa / thực</span><span class="v">${String(r.avgPromisedLeadTime).replace('.', ',')} / ${String(r.avgActualLeadTime).replace('.', ',')} ngày</span>
+        <span class="k">Trễ trung bình</span><span class="v">${String(r.avgDelayDays).replace('.', ',')} ngày</span>
+        <span class="k">Quá hạn chưa nhận</span><span class="v">${r.overdueLines} dòng, ${r.overdueQty} đơn vị</span></div>
+      <table class="grid" style="margin-top:10px;max-width:520px"><thead><tr><th>Nhóm hàng</th><th class="num">Đúng hạn</th><th class="num">Dòng</th><th class="num">Trễ TB</th></tr></thead><tbody>
+        ${nhom(r.vendorNo).map(x => `<tr><td>${esc(x.itemCategoryCode)}</td><td class="num">${pct(x.onTimePct)}</td><td class="num">${x.linesDue}</td><td class="num">${String(x.avgDelayDays).replace('.', ',')}</td></tr>`).join('')}</tbody></table></div>`).join('');
+  h += `<div class="sec"><h2>Đơn mua quá hạn chưa nhận <small>chốt ngày ${d.rows[0]?.asOfDate ? dmy(d.rows[0].asOfDate) : ''}</small></h2>
+    <table class="grid"><thead><tr><th>Đơn</th><th>Nhận tại</th><th>Nhà cung cấp</th><th class="num">Dòng</th><th class="num">Còn chưa nhận</th><th class="num">Trễ (ngày)</th><th></th></tr></thead><tbody>
+    ${d.don.map(o => `<tr><td>${o.link ? `<a href="${esc(o.link)}" target="_blank" rel="noopener">${esc(o.so_don)}</a>` : esc(o.so_don)}</td><td>${esc(o.dia_diem)}</td><td>${esc(o.nha_cung_cap)}</td>
+      <td class="num">${o.so_dong}</td><td class="num">${o.con}</td><td class="num">${o.tre}</td><td class="hint">${o.treo ? 'đơn treo, người mua đóng dòng' : ''}</td></tr>`).join('') || '<tr><td colspan="7" class="hint">Không có đơn quá hạn.</td></tr>'}
+    </tbody></table></div>`;
+  $('#uc3').innerHTML = h;
+}
+
+let readinessHtml = '';
+async function loadReadiness() {
+  const rows = await (await fetch('/api/uc2/readiness')).json();
+  const blockers = rows.filter(r => r.verdict === 'Chặn');
+  readinessHtml = `<div class="hint" style="margin:-4px 0 10px">Trên sandbox thật, đúng bảng này do codeunit NWV Data Readiness Calc sinh ra. ${blockers.length ? '<b style="color:var(--bad)">Có ' + blockers.length + ' dòng chặn.</b>' : 'Không có dòng nào chặn.'}</div>
+    <table class="grid"><thead><tr><th>Mã</th><th>Nhóm</th><th>Nội dung</th><th class="num">Kết quả</th><th class="num">%</th><th>Kết luận</th><th>Thiếu thì ảnh hưởng gì</th></tr></thead><tbody>` +
+    rows.map(r => `<tr><td>${esc(r.code)}</td><td>${esc(r.group)}</td><td>${esc(r.desc)}</td><td class="num">${esc(r.value)}</td><td class="num">${r.pct == null ? '' : String(r.pct).replace('.',',') + '%'}</td>
+      <td class="vd-${esc(r.verdict.split(' ')[0])}">${esc(r.verdict)}</td><td class="hint">${esc(r.impact)}</td></tr>`).join('') + '</tbody></table>';
+  uc2Mode = 'readiness';
+  renderUC2();
+}
+// Sau buoc, moi buoc kem mot cau noi ro no chung minh dieu gi. Khong co cau do thi man hinh
+// chi tu nhay va nguoi xem khong biet dang xem cai gi.
+const DEMO = [
+  ['Toàn cảnh', 'Một con số tiền duy nhất cho bốn tầng có vấn đề. Đây là câu mở đầu của buổi làm việc.',
+   () => { uc2Tier=''; uc2Mode='lines'; return loadUC2(); }],
+  ['Lọc tầng Cận date', 'Bấm một tầng để chỉ còn những dòng sắp hết hạn. Đây là nhóm còn kịp xử lý.',
+   () => { uc2Tier='NearExpiry'; uc2Mode='lines'; return loadUC2(); }],
+  ['Mở một lô ra', 'Từng con số đến từ đâu, và quy tắc nào đã khớp. Đây là bước làm người xem tin, không phải màu sắc.',
+   async () => { const rows = await (await fetch('/api/uc2/lines?tier=NearExpiry')).json(); if (rows.length) await openTrace(rows[0].id); }],
+  ['Lọc tầng Quá hạn', 'Nhóm đã mất tiền rồi. So với tầng cận date để thấy giá trị của việc phát hiện sớm.',
+   () => { uc2Tier='Expired'; uc2Mode='lines'; return loadUC2(); }],
+  ['Độ phủ dữ liệu', 'Trước khi tin bảng trên, phải biết dữ liệu đủ hay chưa. Dòng nào Chặn thì phần đó chưa chạy được.',
+   () => loadReadiness()],
+  ['Về lại toàn cảnh', 'Quay về màn hình đầu để chốt lại.',
+   () => { uc2Tier=''; uc2Mode='lines'; return loadUC2(); }],
+];
+let dangChay = false;
+function scnBar(i, label, why) {
+  const bar = $('#scnbar');
+  if (!bar) return;
+  bar.className = 'on';
+  bar.innerHTML = `<span class="no">${i}</span><div class="t"><b>Bước ${i}/${DEMO.length}: ${esc(label)}</b><span>${esc(why)}</span></div>`
+    + `<button class="btn sm" onclick="dungDemo()">Dừng</button>`;
+}
+function dungDemo() {
+  dangChay = false;
+  const bar = $('#scnbar');
+  if (bar) bar.className = '';
+  renderUC2();          // ve lai de nut tren thanh cong cu tro lai "Chay kich ban demo"
+}
+async function runDemo() {
+  if (dangChay) { dungDemo(); return; }
+  dangChay = true;
+  for (let i = 0; i < DEMO.length && dangChay; i++) {
+    const [label, why, fn] = DEMO[i];
+    await fn();
+    scnBar(i + 1, label, why);          // ve lai sau fn vi fn ve lai ca man hinh
+    for (let t = 0; t < 32 && dangChay; t++) await new Promise(r => setTimeout(r, 100));
+  }
+  if (dangChay) { dangChay = false; dungDemo(); }
+}
+loadUsers(); setInterval(poll, 2000);
+</script>
+</body>
+</html>

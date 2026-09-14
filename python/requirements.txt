@@ -1,0 +1,13 @@
+# Tro ly, lop doc BC va test. Cai: pip install -r requirements.txt
+anthropic>=0.80
+msal>=1.31
+requests>=2.32
+httpx>=0.27
+python-dotenv>=1.0
+fastapi>=0.115
+pydantic>=2.7
+uvicorn[standard]>=0.30
+rapidfuzz>=3.9
+pyyaml>=6.0
+openpyxl>=3.1
+pytest>=8

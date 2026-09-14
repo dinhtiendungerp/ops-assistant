@@ -1,0 +1,724 @@
+{
+  "danh sach nguoi dung": {
+    "method": "GET",
+    "path": "/api/users",
+    "body_gui": null,
+    "status": 200,
+    "tra_ve": [
+      {
+        "user_id": "dung.admin",
+        "display_name": "Dũng (Quản trị hệ thống)",
+        "role": "admin",
+        "store_code": null,
+        "channel": "web",
+        "bc_user": "DUNG"
+      },
+      {
+        "user_id": "hung.dieuphoi",
+        "display_name": "Hùng (Điều phối kho)",
+        "role": "dispatcher",
+        "store_code": null,
+        "channel": "web",
+        "bc_user": "HUNG"
+      }
+    ]
+  },
+  "trang thai chung": {
+    "method": "GET",
+    "path": "/api/state",
+    "body_gui": null,
+    "status": 200,
+    "tra_ve": {
+      "now": "2026-09-13T15:35:12.179987+00:00",
+      "mode": {
+        "bc": "mock",
+        "llm": "scripted",
+        "model": "scripted",
+        "planner": "replay",
+        "replays": [
+          "KB-1",
+          "KB-2"
+        ]
+      },
+      "bc": {
+        "live": false,
+        "theo_env": true,
+        "bc_mode_env": "mock",
+        "nguon": "fixtures trong python/bc_agent/fixtures",
+        "so_dong_ket_qua": 167,
+        "so_dong_de_xuat": 77,
+        "san_sang": true,
+        "as_of": "2026-09-18"
+      },
+      "budget": {
+        "spent_usd": 0,
+        "spent_vnd": 0,
+        "calls": 0,
+        "cap_usd": 2.0,
+        "by_purpose": {},
+        "blocked": true
+      },
+      "policy": {
+        "shadow": true,
+        "kill": false,
+        "auto_today": 0,
+        "cap": 20
+      },
+      "proposals": [],
+      "followups": [],
+      "transfers": [],
+      "tin_ra": {}
+    }
+  },
+  "nguon du lieu": {
+    "method": "GET",
+    "path": "/api/mode",
+    "body_gui": null,
+    "status": 200,
+    "tra_ve": {
+      "live": false,
+      "theo_env": true,
+      "bc_mode_env": "mock",
+      "nguon": "fixtures trong python/bc_agent/fixtures",
+      "so_dong_ket_qua": 167,
+      "so_dong_de_xuat": 77,
+      "san_sang": true,
+      "as_of": "2026-09-18"
+    }
+  },
+  "chinh sach (moi vai tro doc duoc)": {
+    "method": "GET",
+    "path": "/api/policy",
+    "body_gui": null,
+    "status": 200,
+    "tra_ve": {
+      "shadow": true,
+      "kill_switch": false,
+      "auto_today": 0,
+      "daily_auto_cap": 20,
+      "rules": [
+        {
+          "code": "P-01",
+          "scenario": "StoreReplenishment",
+          "action": "Transfer",
+          "mode": "auto",
+          "description": "Chuyển hàng từ kho trung tâm W0003, dưới 2 tuần bán, giá vốn dưới 200",
+          "limit": "≤ 200 từ W0003"
+        },
+        {
+          "code": "P-02",
+          "scenario": "StoreReplenishment",
+          "action": "Transfer",
+          "mode": "approve",
+          "description": "Chuyển giữa các cửa hàng, hoặc giá trị lớn: cần người duyệt",
+          "limit": ""
+        }
+      ]
+    }
+  },
+  "doan chat cua mot nguoi": {
+    "method": "GET",
+    "path": "/api/doan-chat?user=lan.s0001",
+    "body_gui": null,
+    "status": 200,
+    "tra_ve": [
+      {
+        "conv_id": "1d754c363354",
+        "ten": "Đoạn chat mới",
+        "so_tin": 0,
+        "cuoi": "2026-09-13T15:35:12.190995+00:00",
+        "dang_mo": true
+      }
+    ]
+  },
+  "mo doan chat moi": {
+    "method": "POST",
+    "path": "/api/doan-chat",
+    "body_gui": {
+      "user": "lan.s0001"
+    },
+    "status": 200,
+    "ghi_chu": "Khong co conv_id la mo doan moi; co conv_id la chuyen sang doan do.",
+    "tra_ve": {
+      "doan": [
+        {
+          "conv_id": "0f031a5a09fd",
+          "ten": "Đoạn chat mới",
+          "so_tin": 0,
+          "cuoi": "2026-09-13T15:35:12.193055+00:00",
+          "dang_mo": true
+        }
+      ]
+    }
+  },
+  "gui mot tin": {
+    "method": "POST",
+    "path": "/api/message",
+    "body_gui": {
+      "user": "lan.s0001",
+      "text": "Choco nuts con bao nhieu?"
+    },
+    "status": 200,
+    "tra_ve": {
+      "delivered": [
+        "lan.s0001"
+      ]
+    }
+  },
+  "hop thu": {
+    "method": "GET",
+    "path": "/api/inbox?user=lan.s0001&after=0",
+    "body_gui": null,
+    "status": 200,
+    "tra_ve": [
+      {
+        "id": 1,
+        "ts": "2026-09-13T15:35:12.194009+00:00",
+        "user_id": "lan.s0001",
+        "direction": "in",
+        "text": "Choco nuts con bao nhieu?",
+        "card_json": null,
+        "skill": "",
+        "ref": "",
+        "conv_id": "0f031a5a09fd",
+        "reply_to": null,
+        "card": null
+      },
+      {
+        "id": 2,
+        "ts": "2026-09-13T15:35:12.196126+00:00",
+        "user_id": "lan.s0001",
+        "direction": "out",
+        "text": "Choco nuts: S0002: 415 (41.2 ngày); S0005: 52 (9.1 ngày); S0010: 74 (9.1 ngày); W0003: 685 (12.9 ngày).",
+        "card_json": null,
+        "skill": "replenishment",
+        "ref": "",
+        "conv_id": "0f031a5a09fd",
+        "reply_to": null,
+        "card": null
+      }
+    ]
+  },
+  "tra loi mot tin cu the": {
+    "method": "POST",
+    "path": "/api/message",
+    "body_gui": {
+      "user": "lan.s0001",
+      "text": "con o S0002 thi sao",
+      "reply_to": 1
+    },
+    "status": 200,
+    "ghi_chu": "reply_to la id tin nguoi dung bam Tra loi; hop thu tra kem truong trich.",
+    "tra_ve": {
+      "delivered": [
+        "lan.s0001"
+      ]
+    }
+  },
+  "brief": {
+    "method": "POST",
+    "path": "/api/brief",
+    "body_gui": {
+      "user": "hung.dieuphoi",
+      "text": ""
+    },
+    "status": 200,
+    "tra_ve": {
+      "delivered": [
+        "hung.dieuphoi",
+        "hung.dieuphoi"
+      ]
+    }
+  },
+  "hop thu co the de xuat": {
+    "method": "GET",
+    "path": "/api/inbox?user=hung.dieuphoi&after=0",
+    "body_gui": null,
+    "status": 200,
+    "tra_ve": [
+      {
+        "id": 5,
+        "ts": "2026-09-13T15:35:12.208079+00:00",
+        "user_id": "hung.dieuphoi",
+        "direction": "out",
+        "text": "Sáng nay 10 dòng dưới ngưỡng 5 ngày: 10 đề xuất mới. Bạn duyệt từng thẻ bên dưới.",
+        "card_json": null,
+        "skill": "replenishment",
+        "ref": "",
+        "conv_id": "624268791b62",
+        "reply_to": null,
+        "card": null
+      },
+      {
+        "id": 6,
+        "ts": "2026-09-13T15:35:12.208079+00:00",
+        "user_id": "hung.dieuphoi",
+        "direction": "out",
+        "text": "S0001 / Choco nuts",
+        "skill": "replenishment",
+        "ref": "bd0c3f81-39af-402f-a0b1-236d38effd92",
+        "conv_id": "624268791b62",
+        "reply_to": null,
+        "card": {
+          "kind": "proposal",
+          "ref": "bd0c3f81-39af-402f-a0b1-236d38effd92",
+          "title": "Đề xuất chuyển hàng",
+          "body": "Days of cover 0.0 dưới ngưỡng 5. Bổ sung lên mức 14 ngày. Kho nguồn đủ hàng.",
+          "facts": [
+            {
+              "label": "Mặt hàng",
+              "value": "Choco nuts (33323)"
+            },
+            {
+              "label": "Từ",
+              "value": "W0003"
+            }
+          ],
+          "actions": [
+            {
+              "id": "approve",
+              "label": "Duyệt chuyển hàng",
+              "style": "positive",
+              "payload": {},
+              "needs_input": null
+            },
+            {
+              "id": "edit",
+              "label": "Sửa số lượng",
+              "style": "default",
+              "payload": {},
+              "needs_input": "quantity"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "suc khoe ton kho, tong quan": {
+    "method": "GET",
+    "path": "/api/uc2/summary",
+    "body_gui": null,
+    "status": 200,
+    "tra_ve": {
+      "asOf": "2026-09-18",
+      "totalValue": 13370.170000000002,
+      "totalLines": 167,
+      "badValue": 5088.37,
+      "badPct": 38.1,
+      "badLines": 82,
+      "tiers": [
+        {
+          "tier": "Expired",
+          "label": "Đã quá hạn",
+          "lines": 45,
+          "value": 1273.32,
+          "qty": 704.0
+        },
+        {
+          "tier": "NearExpiry",
+          "label": "Cận date",
+          "lines": 32,
+          "value": 2099.7000000000003,
+          "qty": 1009.0
+        }
+      ]
+    }
+  },
+  "suc khoe ton kho, danh sach": {
+    "method": "GET",
+    "path": "/api/uc2/lines?tier=StockOutRisk",
+    "body_gui": null,
+    "status": 200,
+    "tra_ve": [
+      {
+        "id": "45245ff2-1631-429e-9017-57c60f715bd3",
+        "itemNo": "33323",
+        "locationCode": "W0003",
+        "lotNo": "L260823-33323B",
+        "itemDescription": "Choco nuts",
+        "itemCategoryCode": "ICECREAM",
+        "baseUnitOfMeasure": "PCS",
+        "quantityOnHand": 1.0,
+        "inventoryValue": 1.1,
+        "avgDailySalesQty": 53.0556,
+        "daysOfCover": 0.0,
+        "lastSaleDate": "2026-09-17",
+        "daysSinceLastSale": 1,
+        "expirationDate": "2027-04-16",
+        "daysToExpiry": 210,
+        "demandBasis": "outflow",
+        "daysCensored": 0,
+        "tier": "StockOutRisk",
+        "riskScore": 90,
+        "riskReason": "Days of cover 0.0 dưới ngưỡng 7. Bán bình quân 53.06 một ngày (outflow).",
+        "calculatedAt": "2026-09-18T01:00:00+00:00",
+        "asOfDate": "2026-09-18"
+      },
+      {
+        "id": "d3c6e1ed-cb6e-4202-82c5-446f7ae66dc7",
+        "itemNo": "33310",
+        "locationCode": "S0001",
+        "lotNo": "L260906-33310C",
+        "itemDescription": "Choco pillar",
+        "itemCategoryCode": "ICECREAM",
+        "baseUnitOfMeasure": "PCS",
+        "quantityOnHand": 20.0,
+        "inventoryValue": 22.0,
+        "avgDailySalesQty": 21.1667,
+        "daysOfCover": 0.9,
+        "lastSaleDate": "2026-09-18",
+        "daysSinceLastSale": 0,
+        "expirationDate": "2027-05-03",
+        "daysToExpiry": 227,
+        "demandBasis": "sale",
+        "daysCensored": 0,
+        "tier": "StockOutRisk",
+        "riskScore": 85,
+        "riskReason": "Days of cover 0.9 dưới ngưỡng 7. Bán bình quân 21.17 một ngày (sale).",
+        "calculatedAt": "2026-09-18T01:00:00+00:00",
+        "asOfDate": "2026-09-18"
+      }
+    ]
+  },
+  "chi tiet mot lo": {
+    "method": "GET",
+    "path": "/api/uc2/trace?line_id=45245ff2-1631-429e-9017-57c60f715bd3",
+    "body_gui": null,
+    "status": 200,
+    "tra_ve": {
+      "line": {
+        "id": "45245ff2-1631-429e-9017-57c60f715bd3",
+        "itemNo": "33323",
+        "locationCode": "W0003",
+        "lotNo": "L260823-33323B",
+        "itemDescription": "Choco nuts",
+        "itemCategoryCode": "ICECREAM",
+        "baseUnitOfMeasure": "PCS",
+        "quantityOnHand": 1.0,
+        "inventoryValue": 1.1,
+        "avgDailySalesQty": 53.0556,
+        "daysOfCover": 0.0,
+        "lastSaleDate": "2026-09-17",
+        "daysSinceLastSale": 1,
+        "expirationDate": "2027-04-16",
+        "daysToExpiry": 210,
+        "demandBasis": "outflow",
+        "daysCensored": 0,
+        "tier": "StockOutRisk",
+        "riskScore": 90,
+        "riskReason": "Days of cover 0.0 dưới ngưỡng 7. Bán bình quân 53.06 một ngày (outflow).",
+        "calculatedAt": "2026-09-18T01:00:00+00:00",
+        "asOfDate": "2026-09-18"
+      },
+      "calc": [
+        {
+          "label": "Tồn của lô này",
+          "formula": "Tổng Remaining Quantity của Item Ledger Entry còn mở, lọc theo Item, Location, Lot",
+          "value": "1 PCS"
+        },
+        {
+          "label": "Giá trị tồn",
+          "formula": "Tồn nhân giá vốn đơn vị 1,10",
+          "value": "1,10"
+        }
+      ],
+      "cascade": [
+        {
+          "step": 1,
+          "tier": "Expired",
+          "test": "Days To Expiry nhỏ hơn 0",
+          "actual": "Days To Expiry = 210",
+          "hit": false,
+          "state": "không khớp, xét tiếp"
+        },
+        {
+          "step": 2,
+          "tier": "NearExpiry",
+          "test": "Days To Expiry nhỏ hơn hoặc bằng 45",
+          "actual": "Days To Expiry = 210",
+          "hit": false,
+          "state": "không khớp, xét tiếp"
+        }
+      ],
+      "recentSales": [
+        {
+          "date": "2026-09-17",
+          "item_no": "33323",
+          "location_code": "W0003",
+          "qty": 24.0
+        },
+        {
+          "date": "2026-09-15",
+          "item_no": "33323",
+          "location_code": "W0003",
+          "qty": 25.0
+        }
+      ],
+      "doiChieu": {
+        "nhan": "Lượng xuất",
+        "diaDiem": "W0003",
+        "soNgay": 14,
+        "tong": 338.0,
+        "giaiThich": "14 ngày gần nhất tại W0003. Đây là kho trung tâm nên số đếm là lượng xuất, gồm bán sỉ tại chỗ và hàng chuyển ra cửa hàng, không phải chỉ dòng Sale.",
+        "dong": [
+          {
+            "date": "2026-09-17",
+            "item_no": "33323",
+            "location_code": "W0003",
+            "qty": 24.0
+          },
+          {
+            "date": "2026-09-15",
+            "item_no": "33323",
+            "location_code": "W0003",
+            "qty": 25.0
+          }
+        ]
+      },
+      "setup": {
+        "near_expiry_days": 45,
+        "stockout_days": 7,
+        "slow_days": 60,
+        "excess_days": 90,
+        "history_days": 90
+      }
+    }
+  },
+  "do phu du lieu": {
+    "method": "GET",
+    "path": "/api/uc2/readiness",
+    "body_gui": null,
+    "status": 200,
+    "tra_ve": [
+      {
+        "code": "DR-01",
+        "group": "Lô và hạn dùng",
+        "desc": "Số dòng Item Ledger Entry còn tồn",
+        "value": "167",
+        "pct": null,
+        "verdict": "Thông tin",
+        "impact": "Mẫu số của mọi tỷ lệ bên dưới"
+      },
+      {
+        "code": "DR-02",
+        "group": "Lô và hạn dùng",
+        "desc": "Tỷ lệ dòng tồn có Lot No.",
+        "value": "115 / 167",
+        "pct": 68.9,
+        "verdict": "Cần xem lại",
+        "impact": "Không có lô thì phân tầng chỉ chạy ở mức Item và Location, mất hẳn phần theo dõi cận date theo lô"
+      }
+    ]
+  },
+  "cai dat AI va chi phi (chi admin)": {
+    "method": "GET",
+    "path": "/api/usage?user=dung.admin",
+    "body_gui": null,
+    "status": 200,
+    "tra_ve": {
+      "ai": {
+        "dang_bat": false,
+        "bat_duoc": true,
+        "ly_do": "",
+        "nha_cung_cap": "Azure OpenAI",
+        "model": "gpt-4.1-mini",
+        "mac_dinh_khi_khoi_dong": false
+      },
+      "hom_nay": {
+        "token_vao": 0,
+        "token_ra": 0,
+        "cache_doc": 0,
+        "cache_ghi": 0,
+        "token_tong": 0,
+        "usd": 0.0,
+        "luot": 0
+      },
+      "cong_don": {
+        "token_vao": 0,
+        "token_ra": 0,
+        "cache_doc": 0,
+        "cache_ghi": 0,
+        "token_tong": 0,
+        "usd": 0.0,
+        "luot": 0
+      },
+      "ngay": "2026-09-13",
+      "tran": {
+        "ngay_usd": 2.0,
+        "cong_don_usd": 10.0,
+        "con_lai_ngay_usd": 2.0,
+        "con_lai_cong_don_usd": 10.0,
+        "dang_chan": true
+      },
+      "don_gia": {
+        "model": "gpt-4.1-mini",
+        "vao_moi_trieu": 0.4,
+        "ra_moi_trieu": 1.6,
+        "nguon": "Azure Retail Prices API, region eastus, 12/09/2026"
+      },
+      "uoc_tinh_con_chay_duoc": {
+        "token": 2356268,
+        "gia_hon_hop_moi_trieu": 0.8488
+      },
+      "dinh_tuyen": null,
+      "theo_ngay": [],
+      "theo_viec": [],
+      "theo_model": []
+    }
+  },
+  "cai dat AI, vai tro khong phai admin": {
+    "method": "GET",
+    "path": "/api/usage?user=trang.sc",
+    "body_gui": "Mau loi 403. Giao dien phai in nguyen van detail.",
+    "status": 403,
+    "tra_ve": {
+      "detail": "Trang Cài đặt AI chỉ dành cho vai trò quản trị hệ thống."
+    }
+  },
+  "chinh sach va cau chu (chi admin)": {
+    "method": "GET",
+    "path": "/api/policy-setup?user=dung.admin",
+    "body_gui": null,
+    "status": 200,
+    "tra_ve": {
+      "rules": [
+        {
+          "code": "P-01",
+          "scenario": "StoreReplenishment",
+          "action": "Transfer",
+          "mode": "auto",
+          "description": "Chuyển hàng từ kho trung tâm W0003, dưới 2 tuần bán, giá vốn dưới 200",
+          "max_value_vnd": 200,
+          "from_locations": [
+            "W0003"
+          ],
+          "da_sua": false
+        },
+        {
+          "code": "P-02",
+          "scenario": "StoreReplenishment",
+          "action": "Transfer",
+          "mode": "approve",
+          "description": "Chuyển giữa các cửa hàng, hoặc giá trị lớn: cần người duyệt",
+          "max_value_vnd": null,
+          "from_locations": [],
+          "da_sua": false
+        }
+      ],
+      "shadow": true,
+      "tran_tu_lam": 20,
+      "da_tu_lam": 0,
+      "cau_mau": [
+        {
+          "key": "viet_lai",
+          "nhan": "Chỉ thị cho model khi viết lại câu",
+          "giai_thich": "Model chỉ được diễn đạt lại kết luận đã có. Câu này là chỗ cấm nó tự suy ra con số mới, nên sửa thì giữ nguyên ý đó.",
+          "text": "Viet lai doan sau thanh 2-3 cau tieng Viet cho nguoi dieu phoi kho doc tren dien thoai. Giu nguyen moi con so, ma hang, ma kho. Khong them thong tin.",
+          "da_sua": false
+        },
+        {
+          "key": "tro_giup",
+          "nhan": "Câu trợ lý nói khi không hiểu yêu cầu",
+          "giai_thich": "Hiện ra khi câu nhắn quá ngắn và không khớp rule nào.",
+          "text": "Tôi là trợ lý vận hành. Bạn có thể nhắn: \"sắp hết Croissant plain\", \"còn bao nhiêu Chocolate ice cream\", \"brief\" để xem việc sáng nay. Điều phối duyệt đề xuất bằng nút trên thẻ.",
+          "da_sua": false
+        }
+      ],
+      "mode_labels": {
+        "auto": "Trợ lý tự làm",
+        "approve": "Đưa người duyệt",
+        "block": "Không bao giờ làm"
+      }
+    }
+  },
+  "nhat ky agent (chi admin)": {
+    "method": "GET",
+    "path": "/api/nhat-ky?user=dung.admin",
+    "body_gui": null,
+    "status": 200,
+    "tra_ve": {
+      "quyet_dinh": [
+        {
+          "ts": "2026-09-13T15:35:12.208079+00:00",
+          "loai": "cho",
+          "viec": "Đưa người duyệt",
+          "doi_tuong": "33116",
+          "ma": "33116",
+          "noi": "S0005",
+          "so_luong": 28.0,
+          "hanh_dong": "Transfer",
+          "policy": "",
+          "ai_quyet": "",
+          "chung_tu": "",
+          "ghi_chu": "Days of cover 3.1 dưới ngưỡng 5. Bổ sung lên mức 2 ngày (chặn theo hạn dùng 3 ngày). Kho nguồn đủ hàng."
+        },
+        {
+          "ts": "2026-09-13T15:35:12.207082+00:00",
+          "loai": "cho",
+          "viec": "Đưa người duyệt",
+          "doi_tuong": "33100",
+          "ma": "33100",
+          "noi": "S0001",
+          "so_luong": 87.0,
+          "hanh_dong": "Transfer",
+          "policy": "",
+          "ai_quyet": "",
+          "chung_tu": "",
+          "ghi_chu": "Days of cover 2.9 dưới ngưỡng 5. Bổ sung lên mức 1 ngày (chặn theo hạn dùng 2 ngày). Kho nguồn đủ hàng."
+        }
+      ],
+      "cau_hoi": [],
+      "kich_ban": [],
+      "tong": {
+        "cau_ngoai_rule": 0,
+        "goi_model": 0,
+        "chay_kich_ban": 0,
+        "khong_tra_loi": 0,
+        "kich_ban_bat": 0,
+        "token_tiet_kiem": 0,
+        "usd_tiet_kiem": 0
+      }
+    }
+  },
+  "nhat ky agent, vai tro khong phai admin": {
+    "method": "GET",
+    "path": "/api/nhat-ky?user=trang.sc",
+    "body_gui": null,
+    "status": 403,
+    "tra_ve": {
+      "detail": "Trang Cài đặt AI chỉ dành cho vai trò quản trị hệ thống."
+    }
+  },
+  "xem truoc kich ban, cau hoi khong ton tai": {
+    "method": "POST",
+    "path": "/api/kich-ban/xem-truoc",
+    "body_gui": {
+      "user": "dung.admin",
+      "cau_hoi_id": 999999
+    },
+    "status": 400,
+    "ghi_chu": "Mau loi 400. Khi co cau hoi that thi tra mau, cac o so va canh bao; xem assistant/kich_ban.py.",
+    "tra_ve": {
+      "detail": "Không còn câu hỏi này."
+    }
+  },
+  "bam nut tren the": {
+    "method": "POST",
+    "path": "/api/action",
+    "body_gui": {
+      "user": "hung.dieuphoi",
+      "verb": "approve",
+      "ref": "bd0c3f81-39af-402f-a0b1-236d38effd92",
+      "payload": {}
+    },
+    "status": 200,
+    "ghi_chu": "Tra {delivered, con_mo}; con_mo true la bi tu choi, phai bat lai nut.",
+    "tra_ve": {
+      "delivered": [
+        "hung.dieuphoi",
+        "lan.s0001"
+      ],
+      "con_mo": false
+    }
+  }
+}
