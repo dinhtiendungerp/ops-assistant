@@ -289,12 +289,18 @@ def demo_marou_xuat_kho(x: ICIn):
     Tren he that day la thao tac cua nguoi kho ben Marou trong BC; tro ly khong bao gio goi duong nay."""
     from ..skills import ic_nhan_hang
     a = asst(x.user or None)
-    if not x.doc_no:
-        raise HTTPException(status_code=400, detail="Thiếu số đơn mua.")
-    doi_tac = ""
+    # Khong truyen so don thi lay don dau tien doi tac chua xuat kho, de nguoi demo khong phai nho so don.
+    doc_no, doi_tac = x.doc_no, ""
     for d in a.gw.ic_giao_hang(ic_nhan_hang.NHA_CUNG_CAP_IC):
-        if d["purchaseOrder"] == x.doc_no:
-            doi_tac = d.get("partnerCompany") or ""
+        if doc_no and d["purchaseOrder"] != doc_no:
+            continue
+        if not doc_no and ((d.get("shipment") or {}).get("posted") or float(d.get("outstanding") or 0) <= 0):
+            continue
+        doc_no, doi_tac = d["purchaseOrder"], d.get("partnerCompany") or ""
+        break
+    if not doc_no:
+        raise HTTPException(status_code=400, detail="Không còn đơn mua liên công ty nào đang chờ bên bán xuất kho.")
+    x.doc_no = doc_no
     try:
         kq = a.gw.post_giao_hang_doi_tac(x.doc_no, doi_tac)
     except NotImplementedError as e:

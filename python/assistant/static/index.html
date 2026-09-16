@@ -562,6 +562,8 @@
                 onclick="post('/api/nhac-post',{user:me}).then(poll)">Chạy nhắc post ngay</button>
         <button class="btn" onclick="post('/api/quet-uc2',{user:me, chay_lai:true}).then(poll)" title="UC2 A2: đề xuất hủy lô hết hạn, phương án lô cận date, brief cho từng vai, nhắc đề xuất chờ, kiểm chứng từ hủy đã post chưa">Chạy quét sáng UC2 ngay</button>
         <button class="btn" onclick="post('/api/demo/post-huy',{user:me}).then(poll)" title="Chỉ mô phỏng: giả lập kế toán đã post các dòng Item Journal hủy, để thấy trợ lý đóng việc">Giả lập kế toán post chứng từ hủy</button>
+        <button class="btn" onclick="post('/api/ic-nhan-hang',{user:me, chay_lai:true}).then(poll)" title="Kiểm đơn mua liên công ty: Marou đã xuất kho chưa, đơn nào quá ngày mà chưa post nhận">Kiểm hàng Marou đã xuất kho</button>
+        <button class="btn" onclick="post('/api/demo/marou-xuat-kho',{user:me}).then(poll)" title="Thay người kho Marou bấm Post Shipment trong BC, để xem trợ lý báo cửa hàng chuẩn bị nhận hàng">Marou xuất kho đơn liên công ty</button>
         <button class="btn" onclick="post('/api/reset').then(()=>{lastId={};location.reload()})">Reset</button>
       </div>
       <h4>Chế độ đang chạy</h4>

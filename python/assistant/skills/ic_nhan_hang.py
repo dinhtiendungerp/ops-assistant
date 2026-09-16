@@ -55,9 +55,11 @@ def _ten_diem(ma: str) -> str:
 
 def thu_thap(asst: Any) -> dict[str, list[dict[str, Any]]]:
     """Chia don mua intercompany thanh ba nhom theo trang thai giao / nhan."""
-    hom_nay = asst.gw.today()
-    if isinstance(hom_nay, datetime):
-        hom_nay = hom_nay.date()
+    # Ngay "hom nay" o day lay theo dong ho tro ly, KHONG theo As Of Date cua bang Inventory Health.
+    # Ly do: phieu giao hang duoc post voi ngay that, con As Of Date la ngay chot cua lan tinh gan nhat (bo demo neo 18/09).
+    # Lay As Of Date thi mot phieu vua post sang nay da bi coi la "qua ngay" va tro ly bo qua buoc bao truoc.
+    # Dong ho tro ly co nut +24 gio trong khay demo, nen van dien duoc canh "sang hom sau".
+    hom_nay = asst.mem.now().astimezone().date()
     trong_ngay, qua_ngay, da_nhan = [], [], []
     for d in asst.gw.ic_giao_hang(NHA_CUNG_CAP_IC):
         shp = d.get("shipment") or {}

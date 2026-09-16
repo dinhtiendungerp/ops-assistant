@@ -257,10 +257,10 @@ the_ngang(s, [
                             "Hạn dùng suy từ đợt giao",
                             "Vai: quản lý cửa hàng, Retail Ops"], NAVY),
 ], t=2.95, h=3.1)
-txt(s, 1.20, 6.35, 14.95, 0.5, "Đã chạy thật hai đầu: đơn mua HO106200 ở NWV-DAKAO, gửi sang NWV-MAROU thành Sales Order S90013 cho khách DAKAO.",
+txt(s, 1.20, 6.35, 14.95, 0.5, "Đã chạy thật trọn vòng: đơn mua HO106201 ở Dakao, thành đơn bán S90014 bên Marou, xuất kho phiếu 102043, nhận hàng phiếu 107110.",
     20, True, NAVY)
 txt(s, 1.20, 6.95, 14.95, 1.1,
-    ["Intercompany chuẩn của Business Central: IC Partner hai chiều, tự gửi và tự nhận. Hai đơn đều chưa post, người của Marou xử lý tiếp như đơn thường.",
+    ["Intercompany chuẩn của Business Central: IC Partner hai chiều, tự gửi và tự nhận. Đơn bán sinh ra ở trạng thái chưa post; người kho Marou xuất hàng như đơn thường.",
      "Người dùng chọn đơn vị ngay trên giao diện; thẻ và link mở đúng company trong Business Central."],
     19, False, BODY, space=4)
 bang_nguon(s, "Trạng thái 16/09/2026. Dữ liệu hai company hiện là bản sao của bộ mô phỏng; dữ liệu bán lẻ riêng cho Dakao sẽ dựng ở bước sau.")
@@ -276,17 +276,19 @@ bật được vì hai company chung một môi trường. Người mua bấm "G
 company kia, và bên đó tự tạo Sales Order. Bằng chứng: đơn HO106200 bên Dakao thành S90013 bên Marou, khách hàng DAKAO, cùng mặt hàng
 và số lượng.
 Ranh giới vẫn giữ: trợ lý không tự bấm gửi, vì gửi kéo theo release đơn, đó là quyết định của người mua.
-Hai điểm cần Marou xác nhận khi triển khai thật: kho xuất hàng bên Marou (đơn bán hiện chưa gán địa điểm xuất), và có cho tự động post
-hai đầu hay dừng ở mức tạo chứng từ như bây giờ.
+Kho xuất hàng bên Marou đã chốt là W0003, gán trên khách hàng DAKAO nên mọi đơn bán liên công ty đều có sẵn địa điểm xuất.
+Chuyện tự động post hai đầu: anh Dũng đã chốt, và slide kịch bản 16 diễn chi tiết. Bên Marou không tự động gì cả; bên Dakao thì trợ lý
+báo và nhắc, còn việc post phiếu nhận chỉ xảy ra sau khi có người duyệt.
 """)
 
 # ---- AI o dau
-s = slide(pr, "AI · BỐN NHÓM NĂNG LỰC", "12 tính năng AI đã chạy thật trong UC2",
+s = slide(pr, "AI · BỐN NHÓM NĂNG LỰC", "13 tính năng AI đã chạy thật trong UC2",
           "Mỗi tính năng phải thuộc một trong bốn nhóm; không thuộc nhóm nào thì đó là tính năng ứng dụng.")
 nhom = [("Tóm tắt", [("S1", "Brief buổi sáng do AI viết"), ("S2", "Giải thích lô bằng lời"), ("S3", "Báo cáo tuần hàng hủy")], AMBER),
         ("Tạo sinh nội dung", [("G1", "Lý do đề xuất viết lại"), ("G2", "Biên bản hủy"), ("", "Email nhắc post nhận hàng")], RGBColor(0xA4, 0x55, 0x2A)),
         ("Khám phá và phân tích", [("D1", "Hỏi đáp tự do"), ("D4", "Phương án cho lô cận date"), ("D3", "Phát hiện bất thường"), ("D2", "Nguyên nhân hàng hủy")], RGBColor(0x2F, 0x6B, 0x8A)),
-        ("Tự động hóa", [("A1", "Đề xuất có người duyệt"), ("A2", "Quét sáng mỗi ngày"), ("A3", "Luồng hủy khép kín")], GREEN)]
+        ("Tự động hóa", [("A1", "Đề xuất có người duyệt"), ("A2", "Quét sáng mỗi ngày"), ("A3", "Luồng hủy khép kín"),
+                         ("A4", "Nhận hàng liên công ty")], GREEN)]
 bw = (14.95 - 0.3 * 3) / 4
 for i, (ten, ds, mau) in enumerate(nhom):
     x = 1.20 + i * (bw + 0.3)
@@ -305,7 +307,7 @@ txt(s, 1.20, 7.3, 14.95, 0.95,
 bang_nguon(s, "Mỗi đầu ra AI đều ghi người soạn và nguồn số liệu; người đọc kiểm lại được ngay trên màn hình.")
 note(s, """
 Đây là slide trả lời thẳng câu hỏi khách chắc chắn hỏi: "AI nằm ở đâu, hay chỉ là phần mềm thường?"
-Bốn nhóm này là kim chỉ nam đã chốt. Đọc lướt tên 12 tính năng, đừng giải thích từng cái ở đây vì các slide sau sẽ diễn.
+Bốn nhóm này là kim chỉ nam đã chốt. Đọc lướt tên 13 tính năng, đừng giải thích từng cái ở đây vì các slide sau sẽ diễn.
 Phần quan trọng nhất là khối "Phép kiểm chung" ở dưới. Giải thích bằng một ví dụ thật: hôm 15/09 model viết đoạn giải thích cho một lô
 Choco nuts và tự suy ra "ngày 20/07" từ mã lô L260720, con số đó không có trong dữ liệu đưa cho model, nên hệ thống loại đoạn đó và
 thay bằng câu mẫu, thẻ ghi rõ lý do. Đó là cách chúng tôi chặn việc model bịa số.
@@ -342,7 +344,7 @@ tự chọn được vùng xử lý, có thể giữ trong Asia Pacific. Đây l
 
 # ---- Danh muc kich ban
 s = slide(pr, "KỊCH BẢN", "Danh mục kịch bản trình diễn",
-          "Mười bốn kịch bản, mỗi kịch bản một slide: đầu vào, thao tác, đầu ra.")
+          "Mười sáu kịch bản, mỗi kịch bản một slide: đầu vào, thao tác, đầu ra.")
 ds = [("01", "Dashboard sức khỏe tồn kho", "Supply Chain", "UC2"),
       ("02", "Lọc đúng tầng, tìm đúng lô", "Supply Chain", "UC2"),
       ("03", "Vì sao một lô vào tầng đó", "Người kiểm số", "UC2 · S2"),
@@ -356,26 +358,29 @@ ds = [("01", "Dashboard sức khỏe tồn kho", "Supply Chain", "UC2"),
       ("11", "Truy xuất lô và khoanh vùng thu hồi", "QA", "UC2"),
       ("12", "Phát hiện bất thường trong sổ kho", "Supply Chain", "UC2 · D3"),
       ("13", "Nguyên nhân hàng hủy", "Supply Chain, cửa hàng", "UC2 · D2"),
-      ("14", "Quét sáng và báo cáo tuần", "Cả nhóm", "UC2 · A2, S3")]
-cot_w = [0.9, 7.2, 4.0, 2.85]
+      ("14", "Quét sáng mỗi ngày", "Cả nhóm", "UC2 · A2"),
+      ("15", "Báo cáo tuần hàng hủy", "Supply Chain", "UC2 · S3"),
+      ("16", "Nhận hàng liên công ty", "Cửa hàng, người duyệt", "UC2 · A4")]
+# Bang phai hep hon de khong dam vao o "Neu thieu thoi gian" ben phai (x = 13,6 inch); moi hang thap lai de 16 dong khong dam footer.
+cot_w = [0.8, 5.6, 3.6, 2.1]
 x0 = 1.20
-y0 = 2.85
-hop(s, x0, y0, sum(cot_w), 0.5, NAVY)
+y0 = 2.68
+hop(s, x0, y0, sum(cot_w), 0.42, NAVY)
 for i, ten in enumerate(("MÃ", "KỊCH BẢN", "VAI CHÍNH", "THUỘC UC")):
-    txt(s, x0 + sum(cot_w[:i]) + 0.15, y0 + 0.11, cot_w[i] - 0.2, 0.3, ten, 16, True, WHITE)
+    txt(s, x0 + sum(cot_w[:i]) + 0.15, y0 + 0.08, cot_w[i] - 0.2, 0.3, ten, 16, True, WHITE)
 for r, row in enumerate(ds):
-    y = y0 + 0.5 + r * 0.4
+    y = y0 + 0.42 + r * 0.36
     if r % 2 == 0:
-        hop(s, x0, y, sum(cot_w), 0.4, RGBColor(0xF7, 0xF9, 0xFC))
+        hop(s, x0, y, sum(cot_w), 0.36, RGBColor(0xF7, 0xF9, 0xFC))
     for i, v in enumerate(row):
-        txt(s, x0 + sum(cot_w[:i]) + 0.15, y + 0.07, cot_w[i] - 0.2, 0.3, v, 16,
+        txt(s, x0 + sum(cot_w[:i]) + 0.15, y + 0.05, cot_w[i] - 0.2, 0.3, v, 16,
             i == 0, NAVY if i == 0 else BODY)
-txt(s, 13.6, 2.85, 2.55, 3.4, ["Nếu thiếu thời gian", "", "Diễn 01, 05, 08, 09, 10.",
+txt(s, 13.05, 3.15, 3.1, 3.4, ["Nếu thiếu thời gian", "", "Diễn 01, 05, 08, 09, 10.",
                                "Năm kịch bản này đi hết một vòng: nhìn số, được nhắc, chọn cách xử lý, duyệt, ra chứng từ."],
     18, False, BODY, space=5)
 note(s, """
 Slide điều hướng. Nói trước để người nghe biết đường đi: bốn kịch bản đầu là nhìn và kiểm số liệu, năm kịch bản giữa là trợ lý chủ động
-đề xuất và người duyệt quyết, năm kịch bản cuối là phần phân tích và tự động hóa.
+đề xuất và người duyệt quyết, sáu kịch bản cuối là phần phân tích, tự động hóa và luồng liên công ty.
 Cột "thuộc UC" ghi mã tính năng AI để nối với slide bốn nhóm năng lực phía trước.
 Nếu buổi họp bị rút còn 15 phút, diễn năm kịch bản 01, 05, 08, 09, 10; đó là một vòng đủ từ nhìn số tới ra chứng từ.
 """)
@@ -660,6 +665,45 @@ và theo dõi đang đẩy, không phải lỗi số liệu. Nếu khách thắc
 Email gửi mỗi tuần một lần, tính theo tuần ISO, nên bấm lại trong tuần không gửi trùng.
 """)
 
+# ---- Kich ban 15: nhan hang lien cong ty
+s = slide(pr, "KỊCH BẢN 16", "Nhận hàng liên công ty",
+          "Marou xuất kho thì báo ngay; qua ngày chưa nhận thì nhắc và xin phép post · Cửa hàng Dakao, Supply Chain, người duyệt")
+the_ngang(s, [
+    ("Marou xuất kho", ["Người kho Marou post phiếu giao hàng trong BC",
+                        "Bên Marou không có gì tự động",
+                        "Trợ lý Dakao đọc sang công ty đối tác để biết"], NAVY),
+    ("Trong ngày: báo", ["Chat và email cho cửa hàng nhận hàng và Supply Chain",
+                         "Nội dung: đơn nào, mặt hàng gì, còn phải nhận bao nhiêu",
+                         "Chỉ báo, không ghi gì vào sổ"], AMBER),
+    ("Qua ngày: xin phép post", ["Đơn vẫn chưa post nhận thì nhắc lại",
+                                   "Kèm một đề xuất: cho trợ lý post phiếu nhận?",
+                                   "Policy P-12 bắt buộc người duyệt"], RED),
+    ("Duyệt thì BC post", ["Phiếu nhận sinh ra mang đúng lô bên bán đã xuất",
+                           "Không ai duyệt thì không có gì được post",
+                           "Quyền post nằm trong permission set riêng"], GREEN),
+], t=2.95, h=3.25)
+txt(s, 1.20, 6.55, 14.95, 0.45, "Vì sao việc này đáng làm", 22, True, NAVY)
+txt(s, 1.20, 7.1, 14.95, 1.1,
+    ["Chừng nào chưa post nhận, tồn trên hệ thống thấp hơn hàng thực có, nên cảnh báo hết hàng và đề xuất bổ sung cho cửa hàng đó đều sai theo.",
+     "Đây là loại đề xuất duy nhất mà việc duyệt làm Business Central post thật một chứng từ; mọi loại khác chỉ tạo chứng từ nháp."],
+    19, False, BODY, space=4)
+bang_nguon(s, "Đã chạy thật 16/09/2026 trên NWV01: đơn HO106201, phiếu giao hàng 102043 bên Marou, phiếu nhận 107110 tại cửa hàng S0010, cùng số lô.")
+note(s, """
+Kịch bản này trả lời trực tiếp vấn đề số 1 và số 3 trong khảo sát: nhập đơn không kịp thời, và muốn tự động hóa hai chiều giữa hai công ty.
+Cách xử lý do anh Dũng chốt, và nó KHÔNG đối xứng hai đầu. Nói rõ chỗ này vì khách sẽ hỏi:
+  - Bên Marou, tức bên bán, không có gì tự động. Người kho vẫn post xuất kho trong BC như mọi ngày.
+  - Bên Dakao, tức bên mua, trợ lý làm ba việc. Marou post xuất kho trong ngày thì trợ lý báo ngay cho cửa hàng nhận hàng và Supply Chain
+    để chuẩn bị nhận, qua chat và email. Đây chỉ là báo, không ghi gì.
+  - Qua ngày hôm sau mà đơn vẫn chưa post nhận thì trợ lý nhắc lại, và gửi kèm một đề xuất hỏi có cho trợ lý post phiếu nhận thay không.
+  - Người duyệt bấm Duyệt thì BC mới post. Không ai duyệt thì không có gì được post, và trợ lý nhắc tiếp mỗi ngày.
+Điểm kỹ thuật đáng nói nếu khách là người làm nghề: phiếu nhận bên Dakao mang đúng số lô mà Marou đã xuất, đọc từ sổ kho của công ty bên
+kia chứ không bịa. Nhờ vậy truy xuất được cả chuỗi từ lô sản xuất ở Marou tới lô đang nằm ở cửa hàng.
+Câu khách hay hỏi: "vậy trợ lý được phép post rồi à?" Trả lời: đúng, nhưng chỉ đúng một loại chứng từ này, chỉ sau khi một người bấm Duyệt,
+và quyền post nằm trong một permission set riêng phải gán tay. Mọi loại đề xuất khác vẫn chỉ tạo chứng từ nháp.
+Nếu khách hỏi tại sao không cho tự động luôn: vì tồn kho là số kế toán; một lần post nhầm phải đảo bằng chứng từ khác. Chờ một người bấm
+Duyệt rẻ hơn nhiều so với đi sửa sổ.
+""")
+
 # ---- UC3 nhac post
 s = slide(pr, "KỊCH BẢN BỔ SUNG · UC3", "Nhắc post nhận hàng: việc Marou đang phải thuê người làm",
           "Khảo sát: hàng mua về cửa hàng, chứng từ dồn tới cuối tháng mới post nhận.")
@@ -721,15 +765,16 @@ thí điểm với trần chi phí đặt sẵn, thay vì hứa một con số b
 s = slide(pr, "TỔNG KẾT", "Mức đáp ứng và việc còn lại",
           "Trạng thái 16/09/2026 trên môi trường demo NWV01, hai company.")
 the_ngang(s, [
-    ("Đã chạy thật", ["Sức khỏe tồn kho theo lô, sáu tầng", "Truy xuất lô", "Đề xuất và người duyệt, ba loại chứng từ nháp",
-                      "12 tính năng AI trong bốn nhóm", "Hai company, mua thẳng từ Marou",
-                      "Intercompany: đơn mua thành đơn bán bên kia", "Email và lịch chạy nền"], GREEN),
+    ("Đã chạy thật", ["Sức khỏe tồn kho theo lô, sáu tầng", "Truy xuất lô", "Đề xuất và người duyệt",
+                      "13 tính năng AI trong bốn nhóm", "Hai company, mua thẳng từ Marou",
+                      "Intercompany trọn vòng bốn chứng từ",
+                      "Trợ lý post phiếu nhận khi được duyệt", "Email và lịch chạy nền"], GREEN),
     ("Đang mở rộng", ["Chương trình giảm giá cho lô cận date", "Điều phối thu hồi lô nhiều bước", "Kênh Teams thay cho chat web",
                       "Ngưỡng cận date theo nhóm hàng"], AMBER),
-    ("Cần Marou quyết", ["Có cho tự động post hai đầu không", "Kho xuất hàng bên Marou cho đơn bán",
-                         "Có cho trợ lý post chứng từ không", "Vùng xử lý dữ liệu của model", "Ngưỡng và policy chính thức"], RED),
-], t=2.9, h=3.6)
-txt(s, 1.20, 6.85, 14.95, 1.25,
+    ("Cần Marou quyết", ["Ai được gán quyền post phiếu nhận", "Có mở luồng post cho loại chứng từ nào nữa không",
+                         "Vùng xử lý dữ liệu của model", "Ngưỡng và policy chính thức"], RED),
+], t=2.9, h=4.05)
+txt(s, 1.20, 7.15, 14.95, 1.25,
     ["Bước tiếp theo đề xuất: chốt ngưỡng và policy với Supply Chain, dựng dữ liệu bán lẻ riêng cho Dakao, rồi chạy thử một tuần thật với trần chi phí đặt sẵn.",
      "Mọi con số trong bộ slide này đo trên bộ dữ liệu mô phỏng của NaviWorld, không phải số liệu vận hành của Marou."],
     19, False, BODY, space=4)

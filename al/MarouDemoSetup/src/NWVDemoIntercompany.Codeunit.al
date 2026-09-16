@@ -192,6 +192,7 @@ codeunit 70258 "NWV Demo Intercompany"
     var
         SalesLine: Record "Sales Line";
         Item: Record Item;
+        Customer: Record Customer;
     begin
         SalesLine.SetRange("Document Type", SalesHeader."Document Type");
         SalesLine.SetRange("Document No.", SalesHeader."No.");
@@ -199,6 +200,14 @@ codeunit 70258 "NWV Demo Intercompany"
         SalesLine.SetFilter("Outstanding Quantity", '>%1', 0);
         if SalesLine.FindSet() then
             repeat
+                // Don ban tao truoc khi gan Location Code cho khach hang DAKAO (16/09/2026) khong co dia diem xuat, nen FEFO
+                // di tim ton tai dia diem rong va khong thay gi. Lay kho cua chinh khach hang de don cu van xuat duoc.
+                if SalesLine."Location Code" = '' then
+                    if Customer.Get(SalesHeader."Sell-to Customer No.") then
+                        if Customer."Location Code" <> '' then begin
+                            SalesLine.Validate("Location Code", Customer."Location Code");
+                            SalesLine.Modify(true);
+                        end;
                 if Item.Get(SalesLine."No.") then
                     if Item."Item Tracking Code" <> '' then
                         GanLoChoDongBan(SalesLine);
