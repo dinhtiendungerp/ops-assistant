@@ -92,6 +92,11 @@ def handle_stockout(asst, user: dict[str, Any], intent) -> list[Delivery]:
             f"đủ {plan['doc']} ngày. " + (f"{plan['nguon']} chưa đề xuất chuyển cho dòng này." if plan["nguon"] else f"Theo ngưỡng {REORDER_DOC} ngày thì chưa cần chuyển.") + f" Nếu có sự kiện sắp tới bạn nói số lượng, tôi chuyển yêu cầu cho điều phối.", skill=SKILL, ref=ref))
         return out
 
+    # Cung mot cau bao hai lan (bam thu bước demo hai lần, 16/09/2026) thi khong ghi them de xuat: BC da co de xuat dang cho
+    # hoac don dang giao cho cap cua hang x mat hang nay (`de_xuat_dang_co` doc Reference Key con hieu luc trong BC).
+    if ref in gw.de_xuat_dang_co():
+        return [Delivery(user["user_id"], f"{item['description']} tại {store} đã có đề xuất đang chờ duyệt hoặc đơn đang giao, "
+                                          "tôi không ghi thêm. Hỏi \"đề xuất của tôi đến đâu rồi\" để xem tiến độ.", skill=SKILL, ref=ref)]
     sug = gw.suggestion(store, item["itemNo"])
     if sug and sug.get("replenType") == "Purchase":
         # Dakao (16/09/2026): LS de xuat MUA thang tu vendor (MAROU), giao toi cua hang, khong co kho trung tam de chuyen.

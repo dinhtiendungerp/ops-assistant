@@ -60,9 +60,9 @@ TOOLS: list[dict[str, Any]] = [
         "description": "Danh sach de xuat bo sung hang cua LS Replenishment (LS Central da tinh, tro ly khong tinh lai): moi dong "
                        "la mat hang x cua hang, gom so luong LS de xuat, muc LS tinh truoc khi chan, ban binh quan ngay, so ngay phu "
                        "yeu cau, ton, hang dang ve, ton kha dung o kho cap, so ngay het hang trong cua so tinh, quyet dinh cua LS, "
-                       "kieu (chuyen tu kho hay mua tu vendor), nguon. Kem `flags` do code tinh de nhin ra dong bat thuong: "
-                       "min_max (kieu Stock Levels, khong co ban binh quan la binh thuong), oos_qua_nua_cua_so, khong_co_ban_binh_quan, "
-                       "de_xuat_vuot_ban_x_phu, kho_khong_du, ton_bang_0, de_xuat_bi_chan (kho khong du nen LS chia lai). "
+                       "kieu (chuyen tu kho hay mua tu vendor), nguon. Kem `flags` do code tinh, viet bang tieng Viet doc duoc, de nhin ra "
+                       "dong bat thuong (het hang qua nua cua so tinh, khong co ban binh quan ma van de xuat, de xuat vuot ban binh "
+                       "quan nhan ngay phu, kho cap khong du, ton bang 0, bi chia lai vi kho thieu; kieu min-max chi la ghi chu). "
                        "Dung cho cau 'tong hop de xuat bo sung', 'de xuat nao bat thuong', 'LS dang de xuat gi cho cua hang toi'. "
                        "Muon biet vi sao MOT dong ra so do thi goi explain_replenishment.",
         "input_schema": {"type": "object", "properties": {
@@ -204,19 +204,19 @@ def run_tool(asst: Any, user: dict[str, Any], name: str, args: dict[str, Any]) -
             min_max = "Maximum Inventory" in quyet
             flags = []
             if min_max:
-                flags.append("min_max")
+                flags.append("kiểu min-max (không có bán bình quân là bình thường)")
             if oos >= 28:
-                flags.append("oos_qua_nua_cua_so")        # cua so Sales Profile DEFAULT 56 ngay; qua nua la het hang
+                flags.append("hết hàng quá nửa cửa sổ tính")        # cua so Sales Profile DEFAULT 56 ngay; qua nua la het hang
             if sug > 0 and avg <= 0 and not min_max:
-                flags.append("khong_co_ban_binh_quan")
+                flags.append("không có bán bình quân mà vẫn đề xuất")
             if avg > 0 and phu > 0 and sug > avg * phu * 1.5:
-                flags.append("de_xuat_vuot_ban_x_phu")
+                flags.append("đề xuất vượt bán bình quân nhân ngày phủ")
             if r.get("replenType", "Transfer") == "Transfer" and muc > 0 and kho < muc:
-                flags.append("kho_khong_du")
+                flags.append("kho cấp không đủ")
             if ton <= 0:
-                flags.append("ton_bang_0")
+                flags.append("tồn bằng 0")
             if muc > 0 and sug < muc and not min_max and r.get("replenType", "Transfer") == "Transfer":
-                flags.append("de_xuat_bi_chan")
+                flags.append("bị chia lại vì kho thiếu")
             ra.append({"store": r.get("storeLocationCode"), "itemNo": r.get("itemNo"), "description": r.get("itemDescription"),
                        "suggestedQty": sug, "lsTargetQty": muc, "avgDailySalesQty": avg, "coverDays": phu,
                        "onHand": ton, "inTransit": r.get("storeQtyInTransit", 0), "daysOfCover": r.get("daysOfCover"),

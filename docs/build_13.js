@@ -66,7 +66,7 @@ function noiDung() {
     ["Cột Theo dõi xử lý trống", "Vai Hùng, xem cột phải ở cả hai company", "Chưa có đề xuất nào; Marou không còn dòng Rejected"],
     ["Đơn liên công ty đúng trạng thái", "Chưa bấm gì trong console. Mở BC, NWV-DAKAO, Purchase Orders", "HO106200 và HO106202 còn Outstanding; HO106199 không còn"],
     ["Mở sẵn Business Central", "Một tab trình duyệt riêng, đăng nhập NWV01", "Bấm link trong thẻ là mở được, không phải đăng nhập giữa buổi"],
-    ["Không bấm Reset, không bấm +24 giờ", "Khay Điều khiển demo ở góc dưới phải", "Reset xoá hộp thư; +24 giờ làm HO106202 thành quá ngày và mất cảnh báo trong ngày"],
+    ["Bấm Reset MỘT lần lúc bắt đầu, rồi thôi", "Khay Điều khiển demo ở góc dưới phải, nút Reset", "Hộp thư mọi vai về màn hình chào (xoá dấu vết các lần bấm thử tối 16/09). Sau đó không bấm Reset nữa, và không bấm +24 giờ trước bước 19"],
   ], [2.6, 5.2, 4.2]));
   c.push(h2("Người dùng demo"));
   c.push(...table(["Đăng nhập", "Vai", "Đơn vị", "Bước"], [
@@ -241,6 +241,9 @@ function noiDung() {
      "Cứ để khách gõ. Câu nào rule đọc chắc thì trả lời bằng dữ liệu, không tốn model; câu nào rule không giải được thì "
      + "chuyển cho model tự chọn tool (tồn theo địa điểm, sức khỏe tồn kho theo tầng, LS đề xuất bổ sung, tốc độ bán, lô, khuyến mãi) "
      + "rồi tổng hợp, thẻ có nút xem từng bước đã tra. Ví dụ đã chạy: “có những mặt hàng nào sắp hết hàng” từ quản lý cửa hàng."],
+    ["Nhìn vào đâu để biết câu này AI viết hay câu soạn sẵn?",
+     "Nhãn nhỏ dưới mỗi câu trả lời của trợ lý: “AI viết · gpt-4.1-mini” (đỏ) là model viết và đã qua phép kiểm số; “câu mẫu” (vàng) là "
+     + "AI bị chặn hoặc đang tắt nên code ghép câu; “đọc từ dữ liệu, không gọi model” (xám) là rule đọc thẳng bảng. Thẻ AI còn có dòng Người soạn."],
     ["AI có bịa số không?",
      "Không thể đưa ra con số không có trong dữ liệu. Mọi chữ số model viết đều bị đối chiếu với dữ liệu code đưa; sai một chỗ là bỏ cả đoạn và thay bằng câu mẫu, thẻ ghi rõ lý do."],
     ["Trợ lý có tự ghi vào sổ không?",
@@ -273,7 +276,8 @@ function noiDung() {
     ["Bước 3 trả lời “chuyển từ W0003” thay vì đặt mua từ MAROU", "Đang ở company Marou chứ không phải Dakao", "Nhìn dải nguồn: nút Dakao (bán lẻ) phải đang tô. Bấm lại nút 3"],
     ["Bước 8 trả lời về hàng liên công ty", "Câu hỏi có chữ Marou kèm về hoặc xuất kho", "Dùng đúng câu trên nút; không thêm chữ Marou"],
     ["Đoạn văn ghi mẫu có sẵn thay vì AI", "Phép kiểm số đã chặn, hoặc AI đang tắt, hoặc hết trần", "Hành vi đúng. Mở tab Cài đặt AI xem trạng thái rồi giải thích"],
-    ["Màn hình chậm khoảng 20 giây", "Đang đọc dữ liệu thật từ Business Central", "Nói trước khi bấm; bấm Đọc lại từ BC trước buổi họp để làm nóng bộ nhớ đệm"],
+    ["Màn hình chậm khoảng 20 giây", "Đang đọc dữ liệu thật từ Business Central (brief, câu hỏi mở)", "Nói trước khi bấm. Đổi vai hay đổi company thì không còn chậm: cột phải lấy từ bản chụp, làm mới ở luồng nền"],
+    ["Cột Theo dõi xử lý chưa cập nhật ngay sau khi Duyệt", "Bản chụp làm mới mỗi 8 giây", "Đợi một nhịp, không bấm lại"],
     ["Bước 18 không thấy thẻ HO106202", "Đơn đã được post nhận, hoặc đồng hồ ảo đã bị đẩy sang ngày khác", "Xem dòng Giờ hệ thống trong khay demo. Nếu đã +24 giờ thì HO106202 thành quá ngày, vẫn có thẻ đề xuất post, diễn tiếp bằng thẻ đó"],
     ["Trợ lý nhắc một đơn cũ không nằm trong kịch bản", "Đơn đó xuất kho từ hôm trước mà chưa ai post nhận", "Đó là đúng việc trợ lý phải làm. Duyệt luôn hoặc nói rõ đây là đơn tồn từ hôm trước"],
   ], [3.4, 4.2, 4.4]));

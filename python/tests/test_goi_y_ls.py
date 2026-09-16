@@ -221,6 +221,9 @@ def test_cua_hang_dakao_bao_sap_het_thi_de_xuat_dat_mua_tu_marou():
         assert ("Mua từ", "MAROU") in the.card.facts and the.card.actions[0].label == "Duyệt đặt mua"
         p = next(p for p in a.mem.proposals() if p.get("to_loc") == "S0002")
         assert p["action_type"] == "Purchase" and p["vendor_no"] == "MAROU" and p["quantity"] == 12 and p["from_loc"] == ""
+        # Bao lan hai: khong ghi them, noi ro da co
+        lai = a.handle_message("minh.s0002", "sắp hết Ice cream ở cửa hàng tôi")
+        assert "đã có đề xuất" in lai[0].text and len([p for p in a.mem.proposals() if p.get("to_loc") == "S0002"]) == 1
     finally:
         LSClient.DATA["replenJournalDetails"].remove(d)
         LSClient.DATA["inventoryHealthLines"].remove(ih)

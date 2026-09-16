@@ -84,6 +84,7 @@ def _loi_bc(request, exc: BCError):
 # tro_ly: moi company mot tro ly, dung khi co request dau tien cua company do (dung mot tro ly tren BC that
 # mat vai chuc giay vi phai chot baseline).
 import threading
+import time
 
 state: dict[str, Any] = {"tro_ly": {}, "bc_live_override": None}
 _khoa_tro_ly = threading.Lock()
@@ -152,6 +153,11 @@ def _dung_lai_tro_ly(live: bool, xoa_bo_nho: bool = False) -> None:
     a = Assistant(_client(live, ten), _bo_nho(live, ten), cong_ty=ten)
     with _khoa_tro_ly:
         state["tro_ly"][ten] = a
+    with _khoa_tt:
+        _tt_cham.clear()
+    import sys
+    if "pytest" not in sys.modules:
+        threading.Thread(target=_lam_nong, name="lam-nong", daemon=True).start()
 
 
 # Giao dien goi `/api/state` moi 2 giay, va cho nay dem hai bang ket qua moi lan. Tren BC that
@@ -173,6 +179,59 @@ def quen_dem() -> None:
     """Bo ban nho de lan doc sau lay so moi tu BC, o moi company dang chay."""
     for a in list(state["tro_ly"].values()):
         a.gw.quen_nho()
+    with _khoa_tt:
+        _tt_cham.clear()
+
+
+# Phan CHAM cua /api/state (dem hai bang ket qua, doc de xuat tu BC) giu trong mot ban chup theo company va lam moi
+# o luong nen. Vong poll 2 giay tra ban chup ngay, khong doi BC. Do toi 16/09/2026: sau mot phut ngoi khong, ban nho
+# het han va MOT lan poll mat 16-17 giay (goi_y_ls doc LS 12 giay, de xuat 3 giay), nen doi vai la man hinh trong
+# 30-45 giay truoc khi man hinh chao hien ra. Dung bat duoc: "doi role la phai doi 30-45s".
+_tt_cham: dict[str, dict[str, Any]] = {}
+_dang_lam_moi: set[str] = set()
+_khoa_tt = threading.Lock()
+TT_CHAM_TUOI_GIAY = 8
+
+
+def _lam_moi_tt_cham(ten: str) -> None:
+    try:
+        cong_ty_mod.hien_tai.set(ten)
+        a = _tro_ly_cua(ten)
+        dem = _dem_dong_ket_qua(bc_is_live())
+        de_xuat = a.de_xuat_gop()
+        with _khoa_tt:
+            _tt_cham[ten] = {"luc": time.time(), "dem": dem, "proposals": de_xuat}
+    except Exception as exc:                        # luong nen khong duoc lam chet may chu
+        log.warning("Lam moi trang thai cham cho %s hong: %s", ten, exc)
+    finally:
+        with _khoa_tt:
+            _dang_lam_moi.discard(ten)
+
+
+def _tt_cham_cua(ten: str, dong_bo: bool = False) -> dict[str, Any] | None:
+    """Ban chup cua company `ten`; cu qua thi kich luong nen lam moi. `dong_bo` (mock, test) thi tinh ngay tai cho."""
+    with _khoa_tt:
+        c = _tt_cham.get(ten)
+        cu = c is None or time.time() - c["luc"] > TT_CHAM_TUOI_GIAY
+        kich = cu and ten not in _dang_lam_moi
+        if kich:
+            _dang_lam_moi.add(ten)
+    if kich:
+        if dong_bo or c is None and not bc_is_live():
+            _lam_moi_tt_cham(ten)
+            with _khoa_tt:
+                return _tt_cham.get(ten)
+        threading.Thread(target=_lam_moi_tt_cham, args=(ten,), name=f"tt-cham-{ten}", daemon=True).start()
+    return c
+
+
+def _lam_nong() -> None:
+    """Dung san tro ly va ban chup cho moi company ngay khi may chu len, de cu bam dau tien khong phai doi BC."""
+    for ten in cac_cong_ty():
+        try:
+            _lam_moi_tt_cham(ten)
+        except Exception as exc:
+            log.warning("Lam nong %s hong: %s", ten, exc)
 
 
 def bc_status() -> dict[str, Any]:
@@ -374,7 +433,10 @@ def _chay_lich_nhac() -> None:
 @app.on_event("startup")
 def _bat_lich_nhac() -> None:
     import sys
-    if "pytest" in sys.modules or not any(gio for _, gio, _ in _cac_lich()):
+    if "pytest" in sys.modules:
+        return
+    threading.Thread(target=_lam_nong, name="lam-nong", daemon=True).start()
+    if not any(gio for _, gio, _ in _cac_lich()):
         return
     threading.Thread(target=_chay_lich_nhac, name="lich-chay-nen", daemon=True).start()
 
@@ -666,16 +728,30 @@ def bc_state():
     a = asst()
     transfers = list(a.gw._transfers.values()) if a.gw.is_mock else []
     sp = a.budget.report()
+    ten = cong_ty_dang_chon()
+    live = bc_is_live()
+    # Phan nhanh tinh tai cho; phan cham (dem bang ket qua, de xuat trong BC) lay tu ban chup, lam moi o luong nen.
+    bc = {"live": live, "theo_env": state.get("bc_live_override") is None, "bc_mode_env": settings.bc_mode,
+          "cong_ty": ten, "cong_ty_nhan": cong_ty_mod.nhan(ten, "day_du"),
+          "nguon": (f"{settings.bc_environment} / {ten}" if live
+                    else f"fixtures trong python/bc_agent/fixtures ({cong_ty_mod.nhan(ten)})")}
+    c = _tt_cham_cua(ten, dong_bo=state.get("asst") is not None)
+    if c:
+        bc.update(c["dem"])
+        de_xuat = c["proposals"]
+    else:
+        bc.update({"so_dong_ket_qua": 0, "so_dong_de_xuat": 0, "san_sang": True, "dang_tai": True})
+        de_xuat = a.mem.proposals()
     return {"now": a.mem.now().isoformat(),
-            "mode": {"bc": ("live" if bc_is_live() else "mock"), "llm": settings.llm_mode, "model": a.model_name,
+            "mode": {"bc": ("live" if live else "mock"), "llm": settings.llm_mode, "model": a.model_name,
                      "planner": a.planner.source, "replays": [s["id"] for s in getattr(a.planner, "scenarios", [])]},
-            "bc": bc_status(),
+            "bc": bc,
             "budget": {"spent_usd": round(sp.usd, 4), "spent_vnd": round(sp.usd * 26000), "calls": sp.calls,
                        "cap_usd": a.budget.cap, "by_purpose": {k: round(v, 4) for k, v in sp.by_purpose.items()},
                        "blocked": not a.budget.allow()},
             "policy": {"shadow": a.policy.shadow, "kill": a.policy.kill_switch, "auto_today": a.policy.auto_today,
                        "cap": a.policy.daily_auto_cap},
-            "proposals": a.de_xuat_gop(), "followups": a.mem.followups(), "transfers": transfers,
+            "proposals": de_xuat, "followups": a.mem.followups(), "transfers": transfers,
             "tin_ra": a.mem.dem_tin_ra()}
 
 

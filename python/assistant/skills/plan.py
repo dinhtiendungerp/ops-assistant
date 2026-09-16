@@ -77,7 +77,9 @@ def _tra_ket_qua(asst: Any, user: dict[str, Any], text: str, plan: Plan, token: 
         nguon_chu = "model tự dựng chuỗi tra cứu"
     else:
         nguon_chu = f"bản ghi {plan.scenario_id}"
-    facts = [("Nguồn", nguon_chu), ("Số bước tra cứu", str(len(plan.steps)))]
+    # "Nguoi soan" dat dau tien, cung nhan voi cac the AI khac (S1, D3, D4...), de nhin vao la biet AI viet hay cau mau.
+    soan = f"AI ({asst.model_name.split(':')[-1]})" if plan.source == "live" else "không gọi model"
+    facts = [("Người soạn", soan), ("Nguồn", nguon_chu), ("Số bước tra cứu", str(len(plan.steps)))]
     if plan.source == "live" and token:
         facts.append(("Token", f"{token:,}".replace(",", ".")))
     body = plan.question or ""

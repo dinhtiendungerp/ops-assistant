@@ -166,6 +166,10 @@
   @keyframes nhay { 0%, 70%, 100% { opacity:.25; } 35% { opacity:1; } }
   @media (prefers-reduced-motion: reduce) { .cham i { animation:none; opacity:.6; } }
   .msg.in .ts { color:#f3d9d6; }
+  .nguon { display:inline-block; padding:1px 7px; border-radius:9px; font-size:10px; letter-spacing:.02em; }
+  .nguon.ai { background:#fde9e7; color:#b3261e; font-weight:600; }
+  .nguon.mau { background:#fff3d6; color:#8a5a00; }
+  .nguon.du-lieu { background:#eef2f5; color:#556; }
   .stack { flex:1; min-width:0; max-width:820px; }
 
   /* ---------- man hinh chao, chi hien khi hoi thoai con trong ---------- */
@@ -625,7 +629,7 @@ async function doiCongTy(ten) {
   if (ten === congTy) return;
   congTy = ten; nhoCongTy(me, ten); veCongTy();
   // Moi company mot hoi thoai, mot bo de xuat: xoa man hinh roi tai lai theo company moi.
-  lastId = {}; $('#chat').innerHTML = ''; daTaiHopThu = false; uc2Sum = null; uc1 = null;
+  lastId = {}; $('#chat').innerHTML = DANG_TAI_HOP_THU; daTaiHopThu = false; uc2Sum = null; uc1 = null;
   veHero(); taiDoanChat(); poll();
   if (tab === 'uc2') loadUC2(); else if (tab === 'uc1') loadUC1?.(); else if (tab === 'uc3') loadUC3?.();
   baoOk('Đang làm việc ở ' + (congTyDuoc.find(c => c.ten === ten)?.day_du || ten) + '.');
@@ -817,7 +821,7 @@ function switchUser(id) {
   // man hinh cua nguoi truoc de lai.
   if (tab !== 'chat') showTab('chat');
   me = id; lastId[me] = 0; nenTin[id] = tinRa[id] || 0;
-  $('#chat').innerHTML = ''; daTaiHopThu = false;
+  $('#chat').innerHTML = DANG_TAI_HOP_THU; daTaiHopThu = false;
   // Company phai chot truoc khi tai hop thu: hop thu cua Dakao va cua Marou la hai hop thu khac nhau.
   taiCongTy().then(() => { veHero(); taiDoanChat(); poll(); });
   const u = users.find(x=>x.user_id===id) || {display_name:id, role:''};
@@ -1043,6 +1047,9 @@ let policyRule = {}, statusOf = {};
 // vong tai mot thoi diem, va xep dung MOT vong ke tiep: goi `poll()` sau khi vua gui tin thi
 // van chac chan co mot vong doc lai sau do, nhung hang doi khong dai ra vo han.
 let tinRa = {};               // {user_id: so tin tro ly da gui}, de cham dau nguoi co tin moi
+// Cho tai hop thu: hien ngay khi doi vai / doi company / doi doan, de khong co khoang trong tron. Vong poll dau tien
+// bo no di. Dung 16/09/2026: doi vai la trong tron 30-45 giay (mot lan poll doi BC 16 giay).
+const DANG_TAI_HOP_THU = '<div class="msg out tam" id="dangTaiHopThu"><div class="stack"><div class="bubble">Đang tải hộp thư…</div></div></div>';
 let daTaiHopThu = false;      // chua tai xong thi chua duoc ve man hinh chao
 let pollChay = null, pollXep = null;
 let matKetNoi = false;
@@ -1091,6 +1098,7 @@ async function _poll() {
   finally { daTaiHopThu = true; veHero(); }
 }
 function _veKetQuaPoll(rows, st, rules) {
+  document.getElementById('dangTaiHopThu')?.remove();
   bcMode = st.mode.bc;
   bcInfo = st.bc; renderSrcBar();
   st.proposals.forEach(p => { if (p.policy_rule) policyRule[p.proposal_id] = rules.find(r=>r.code===p.policy_rule) || {code:p.policy_rule, description:''}; statusOf[p.proposal_id] = {Proposed:'Chờ người duyệt', Executed:'Đã thực thi', Rejected:'Đã từ chối'}[p.status] || p.status; });
@@ -1119,9 +1127,20 @@ function _veMotTin(div, m) {
     } else {
       const tom = (m.text || m.card?.title || '').replace(/\s+/g, ' ').trim().slice(0, 90);
       const nut = tom ? `<button class="traloi" onclick="traLoi(${m.id}, ${JSON.stringify(tom).replace(/"/g, '&quot;')})">↩ Trả lời</button>` : '';
-      const body = (m.text && !dup) ? `<div class="bubble">${esc(m.text)}<span class="ts">Trợ lý · ${ts}${m.skill?' · '+esc(m.skill):''}${nut}</span></div>` : '';
+      const body = (m.text && !dup) ? `<div class="bubble">${esc(m.text)}<span class="ts">Trợ lý · ${ts}${nhanNguon(m)}${nut}</span></div>` : '';
       div.innerHTML = `${DAU_AI('san-sang')}<div class="stack">${body}${m.card ? renderCard(m.card, m.id, ts, m.skill) : ''}</div>`;
     }
+}
+// Nhin vao la biet cau nay AI viet hay code doc tu du lieu. Dung hoi 16/09/2026: "nhin vo day thi sao biet la AI tra loi
+// hay cau tra loi soan san". Nguon lay tu chinh the: "Nguoi soan" (S1, S2, D3, D4, G2, S3, planner) hoac "Nguon".
+function nhanNguon(m) {
+  const f = (m.card && m.card.facts) || [];
+  const lay = (ten) => { const x = f.find(y => (Array.isArray(y) ? y[0] : y.label) === ten); return x ? String(Array.isArray(x) ? x[1] : x.value) : ''; };
+  const soan = lay('Người soạn'), nguon = lay('Nguồn');
+  if (/^AI/.test(soan)) return ` · <span class="nguon ai">AI viết · ${esc(soan.replace(/^AI\s*\(?/, '').replace(/\)$/, ''))}</span>`;
+  if (/mẫu/.test(soan)) return ` · <span class="nguon mau">câu mẫu, ${esc(soan.replace(/^mẫu có sẵn\s*\(?/, '').replace(/\)$/, ''))}</span>`;
+  if (/kịch bản|bản ghi|không gọi model/.test(soan + ' ' + nguon)) return ' · <span class="nguon du-lieu">kịch bản đã duyệt, không gọi model</span>';
+  return ' · <span class="nguon du-lieu">đọc từ dữ liệu, không gọi model</span>';
 }
 function _sauHopThu(rows, st) {
   tinRa = st.tin_ra || {};
@@ -1400,7 +1419,7 @@ async function moDoan(conv_id) {
   const r = await post('/api/doan-chat', {user: me, conv_id});
   if (r.loi) return;
   cacDoan = r.doan;
-  lastId[me] = 0; $('#chat').innerHTML = ''; daTaiHopThu = false;
+  lastId[me] = 0; $('#chat').innerHTML = DANG_TAI_HOP_THU; daTaiHopThu = false;
   veDoanBar(); await poll();
 }
 
@@ -1408,7 +1427,7 @@ async function doanMoi() {
   const r = await post('/api/doan-chat', {user: me});
   if (r.loi) return;
   cacDoan = r.doan;
-  lastId[me] = 0; $('#chat').innerHTML = ''; daTaiHopThu = false;
+  lastId[me] = 0; $('#chat').innerHTML = DANG_TAI_HOP_THU; daTaiHopThu = false;
   veDoanBar(); await poll();
   baoOk('Đã mở đoạn chat mới. Đoạn cũ vẫn còn trong danh sách.');
 }

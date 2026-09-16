@@ -1849,6 +1849,18 @@ kheo giua UC2 voi UC1, UC5, va dua AI vao vai tro trong yeu. Da lam:
   ("tong hop"), de cau roi ve model. Bo kiem so cua planner (`kich_ban.so_sai_dia_diem`) sua hai cho: dong ket qua cung ma hang
   o nhieu cua hang thi duong dan ghep `?store=S0002.#itemNo=33110` (`_seg_dong`), va ma hang viet sau ma cua hang khong bi coi la
   con so; truoc do cau tra loi dung van bi gan "4 so khong khop".
+- **Doi vai trong 30-45 giay (Dung bat dung nguyen nhan, toi 16/09):** khong phai loi ve man hinh chao ma la `/api/state`
+  doi BC: sau mot phut ngoi khong ban nho het han, mot lan poll mat 16 giay (`goi_y_ls` 12 giay + `de_xuat` 3 giay), va poll
+  xep hang nen doi vai phai doi 2 vong. Sua: phan cham cua `/api/state` (dem hai bang, de xuat trong BC) giu trong ban chup
+  theo company `_tt_cham`, tra ngay, luong nen lam moi khi cu hon 8 giay; lan dau tra `dang_tai: true`; `_lam_nong()` dung
+  san tro ly va ban chup cho moi company luc may chu len va sau Reset. Do: 0,02 giay, doi vai 0,2 giay. Giao dien hien
+  "Dang tai hop thu..." trong luc cho thay vi trong tron.
+- **Nhan nguon duoi moi cau tra loi** (Dung: "nhin vo day sao biet AI tra loi hay soan san"): `nhanNguon(m)` doc fact "Nguoi
+  soan"/"Nguon" cua the: "AI viet · gpt-4.1-mini" (do), "cau mau, ..." (vang), "doc tu du lieu, khong goi model" (xam), "kich
+  ban da duyet". Planner them fact "Nguoi soan". Ten skill noi bo khong in ra chan bong bong nua.
+- **Co bat thuong cua tool `replenishment_suggestions` viet tieng Viet** ("het hang qua nua cua so tinh", "kieu min-max (khong
+  co ban binh quan la binh thuong)"...) va SYSTEM planner cam in ten truong ky thuat, vi model chep nguyen "flags min_max,
+  oos_qua_nua_cua_so" ra cau tra loi.
 
 ### Nhan hang lien cong ty (A4), chay tron vong, 16/09/2026
 
