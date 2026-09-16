@@ -64,6 +64,11 @@ class LSClient:
     def get(self, entity_set, record_id):
         return next(r for r in self.DATA[entity_set] if r["id"] == record_id)
 
+    def web_service(self, service, fn, body=None, timeout=300):
+        # Gia lap `NWVDemoIntercompany.SendPurchaseOrder`: BC release don roi day sang company doi tac
+        return {"company": "NWV-DAKAO", "purchaseOrder": (body or {}).get("docNo", ""), "status": "Released",
+                "icPartner": "MAROU", "salesOrder": "S90013"}
+
     def bound_action(self, entity_set, record_id, action, body=None):
         # Gia lap codeunit NWV Agent Proposal Mgt.: duyet de xuat Purchase thi tao Purchase Order Open
         r = self.get(entity_set, record_id)
@@ -176,3 +181,18 @@ def test_so_chuyen_la_quantity_cuoi_cua_ls_khong_phai_muc_toi_da():
         assert "đề xuất chuyển 11" in r["reason"]
     finally:
         LSClient.DATA["replenJournalDetails"].remove(d)
+
+
+def test_gui_don_sang_company_doi_tac():
+    """Nguoi mua bam "Gui don sang Marou" tren the Purchase Order: BC release don roi day sang company doi tac
+    (Intercompany), ben do tu tao Sales Order. Tro ly khong tu bam, va cua hang khong bam duoc."""
+    from assistant.core import Assistant
+
+    a = Assistant(LSClient())
+    out = replenishment.on_gui_don_ic(a, a.mem.user("trang.sc"), "HO106200", {})
+    c = out[0].card
+    assert "Đã gửi đơn HO106200" in out[0].text and c.title.startswith("Đã gửi đơn HO106200")
+    assert dict(c.facts)["Trạng thái"] == "Released" and any(l.startswith("Sales Order") for l, _ in c.facts)
+    # Cua hang khong co quyen
+    ra = a.handle_action("lan.s0001", "ic_gui_don", "HO106200", {})
+    assert "việc của người mua" in ra[0].text

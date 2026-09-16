@@ -75,7 +75,7 @@ ACTION_LABELS = {
     "ask_explanation": "Hỏi giải trình", "confirm_exception": "Kết luận là có vi phạm",
     "dismiss_exception": "Bỏ qua exception", "inv_steps": "Xem tôi đã tra gì",
     "inv_apply": "Áp dụng đề xuất từ điều tra", "review_detail": "Xem chi tiết chấm điểm",
-    "ih_propose": "Đề xuất xử lý tồn", "ih_transfer_fast": "Phương án cho lô cận date", "ih_d4_apply": "Ghi đề xuất theo phương án",
+    "ic_gui_don": "Gửi đơn sang công ty đối tác", "ih_propose": "Đề xuất xử lý tồn", "ih_transfer_fast": "Phương án cho lô cận date", "ih_d4_apply": "Ghi đề xuất theo phương án",
     "plan_steps": "Xem tôi đã tra gì", "plan_apply": "Ghi đề xuất vào BC",
     "plan_ok": "Trả lời đúng", "plan_bad": "Chưa đúng", "plan_model": "Hỏi lại bằng model",
     "lad_approve": "Duyệt việc đổi ngưỡng", "lad_reject": "Từ chối", "lad_evidence": "Giải thích cho trợ lý",
@@ -373,6 +373,10 @@ class Assistant:
             return self._deliver(review.show_suggestions(self, user, ref))
         if verb == "ih_propose":
             return self._deliver(inventory_health.on_propose(self, user, ref, payload.get("action_type", "ReviewOnly")))
+        if verb == "ic_gui_don":
+            if user["role"] not in ("dispatcher", "supply_chain"):
+                return self._deliver([Delivery(user_id, "Gửi đơn sang công ty đối tác là việc của người mua (Supply Chain hoặc điều phối).")])
+            return self._deliver(replenishment.on_gui_don_ic(self, user, ref, payload))
         if verb == "ih_transfer_fast":
             return self._deliver(inventory_health.on_transfer_fast(self, user, ref))
         if verb == "ih_d4_apply":

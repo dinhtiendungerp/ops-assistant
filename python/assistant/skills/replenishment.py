@@ -271,7 +271,8 @@ def on_approve(asst, user, prop, payload) -> list[Delivery]:
                            ("Giao đến", prop["to_loc"]), ("Trạng thái", "Open, chưa release")],
                     body="Purchase Order tạo dưới tên người duyệt, trạng thái Open. Người mua xem lại rồi release và gửi cho nhà cung cấp; "
                          "trợ lý không post gì.",
-                    links=[("Mở Purchase Order trong BC", link("purchase_order", {"Document Type": "Order", "No.": to_no}))])
+                    links=[("Mở Purchase Order trong BC", link("purchase_order", {"Document Type": "Order", "No.": to_no}))],
+                    actions=[Action("ic_gui_don", "Gửi đơn sang Marou", "positive")])
         out = [Delivery(user["user_id"], f"Đã duyệt. Purchase Order {to_no} tạo dưới tên {user['display_name']}, trạng thái Open, "
                                          f"mua {fmt_qty(prop['quantity'])} {item_desc} từ {prop.get('vendor_no') or ''} giao đến {prop['to_loc']}.",
                         card=card, skill=SKILL, ref=prop["proposal_id"])]
@@ -297,6 +298,23 @@ def on_approve(asst, user, prop, payload) -> list[Delivery]:
     asst.mem.add_followup("transfer_ship", to_no, now + timedelta(hours=18), notify_user="role:warehouse", escalate_user=user["user_id"], note=prop["proposal_id"])
     asst.mem.add_followup("transfer_receive", to_no, now + timedelta(hours=48), notify_user=store_user, note=prop["proposal_id"])
     return out
+
+
+def on_gui_don_ic(asst, user, ref, payload) -> list[Delivery]:
+    """Nguoi mua bam "Gui don sang Marou" tren the Purchase Order. BC release don roi day sang company doi tac
+    (Intercompany), ben do tu tao Sales Order. Tro ly khong tu bam: release la quyet dinh cua nguoi mua."""
+    from ..bc_link import link
+    kq = asst.gw.gui_don_ic(ref)
+    so = kq.get("salesOrder") or ""
+    cau = (f"Đã gửi đơn {ref} sang {kq.get('icPartner') or 'công ty đối tác'}. Đơn chuyển sang trạng thái "
+           f"{kq.get('status') or 'Released'}; bên kia nhận và tạo Sales Order.")
+    card = Card(title=f"Đã gửi đơn {ref} sang công ty đối tác", kind="info", ref=ref,
+                facts=[("Đơn mua", ref), ("Trạng thái", kq.get("status") or ""), ("Đối tác", kq.get("icPartner") or "")]
+                      + ([("Sales Order bên kia", so)] if so else []),
+                body="Business Central gửi qua Intercompany: đơn mua bên này thành đơn bán bên kia. Hai đơn vẫn ở trạng thái "
+                     "chưa post; người của Marou xử lý tiếp như đơn thường.",
+                links=[("Mở Purchase Order trong BC", link("purchase_order", {"Document Type": "Order", "No.": ref}))])
+    return [Delivery(user["user_id"], cau, card, SKILL, ref)]
 
 
 def on_edit(asst, user, prop, payload) -> list[Delivery]:

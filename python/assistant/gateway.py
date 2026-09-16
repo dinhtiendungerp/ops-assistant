@@ -525,6 +525,18 @@ class BCGateway:
                 ra.append(k)
         return ra
 
+    # ---------- Intercompany: gui don mua sang company doi tac (16/09/2026)
+    def gui_don_ic(self, doc_no: str) -> dict[str, Any]:
+        """Goi `NWVDemoIntercompany.SendPurchaseOrder`: BC release don roi day sang inbox cua company doi tac, ben do
+        Auto. Accept tao Sales Order. Release la viec cua nguoi mua, nen ham nay chi chay khi co nguoi bam nut."""
+        if self.is_mock:
+            self._to_seq += 1
+            so = f"SO-{self._to_seq}"
+            self._transfers[so] = {"no": so, "status": "Released", "shipped": False, "received": False,
+                                   "itemNo": "", "quantity": 0, "toLocationCode": "", "fromLocationCode": ""}
+            return {"purchaseOrder": doc_no, "status": "Released", "icPartner": "MAROU", "salesOrder": so}
+        return self.client.web_service("NWVDemoIntercompany", "SendPurchaseOrder", {"docNo": doc_no})
+
     def transfer(self, to_no: str) -> dict[str, Any] | None:
         if self.is_mock:
             return self._transfers.get(to_no)

@@ -1080,7 +1080,7 @@ async function act(verb, ref, mid, inputName, payload) {
   if (inputName) { const el = document.getElementById(`in-${mid}-${verb}`); const v = el ? el.value : ''; if (!v && inputName !== 'reason') { alert('Nhập ' + (INPUT[inputName]||inputName)); return; } payload[inputName] = v; }
   const nut = document.querySelectorAll(`#act-${mid} button`);
   nut.forEach(b => b.disabled = true);
-  const GHI_VAO_BC = ['approve', 'edit', 'reject', 'lad_approve', 'plan_apply', 'inv_apply', 'ih_propose', 'ih_d4_apply'];
+  const GHI_VAO_BC = ['approve', 'edit', 'reject', 'lad_approve', 'plan_apply', 'inv_apply', 'ih_propose', 'ih_d4_apply', 'ic_gui_don'];
   if (GHI_VAO_BC.includes(verb)) dangXuLy('Đang ghi vào Business Central…');
   try {
     const r = await post('/api/action', {user: me, verb, ref, payload});

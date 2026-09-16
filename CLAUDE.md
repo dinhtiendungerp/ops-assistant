@@ -1738,6 +1738,30 @@ khong co dong Sale sau han; document no rong.
   che do mo phong quay ve `Memory(":memory:")` (chi BC that moi ghi `runs/bo-nho-<company>.sqlite`), va `gw._kiem_con_de_xuat` nem
   `BCError` co cau doc duoc truoc khi goi approve/reject. Test `test_duyet_de_xuat_khong_con_ben_bc_thi_bao_ro`.
 
+### Intercompany hai company DA BAT va chay that, 16/09/2026
+
+Dung bac lap luan cu cua toi ("Intercompany dung vao thiet lap ke toan nen cho Marou quyet"): day la moi truong DEMO tren tenant
+CONTOSO, khong co so sach that nao bi dung, va chinh Marou neu tu dong hoa intercompany trong khao sat. Da lam luon.
+- `NWV Marou Demo Setup` **1.7.0.0**, codeunit 70258 them ba ham:
+  `EnsureIntercompany(configJson)` dat IC Setup (IC Partner Code cua chinh company, Auto. Send Transactions), tao IC Partner tro sang
+  company kia (Inbox Type = Database, Inbox Details = ten company doi tac, Auto. Accept Transactions, Outbound Item No. Type =
+  Internal No. vi hai company chung danh muc), gan `IC Partner Code` len customer/vendor doi tac. Tai khoan phai thu / phai tra lay tu
+  posting group cua chinh customer/vendor (Marou 2310, Dakao 5410), khong bia so hieu.
+  `SendPurchaseOrder(docNo)` goi `ICInboxOutboxMgt.SendPurchDoc` (doc trong source base app 28.4: ham nay TestField "Send IC Document",
+  RELEASE don roi tao IC Outbox Transaction); `ICStatus()` dem outbox, inbox, handled inbox, sales order de kiem.
+- `Purchase Header."Send IC Document"` tu bat khi validate Buy-from Vendor No. ma vendor co IC Partner Code, nen de xuat Purchase cua
+  tro ly khong phai lam gi them.
+- **Da chay that:** duyet de xuat Purchase o NWV-DAKAO -> PO **HO106200** (1 Blueberry muffin, S0005); goi SendPurchaseOrder ->
+  don Released, outbox ve 0 (Auto Send day di ngay), ben NWV-MAROU handledInbox 1 va sinh **Sales Order S90013** khach DAKAO,
+  item 33116 so luong 1, ngay giao 16/09/2026. Location tren Sales Order con rong: kho xuat ben Marou la thu Marou phai chot.
+- Tro ly: the "Da tao Purchase Order" them nut **Gui don sang Marou** (verb `ic_gui_don`, chi Supply Chain va dieu phoi);
+  `BCClient.web_service(service, fn, body)` goi unbound action ODataV4 cua codeunit web service; `gw.gui_don_ic`. Tro ly KHONG tu bam:
+  gui keo theo release, do la quyet dinh cua nguoi mua. Test trong `test_goi_y_ls.py`. 560 test.
+- `tests/test_ket_noi_sqlite.py::test_nhieu_luong_doc_ghi_cung_ket_noi` co the hong khi chay ca bo (test da luong, nhay thoi diem);
+  chay rieng va chay lai ca bo deu qua.
+- Bay: `tools_bc.py ws <Ham> '<json>'` truyen tham so THEO TEN cua ham AL. Ham nhan `configJson: Text` thi payload phai la
+  `{"configJson": "<chuoi json>"}`, khong phai chinh object do.
+
 ### Vai tro dia diem doc tu LS Central, app 1.5.2.0, 15/09/2026
 
 Dung bac hai field tren NWV Agent Setup: `Central Warehouse Code` trung `LSC Replen. Setup."Default Central Warehouse"`,

@@ -250,18 +250,18 @@ the_ngang(s, [
                               "Vai: kho, Supply Chain, điều phối"], NAVY),
     ("Luồng hàng", ["LS Central tính nhu cầu từng cửa hàng",
                     "Trợ lý ghi đề xuất loại Purchase",
-                    "Người duyệt bấm Duyệt",
-                    "BC tạo Purchase Order Open, vendor MAROU"], RED),
+                    "Người duyệt bấm Duyệt: BC tạo Purchase Order",
+                    "Người mua bấm Gửi đơn: sang Marou thành Sales Order"], RED),
     ("NWV-DAKAO · bán lẻ", ["Mua thẳng từ Marou, giao tới từng cửa hàng",
                             "Không qua kho trung tâm của Dakao",
                             "Hạn dùng suy từ đợt giao",
                             "Vai: quản lý cửa hàng, Retail Ops"], NAVY),
 ], t=2.95, h=3.1)
-txt(s, 1.20, 6.35, 14.95, 0.5, "Đã chạy thật: Purchase Order HO106199 trong NWV-DAKAO, 1 Blueberry muffin từ MAROU giao thẳng cửa hàng S0010, trạng thái Open.",
+txt(s, 1.20, 6.35, 14.95, 0.5, "Đã chạy thật hai đầu: đơn mua HO106200 ở NWV-DAKAO, gửi sang NWV-MAROU thành Sales Order S90013 cho khách DAKAO.",
     20, True, NAVY)
 txt(s, 1.20, 6.95, 14.95, 1.1,
-    ["Người dùng chọn đơn vị ngay trên giao diện; thẻ và link mở đúng company trong Business Central.",
-     "Phần đồng bộ hai chiều giữa hai company (Intercompany) chưa bật, vì nó đụng vào thiết lập kế toán của cả hai bên và cần Marou quyết."],
+    ["Intercompany chuẩn của Business Central: IC Partner hai chiều, tự gửi và tự nhận. Hai đơn đều chưa post, người của Marou xử lý tiếp như đơn thường.",
+     "Người dùng chọn đơn vị ngay trên giao diện; thẻ và link mở đúng company trong Business Central."],
     19, False, BODY, space=4)
 bang_nguon(s, "Trạng thái 16/09/2026. Dữ liệu hai company hiện là bản sao của bộ mô phỏng; dữ liệu bán lẻ riêng cho Dakao sẽ dựng ở bước sau.")
 note(s, """
@@ -271,9 +271,13 @@ qua kho trung tâm của Dakao.
 Điều này đổi cách trợ lý đề xuất: bên Marou là đề xuất chuyển hàng nội bộ (Transfer Order), bên Dakao là đề xuất đặt mua (Purchase Order)
 với nhà cung cấp là chính Marou. Số lượng vẫn do LS Central tính, trợ lý không tự tính lại.
 Bằng chứng đã chạy thật: đơn HO106199 trong company NWV-DAKAO.
-Nếu khách hỏi về tự động hóa hai chiều (đơn mua bên Dakao tự thành đơn bán bên Marou): đó là tính năng Intercompany chuẩn của BC,
-làm được vì hai company chung một môi trường, nhưng phải bật Auto Send và Auto Accept, đụng tới thiết lập kế toán, nên chờ Marou quyết.
-Đừng hứa là đã có.
+Tự động hóa hai chiều đã chạy: đây chính là vấn đề số 3 trong khảo sát của Marou. Dùng Intercompany chuẩn của Business Central,
+bật được vì hai company chung một môi trường. Người mua bấm "Gửi đơn sang Marou" trên thẻ; BC release đơn mua, đẩy sang hộp thư của
+company kia, và bên đó tự tạo Sales Order. Bằng chứng: đơn HO106200 bên Dakao thành S90013 bên Marou, khách hàng DAKAO, cùng mặt hàng
+và số lượng.
+Ranh giới vẫn giữ: trợ lý không tự bấm gửi, vì gửi kéo theo release đơn, đó là quyết định của người mua.
+Hai điểm cần Marou xác nhận khi triển khai thật: kho xuất hàng bên Marou (đơn bán hiện chưa gán địa điểm xuất), và có cho tự động post
+hai đầu hay dừng ở mức tạo chứng từ như bây giờ.
 """)
 
 # ---- AI o dau
@@ -718,11 +722,12 @@ s = slide(pr, "TỔNG KẾT", "Mức đáp ứng và việc còn lại",
           "Trạng thái 16/09/2026 trên môi trường demo NWV01, hai company.")
 the_ngang(s, [
     ("Đã chạy thật", ["Sức khỏe tồn kho theo lô, sáu tầng", "Truy xuất lô", "Đề xuất và người duyệt, ba loại chứng từ nháp",
-                      "12 tính năng AI trong bốn nhóm", "Hai company, mua thẳng từ Marou", "Email và lịch chạy nền"], GREEN),
+                      "12 tính năng AI trong bốn nhóm", "Hai company, mua thẳng từ Marou",
+                      "Intercompany: đơn mua thành đơn bán bên kia", "Email và lịch chạy nền"], GREEN),
     ("Cần dữ liệu hoặc quy trình của Marou", ["Mức giảm giá cho lô cận date", "Quy trình thu hồi lô", "Kênh Teams thay cho chat web",
                                               "Phiếu kiểm kê và reason code", "Ngưỡng cận date theo nhóm hàng"], AMBER),
-    ("Cần Marou quyết", ["Bật Intercompany giữa hai company", "Có cho trợ lý post chứng từ không", "Vùng xử lý dữ liệu của model",
-                         "Ngưỡng và policy chính thức"], RED),
+    ("Cần Marou quyết", ["Có cho tự động post hai đầu không", "Kho xuất hàng bên Marou cho đơn bán",
+                         "Có cho trợ lý post chứng từ không", "Vùng xử lý dữ liệu của model", "Ngưỡng và policy chính thức"], RED),
 ], t=2.9, h=3.6)
 txt(s, 1.20, 6.85, 14.95, 1.25,
     ["Bước tiếp theo đề xuất: chốt ngưỡng và policy với Supply Chain, dựng dữ liệu bán lẻ riêng cho Dakao, rồi chạy thử một tuần thật với trần chi phí đặt sẵn.",
@@ -738,7 +743,14 @@ số liệu vận hành thật.
 """)
 
 RA.parent.mkdir(parents=True, exist_ok=True)
-pr.save(str(RA))
+try:
+    pr.save(str(RA))
+    ra_that = RA
+except PermissionError:
+    # File dang mo trong PowerPoint: ghi ra ban moi thay vi hong ca lan build. Dong file roi chay lai de ghi de.
+    ra_that = RA.with_name(RA.stem + " (ban moi)" + RA.suffix)
+    pr.save(str(ra_that))
+    print("CANH BAO: file goc dang mo trong PowerPoint, da ghi ra ban moi. Dong file roi chay lai de ghi de.")
 TAM.unlink(missing_ok=True)
-print("da ghi:", RA)
+print("da ghi:", ra_that)
 print("so slide:", len(pr.slides.__iter__.__self__._sldIdLst))
