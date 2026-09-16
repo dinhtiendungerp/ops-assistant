@@ -545,7 +545,8 @@ txt(s, 1.20, 6.3, 14.95, 1.5,
      "Trợ lý không post thay kế toán. Nó chuẩn bị sẵn chứng từ đúng lô, đúng lý do, rồi nhắc cho đến khi có người post.",
      "Chứng từ mang số đề xuất, nên từ bút toán trong sổ kho truy ngược được về đề xuất và về dòng dữ liệu đã dẫn tới quyết định đó."],
     20, False, BODY, space=6)
-bang_nguon(s, "Tính năng G2 và A3. Đã chạy thật trên NWV-MAROU: chứng từ AGENT-95, 4 Tiramisu lô L260910-33130 tại S0010.")
+bang_nguon(s, "Tính năng G2 và A3. Đã chạy thật trên NWV-MAROU: duyệt hủy 4 Tiramisu lô L260910-33130 tại S0010, "
+             "Business Central tạo dòng Item Journal nháp mang số đề xuất.")
 note(s, """
 Kịch bản này khép vòng từ phát hiện tới sổ sách, và là câu trả lời cho vấn đề Marou nêu trong khảo sát: chứng từ điều chỉnh kho thường
 làm trễ nên tồn trên hệ thống không khớp thực tế.
