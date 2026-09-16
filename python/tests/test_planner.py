@@ -251,3 +251,13 @@ def test_kiem_so_nhan_cot_store_trong_dong_ket_qua():
     assert so_sai_dia_diem("S0002: tồn 3.", buoc)          # 3 la cua S0001, van phai bao
     assert so_sai_dia_diem("S0002 với mặt hàng Croissant - chocolate (33110) tồn 11.", buoc) == []   # ma hang khong phai so
     assert so_sai_dia_diem("S0002 tính đến 2026-09-17: tồn 11.", buoc) == []                         # ngay thang khong phai so
+
+
+def test_kiem_so_nhan_danh_sach_ma_dia_diem_roi_moi_den_so():
+    """QA dem 16/09/2026: "S0001, S0002 va W0003, ton 4, 1 va 35" tung bi bao 3 so khong khop vi chi lay ma gan nhat."""
+    from assistant import kich_ban
+    buoc = [{"tool": "inventory_health", "args": {}, "result": {"rows": [
+        {"itemNo": "33400", "location": "S0001", "qty": 4}, {"itemNo": "33400", "location": "S0002", "qty": 1},
+        {"itemNo": "33400", "location": "W0003", "qty": 35}]}}]
+    assert kich_ban.so_sai_dia_diem("Ice cream strawberry ở S0001, S0002 và W0003, tồn 4, 1 và 35.", buoc) == []
+    assert kich_ban.so_sai_dia_diem("S0001 tồn 35.", buoc)

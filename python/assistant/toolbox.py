@@ -53,7 +53,12 @@ TOOLS: list[dict[str, Any]] = [
             "location": {"type": "string", "description": "Ma dia diem. Rong la moi dia diem."},
             "tier": {"type": "string", "enum": ["Expired", "NearExpiry", "StockOutRisk", "SlowMoving", "Excess", "Healthy", ""],
                      "description": "Loc mot tang. Rong la lay moi tang tru Healthy."},
-            "item_no": {"type": "string"}}, "required": []},
+            "item_no": {"type": "string"},
+            "sort": {"type": "string", "enum": ["rui_ro", "ban_cham"],
+                     "description": "rui_ro (mac dinh): diem rui ro cao nhat, bo Healthy. ban_cham: MOI tang con ton, xep ton "
+                                    "phu nhieu ngay nhat / ban it nhat truoc; dung cho cau 'hang nao ban cham', 'dua gi ra khu "
+                                    "trung bay', 'hang nao can day ban' (tang SlowMoving rong khong co nghia la khong co hang ban cham)."}},
+            "required": []},
     },
     {
         "name": "replenishment_suggestions",
@@ -89,6 +94,17 @@ TOOLS: list[dict[str, Any]] = [
         "name": "lot_info",
         "description": "Thong tin mot lo: nam o dau, con bao nhieu, han dung, gia tri ton, phan tang.",
         "input_schema": {"type": "object", "properties": {"lot_no": {"type": "string"}}, "required": ["lot_no"]},
+    },
+    {
+        "name": "promotions",
+        "description": "Chuong trinh khuyen mai cua LS (Periodic Discount): dang chay, sap toi, chua bat, da ket thuc; mat hang, "
+                       "muc giam, ngay gio, cua hang ap dung; va cap mat hang x cua hang chua co Planned Sales Demand trong thoi "
+                       "gian chuong trinh (LS Replenishment chua cong nhu cau). Dung cho cau ve CTKM, va khi de xuat CTKM cho hang "
+                       "ban cham de biet mat hang da co chuong trinh chua.",
+        "input_schema": {"type": "object", "properties": {
+            "status": {"type": "string", "enum": ["dang_chay", "sap_toi", "chua_bat", "da_ket_thuc"],
+                       "description": "Bo trong la dang chay va sap toi."},
+            "item_no": {"type": "string"}, "location": {"type": "string"}}, "required": []},
     },
     {
         "name": "open_discount_exceptions",
@@ -168,15 +184,31 @@ def run_tool(asst: Any, user: dict[str, Any], name: str, args: dict[str, Any]) -
             conds.append(("itemNo", "eq", args["item_no"]))
         rows = gw.doc("inventoryHealthLines", conds, top=5000)
         tier = args.get("tier") or ""
-        rows = [r for r in rows if (r.get("tier") == tier if tier else r.get("tier") != "Healthy")]
-        rows.sort(key=lambda r: -int(r.get("riskScore") or 0))
+        if args.get("sort") == "ban_cham":
+            # Dung 16/09/2026: "mat hang nao ban cham de dua ra khu trung bay" o S0005, model chi loc SlowMoving (0 dong) roi
+            # bao "yen tam". Ban cham la so tuong doi: xep moi dong con ton theo ngay phu giam dan, ban binh quan tang dan.
+            rows = [r for r in rows if float(r.get("quantityOnHand") or 0) > 0 and r.get("tier") != "Expired"
+                    and (not tier or r.get("tier") == tier)]
+            rows.sort(key=lambda r: (-float(r.get("daysOfCover") or 9999), float(r.get("avgDailySalesQty") or 0)))
+            # Toi da 2 dong moi mat hang, de danh sach co nhieu mat hang thay vi mot mon o moi cua hang.
+            dem: dict[str, int] = {}
+            gon = []
+            for r in rows:
+                dem[r["itemNo"]] = dem.get(r["itemNo"], 0) + 1
+                if dem[r["itemNo"]] <= 2:
+                    gon.append(r)
+            rows = gon
+        else:
+            rows = [r for r in rows if (r.get("tier") == tier if tier else r.get("tier") != "Healthy")]
+            rows.sort(key=lambda r: -int(r.get("riskScore") or 0))
         return {"asOf": gw.today().isoformat(), "matched": len(rows),
                 "rows": [{"itemNo": r["itemNo"], "description": r.get("itemDescription"), "location": r["locationCode"],
                           "lot": r.get("lotNo") or "", "tier": r.get("tier"), "qty": r.get("quantityOnHand"),
                           "value": r.get("inventoryValue"), "avgDailySalesQty": r.get("avgDailySalesQty"),
+                          "daysSinceLastSale": r.get("daysSinceLastSale"),
                           "daysOfCover": r.get("daysOfCover"), "daysToExpiry": r.get("daysToExpiry"),
                           "expiry": r.get("expirationDate"), "riskScore": r.get("riskScore"), "reason": r.get("riskReason")}
-                         for r in rows[:40]]}
+                         for r in rows[:20 if args.get("sort") == "ban_cham" else 40]]}
     if name == "replenishment_suggestions":
         rows = gw.doc("replenishmentSuggestions", [], top=5000)
         # Model hay dien kho trung tam vao location (16/09/2026: "W0003 khong co de xuat nao"); de xuat la cua CUA HANG nen
@@ -243,6 +275,16 @@ def run_tool(asst: Any, user: dict[str, Any], name: str, args: dict[str, Any]) -
         return {"itemNo": args["item_no"], "location": args.get("location") or "ALL", "asOf": cutoff,
                 "totalQty": qty, "daysWithSales": n, "avgPerSellingDay": round(qty / n, 2),
                 "avgPerCalendarDay": round(qty / days, 2)}
+    if name == "promotions":
+        from .skills import khuyen_mai
+        tt = {args["status"]} if args.get("status") else {"dang_chay", "sap_toi"}
+        ds = [c for c in khuyen_mai.tong_hop(khuyen_mai.doc(gw)) if c["trang_thai"] in tt and (c["dang_ban"] or c["trang_thai"] == "da_ket_thuc")
+              and (not args.get("item_no") or any(h["no"] == args["item_no"] for h in c["hang"]) or c["tat_ca"])
+              and (not args.get("location") or args["location"] in c["cua_hang"])]
+        return {"ngay_chot": gw.today().isoformat(), "so_ctkm": len(ds), "ctkm": [
+            {**{k: c[k] for k in ("no", "ten", "loai", "trang_thai", "tu", "den", "gio", "muc", "nhom_gia", "cua_hang", "hang",
+                                  "nhom", "tat_ca", "su_kien")},
+             "chua_co_nhu_cau_ls": [{"item_no": i, "location": l} for i, l in c["thieu"]]} for c in ds[:50]]}
     if name == "lot_info":
         rows = gw.client.query("inventoryHealthLines", [("lotNo", "eq", args["lot_no"])], top=200)
         return [{"itemNo": r["itemNo"], "description": r.get("itemDescription"), "location": r["locationCode"],

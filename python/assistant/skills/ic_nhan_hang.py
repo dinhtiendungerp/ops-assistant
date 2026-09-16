@@ -210,6 +210,41 @@ def _the_de_xuat(asst: Any, d: dict[str, Any], prop: dict[str, Any], ly_do: str,
 
 
 # ---------------------------------------------------------------- vong quet
+def don_trong_ngay(asst: Any) -> set[str]:
+    return {d["purchaseOrder"] for d in thu_thap(asst)["trong_ngay"]}
+
+
+def bao_xuat_moi(asst: Any, bo_qua: set[str] | None = None) -> list[Delivery]:
+    """Lich nen moi phut (16/09/2026, Dung hoi "ben Marou bam post thi agent tu thong bao, co so nao de biet"): doc phieu
+    giao hang ben Marou qua NWVAgentICService.ShipmentStatus (Sales Shipment Header co External Document No. = so don mua),
+    don nao xuat TRONG NGAY ma chua tung bao (kv `ic_bao_xuat:<don>`) thi bao cua hang va Supply Chain qua chat va email.
+    Chi bao, khong ghi de xuat. Ban dau lay moc luc may chu len; bo vi may chu tu khoi dong lai (--reload) dung luc don vua
+    post thi don do roi vao moc va khong bao gio duoc bao."""
+    nhom = thu_thap(asst)
+    moi = [d for d in nhom["trong_ngay"] if not _kv(asst, f"ic_bao_xuat:{d['purchaseOrder']}")
+           and d["purchaseOrder"] not in (bo_qua or set())]
+    if not moi:
+        return []
+    return _bao_xuat(asst, moi, asst.mem.now().astimezone().strftime("%Y-%m-%d"))
+
+
+def _bao_xuat(asst: Any, moi: list[dict[str, Any]], ngay: str) -> list[Delivery]:
+    from .. import thu_dien_tu as td
+    out: list[Delivery] = []
+    for d in moi:
+        the = _the_bao_xuat(d)
+        cau = (f"{d.get('vendorName') or 'Marou'} vừa post xuất kho đơn {d['purchaseOrder']}, giao đến "
+               f"{_ten_diem(d.get('locationCode', ''))}. Chuẩn bị nhận hàng; hàng tới thì post Receive trên đơn mua.")
+        for u in _nguoi_nhan(asst, d):
+            out.append(Delivery(u, cau, the, SKILL, the.ref))
+        _dat_kv(asst, f"ic_bao_xuat:{d['purchaseOrder']}", ngay)
+    kq = _thu_bao_xuat(asst, moi, ngay)
+    for u in {x["user_id"] for vai in VAI_TRO_CHU_VIEC for x in asst.mem.users_by_role(vai)}:
+        out.append(Delivery(u, f"Tôi đã gửi email báo xuất kho cho {len(moi)} đơn "
+                               f"({td.TEN_TRANG_THAI.get(kq['trang_thai'], kq['trang_thai'])}).", skill=SKILL, ref="ic-xuat-mail"))
+    return out
+
+
 def quet(asst: Any, nguoi: dict[str, Any] | None = None, bat_buoc: bool = False) -> list[Delivery]:
     """Mot vong. `nguoi` la ai kich hoat (None la lich chay nen); `bat_buoc` bo qua chong lap trong ngay."""
     from .. import thu_dien_tu as td
@@ -219,18 +254,8 @@ def quet(asst: Any, nguoi: dict[str, Any] | None = None, bat_buoc: bool = False)
 
     # 1. Doi tac xuat kho trong ngay: bao ngay, mot lan mot don.
     moi = [d for d in nhom["trong_ngay"] if not _kv(asst, f"ic_bao_xuat:{d['purchaseOrder']}") or bat_buoc]
-    for d in moi:
-        the = _the_bao_xuat(d)
-        cau = (f"{d.get('vendorName') or 'Marou'} vừa post xuất kho đơn {d['purchaseOrder']}, giao đến "
-               f"{_ten_diem(d.get('locationCode', ''))}. Chuẩn bị nhận hàng; hàng tới thì post Receive trên đơn mua.")
-        for u in _nguoi_nhan(asst, d):
-            out.append(Delivery(u, cau, the, SKILL, the.ref))
-        _dat_kv(asst, f"ic_bao_xuat:{d['purchaseOrder']}", ngay)
     if moi:
-        kq = _thu_bao_xuat(asst, moi, ngay)
-        for u in {x["user_id"] for vai in VAI_TRO_CHU_VIEC for x in asst.mem.users_by_role(vai)}:
-            out.append(Delivery(u, f"Tôi đã gửi email báo xuất kho cho {len(moi)} đơn "
-                                   f"({td.TEN_TRANG_THAI.get(kq['trang_thai'], kq['trang_thai'])}).", skill=SKILL, ref="ic-xuat-mail"))
+        out += _bao_xuat(asst, moi, ngay)
 
     # 2. Qua ngay hom sau van chua post nhan: nhac lai va de xuat cho tro ly post.
     for d in nhom["qua_ngay"]:
@@ -238,7 +263,8 @@ def quet(asst: Any, nguoi: dict[str, Any] | None = None, bat_buoc: bool = False)
         if _kv(asst, f"ic_nhac_nhan:{po}") == ngay and not bat_buoc:
             continue
         _dat_kv(asst, f"ic_nhac_nhan:{po}", ngay)
-        cau = (f"Đơn {po} đã được {d.get('vendorName') or 'Marou'} xuất kho từ {d['ngay_xuat']} ({d['so_ngay']} ngày), "
+        ngay_xuat = d["ngay_xuat"].strftime("%d/%m/%Y") if d.get("ngay_xuat") else ""
+        cau = (f"Đơn {po} đã được {d.get('vendorName') or 'Marou'} xuất kho từ {ngay_xuat} ({d['so_ngay']} ngày), "
                f"nhưng đơn mua tại {_ten_diem(d.get('locationCode', ''))} vẫn còn {fmt_qty(float(d.get('outstanding') or 0))} "
                f"chưa post nhận. Tồn trên hệ thống đang thấp hơn hàng thực có.")
         for u in _nguoi_nhan(asst, d):

@@ -114,7 +114,9 @@ def on_propose(asst, user, line_id: str, action_type: str, to_loc: str = "", qua
     asst.mem.save_proposal(prop)
     out = [Delivery(user["user_id"], f"Đã ghi đề xuất {action_type} cho {r['itemDescription']} tại {r['locationCode']} vào BC (Proposed). "
                                      f"Tôi đã báo người duyệt ngay trong chat của họ.", skill=SKILL, ref=ref)]
-    return out + _bao_nguoi_duyet(asst, user, prop, r, decision)
+    # Chat cho nguoi dang mo tro ly, email cho nguoi khong mo (Dung hoi toi 16/09/2026). Phan loi cua thu do AI soan.
+    from . import thu_de_xuat
+    return out + _bao_nguoi_duyet(asst, user, prop, r, decision) + thu_de_xuat.gui(asst, user, prop, r, decision)
 
 
 def _bao_nguoi_duyet(asst, user, prop, r, decision) -> list[Delivery]:

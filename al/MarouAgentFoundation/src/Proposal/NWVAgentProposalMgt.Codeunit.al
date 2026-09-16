@@ -201,8 +201,11 @@ codeunit 70102 "NWV Agent Proposal Mgt."
         TransferHeader.Insert(true);
         TransferHeader.Validate("Transfer-from Code", Proposal."From Location Code");
         TransferHeader.Validate("Transfer-to Code", Proposal."To Location Code");
-        // In-Transit Code: BC tu dien tu Transfer Route (from/to). Neu Marou chua setup Transfer Route
-        // thi nguoi kho dien tay truoc khi release; POC khong bia gia tri.
+        // In-Transit Code: BC tu dien tu Transfer Route (from/to). Khong co tuyen thi TransferLine.OnInsert bao
+        // "In-Transit Code must have a value" va ca lan duyet that bai (QA dem 16/09/2026 tren NWV-MAROU, S0010 -> S0001).
+        // Khong bia kho trung chuyen: dung Direct Transfer (field 70), BC kiem In-Transit Code chi khi khong phai chuyen thang.
+        if TransferHeader."In-Transit Code" = '' then
+            TransferHeader.Validate("Direct Transfer", true);
         TransferHeader.Validate("Posting Date", Today());
         // Entry No. chu khong phai Proposal Id. Proposal Id la GUID 38 ky tu, ma External Document No. chi co 35, nen no ra
         // 'AGENT {EAB7F98D-D8B3-4F2D-8248-6F36': khong doc duoc, khong tra nguoc ve de xuat duoc, va khong chac duy nhat.

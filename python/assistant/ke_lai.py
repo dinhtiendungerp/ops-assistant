@@ -19,6 +19,9 @@ from .skills import uc2_tom_tat as tt
 log = logging.getLogger(__name__)
 
 # Skill nao thi ke lai. Cac skill AI san (brief, D3, D4, planner...) da co "Nguoi soan" trong the nen bo qua theo fact.
+# "Lo nao sap het han?" tra 1 the tong cong 5 the lo; ke lai ca 6 la 6 lan goi model noi tiep, 18 giay, Dung tuong treo
+# (23:45 16/09/2026). Chi the dau (the tong) can loi AI; the lo giu cau rule.
+TOI_DA_MOI_CAU = 1
 SKILL_KE_LAI = {"du_bao", "ls_giai_thich", "khuyen_mai", "po_qua_han", "nha_cung_cap", "truy_xuat", "tracking",
                 "inventory_health", "replenishment", "ic_nhan_hang"}
 
@@ -40,6 +43,7 @@ def ke_lai(asst: Any, user: dict[str, Any], cau_hoi: str, out: list[Delivery]) -
     """Ke lai cac the du lieu gui cho CHINH nguoi hoi. Tra ve cung danh sach, da sua tai cho."""
     if not getattr(asst, "ai_live", False) or not getattr(asst, "_writer", None):
         return out
+    da_goi = 0                                # chi goi model cho MOT the moi cau tra loi
     for d in out:
         if d.user_id != user.get("user_id") or not d.card or d.skill not in SKILL_KE_LAI:
             continue
@@ -54,6 +58,13 @@ def ke_lai(asst: Any, user: dict[str, Any], cau_hoi: str, out: list[Delivery]) -
                 d.meta["cau_rule"] = d.text
                 d.text = doan
             continue
+        if da_goi >= TOI_DA_MOI_CAU:
+            continue
+        if getattr(d.card, "actions", None):
+            # The co nut (the lo "Lo nao sap het han", the de xuat) la the thao tac, cau cua no la ten mat hang. QA dem 16/09:
+            # AI ke lai the Choco pillar thanh "Lo chocolate S0010 ... days of cover la 43.1", lac giong va che ten mat hang.
+            continue
+        da_goi += 1
         the = d.card.to_dict()
         the.pop("actions", None)
         the.pop("links", None)

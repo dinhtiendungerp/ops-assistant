@@ -230,6 +230,9 @@ class Assistant:
             out = nhac_post.handle(self, user, text)
         elif intent.intent == "EXPIRY":
             out = inventory_health.het_han(self, user, intent, text)
+        elif intent.intent == "D4":
+            from .skills import uc2_hanh_dong
+            out = uc2_hanh_dong.tu_cau(self, user, intent, text)
         elif intent.intent == "ANOMALY":
             from .skills import uc2_bat_thuong
             out = uc2_bat_thuong.handle(self, user, intent, text)

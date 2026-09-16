@@ -294,6 +294,41 @@ codeunit 70256 "NWV Demo Repost"
     end;
 
     /// <summary>
+    /// Xoa Transfer Order do agent tao (External Document No. 'AGENT *') chua xuat, o company NWV-* bat ky. Khong dung de xuat.
+    /// Vi sao (dem 16/09/2026): QA kich ban demo tren NWV-MAROU tao HO1039; CleanupAgentTests chi chay o company NWV.
+    /// </summary>
+    procedure DeleteAgentTransferOrders(confirmText: Text): Text
+    var
+        TransferHeader: Record "Transfer Header";
+        TransferLine: Record "Transfer Line";
+        Result: JsonObject;
+        Deleted: JsonArray;
+        Skipped: JsonArray;
+        Output: Text;
+    begin
+        if confirmText <> CleanupTok then
+            Error(WrongConfirmErr, CleanupTok);
+        if CopyStr(CompanyName(), 1, 3) <> 'NWV' then
+            Error(CompanyErr, CompanyName());
+        TransferHeader.SetFilter("External Document No.", 'AGENT *');
+        if TransferHeader.FindSet() then
+            repeat
+                TransferLine.SetRange("Document No.", TransferHeader."No.");
+                TransferLine.SetFilter("Quantity Shipped", '<>0');
+                if TransferLine.IsEmpty() then begin
+                    Deleted.Add(TransferHeader."No.");
+                    TransferHeader.Delete(true);
+                end else
+                    Skipped.Add(TransferHeader."No.");
+            until TransferHeader.Next() = 0;
+        Result.Add('company', CompanyName());
+        Result.Add('transferOrdersDeleted', Deleted);
+        Result.Add('transferOrdersShippedKept', Skipped);
+        Result.WriteTo(Output);
+        exit(Output);
+    end;
+
+    /// <summary>
     /// Xoa de xuat cua agent theo loai (vi du 'Transfer'), o company NWV-* bat ky. Dung 15/09/2026: NWV-DAKAO sao chep
     /// tu NWV mang theo 22 de xuat chuyen hang tu W0003, khong con dung khi Dakao mua thang tu Marou. Xoa hang loat, khong
     /// dong Transfer Order nao (de xuat da Executed thi TO da co nguoi xu ly). actionType rong la xoa het.

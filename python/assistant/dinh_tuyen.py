@@ -22,7 +22,7 @@ from typing import Any
 log = logging.getLogger(__name__)
 
 # Intent chi tra loi dung khi biet mat hang nao. Khong tra duoc ma thi phai hoi model.
-CAN_MAT_HANG = ("STOCKOUT", "STOCK_QUERY", "INVESTIGATE", "DAMAGE", "REPLEN_WHY")
+CAN_MAT_HANG = ("STOCKOUT", "STOCK_QUERY", "INVESTIGATE", "DAMAGE", "REPLEN_WHY", "D4")
 # Intent doc thang tu bang, khong bao gio can model.
 # NHAC_POST va IC_SHIP: skill tu doc don mua va phieu giao hang roi tu soan, model khong tham gia viec chon.
 # Thieu hai cai nay trong danh sach thi rule bi coi la khong chac, cau di sang model va model phan loai nham:

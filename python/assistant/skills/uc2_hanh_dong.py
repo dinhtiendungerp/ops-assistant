@@ -14,6 +14,7 @@ Muc giam gia chua co quy tac cua Marou (G3, cho khao sat) nen de xuat giam gia c
 from __future__ import annotations
 
 import json
+import re
 import logging
 import math
 from typing import Any
@@ -102,7 +103,10 @@ _SYSTEM = (
     "được Business Central và trợ lý tính sẵn; bạn KHÔNG tính lại, không suy ra con số mới, chỉ dùng đúng số trong dữ liệu. "
     "Chọn một phương án (ghi đúng khóa trong phuong_an) và viết vi_sao 2-4 câu tiếng Việt, xưng 'tôi': so sánh với phương án gần "
     "nhất bằng số (giá trị cứu được, phần dư, nơi nhận và tốc độ bán của họ), nêu điều kiện phải đúng (ngày vận chuyển, nơi nhận "
-    "bán hết tồn của họ trước). Có thể chọn khác de_xuat_cua_code nếu nói được lý do trên số đã có. Không chào hỏi, không gạch đầu dòng.")
+    "bán hết tồn của họ trước). Có thể chọn khác de_xuat_cua_code nếu nói được lý do trên số đã có. Ưu tiên phương án để lại phần "
+    "dư ít nhất và cứu được nhiều giá trị nhất. Giá trị là số trong dữ liệu, KHÔNG thêm đơn vị tiền (đồng, nghìn, triệu). "
+    "Không chào hỏi, không gạch đầu dòng.")
+_DON_VI_TIEN = re.compile(r"(đồng|nghìn|ngàn|triệu|VND|VNĐ|USD|\$)", re.I)
 
 
 def goi_y(asst: Any, line_id: str) -> dict[str, Any]:
@@ -130,6 +134,12 @@ def goi_y(asst: Any, line_id: str) -> dict[str, Any]:
             nguoi_soan, chon = "mẫu có sẵn (đoạn model viết có số không có trong dữ liệu: " + ", ".join(sorted(la)) + ")", ""
         elif not vi_sao:
             nguoi_soan, chon = "mẫu có sẵn (model trả về rỗng)", ""
+        elif _DON_VI_TIEN.search(vi_sao):
+            nguoi_soan, chon = "mẫu có sẵn (model tự thêm đơn vị tiền không có trong dữ liệu)", ""
+        elif chon == "giu" and pt["de_xuat_cua_code"] != "giu" and str(pt["phuong_an"]["giu"].get("du_den_han", "0")) not in ("0", "0,0"):
+            # QA dem 16/09: model chon "giu" cho Choco pillar S0010 du giu thi con du 187, chuyen thi du 0. Giu ma con du la
+            # trai voi chinh bang so; khong dua ra man hinh.
+            nguoi_soan, chon = "mẫu có sẵn (model chọn giữ trong khi giữ vẫn còn dư, trái với bảng số)", ""
     if not chon:
         chon, vi_sao = pt["de_xuat_cua_code"], _vi_sao_mau(pt)
     kq = {"chon": chon, "vi_sao": vi_sao, "nguoi_soan": nguoi_soan}
@@ -201,6 +211,32 @@ def on_goi_y(asst: Any, user: dict[str, Any], line_id: str) -> list[Delivery]:
         return [Delivery(user["user_id"], "Lô này đã hết hạn, không còn phương án bán hay chuyển. Dùng Đề xuất hủy.", skill=SKILL)]
     kq = goi_y(asst, line_id)
     return [Delivery(user["user_id"], f"Phương án cho {r['itemDescription']} tại {r['locationCode']}", the_phuong_an(kq), SKILL, line_id)]
+
+
+def tu_cau(asst: Any, user: dict[str, Any], intent: Any, text: str) -> list[Delivery]:
+    """"Phuong an xu ly cho Choco pillar o S0010": tim lo can date cua mat hang (va dia diem neu nhac) roi chay D4.
+    Nhieu lo thi lay lo gia tri lon nhat va noi ro con lo nao. Khong tim ra mat hang thi tra unresolved de planner lo."""
+    uid = user["user_id"]
+    chu = (getattr(intent, "item_text", "") or "").strip()
+    item = asst.gw.find_item(chu, min_score=70) if chu else None
+    if not item:
+        return [Delivery(uid, 'Bạn muốn phương án cho mặt hàng nào? Ví dụ: "phương án xử lý cho Choco pillar ở S0010".',
+                         skill=SKILL, meta={"unresolved": True})]
+    noi = getattr(intent, "store_hint", "") or asst._tim_cua_hang(text) or ""
+    if not noi and user.get("store_code"):
+        noi = user["store_code"]
+    rows = [r for r in asst.gw.doc("inventoryHealthLines", [], top=5000)
+            if r.get("itemNo") == item["itemNo"] and r.get("tier") == "NearExpiry" and (not noi or r.get("locationCode") == noi)]
+    if not rows:
+        pham_vi = f" tại {noi}" if noi else ""
+        return [Delivery(uid, f"{item['description']}{pham_vi} không có lô nào cận date trong bảng Inventory Health, nên chưa có gì để chọn phương án.",
+                         skill=SKILL)]
+    rows.sort(key=lambda r: -float(r.get("inventoryValue") or 0))
+    out = on_goi_y(asst, user, rows[0]["id"])
+    if len(rows) > 1:
+        khac = ", ".join(f"{r.get('lotNo') or 'không mã'} tại {r['locationCode']}" for r in rows[1:4])
+        out.append(Delivery(uid, f"{item['description']} còn {len(rows) - 1} lô cận date khác ({khac}); mỗi lô bấm Phương án xử lý trên thẻ của nó.", skill=SKILL))
+    return out
 
 
 def on_ap_dung(asst: Any, user: dict[str, Any], line_id: str, chon: str) -> list[Delivery]:

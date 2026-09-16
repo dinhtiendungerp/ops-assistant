@@ -333,11 +333,26 @@ def so_sai_dia_diem(tra_loi: str, buoc: list[dict[str, Any]]) -> list[str]:
         ma_hang_chuoi |= {str(v) for v in _chuoi(s.get("result")) if re.fullmatch(r"\d{4,7}", str(v))}
     canh_bao: list[str] = []
     for dong in tra_loi.splitlines():
-        for m in _SO.finditer(dong):
-            truoc = _MA_DD.findall(dong[:m.start()])
-            if not truoc:
+        # Nhom ma dia diem: cac ma viet lien nhau khong co con so xen giua ("S0001, S0002, S0013 va W0003, ton 4, 1, 9, 35")
+        # la mot danh sach; so theo sau thuoc MOT trong cac ma do. QA dem 16/09: bo kiem chi lay ma gan nhat (W0003) nen
+        # bao "4 so khong khop" cho cau dung. Viet xen kiem tung ma ("S0001 ton 4, S0002 ton 1") van kiem theo ma gan nhat.
+        moc = sorted([(x.start(), "ma", x.group(0)) for x in _MA_DD.finditer(dong)]
+                     + [(x.start(), "so", x) for x in _SO.finditer(dong)
+                        if not any(y.start() <= x.start() < y.end() for y in _MA_DD.finditer(dong))], key=lambda t: t[0])
+        nhom: list[str] = []
+        truoc_la_ma = False
+        cac_so = []
+        for _, loai, gt in moc:
+            if loai == "ma":
+                nhom = (nhom + [gt]) if truoc_la_ma else [gt]
+                truoc_la_ma = True
+            else:
+                truoc_la_ma = False
+                cac_so.append((gt, list(nhom)))
+        for m, nhom_so in cac_so:
+            if not nhom_so:
                 continue
-            ma = truoc[-1]
+            ma = nhom_so[-1]
             if m.group(1) in ma_hang_chuoi:
                 continue
             # Ngay thang (2026-09-17, 17/09/2026) khong phai con so can doi chieu; "2026" tung bi bao "khong co trong du lieu".
@@ -347,10 +362,10 @@ def so_sai_dia_diem(tra_loi: str, buoc: list[dict[str, Any]]) -> list[str]:
             if le == 0 and gia_tri in hang_so:
                 continue
             bang = [(p, mb) for p, v, mb in o if _bang(v, gia_tri, le)]
-            dung = [p for p, mb in bang if f"={ma}" in p or (not _MA_DD.search(p) and ma in mb)]
+            dung = [p for p, mb in bang for mx in nhom_so if f"={mx}" in p or (not _MA_DD.search(p) and mx in mb)]
             if not dung:
                 # Duong dan theo ma hang (khong co ma dia diem) nhung dong do thuoc dung dia diem duoc nhac.
-                dung = [p for p, mb in bang if ma in mb and not any(m != ma for m in _MA_DD.findall(p))]
+                dung = [p for p, mb in bang for mx in nhom_so if mx in mb and not any(k != mx for k in _MA_DD.findall(p))]
             if not dung:
                 ly_do = "không có trong dữ liệu đã tra" if not bang else f"dữ liệu đã tra của {ma} không có số này"
                 canh_bao.append(f"“{m.group(1)}” ở dòng “{dong.strip()[:90]}”: {ly_do}")

@@ -225,13 +225,50 @@ def _tt_cham_cua(ten: str, dong_bo: bool = False) -> dict[str, Any] | None:
     return c
 
 
+_giu_am_dang_chay = False
+
+
+def _doc_truoc(ten: str) -> None:
+    """Doc truoc cac bang nang ma cau hoi demo can (CTKM, suc khoe ton kho, de xuat LS, lich su ban, du bao, ILE 28 ngay)."""
+    from ..skills import khuyen_mai
+    a = _tro_ly_cua(ten)
+    if a.gw.is_mock:
+        return
+    cong_ty_mod.hien_tai.set(ten)
+    for viec in (lambda: a.gw.doc("inventoryHealthLines", [], top=5000), lambda: a.gw.doc("replenishmentSuggestions", [], top=5000),
+                 lambda: khuyen_mai.doc(a.gw), lambda: a.gw.doc("forecastAccuracies", [], top=5000),
+                 lambda: a.gw.ile_cua_so(28), lambda: a.gw.de_xuat_dang_co()):
+        try:
+            viec()
+        except Exception as exc:
+            log.warning("Doc truoc %s hong: %s", ten, exc)
+
+
 def _lam_nong() -> None:
-    """Dung san tro ly va ban chup cho moi company ngay khi may chu len, de cu bam dau tien khong phai doi BC."""
+    """Dung san tro ly va ban chup cho moi company ngay khi may chu len, de cu bam dau tien khong phai doi BC. Sau do giu am cac
+    bang nang: doc lai moi 12 phut (ban nho cua chung song 15 phut), de cau hoi trong buoi demo khong gap lan doc nguoi."""
+    import time
     for ten in cac_cong_ty():
         try:
             _lam_moi_tt_cham(ten)
         except Exception as exc:
             log.warning("Lam nong %s hong: %s", ten, exc)
+    global _giu_am_dang_chay
+    if _giu_am_dang_chay:               # Reset cung goi ham nay; chi mot vong giu am
+        for ten in cac_cong_ty():
+            try:
+                _doc_truoc(ten)
+            except Exception as exc:
+                log.warning("Giu am %s hong: %s", ten, exc)
+        return
+    _giu_am_dang_chay = True
+    while True:
+        for ten in cac_cong_ty():
+            try:
+                _doc_truoc(ten)
+            except Exception as exc:
+                log.warning("Giu am %s hong: %s", ten, exc)
+        time.sleep(720)
 
 
 def bc_status() -> dict[str, Any]:
@@ -350,7 +387,8 @@ def demo_marou_xuat_kho(x: ICIn):
     a = asst(x.user or None)
     # Khong truyen so don thi lay don dau tien doi tac chua xuat kho, de nguoi demo khong phai nho so don.
     doc_no, doi_tac = x.doc_no, ""
-    for d in a.gw.ic_giao_hang(ic_nhan_hang.NHA_CUNG_CAP_IC):
+    # Don MOI NHAT truoc: buoc 15 phai xuat dung don Ice cream vua gui o buoc 8, khong phai don du phong tao tu truoc.
+    for d in sorted(a.gw.ic_giao_hang(ic_nhan_hang.NHA_CUNG_CAP_IC), key=lambda d: d.get("purchaseOrder") or "", reverse=True):
         if doc_no and d["purchaseOrder"] != doc_no:
             continue
         if not doc_no and ((d.get("shipment") or {}).get("posted") or float(d.get("outstanding") or 0) <= 0):
@@ -358,7 +396,8 @@ def demo_marou_xuat_kho(x: ICIn):
         doc_no, doi_tac = d["purchaseOrder"], d.get("partnerCompany") or ""
         break
     if not doc_no:
-        raise HTTPException(status_code=400, detail="Không còn đơn mua liên công ty nào đang chờ bên bán xuất kho.")
+        raise HTTPException(status_code=400, detail="Không còn đơn mua liên công ty nào đang chờ bên bán xuất kho. "
+                            "Kiểm lại bước 8: Hùng (Dakao) duyệt đặt mua rồi bấm Gửi đơn sang Marou trên thẻ Đã tạo Purchase Order.")
     x.doc_no = doc_no
     try:
         # Ngay post lay theo dong ho tro ly (co nut +24 gio), de buoc "bao trong ngay" chay duoc vao bat ky ngay demo nao.
@@ -367,7 +406,8 @@ def demo_marou_xuat_kho(x: ICIn):
         raise HTTPException(status_code=400, detail=str(e)) from e
     a.gw.quen_nho()
     u = a.mem.user(x.user) if x.user else None
-    out = a._deliver(ic_nhan_hang.quet(a, u, bat_buoc=True))
+    # Khong bat_buoc: chi bao don vua xuat. QA dem 16/09: bat_buoc gui lai ca HO106202 da bao o buoc truoc ("email cho 2 don").
+    out = a._deliver(ic_nhan_hang.quet(a, u, bat_buoc=False))
     return {"ket_qua": kq, "delivered": [d.user_id for d in out]}
 
 
@@ -430,12 +470,42 @@ def _chay_lich_nhac() -> None:
         time.sleep(60)
 
 
+IC_QUET_GIAY = 60
+
+
+def _quet_xuat_kho_nen() -> None:
+    """Moi phut doc phieu giao hang ben doi tac; don nao moi xuat thi bao ngay (chat + email). Khong bi khoa "tam_dung",
+    vi viec nay chi bao, khong ghi gi vao BC. Don da bao roi (kv) thi khong bao lai."""
+    import time
+    from ..skills import ic_nhan_hang
+    # Moc theo tien trinh: don da xuat truoc lan quet dau khong bao tu dong (nut Kiem hang van bao duoc). Khong co moc thi
+    # sau Reset buoi sang (bo nho sach), lich nen bao lai don xuat tu toi hom truoc truoc khi nguoi demo bam Kiem hang.
+    moc: dict[str, set[str]] = {}
+    while True:
+        for ten in cac_cong_ty():
+            try:
+                a = _tro_ly_cua(ten)
+                if a.gw.is_mock:
+                    continue
+                cong_ty_mod.hien_tai.set(ten)
+                if ten not in moc:
+                    moc[ten] = ic_nhan_hang.don_trong_ngay(a)
+                    continue
+                out = a._deliver(ic_nhan_hang.bao_xuat_moi(a, bo_qua=moc[ten]))
+                if out:
+                    log.info("Quet xuat kho %s: %d tin", ten, len(out))
+            except Exception as exc:
+                log.warning("Quet xuat kho %s hong: %s", ten, exc)
+        time.sleep(IC_QUET_GIAY)
+
+
 @app.on_event("startup")
 def _bat_lich_nhac() -> None:
     import sys
     if "pytest" in sys.modules:
         return
     threading.Thread(target=_lam_nong, name="lam-nong", daemon=True).start()
+    threading.Thread(target=_quet_xuat_kho_nen, name="quet-xuat-kho", daemon=True).start()
     if not any(gio for _, gio, _ in _cac_lich()):
         return
     threading.Thread(target=_chay_lich_nhac, name="lich-chay-nen", daemon=True).start()

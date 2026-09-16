@@ -108,16 +108,6 @@ def _tools() -> list[dict[str, Any]]:
             "lot_no": {"type": "string", "description": "Vd L260908-33170B."}}, "required": ["lot_no"]},
     })
     ra.append({
-        "name": "promotions",
-        "description": "Chuong trinh khuyen mai cua LS (Periodic Discount): dang chay, sap toi, chua bat, da ket thuc; mat hang, "
-                       "muc giam, ngay gio, cua hang ap dung theo nhom gia; va cap mat hang x cua hang chua co Planned Sales "
-                       "Demand trong thoi gian chuong trinh (LS Replenishment chua cong nhu cau). Chi doc.",
-        "inputSchema": {"type": "object", "properties": {
-            "status": {"type": "string", "enum": ["dang_chay", "sap_toi", "chua_bat", "da_ket_thuc"],
-                       "description": "Bo trong la dang chay va sap toi."},
-            "item_no": {"type": "string"}, "location": {"type": "string"}}, "required": []},
-    })
-    ra.append({
         "name": "create_proposal",
         "description": "Ghi MOT de xuat vao BC (bang NWV Agent Proposal), trang thai Proposed. KHONG tao chung tu. "
                        "Policy cua Marou quyet dinh tu lam hay dua nguoi duyet; nguoi duyet nhan the ngay trong hoi thoai. "
@@ -224,16 +214,6 @@ def goi_tool(asst: Any, user: dict[str, Any], ten: str, args: dict[str, Any]) ->
             from .skills import truy_xuat
             rows = asst.gw.ile_theo_lo(args["lot_no"])
             return _ket_qua(truy_xuat.hanh_trinh(rows) if rows else {"loi": f"Khong co dong nao cua lo {args['lot_no']}."})
-        if ten == "promotions":
-            from .skills import khuyen_mai
-            tt = {args["status"]} if args.get("status") else {"dang_chay", "sap_toi"}
-            ds = [c for c in khuyen_mai.tong_hop(khuyen_mai.doc(asst.gw)) if c["trang_thai"] in tt and (c["dang_ban"] or c["trang_thai"] == "da_ket_thuc")
-                  and (not args.get("item_no") or any(h["no"] == args["item_no"] for h in c["hang"]) or c["tat_ca"])
-                  and (not args.get("location") or args["location"] in c["cua_hang"])]
-            return _ket_qua({"ngay_chot": asst.gw.today().isoformat(), "so_ctkm": len(ds), "ctkm": [
-                {**{k: c[k] for k in ("no", "ten", "loai", "trang_thai", "tu", "den", "gio", "muc", "nhom_gia", "cua_hang", "hang",
-                                      "nhom", "tat_ca", "su_kien")},
-                 "chua_co_nhu_cau_ls": [{"item_no": i, "location": l} for i, l in c["thieu"]]} for c in ds[:50]]})
         if ten == "create_proposal":
             return _tao_de_xuat(asst, user, args)
         if ten not in {t["name"] for t in toolbox.TOOLS}:

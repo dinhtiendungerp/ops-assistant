@@ -14,6 +14,7 @@ Intent:
   REPLEN_WHY    "vi sao LS de xuat 82 Choco nuts o S0001" -> doc journal va nhat ky tinh cua LS
   PO_OVERDUE    "PO nao qua han / don mua chua nhan / hang mua chua ve" -> UC3, doc dong don mua, khong goi model
   EXPIRY        "lo nao het han / sap het han / can date"  -> doc bang Inventory Health, khong goi model
+  D4            "phuong an xu ly cho Choco pillar o S0010"  -> uc2_hanh_dong: code tinh phuong an, model chon
   FORECAST      "do chinh xac du bao / du bao X sai bao nhieu"  -> UC1, doc forecastAccuracies
   SUPPLIER      "nha cung cap nao hay giao tre / scorecard"     -> UC3, doc supplierScorecards
   TRACE         "truy xuat lo L260908-33170B"                    -> UC2, doc Item Ledger Entry cua lo
@@ -37,7 +38,7 @@ log = logging.getLogger(__name__)
 INTENT_SCHEMA = {
     "type": "object",
     "properties": {
-        "intent": {"type": "string", "enum": ["STOCKOUT", "STOCK_QUERY", "DAMAGE", "ANSWER", "BRIEF", "TRACKING", "PO_OVERDUE", "NHAC_POST", "EXPIRY", "FORECAST", "SUPPLIER", "TRACE", "PROMO", "IC_SHIP", "REPLEN_WHY", "ANOMALY", "WASTE_WHY", "WASTE_REPORT", "INVESTIGATE", "SELF_REVIEW", "PLAN", "HELP"]},
+        "intent": {"type": "string", "enum": ["STOCKOUT", "STOCK_QUERY", "DAMAGE", "ANSWER", "BRIEF", "TRACKING", "PO_OVERDUE", "NHAC_POST", "EXPIRY", "FORECAST", "SUPPLIER", "TRACE", "PROMO", "IC_SHIP", "REPLEN_WHY", "ANOMALY", "WASTE_WHY", "WASTE_REPORT", "D4", "INVESTIGATE", "SELF_REVIEW", "PLAN", "HELP"]},
         "item_text": {"type": "string", "description": "cum chu chi mat hang, rong neu khong co"},
         "quantity": {"type": "number", "description": "so luong nguoi noi, 0 neu khong co"},
         "store_hint": {"type": "string", "description": "ten cua hang neu nguoi noi nhac den, rong neu khong"},
@@ -105,6 +106,9 @@ _DU_BAO = re.compile(r"(dự báo|du bao|forecast|wape|độ chính xác|do chin
 _DU_BAO_BO = re.compile(r"\b(sai|lệch|lech|bao nhiêu|nhiêu|thế nào|the nao|ra sao|nhóm|nhom|mặt hàng|cặp|cap|nào|nao|có|co|"
                         r"của|cua|đúng|dung|không|khong|tốt|tot|hàng|hang)\b", re.I)
 # Chuong trinh khuyen mai cua LS (Periodic Discount). "chiet khau" khong nam day: do la exception chiet khau POS (UC7).
+# "De xuat CTKM de ban hang cham" la xin y kien, can model phan tich tren ton kho va CTKM hien co (planner). QA dem 16/09:
+# cau nay roi vao PROMO va chi liet ke CTKM dang chay.
+_XIN_DE_XUAT = re.compile(r"(đề xuất|de xuat|gợi ý|goi y|nên làm|nen lam|nên chạy|nen chay|để bán|de ban|đẩy bán|day ban)", re.I)
 _KHUYEN_MAI = re.compile(r"(khuyến mãi|khuyen mai|khuyến mại|\bctkm\b|\bkm\b|chương trình giảm giá|chuong trinh giam gia|"
                          r"giảm giá|giam gia|ưu đãi|uu dai|promotion|\bpromo\b|periodic discount|mix ?& ?match|multibuy|"
                          r"đồng giá|dong gia|mua \d+ tặng|mua \d+ tang)", re.I)
@@ -114,6 +118,10 @@ _KHUYEN_MAI_BO = re.compile(r"(khuyến mãi|khuyen mai|khuyến mại|khuyến|
                             r"da ket thuc|vừa qua|vua qua|áp dụng|ap dung|diễn ra|dien ra|\bnào\b|\bnao\b|\bcó\b|\bco\b|\bgì\b|\bgi\b|"
                             r"\bnhững\b|\bnhung\b|\bcác\b|\bcac\b|\bko\b|\bkhông\b|\bchạy\b|\bchay\b|\bđang\b|\bnhé\b|\bnày\b|\bnay\b|"
                             r"\bmón\b|\bmon\b|mặt hàng|mat hang|\bhàng\b|\bhang\b|\bsắp\b|\bsap\b|\bra sao\b|\bthế nào\b)", re.I)
+# "Phuong an xu ly cho X (o S0010)": D4 cho lo can date cua mat hang do. Dung go tay cau nay toi 16/09/2026 va no roi vao
+# planner, tra loi lac de ("khong co de xuat bo sung"). Dat truoc HET_HAN vi cau co the kem "sap het han".
+_PHUONG_AN = re.compile(r"(phương án|phuong an)\s*(xử lý|xu ly)?", re.I)
+_PHUONG_AN_BO = re.compile(r"\b(cho|lô|lo|hàng|hang|cận date|can date|sắp hết hạn|sap het han|ở|o|tại|tai|này|nay)\b", re.I)
 # Lo het han / sap het han. Dat truoc WHY va STOCKOUT: "het" trong "het han" khong phai het hang.
 _HET_HAN = re.compile(r"(hết hạn|het han|quá hạn sử dụng|qua han su dung|quá date|qua date|hết date|het date|cận date|can date|"
                       r"cận hạn|can han|hạn dùng|han dung|hạn sử dụng|han su dung|expired|expiry)", re.I)
@@ -166,7 +174,7 @@ class RuleNLU:
         if _NCC.search(t):
             return Intent("SUPPLIER", item_text, qty, store_hint)
         # Truoc BRIEF: "tong hop CTKM" la hoi khuyen mai. Sau vi sao LS va du bao: hai loai cau do co the nhac khuyen mai.
-        if _KHUYEN_MAI.search(t) and not _REPLEN_WHY.search(t) and not _DU_BAO.search(t):
+        if _KHUYEN_MAI.search(t) and not _REPLEN_WHY.search(t) and not _DU_BAO.search(t) and not _XIN_DE_XUAT.search(t):
             return Intent("PROMO", re.sub(r"\s+", " ", _KHUYEN_MAI_BO.sub(" ", item_text)).strip(" ,.!?"), qty, store_hint)
         # UC2 D3/D2/S3: truoc BRIEF vi "bao cao tuan hang huy" va "tong hop bat thuong" trung tu khoa cua BRIEF.
         # "tong hop nhung de xuat bat thuong" (Dung, 16/09/2026) la phan tich de xuat bo sung cua LS, viec cua planner (nhom
@@ -189,6 +197,8 @@ class RuleNLU:
             return Intent("REPLEN_WHY", _LS_BO.sub(" ", item_text).strip(), qty)
         if _DU_BAO.search(t):
             return Intent("FORECAST", _DU_BAO_BO.sub(" ", _DU_BAO.sub(" ", item_text)).strip(), qty, store_hint)
+        if _PHUONG_AN.search(t):
+            return Intent("D4", _PHUONG_AN_BO.sub(" ", _PHUONG_AN.sub(" ", item_text)).strip(" ,.!?"), qty, store_hint)
         if _HET_HAN.search(t) and not _PO_QUA_HAN.search(t):
             return Intent("EXPIRY", _HET_HAN_BO.sub(" ", _HET_HAN.sub(" ", item_text)).strip(), qty, store_hint)
         if _WHY.search(t):
@@ -248,7 +258,9 @@ class LiveNLU:
                   "TRACKING: hoi tien do de xuat, chung tu cua minh.\n"
                   "PO_OVERDUE: hoi don mua (PO) qua ngay nhan, chua nhan, hang mua chua ve.\n"
                   "NHAC_POST: yeu cau tro ly nhac nguoi post nhan hang, gui mail nhac post chung tu.\n"
+                  "PROMO chi la hoi CTKM nao dang co / sap toi; xin DE XUAT hay GOI Y CTKM moi la PLAN.\n"
                   "EXPIRY: hoi lo hang da het han, sap het han, can date.\n"
+                  "D4: xin phuong an xu ly cho lo can date cua MOT mat hang (giu, chuyen, giam gia, huy), co ten mat hang.\n"
                   "FORECAST: hoi do chinh xac du bao, du bao lech bao nhieu, WAPE.\n"
                   "SUPPLIER: hoi nha cung cap giao dung han hay tre, lead time, scorecard nha cung cap.\n"
                   "PROMO: hoi chuong trinh khuyen mai, giam gia, uu dai cua LS dang chay, sap toi hoac da ket thuc.\n"

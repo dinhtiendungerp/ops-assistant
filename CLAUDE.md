@@ -1881,6 +1881,18 @@ kheo giua UC2 voi UC1, UC5, va dua AI vao vai tro trong yeu. Da lam:
   co ban binh quan la binh thuong)"...) va SYSTEM planner cam in ten truong ky thuat, vi model chep nguyen "flags min_max,
   oos_qua_nua_cua_so" ra cau tra loi.
 
+### Email cho nguoi duyet khi co de xuat moi, AI soan phan loi, 16/09/2026 dem
+
+Dung nhin the "Da ghi de xuat WriteOff ... Toi da bao nguoi duyet ngay trong chat cua ho" va hoi "phan nay co gui qua email
+duoc khong, dung AI soan email". `assistant/skills/thu_de_xuat.py`, goi cuoi `inventory_health.on_propose` (tuc moi de xuat
+tu the lo, tu D4 va tu nut Phuong an xu ly). Cung khuon voi email nhac post va bien ban huy: code dien bang (mat hang, lo, ton,
+gia tri, tang, hanh dong, so luong, nguoi de nghi, policy) va link NWV Agent Proposals; model viet `mo_dau` va `ket`, kiem so
+bang `uc2_tom_tat.so_la`, sai thi mau. Gui den MAIL_TO (nguoi dung demo khong co email rieng), khoa `de_xuat|<company>|<id>`,
+muc chi phi `thu_de_xuat`. Nguoi de nghi nhan the "Email cho nguoi duyet" co hai doan AI viet, kenh, trang thai va nhan nguon.
+Bot quet sang (`tro_ly`) KHONG gui tung cai vi mot luot toi 10 de xuat. Email hong khong lam hong viec ghi de xuat.
+Chay that NWV-MAROU 23:40 16/09: 4,2 giay, AI viet, SMTP da gui. Chua noi vao de xuat dat mua tu `replenishment.handle_stockout`
+(UC5, buoc 6): dong LS co hinh dang khac, lam sau neu can. 3 test `tests/test_thu_de_xuat.py`.
+
 ### Nhan hang lien cong ty (A4), chay tron vong, 16/09/2026
 
 App dang chay tren NWV01: `NWV Marou Agent` **1.7.0.0**, `NWV Marou Demo Setup` **1.8.6.0**. 581 test.

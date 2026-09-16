@@ -57,6 +57,18 @@ Cach lam viec:
 - Liet ke nhieu cua hang hay nhieu mat hang thi MOI dong mot cua hang (hoac mot cap cua hang x mat hang), ma
   cua hang dung truoc cac con so cua no. Khong gop 'S0005 va S0002: 14 va 12' vao mot dong, vi nguoi doc
   va bo kiem so deu khong biet so nao cua cua hang nao.
+- Hoi hang ban cham, hang nen dua ra khu trung bay hay day ban: goi inventory_health sort=ban_cham cho dia diem do, chon
+  vai mat hang ton phu nhieu ngay nhat hoac lau khong ban kem so ngay phu va ban binh quan. Tang SlowMoving rong KHONG co
+  nghia la khong co hang ban cham; khong duoc tra loi 'yen tam'. Goi ten tang bang tieng Viet (can date, ton thua...).
+- De xuat CTKM cho hang cham ban hoac can date: doc inventory_health (sort=ban_cham) va promotions de biet CTKM
+  dang co. Mo dau bang de xuat cho TUNG mat hang cham, mot dong mot mat hang: nen giam gia, combo hay dua ra khu
+  trung bay, o cua hang nao, vi sao (so ngay khong ban, ngay phu, gia tri ton, han dung). Sau do moi nhac ngan CTKM
+  hien co LIEN QUAN toi cac mat hang do; khong liet ke CTKM khong dinh toi mat hang dang hoi. Khong tu bia muc giam
+  phan tram: Marou chua co quy tac, noi ro muc giam do nguoi phu trach chot.
+- Cau tra loi viet tieng Viet CO DAU day du (prompt nay viet khong dau vi ly do ky thuat, cau tra loi thi khong). Khong
+  them don vi tien (dong, nghin, trieu): gia tri trong du lieu la so tro ly doc, don vi do Marou dat.
+- Khong neu con so nao khong co trong ket qua tool, ke ca so ngay cua cua so tinh cua LS (vi du '56 ngay') neu tool
+  khong tra; noi 'het hang qua nua cua so tinh' la du.
 - Khong in ten truong hay ten co ky thuat (flags, onHand, suggestedQty, oos...) ra cau tra loi; noi bang
   tieng Viet cua nguoi van hanh: 'het hang 42 tren 56 ngay', 'ton 8, LS dua len muc toi da 20'.
 - Ket thuc bang cau tra loi tieng Viet ngan gon cho nguoi doc tren dien thoai: phuong an, con so,
@@ -192,6 +204,27 @@ class ReplayPlanner:
                     tokens_note=sc.get("recorded", ""))
 
 
+def _ngu_canh(asst: Any, user: dict[str, Any], text: str) -> str:
+    """Bon tin gan nhat cua doan chat dang mo (khong tinh cau dang hoi), cat ngan.
+
+    Vi sao (Dung, dem 16/09/2026): hoi "mat hang nao cham ban" roi hoi tiep "de xuat CTKM de ban cac mat hang cham luan
+    chuyen nay" thi planner khong biet "nay" la mat hang nao, tra loi chung chung ve CTKM dang chay. Chi dua loi, khong dua
+    bang so: con so van phai doc lai bang tool."""
+    try:
+        rows = asst.mem.inbox(user["user_id"])
+    except Exception:
+        return ""
+    tin = [r for r in rows if (r.get("text") or "").strip()]
+    if tin and tin[-1].get("direction") == "in" and (tin[-1].get("text") or "").strip() == text.strip():
+        tin = tin[:-1]
+    tin = tin[-4:]
+    if not tin:
+        return ""
+    dong = [f"- {'Nguoi hoi' if r.get('direction') == 'in' else 'Tro ly'}: {(r.get('text') or '').strip()[:400]}" for r in tin]
+    return ("\n\nNgu canh cac tin truoc trong doan chat (chi de hieu cau hoi noi tiep; so lieu phai doc lai bang tool):\n"
+            + "\n".join(dong))
+
+
 class LivePlanner:
     source = "live"
 
@@ -205,7 +238,7 @@ class LivePlanner:
         if self.budget is not None and not self.budget.allow():
             return None
         who = f"Nguoi hoi: {user['display_name']}, vai tro {user['role']}, cua hang {user.get('store_code') or 'khong gan cua hang'}. Kho trung tam {asst.gw.central_wh}. Hom nay {asst.gw.today().isoformat()}."
-        msgs: list[dict[str, Any]] = [{"role": "user", "content": f"{who}\n\n{text}"}]
+        msgs: list[dict[str, Any]] = [{"role": "user", "content": f"{who}{_ngu_canh(asst, user, text)}\n\n{text}"}]
         steps: list[Step] = []
         drafts: list[dict[str, Any]] = []
         question = ""

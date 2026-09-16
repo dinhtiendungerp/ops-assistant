@@ -1,5 +1,5 @@
 /**
- * Tai lieu 13, ban 2.0: demo script cho buoi trinh dien ngay 17/09/2026.
+ * Tai lieu 13, ban 2.4: demo script cho buoi trinh dien ngay 17/09/2026.
  * Khac voi speaker note trong slide 12: cho nay la runbook thao tac, ai bam gi, o dau, cho bao lau, khach thay gi, noi cau nao.
  * Ban 2.0 (toi 16/09) di theo MOT cau chuyen: cua hang het hang, LS tinh, AI de xuat, nguoi duyet, don sang Marou, Marou xuat kho,
  * tro ly bao nhan, phieu nhan; xen giua la du bao (UC1) va khuyen mai noi sang LS (UC5). Han dung chi con mot canh.
@@ -122,10 +122,11 @@ function noiDung() {
      "Chọn Choco pillar để đi tiếp: 470 cái mà 26 ngày nữa hết hạn, tại chỗ bán không kịp."]);
   buoc(4, "Phương án xử lý cho Choco pillar", "trang.sc · Marou",
     "Nút 4 chỉ hiện hướng dẫn. Trên thẻ Choco pillar bấm Phương án xử lý.",
-    "Sau khoảng 6 giây: thẻ bảng năm phương án kèm giá trị cứu được hoặc mất, lời khuyên của model (chuyển 199 sang S0001 bán nhanh hơn), nút ghi đề xuất. Bấm nút đó.",
+    "Sau khoảng 6 giây: thẻ bảng năm phương án kèm giá trị cứu được hoặc mất, lời khuyên của model (chuyển 199 sang S0001 bán nhanh hơn), nút ghi đề xuất. Bấm nút đó. Sau khi ghi: thẻ Email cho người duyệt, phần lời do AI viết, kênh SMTP đã gửi.",
     ["Code tính năm phương án: giữ, chuyển, chuyển kèm giảm giá, giảm giá, huỷ. Khả năng nhận của từng cửa hàng bằng bán bình quân nhân ngày còn lại trừ tồn họ đang có.",
      "Model chọn một và nói vì sao. Nó được chọn khác code, miễn nói được lý do trên số đã có. Khoá phương án phải nằm trong bảng, chữ số phải có trong dữ liệu.",
-     "Đây là UC2 nối sang UC5: hàng cận date đi về nơi bán nhanh, không phải huỷ."]);
+     "Đây là UC2 nối sang UC5: hàng cận date đi về nơi bán nhanh, không phải huỷ.",
+     "Người duyệt được gọi hai đường: thẻ trong chat cho ai đang mở trợ lý, email cho ai không mở. Code điền bảng số liệu và link BC; AI chỉ viết đoạn mở đầu và đoạn kết, mỗi con số phải có trong dữ liệu, sai thì dùng mẫu và ghi rõ."]);
   buoc(5, "Hùng duyệt chuyển hàng", "hung.dieuphoi · Marou",
     "Nút 5 đổi sang Hùng. Bấm Duyệt chuyển hàng trên thẻ đề xuất 199 Choco pillar S0010 sang S0001.",
     "Thẻ Đã duyệt kèm số Transfer Order và link mở trong BC; cột phải Transfer Order có dòng mới, trạng thái Open.",
@@ -241,6 +242,8 @@ function noiDung() {
      "Môi trường demo dùng Azure OpenAI ở Mỹ. Khi triển khai, extension của NaviWorld tự chọn vùng xử lý, giữ được trong Asia Pacific. Ghi vào phần governance."],
     ["Sao bên bán lẻ Dakao cũng thấy số lô trên phiếu nhận?",
      "Hai đơn vị đang dùng chung một bộ dữ liệu mô phỏng nên bên Dakao vẫn còn bật quản lý lô. Trợ lý xử lý số lô chỉ khi mặt hàng bên mua có bật, và không đẩy số lô ra cho cửa hàng. Cho cửa hàng giữ lô hay không là quyết định của Marou."],
+    ["Email báo người duyệt có phải AI viết không?",
+     "Có, phần lời. Bảng mặt hàng, lô, tồn, giá trị, tầng, policy và link Business Central do code điền; AI viết hai đoạn mở đầu và kết, mỗi chữ số phải có trong dữ liệu đưa nó, không thì thư dùng mẫu và thẻ ghi rõ. Thẻ Email cho người duyệt trong chat của người đề nghị hiện đúng hai đoạn đó kèm nhãn nguồn."],
     ["Sao email gửi từ một địa chỉ Gmail?",
      "Tenant demo không có license Exchange Online nên POC gửi qua SMTP. Triển khai thật thì thư đi bằng hộp thư của Marou, cấu hình một lần."],
     ["Ngày trên email và bảng tồn kho lấy từ đâu?",
@@ -275,7 +278,7 @@ function noiDung() {
     "Runbook 18 bước cho buổi trình diễn 17/09/2026: dữ liệu đã tạo sẵn, bấm gì, khách thấy gì, nói gì",
     {
       headerLeft: "NaviWorld", headerRight: "Marou • Demo script • Nội bộ",
-      footer: `Demo script · Bản 2.0, ${NGAY}`,
+      footer: `Demo script · Bản 2.4, ${NGAY}`,
       cover: ["Người đọc: người trình diễn và người hỗ trợ kỹ thuật trong buổi họp",
         "Môi trường: Business Central NWV01, hai company NWV-MAROU và NWV-DAKAO, Work Date 17/09/2026",
         `Soạn tối ${NGAY}. Thứ tự bước trùng với cột Kịch bản demo trên console.`,

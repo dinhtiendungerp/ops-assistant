@@ -33,7 +33,13 @@ class BCGateway:
     # Item Ledger Entry chi doi khi co nguoi post, va cua so 120 ngay mat 8 giay de doc. De 60
     # giay thi cu ngoi khong mot phut la lan bam tiep theo lai cho 8 giay, va khong co vong poll
     # nao giu no am. Muoi lam phut, con nut "Doc lai tu BC" de bo ngay khi vua post xong.
-    TTL_THEO_BANG = {"nwvItemLedgerEntries": 900.0}
+    # Bang ket qua tinh (AL, LS) va danh muc chi doi khi co nguoi chay tinh lai; nut "Doc lai tu BC" bo nho ngay. QA dem 16/09/2026:
+    # cau "CTKM nao dang chay" mat 45 giay vi bay bang CTKM cua LS het han nho sau 60 giay; model chi mat 3 giay.
+    TTL_THEO_BANG = {"nwvItemLedgerEntries": 900.0, "lsPeriodicDiscounts": 900.0, "lsPeriodicDiscountLines": 900.0,
+                     "lsStorePriceGroups": 900.0, "lsValidationPeriods": 900.0, "plannedEvents": 900.0,
+                     "plannedSalesDemands": 900.0, "nwvItems": 900.0, "inventoryHealthLines": 900.0,
+                     "replenJournalDetails": 900.0, "replenItemQuantities": 900.0, "forecastAccuracies": 900.0,
+                     "forecastDailies": 900.0, "lsForecastEntries": 900.0, "nwvLocations": 3600.0}
     # Cua so lich su ban duoc lam tron len mot trong ba moc nay, de moi lan hoi BC deu dung chung
     # ban nho. Cac cho goi dang xin 7, 14, 90, 120 va 400 ngay.
     CUA_SO_BAN = (120, 400)

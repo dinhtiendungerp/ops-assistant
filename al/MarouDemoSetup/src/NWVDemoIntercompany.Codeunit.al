@@ -205,6 +205,29 @@ codeunit 70258 "NWV Demo Intercompany"
         exit(Output);
     end;
 
+    /// <summary>
+    /// Chuan bi don ban intercompany cho nguoi kho Marou post TAY trong BC: dien kho xuat va gan lo FEFO, KHONG post.
+    /// Vi sao (16/09/2026): Dung muon tu bam Post Shipment de kiem tro ly co tu bao khong. Mat hang Marou quan ly lo nen
+    /// thieu Item Tracking thi BC chan post; ham nay gan san lo con han, nguoi kho chi con bam Post > Ship.
+    /// </summary>
+    procedure PrepareSalesShipment(docNo: Text): Text
+    var
+        SalesHeader: Record "Sales Header";
+        Result: JsonObject;
+        Output: Text;
+    begin
+        SalesHeader.SetRange("Document Type", SalesHeader."Document Type"::Order);
+        SalesHeader.SetRange("External Document No.", CopyStr(docNo, 1, MaxStrLen(SalesHeader."External Document No.")));
+        if not SalesHeader.FindLast() then
+            Error(KhongThayDonBanErr, docNo, CompanyName());
+        GanLoFEFO(SalesHeader);
+        Result.Add('company', CompanyName());
+        Result.Add('salesOrder', SalesHeader."No.");
+        Result.Add('externalDocumentNo', SalesHeader."External Document No.");
+        Result.WriteTo(Output);
+        exit(Output);
+    end;
+
     local procedure GanLoFEFO(SalesHeader: Record "Sales Header")
     var
         SalesLine: Record "Sales Line";
