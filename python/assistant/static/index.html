@@ -1097,6 +1097,9 @@ async function _poll() {
     return r.json();
   };
   let rows, st, rules;
+  // Vai va company luc GUI. Dem 16/09/2026 (QA): Trang doi tu Marou sang Dakao, vong poll dang bay cua Marou tra ve sau khi
+  // da doi, ve tin Marou vao khung Dakao va dat lastId theo so tin Marou, nen tin Dakao khong bao gio hien. Doi roi thi bo ket qua.
+  const aiGui = me, ctGui = congTy;
   try {
     rows = await doc(`/api/inbox?user=${me}&after=${lastId[me]||0}`);
     st = await doc('/api/state');
@@ -1113,6 +1116,7 @@ async function _poll() {
     }
     return;
   }
+  if (aiGui !== me || ctGui !== congTy) return;      // da doi vai hoac company trong luc cho: vong poll moi se tai lai
   if (matKetNoi) { matKetNoi = false; baoOk('Đã kết nối lại với trợ lý.'); }
   // Tu day tro di khong duoc de mot loi ve lai (mot the ve hong, mot truong thieu) chan co `daTaiHopThu`: chan la man hinh
   // chao bi giau vinh vien va hoi thoai trong tron. Dung bao 16/09/2026 o vai dieu phoi: "bam doan chat moi luc nao cung trong".

@@ -1881,6 +1881,39 @@ kheo giua UC2 voi UC1, UC5, va dua AI vao vai tro trong yeu. Da lam:
   co ban binh quan la binh thuong)"...) va SYSTEM planner cam in ten truong ky thuat, vi model chep nguyen "flags min_max,
   oos_qua_nua_cua_so" ra cau tra loi.
 
+### Dem 16 rang sang 17/09/2026: QA 20 buoc, kich ban UC2 len dau, lich nen bao xuat kho, slide v4
+
+Dung giao: QA toan bo kich ban, cap nhat slide, tao chung tu can cho live demo, don rac. Da lam:
+- **Kich ban console 20 buoc, 7 phan** (`CHUONG` trong index.html): UC2 (1-9: suc khoe ton kho, brief, lo can date, D4, duyet TO,
+  hoi tu do "mat hang nao cham luan chuyen" roi "de xuat CTKM cho cac mat hang nay", truy xuat lo, bat thuong), UC5 (10-13), UC1 (14-15),
+  lien cong ty (16-19), chi phi (20). Tai lieu 13 **ban 3.0** (`build_13.js`), ban giao `Demo-Marou/... (17-09, ban 3.0).docx`.
+- **QA that**: `tools/qa_kich_ban_17_09.py [--chi 3,4b] [--ghi]` goi dung API console, in cau tra loi, canh bao (loi, cau mau khi can AI,
+  Kiem tra so, chu ky thuat, cham > 25 giay), ghi `runs/qa-kich-ban.json`. Loi QA bat va sua:
+  1. **Duyet Transfer o NWV-MAROU loi "In-Transit Code must have a value"** (khong co Transfer Route S0010 -> S0001). App Agent **1.7.1.0**:
+     khong co In-Transit Code thi `Direct Transfer` = true (doc TransferLine.Table.al dong 1311: chi kiem khi khong chuyen thang).
+  2. **Doi company cung vai hien tin cua company cu**: vong poll dang bay tra ve sau khi doi. `_poll` gio bo ket qua neu `me`/`congTy` da doi.
+  3. "phuong an xu ly cho X" roi vao planner: intent **D4** (`uc2_hanh_dong.tu_cau`), `CAN_MAT_HANG` them D4.
+  4. "de xuat CTKM ..." roi vao PROMO: `_XIN_DE_XUAT` day sang planner; planner co tool **promotions** (chuyen tu MCP sang toolbox).
+  5. "hang cham luan chuyen" chi loc tang SlowMoving roi bao "yen tam": `inventory_health` co `sort=ban_cham` (moi tang con ton, xep ngay
+     phu, toi da 2 dong moi mat hang, 20 dong). Planner nhan **4 tin gan nhat cua doan chat** (`_ngu_canh`) de hieu cau noi tiep.
+  6. Planner viet khong dau va them "trieu": prompt bat viet co dau, cam don vi tien; D4 tu choi cau co don vi tien va tu choi chon "giu"
+     khi giu con du ma code de xuat khac (kv `d4:` cu phai xoa khi doi luat).
+  7. Bo kiem so bao nham cau liet ke nhieu ma dia diem roi moi den so: `so_sai_dia_diem` gom nhom ma lien nhau.
+  8. `ke_lai` goi model cho moi the lo (6 luot, 18 giay, "treo"): toi da 1 the moi cau, bo qua the co nut.
+  9. CTKM cham 45 giay do bang LS het nho sau 60 giay: `TTL_THEO_BANG` 15 phut cho bang ket qua va danh muc; `_lam_nong` giu am
+     moi 12 phut (`_doc_truoc`, mot vong duy nhat).
+- **Lich nen bao Marou xuat kho** (`web._quet_xuat_kho_nen`, moi 60 giay, KHONG bi khoa tam_dung vi chi bao): doc
+  `NWVAgentICService.ShipmentStatus`, don xuat trong ngay chua co kv `ic_bao_xuat:` va khong nam trong moc luc tien trinh len thi bao
+  (`ic_nhan_hang.bao_xuat_moi`). Bay da gap: dong start thread chen nham vao ham Reset. Nut demo xuat kho gio chon don MOI NHAT va
+  khong bat_buoc (het gui lai don da bao). Da thu that: post HO106204 ngoai tro ly, Tuan (S0005) co the trong 1 phut.
+- `NWV Marou Demo Setup` **1.8.8.0**: `NWVDemoIntercompany.PrepareSalesShipment(docNo)` (gan kho + lo FEFO, khong post, de nguoi kho post
+  tay), `NWVDemoRepost.DeleteAgentTransferOrders` (company NWV-*). `tools/tao_don_ic_thu.py item:qty:store ...` tao don IC thu.
+- **Trang thai BC de lai cho demo**: Marou 0 de xuat, 0 TO agent; Dakao 4 de xuat Executed (HO106200/201/202, 107110). HO106203 (5 Choco
+  bowl S0010, Sales Order S90016 lo da gan) CHO Dung post tay. HO106204, HO106205 la don thu, da post nhan 107111, 107112.
+- Favicon = `mascot-san-sang.png`. Slide rut gon **v4** 25 slide: `docs/build_slide_17_09.py` (exec helper cua build_slide_uc2_v2, them 9
+  slide, xep lai), anh `docs/anh-uc2/kb17-*.png` chup bang `tools/chup_kich_ban_17_09.mjs` tu hop thu QA (khong gui cau moi).
+- Toc do do duoc: cau tu do 10-35 giay (planner 2-4 luot + doc BC); hai cau tu do sat nhau de cham 429 vi TPM 30k. Chi phi ca vong QA ~0,08 USD.
+
 ### Email cho nguoi duyet khi co de xuat moi, AI soan phan loi, 16/09/2026 dem
 
 Dung nhin the "Da ghi de xuat WriteOff ... Toi da bao nguoi duyet ngay trong chat cua ho" va hoi "phan nay co gui qua email
