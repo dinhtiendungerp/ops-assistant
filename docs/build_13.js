@@ -11,6 +11,22 @@ function noiDung() {
   const c = [];
 
   // ------------------------------------------------------------------ 1
+  c.push(h1("0. Ngày demo không trùng ngày neo của dữ liệu"));
+  c.push(p("Bộ dữ liệu trình diễn được tính với Work Date 18/09/2026. Buổi demo diễn ra ngày khác thì vẫn chạy bình thường, "
+    + "miễn là làm đúng ba điều dưới đây."));
+  c.push(...table(["Điều", "Làm gì", "Vì sao"], [
+    ["Giữ Work Date 18/09/2026", "Không đổi Work Date của phiên Business Central, không chạy lại Run Inventory Health",
+      "Kết quả sáu tầng và số dòng đã tính theo ngày này. Đổi ngày rồi tính lại thì số trên slide không còn khớp màn hình."],
+    ["Chứng từ mua bán vẫn mang ngày thật", "Không phải làm gì, Business Central tự ghi",
+      "Đơn mua và phiếu giao hàng post theo ngày thao tác, nên hai loại ngày này lệch nhau. Đó là bình thường."],
+    ["Đồng hồ trợ lý là ngày thật", "Xem dòng “Giờ hệ thống” trong khay Điều khiển demo",
+      "Vòng nhận hàng liên công ty so ngày xuất kho với đồng hồ này, nên nút +24 giờ vẫn diễn được cảnh sáng hôm sau."],
+  ], [3.0, 4.6, 4.4]));
+  c.push(...ghiChu("Trợ lý hiển thị ngày chốt 18/09/2026 trên dải nguồn. Nếu khách hỏi vì sao không phải hôm nay, trả lời thẳng: "
+    + "đây là bộ dữ liệu mô phỏng, ngày chốt là ngày lớp tính toán trong Business Central chạy lần gần nhất.",
+    "Câu trả lời nếu khách để ý ngày"));
+
+  c.push(pageBreak());
   c.push(h1("1. Trước buổi demo: 20 phút chuẩn bị"));
   c.push(p("Làm đủ bảy việc dưới đây rồi mới mở phòng họp. Mỗi việc đều có cách kiểm, đừng tin là xong nếu chưa nhìn thấy dấu hiệu."));
   c.push(...table(["Việc", "Cách làm", "Dấu hiệu đã xong"], [
@@ -20,7 +36,7 @@ function noiDung() {
     ["Bật AI", "Chọn vai quản trị, tab Cài đặt AI, bật công tắc", "Ô trạng thái ghi AI đang bật, còn trần chi phí"],
     ["Kiểm trần chi phí", "Cùng tab Cài đặt AI", "Còn ít nhất 1 USD trong trần ngày"],
     ["Mở sẵn Business Central", "Một tab trình duyệt riêng, đăng nhập môi trường NWV01", "Bấm link trong thẻ là mở được ngay, không phải đăng nhập giữa buổi"],
-    ["Có một đơn liên công ty đang chờ nhận", "Khay Điều khiển demo, bấm Kiểm hàng Marou đã xuất kho", "Trợ lý báo có đơn đã xuất kho chưa nhận, hoặc báo không có; nếu không có thì chạy màn 15 trước"],
+    ["Biết đơn liên công ty đang ở trạng thái nào", "Khay Điều khiển demo, bấm Kiểm hàng Marou đã xuất kho", "Trợ lý liệt kê đơn nào vừa xuất kho hôm nay, đơn nào đã quá ngày mà chưa nhận. Đọc kỹ để biết màn 16 bắt đầu từ bước nào"],
   ], [2.4, 5.4, 4.2]));
   c.push(...ghiChu("Work Date của Business Central để 18/09/2026: lớp tính toán trong BC dùng Work Date, còn chứng từ mua bán thì post theo ngày thật. "
     + "Và đừng bấm Reset trong khay demo trước buổi họp, nó xoá hộp thư cùng các việc đang theo dõi, và bạn sẽ mất đơn đang chờ nhận hàng.",
@@ -163,15 +179,12 @@ function noiDung() {
     ["Báo cáo so tuần này với tuần trước, xếp theo giá trị, kèm nguyên nhân đọc từ phần phân tích.",
      "Email gửi mỗi tuần một lần tính theo tuần ISO, nên bấm lại trong tuần không gửi trùng."]);
 
-  man("16", "Nhận hàng liên công ty", "hung.dieuphoi, tuan.s0005, trang.sc · đơn vị NWV-DAKAO",
-    [["Trên dải nguồn chọn NWV-DAKAO, vai hung.dieuphoi, bấm Brief", "Có thẻ Đề xuất đặt mua từ Marou"],
-     ["Bấm Duyệt đặt mua", "Thẻ Đã tạo Purchase Order, kèm nút Gửi đơn sang Marou"],
-     ["Bấm Gửi đơn sang Marou", "Thẻ báo đơn đã Released và bên Marou đã tạo Sales Order"],
-     ["Khay demo, bấm Marou xuất kho đơn liên công ty", "Trợ lý báo Marou đã xuất kho, kèm số phiếu giao hàng"],
-     ["Đổi vai sang tuan.s0005", "Hộp thư cửa hàng có thẻ chuẩn bị nhận hàng"],
-     ["Khay demo, bấm +24 giờ (sáng hôm sau)", "Đồng hồ hệ thống nhảy sang hôm sau"],
-     ["Bấm Kiểm hàng Marou đã xuất kho", "Trợ lý nhắc lại, và gửi một đề xuất cho người duyệt"],
-     ["Đổi vai sang hung.dieuphoi, bấm Duyệt cho post nhận hàng", "Thẻ Đã post phiếu nhận, kèm link mở phiếu trong BC"]],
+  man("16", "Nhận hàng liên công ty", "hung.dieuphoi, quản lý cửa hàng nhận hàng, trang.sc · đơn vị NWV-DAKAO",
+    [["Trên dải nguồn chọn NWV-DAKAO, vai hung.dieuphoi, bấm Kiểm hàng Marou đã xuất kho", "Trợ lý báo đơn nào vừa xuất kho, đơn nào quá ngày"],
+     ["Đổi vai sang quản lý cửa hàng được nhắc tên", "Hộp thư cửa hàng có thẻ chuẩn bị nhận hàng"],
+     ["Về vai hung.dieuphoi, đọc thẻ đề xuất của đơn quá ngày", "Thẻ Cho trợ lý post nhận hàng đơn …, hai nút Duyệt và Để người post"],
+     ["Bấm Duyệt cho post nhận hàng", "Thẻ Đã post phiếu nhận, kèm link mở phiếu trong BC"],
+     ["Bấm link, xem phiếu nhận trong BC", "Phiếu nhận đã post, dòng mang đúng số lô Marou xuất"]],
     ["Đây là vấn đề số một và số ba trong khảo sát: nhập đơn không kịp thời, và muốn tự động hoá hai chiều giữa hai công ty.",
      "Cách xử lý không đối xứng hai đầu, và đó là chủ ý. Bên Marou không có gì tự động, người kho vẫn post xuất kho như mọi ngày.",
      "Bên Dakao, Marou xuất kho trong ngày thì trợ lý báo ngay cho cửa hàng và Supply Chain để chuẩn bị nhận. Chỉ báo, không ghi gì.",
@@ -179,7 +192,20 @@ function noiDung() {
      "Người duyệt bấm Duyệt thì Business Central mới post. Không ai duyệt thì không có gì được post.",
      "Phiếu nhận mang đúng số lô Marou đã xuất, đọc từ sổ kho của công ty bên kia chứ không bịa."],
     ["Đây là loại đề xuất duy nhất mà việc duyệt làm Business Central post thật một chứng từ. Mọi loại khác chỉ tạo chứng từ nháp.",
-     "Quyền post nằm trong permission set riêng tên NWV AGENT POST RCPT, phải gán tay. Không gán thì bấm Duyệt sẽ báo thiếu quyền chứ không âm thầm bỏ qua."]);
+     "Quyền post nằm trong permission set riêng tên NWV AGENT POST RCPT, phải gán tay. Không gán thì bấm Duyệt sẽ báo thiếu quyền chứ không âm thầm bỏ qua.",
+     "Muốn diễn trọn vòng từ đầu thì làm thêm ba bước dưới đây trước khi vào màn này."]);
+
+  c.push(h3("Nếu muốn diễn trọn vòng, làm trước ba bước này"));
+  c.push(...table(["Bấm gì", "Chờ gì"], [
+    ["Vai hung.dieuphoi, đơn vị NWV-DAKAO, bấm Brief", "Có thẻ Đề xuất đặt mua từ Marou"],
+    ["Bấm Duyệt đặt mua", "Thẻ Đã tạo Purchase Order, kèm nút Gửi đơn sang Marou"],
+    ["Bấm Gửi đơn sang Marou", "Thẻ báo đơn đã Released và bên Marou đã tạo Sales Order"],
+    ["Khay demo, bấm Marou xuất kho đơn liên công ty", "Trợ lý báo Marou đã xuất kho, kèm số phiếu giao hàng"],
+    ["Khay demo, bấm +24 giờ (sáng hôm sau)", "Đồng hồ hệ thống nhảy sang hôm sau"],
+    ["Bấm Kiểm hàng Marou đã xuất kho", "Trợ lý nhắc lại, và gửi đề xuất cho người duyệt"],
+  ], [5.6, 6.4]));
+  c.push(...luuY("Nút Marou xuất kho ghi ngày post bằng đồng hồ trợ lý, nên phiếu giao hàng luôn là của hôm nay và bước báo trước chạy đúng. "
+    + "Nếu bấm +24 giờ trước khi xuất kho thì thứ tự hỏng, phải xuất kho trước rồi mới nhảy ngày."));
 
   // ------------------------------------------------------------------ 4
   c.push(pageBreak());
@@ -209,7 +235,8 @@ function noiDung() {
     ["Thẻ báo Đề xuất này không còn trong Business Central", "Đề xuất thuộc phiên dữ liệu trước hoặc đã bị xoá", "Bấm Brief để lấy danh sách đề xuất hiện tại"],
     ["Đoạn văn ghi mẫu có sẵn thay vì AI", "Phép kiểm số đã chặn, hoặc AI đang tắt, hoặc hết trần", "Đây là hành vi đúng. Mở tab Cài đặt AI xem trạng thái rồi giải thích"],
     ["Màn hình chậm khoảng 20 giây", "Đang đọc dữ liệu thật từ Business Central", "Nói trước khi bấm; hoặc bấm Đọc lại từ BC trước buổi họp để làm nóng bộ nhớ đệm"],
-    ["Không còn đơn liên công ty để diễn màn 16", "Đơn trước đã nhận xong", "Chạy lại từ bước một của màn 16: duyệt một đề xuất đặt mua mới"],
+    ["Không còn đơn liên công ty để diễn màn 16", "Đơn trước đã nhận xong", "Làm ba bước diễn trọn vòng ở cuối màn 16: duyệt một đề xuất đặt mua mới, gửi sang Marou, rồi bấm Marou xuất kho"],
+    ["Trợ lý nhắc một đơn cũ không nằm trong kịch bản", "Đơn đó xuất kho từ hôm trước mà chưa ai post nhận", "Đừng bối rối, đó là đúng việc trợ lý phải làm. Duyệt luôn cho nó, hoặc nói rõ đây là đơn tồn từ hôm trước"],
   ], [3.4, 4.2, 4.4]));
   c.push(...ghiChu("Phương án cuối cùng nếu mạng hỏng: đổi dải nguồn sang dữ liệu mô phỏng. Toàn bộ mười sáu màn vẫn diễn được, "
     + "chỉ khác là số liệu mô phỏng và không ghi gì vào Business Central.", "Mất mạng giữa buổi"));
@@ -226,7 +253,7 @@ function noiDung() {
       footer: `Demo script UC2 · Bản 1.0, ${NGAY}`,
       cover: ["Người đọc: người trình diễn và người hỗ trợ kỹ thuật trong buổi họp",
         "Môi trường: Business Central NWV01, hai company NWV-MAROU và NWV-DAKAO",
-        `Ngày: ${NGAY}, Work Date 18/09/2026`,
+        `Soạn ngày ${NGAY}. Work Date cua Business Central giu o 18/09/2026 du buoi demo dien ngay khac.`,
         "Đi kèm bộ slide 12; slide có speaker note, tài liệu này có thao tác."],
     },
     noiDung(),

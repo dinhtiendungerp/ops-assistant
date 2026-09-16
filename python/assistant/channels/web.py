@@ -302,7 +302,8 @@ def demo_marou_xuat_kho(x: ICIn):
         raise HTTPException(status_code=400, detail="Không còn đơn mua liên công ty nào đang chờ bên bán xuất kho.")
     x.doc_no = doc_no
     try:
-        kq = a.gw.post_giao_hang_doi_tac(x.doc_no, doi_tac)
+        # Ngay post lay theo dong ho tro ly (co nut +24 gio), de buoc "bao trong ngay" chay duoc vao bat ky ngay demo nao.
+        kq = a.gw.post_giao_hang_doi_tac(x.doc_no, doi_tac, a.mem.now().astimezone().strftime("%Y-%m-%d"))
     except NotImplementedError as e:
         raise HTTPException(status_code=400, detail=str(e)) from e
     a.gw.quen_nho()

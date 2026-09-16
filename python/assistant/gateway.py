@@ -588,20 +588,24 @@ class BCGateway:
         self._ic[doc_no] = d
         return d
 
-    def post_giao_hang_doi_tac(self, doc_no: str, company: str = "") -> dict[str, Any]:
+    def post_giao_hang_doi_tac(self, doc_no: str, company: str = "", ngay_post: str = "") -> dict[str, Any]:
         """Nut demo "Marou da xuat kho": post Ship cho don ban ben company doi tac. Tren he that day la viec cua nguoi kho
-        Marou bam trong BC, tro ly khong bao gio goi. O day chi de demo chay duoc mot minh."""
+        Marou bam trong BC, tro ly khong bao gio goi. O day chi de demo chay duoc mot minh.
+
+        `ngay_post` dang yyyy-MM-dd: dat ngay post cua phieu giao hang. Goi truyen ngay cua dong ho tro ly, vi ngay cua don
+        ban lay theo Work Date cua BC (bo demo neo 18/09) nen lech voi ngay that va buoc "bao trong ngay" se khong chay."""
         if self.is_mock:
             d = self._ic[doc_no]
             d["shipment"] = {"posted": True, "no": f"SHP-{len(self._ic)}{doc_no[-3:]}",
-                             "postingDate": self.today().strftime("%Y-%m-%d"), "salesOrder": d.get("salesOrder", ""),
+                             "postingDate": ngay_post or self.today().strftime("%Y-%m-%d"), "salesOrder": d.get("salesOrder", ""),
                              "sellToCustomerNo": "DAKAO", "locationCode": "W0003", "shipmentCount": 1,
                              "lines": [{"itemNo": l["itemNo"], "description": l["description"], "quantity": l["quantity"],
                                         "lots": [{"lotNo": f"L-{l['itemNo']}", "quantity": l["quantity"], "expirationDate": ""}]}
                                        for l in d["lines"]]}
             return {"company": company or "NWV-MAROU", "salesOrder": d.get("salesOrder", ""), "shipment": d["shipment"]["no"],
                     "postingDate": d["shipment"]["postingDate"]}
-        return self.client.web_service("NWVDemoIntercompany", "PostSalesShipment", {"docNo": doc_no}, company=company)
+        return self.client.web_service("NWVDemoIntercompany", "PostSalesShipmentOn",
+                                       {"docNo": doc_no, "postingDateText": ngay_post}, company=company)
 
     def transfer(self, to_no: str) -> dict[str, Any] | None:
         if self.is_mock:

@@ -157,12 +157,25 @@ codeunit 70258 "NWV Demo Intercompany"
     /// post. Lo chon theo FEFO (han dung gan nhat truoc) tren chinh ton dang mo tai kho xuat, khong bia so lo.
     /// </summary>
     procedure PostSalesShipment(docNo: Text): Text
+    begin
+        exit(PostSalesShipmentOn(docNo, ''));
+    end;
+
+    /// <summary>
+    /// Nhu PostSalesShipment nhung dat ngay post. `postingDateText` dang yyyy-MM-dd, bo trong thi giu ngay cua don ban.
+    ///
+    /// Vi sao can (17/09/2026): tro ly so ngay xuat kho voi ngay hom nay de biet nen bao truoc hay nhac. Ngay cua don ban
+    /// lay theo Work Date cua BC (bo demo neo 18/09), con tro ly chay theo ngay that, nen hai ben lech va buoc "bao trong
+    /// ngay" khong bao gio chay. Truyen ngay vao thi demo dien duoc vao bat ky ngay nao.
+    /// </summary>
+    procedure PostSalesShipmentOn(docNo: Text; postingDateText: Text): Text
     var
         SalesHeader: Record "Sales Header";
         SalesShptHeader: Record "Sales Shipment Header";
         SalesPost: Codeunit "Sales-Post";
         Result: JsonObject;
         Output: Text;
+        NgayPost: Date;
     begin
         SalesHeader.SetRange("Document Type", SalesHeader."Document Type"::Order);
         SalesHeader.SetRange("External Document No.", CopyStr(docNo, 1, MaxStrLen(SalesHeader."External Document No.")));
@@ -170,6 +183,10 @@ codeunit 70258 "NWV Demo Intercompany"
             SalesHeader.Reset();
             if not SalesHeader.Get(SalesHeader."Document Type"::Order, CopyStr(docNo, 1, MaxStrLen(SalesHeader."No."))) then
                 Error(KhongThayDonBanErr, docNo, CompanyName());
+        end;
+        if (postingDateText <> '') and Evaluate(NgayPost, postingDateText, 9) and (NgayPost <> 0D) then begin
+            SalesHeader.Validate("Posting Date", NgayPost);
+            SalesHeader.Modify(true);
         end;
         GanLoFEFO(SalesHeader);
         SalesHeader.Ship := true;

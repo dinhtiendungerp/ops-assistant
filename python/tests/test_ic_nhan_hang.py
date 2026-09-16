@@ -119,6 +119,19 @@ def test_cau_hoi_cua_quan_ly_cua_hang_chi_thay_don_cua_minh(a):
     assert len(out) == 1 and "HO106201" in out[0].text
 
 
+def test_nut_demo_xuat_kho_ghi_ngay_theo_dong_ho_tro_ly(a):
+    """Ngay cua don ban lay theo Work Date cua BC (bo demo neo 18/09), con tro ly chay theo ngay that. Nut demo phai ghi
+    ngay post bang dong ho tro ly, neu khong thi buoi demo ngay 17/09 se khong bao gio chay duoc buoc bao trong ngay."""
+    from assistant.channels import web
+    web.state["asst"] = a
+    _don(a)
+    a.mem.advance_clock(48)
+    hom_nay = a.mem.now().astimezone().strftime("%Y-%m-%d")
+    TestClient(web.app).post("/api/demo/marou-xuat-kho", json={"user": "dung.admin", "doc_no": "HO106201"})
+    assert a.gw._ic["HO106201"]["shipment"]["postingDate"] == hom_nay
+    assert ic.thu_thap(a)["trong_ngay"] and not ic.thu_thap(a)["qua_ngay"]
+
+
 def test_api_demo_marou_xuat_kho(a):
     from assistant.channels import web
     web.state["asst"] = a
