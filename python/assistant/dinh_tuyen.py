@@ -24,8 +24,11 @@ log = logging.getLogger(__name__)
 # Intent chi tra loi dung khi biet mat hang nao. Khong tra duoc ma thi phai hoi model.
 CAN_MAT_HANG = ("STOCKOUT", "STOCK_QUERY", "INVESTIGATE", "DAMAGE", "REPLEN_WHY")
 # Intent doc thang tu bang, khong bao gio can model.
+# NHAC_POST va IC_SHIP: skill tu doc don mua va phieu giao hang roi tu soan, model khong tham gia viec chon.
+# Thieu hai cai nay trong danh sach thi rule bi coi la khong chac, cau di sang model va model phan loai nham:
+# "hang Marou da xuat kho chua" tung ra TRACKING (bat duoc khi chay thu ca 16 man ngay 16/09/2026).
 TU_DU_LIEU = ("BRIEF", "TRACKING", "PO_OVERDUE", "EXPIRY", "FORECAST", "SUPPLIER", "TRACE", "PROMO", "SELF_REVIEW",
-              "ANOMALY", "WASTE_REPORT")
+              "ANOMALY", "WASTE_REPORT", "WASTE_WHY", "NHAC_POST", "IC_SHIP")
 
 
 @dataclass

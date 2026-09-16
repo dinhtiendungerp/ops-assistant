@@ -25,6 +25,18 @@ def _xuat(a, po="HO106201"):
     return a.gw.post_giao_hang_doi_tac(po, "NWV-MAROU")
 
 
+def test_cau_hoi_ve_hang_marou_khong_bi_day_sang_model(a):
+    """Bat AI thi cau nao rule khong chac se di sang model phan loai. IC_SHIP doc thang tu Business Central nen
+    khong bao gio can model; thieu no trong TU_DU_LIEU thi model phan loai nham thanh TRACKING va tro ly tra ve
+    danh sach de xuat dang cho. Bat duoc khi chay thu ca 16 man tren BC that ngay 16/09/2026."""
+    from assistant import dinh_tuyen
+    from assistant.nlu import RuleNLU
+    for cau in ("hàng Marou đã xuất kho chưa", "Marou giao hàng chưa", "đối tác đã xuất kho chưa"):
+        y = RuleNLU().parse(cau)
+        assert y.intent == "IC_SHIP", cau
+        assert dinh_tuyen.rule_du_chac(y)[0] is True, cau
+
+
 def test_chua_xuat_kho_thi_khong_bao_gi(a):
     _don(a)
     assert ic.quet(a) == []
