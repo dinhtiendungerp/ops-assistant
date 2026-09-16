@@ -679,7 +679,7 @@ the_ngang(s, [
     ("Qua ngày: xin phép post", ["Đơn vẫn chưa post nhận thì nhắc lại",
                                    "Kèm một đề xuất: cho trợ lý post phiếu nhận?",
                                    "Policy P-12 bắt buộc người duyệt"], RED),
-    ("Duyệt thì BC post", ["Phiếu nhận sinh ra mang đúng lô bên bán đã xuất",
+    ("Duyệt thì BC post", ["Phiếu nhận post đúng số lượng còn phải nhận",
                            "Không ai duyệt thì không có gì được post",
                            "Quyền post nằm trong permission set riêng"], GREEN),
 ], t=2.95, h=3.25)
@@ -688,7 +688,7 @@ txt(s, 1.20, 7.1, 14.95, 1.1,
     ["Chừng nào chưa post nhận, tồn trên hệ thống thấp hơn hàng thực có, nên cảnh báo hết hàng và đề xuất bổ sung cho cửa hàng đó đều sai theo.",
      "Đây là loại đề xuất duy nhất mà việc duyệt làm Business Central post thật một chứng từ; mọi loại khác chỉ tạo chứng từ nháp."],
     19, False, BODY, space=4)
-bang_nguon(s, "Đã chạy thật 16/09/2026 trên NWV01: đơn HO106201, phiếu giao hàng 102043 bên Marou, phiếu nhận 107110 tại cửa hàng S0010, cùng số lô.")
+bang_nguon(s, "Đã chạy thật 16/09/2026 trên NWV01: đơn HO106201, phiếu giao hàng 102043 bên Marou, phiếu nhận 107110 tại cửa hàng S0010.")
 note(s, """
 Kịch bản này trả lời trực tiếp vấn đề số 1 và số 3 trong khảo sát: nhập đơn không kịp thời, và muốn tự động hóa hai chiều giữa hai công ty.
 Cách xử lý do anh Dũng chốt, và nó KHÔNG đối xứng hai đầu. Nói rõ chỗ này vì khách sẽ hỏi:
@@ -697,8 +697,12 @@ Cách xử lý do anh Dũng chốt, và nó KHÔNG đối xứng hai đầu. Nó
     để chuẩn bị nhận, qua chat và email. Đây chỉ là báo, không ghi gì.
   - Qua ngày hôm sau mà đơn vẫn chưa post nhận thì trợ lý nhắc lại, và gửi kèm một đề xuất hỏi có cho trợ lý post phiếu nhận thay không.
   - Người duyệt bấm Duyệt thì BC mới post. Không ai duyệt thì không có gì được post, và trợ lý nhắc tiếp mỗi ngày.
-Điểm kỹ thuật đáng nói nếu khách là người làm nghề: phiếu nhận bên Dakao mang đúng số lô mà Marou đã xuất, đọc từ sổ kho của công ty bên
-kia chứ không bịa. Nhờ vậy truy xuất được cả chuỗi từ lô sản xuất ở Marou tới lô đang nằm ở cửa hàng.
+Về số lô, nói cho chuẩn kẻo khách bắt bẻ: Dakao là bán lẻ nên theo nghiệp vụ KHÔNG quản lý lô, và trợ lý không đẩy số lô ra cho cửa hàng.
+Trợ lý chỉ xử lý số lô khi mặt hàng bên mua có bật quản lý lô; lúc đó nó lấy đúng lô Marou đã xuất, đọc từ sổ kho công ty bên kia chứ không
+bịa. Mặt hàng không bật quản lý lô thì phiếu nhận post bình thường, không có lô.
+Trên bộ dữ liệu demo thì hai company đang là bản sao của nhau nên bên Dakao vẫn còn bật quản lý lô, vì vậy phiếu nhận trong ảnh có lô.
+Nếu khách hỏi có nên cho bán lẻ giữ lô không: đó là quyết định của Marou. Giữ thì truy được cả chuỗi từ lô sản xuất tới cửa hàng, đổi lại
+cửa hàng phải thao tác theo lô. Không giữ thì hạn dùng ở cửa hàng suy từ đợt giao.
 Câu khách hay hỏi: "vậy trợ lý được phép post rồi à?" Trả lời: đúng, nhưng chỉ đúng một loại chứng từ này, chỉ sau khi một người bấm Duyệt,
 và quyền post nằm trong một permission set riêng phải gán tay. Mọi loại đề xuất khác vẫn chỉ tạo chứng từ nháp.
 Nếu khách hỏi tại sao không cho tự động luôn: vì tồn kho là số kế toán; một lần post nhầm phải đảo bằng chứng từ khác. Chờ một người bấm
@@ -713,7 +717,7 @@ anh(s, ANH / "uc2ai-13-phieu-nhan-cat.png", 8.85, 2.52, 7.30, 4.62)
 txt(s, 1.20, 7.28, 14.95, 0.42, "Một đơn đi hết vòng", 21, True, NAVY)
 txt(s, 1.20, 7.70, 14.95, 0.58,
     ["Đơn mua HO106201 ở Dakao sang Marou thành đơn bán S90014, Marou xuất kho phiếu 102043 lô L260908-33110B.",
-     "Người duyệt bấm Duyệt thì Business Central post phiếu nhận 107110 tại cửa hàng, mang đúng lô đó."],
+     "Người duyệt bấm Duyệt thì Business Central post phiếu nhận 107110 tại cửa hàng Quán cà phê Đà Nẵng."],
     18, False, BODY, space=2, line=0.95)
 bang_nguon(s, "Hai ảnh chụp trên môi trường demo NWV01 ngày 16/09/2026. Email gửi thật qua SMTP.")
 note(s, """
@@ -723,8 +727,10 @@ số lượng và link mở đơn đều do code điền từ Business Central. 
 số lô không phải việc của cửa hàng. Số lô chỉ hiện ở thẻ người duyệt, nơi cần biết Business Central sẽ ghi lô nào vào phiếu nhận.
 Bên phải là phiếu nhận 107110 trong Business Central, của một đơn khác đã đi hết vòng. Nó cho thấy trợ lý post thật chứ không
 dừng ở chỗ gửi thông báo. Dòng dưới hai ảnh kể lại cả bốn bước của đơn đó.
-Điểm đáng nhấn: phiếu nhận mang đúng lô mà Marou đã xuất, đọc từ sổ kho của công ty bên kia chứ không bịa. Nhờ vậy truy được cả
-chuỗi từ lô sản xuất ở Marou tới lô đang nằm ở cửa hàng.
+Điểm đáng nhấn: trợ lý không tự nghĩ ra số nào cả. Số lượng lấy từ đơn mua, và nếu mặt hàng bên mua có bật quản lý lô thì số lô lấy
+từ sổ kho của công ty bên bán. Trong ảnh phiếu nhận có lô vì bộ dữ liệu demo bên Dakao vẫn còn bật quản lý lô; trên hệ thống thật của
+một đơn vị bán lẻ không quản lý lô thì phiếu nhận post bình thường, không có lô. Đừng hứa với khách là bán lẻ sẽ truy được lô, trừ khi
+Marou quyết cho cửa hàng giữ lô.
 Nếu khách để ý địa chỉ người gửi là một hộp thư Gmail: nói thẳng là môi trường demo trên tenant thử nghiệm không có license
 Exchange Online nên POC gửi qua SMTP. Khi triển khai thật, thư đi bằng hộp thư của Marou, cấu hình một lần, không đụng vào code.
 Nếu khách để ý và hỏi hạn dùng của lô L260908-33110B: nói thẳng là phiếu đó post trước khi chúng tôi sửa quy tắc chọn lô, lúc đó

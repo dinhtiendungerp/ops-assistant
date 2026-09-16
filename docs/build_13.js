@@ -62,9 +62,13 @@ function noiDung() {
     ["0 đến 4", "01 · Dashboard sức khỏe tồn kho", "Đây là số Business Central tính, trợ lý chỉ đọc lại."],
     ["4 đến 9", "05 · Brief buổi sáng do AI viết", "Người đọc không phải tự lọc; trợ lý chọn ba việc và nói vì sao."],
     ["9 đến 14", "08 · Phương án cho lô cận date", "Code tính từng phương án, model chọn một và giải thích."],
-    ["14 đến 19", "09 · Đề xuất và người duyệt", "Trợ lý không tự làm; chứng từ sinh ra khi người của Marou bấm Duyệt."],
-    ["19 đến 25", "16 · Nhận hàng liên công ty", "Đây là điểm đau Marou nêu trong khảo sát, và là chỗ duy nhất trợ lý post thật."],
+    ["14 đến 18", "09 · Đề xuất và người duyệt", "Trợ lý không tự làm; chứng từ sinh ra khi người của Marou bấm Duyệt."],
+    ["18 đến 21", "11 · Truy xuất lô", "Một lô có vấn đề thì biết ngay nó nằm ở đâu, còn bao nhiêu."],
+    ["21 đến 28", "16 · Nhận hàng liên công ty", "Đây là điểm đau Marou nêu trong khảo sát, và là chỗ duy nhất trợ lý post thật."],
   ], [1.8, 4.6, 5.6]));
+  c.push(...ghiChu("Bộ slide đi kèm bản rút gọn này là `Marou POC - slide demo (ban ngan).pptx`, 16 slide, trong thư mục "
+    + "C:\Users\dungdt.NWV\Demo-Marou. Bộ đầy đủ 30 slide vẫn giữ nguyên để mở khi khách hỏi sâu.",
+    "Dùng bộ slide nào"));
 
   // ------------------------------------------------------------------ 3
   c.push(pageBreak());
@@ -184,13 +188,14 @@ function noiDung() {
      ["Đổi vai sang quản lý cửa hàng được nhắc tên", "Hộp thư cửa hàng có thẻ chuẩn bị nhận hàng"],
      ["Về vai hung.dieuphoi, đọc thẻ đề xuất của đơn quá ngày", "Thẻ Cho trợ lý post nhận hàng đơn …, hai nút Duyệt và Để người post"],
      ["Bấm Duyệt cho post nhận hàng", "Thẻ Đã post phiếu nhận, kèm link mở phiếu trong BC"],
-     ["Bấm link, xem phiếu nhận trong BC", "Phiếu nhận đã post, dòng mang đúng số lô Marou xuất"]],
+     ["Bấm link, xem phiếu nhận trong BC", "Phiếu nhận đã post, đúng mặt hàng và số lượng của đơn mua"]],
     ["Đây là vấn đề số một và số ba trong khảo sát: nhập đơn không kịp thời, và muốn tự động hoá hai chiều giữa hai công ty.",
      "Cách xử lý không đối xứng hai đầu, và đó là chủ ý. Bên Marou không có gì tự động, người kho vẫn post xuất kho như mọi ngày.",
      "Bên Dakao, Marou xuất kho trong ngày thì trợ lý báo ngay cho cửa hàng và Supply Chain để chuẩn bị nhận. Chỉ báo, không ghi gì.",
      "Qua ngày hôm sau mà vẫn chưa post nhận thì trợ lý nhắc lại, và xin phép: cho trợ lý post phiếu nhận thay không.",
      "Người duyệt bấm Duyệt thì Business Central mới post. Không ai duyệt thì không có gì được post.",
-     "Phiếu nhận mang đúng số lô Marou đã xuất, đọc từ sổ kho của công ty bên kia chứ không bịa."],
+     "Trợ lý không nghĩ ra số nào: số lượng lấy từ đơn mua. Mặt hàng nào bên mua có bật quản lý lô thì số lô cũng lấy từ sổ kho bên bán, "
+     + "còn không bật thì phiếu nhận post bình thường, không có lô. Bán lẻ theo nghiệp vụ không quản lý lô; bộ demo đang bật nên ảnh có lô."],
     ["Đây là loại đề xuất duy nhất mà việc duyệt làm Business Central post thật một chứng từ. Mọi loại khác chỉ tạo chứng từ nháp.",
      "Quyền post nằm trong permission set riêng tên NWV AGENT POST RCPT, phải gán tay. Không gán thì bấm Duyệt sẽ báo thiếu quyền chứ không âm thầm bỏ qua.",
      "Muốn diễn trọn vòng từ đầu thì làm thêm ba bước dưới đây trước khi vào màn này."]);
@@ -227,8 +232,9 @@ function noiDung() {
      "18/09 là ngày lớp tính toán trong Business Central chạy lần gần nhất, trợ lý neo theo đó chứ không neo theo ngày máy chạy. "
      + "Nếu neo theo ngày máy thì cửa sổ lịch sử bán và số ngày kể từ lần bán cuối đều lệch. Chứng từ mua bán thì vẫn mang ngày thật."],
     ["Sao bên bán lẻ Dakao cũng thấy số lô, trong khi bán lẻ không quản lý lô?",
-     "Hai đơn vị đang dùng chung một bộ dữ liệu mô phỏng, dữ liệu bán lẻ riêng cho Dakao nằm ở bước sau. "
-     + "Riêng việc phiếu nhận mang đúng lô Marou đã xuất thì là có chủ ý: nhờ vậy truy được cả chuỗi từ lô sản xuất tới lô đang nằm ở cửa hàng."],
+     "Vì hai đơn vị đang dùng chung một bộ dữ liệu mô phỏng, bên Dakao vẫn còn bật quản lý lô. Trợ lý xử lý số lô chỉ khi mặt hàng bên "
+     + "mua có bật; lúc đó nó lấy đúng lô bên bán đã xuất chứ không bịa, còn không bật thì phiếu nhận post bình thường không có lô. "
+     + "Có cho cửa hàng giữ lô hay không là quyết định của Marou, chưa chốt."],
     ["Sao email gửi từ một địa chỉ Gmail?",
      "Môi trường demo nằm trên tenant thử nghiệm không có license Exchange Online, nên POC gửi qua SMTP. "
      + "Khi triển khai thật, thư đi bằng hộp thư của Marou; đây là cấu hình một lần, không đụng vào code."],
