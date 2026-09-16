@@ -41,7 +41,7 @@ de chia se cho dev NaviWorld QA. `.gitignore` loai: `python/.env`, `runs/`, `.al
 va LS, ban quyen cua ho), goi `.app` va `out/`, `_to_delete/`, `Claude outputs/`, `demo-data/`, `demo-data-cronus/`, file zip,
 anh va app.json rac o thu muc goc. Truoc moi lan push kiem khong file nao chua gia tri secret cua `.env`.
 README.md la huong dan cho dev (cai dat, chay mo phong, noi BC, nhap key, bat AI, dung environment moi). Da thu clone sach,
-venv moi, `pip install -r requirements.txt`: 502 test qua, tro ly chay. `_LSAdapter_chua_build` da xoa (khong dung, trung id 70270).
+venv moi, `pip install -r requirements.txt`: test qua het, tro ly chay. `_LSAdapter_chua_build` da xoa (khong dung, trung id 70270).
 
 ## Cau truc thu muc
 
@@ -62,7 +62,7 @@ AL/Marou/
                             demo_data.py doc bo demo-data-nwv; make_fixtures.py dung mock cua tro ly
                             tu chinh bo do (xem "Mock cua tro ly").
   python/assistant/         tro ly cua C: skill, planner, replays, giao dien web, so chi phi
-  python/tests/             502 test, chay bang `python -m pytest` trong thu muc python
+  python/tests/             571 test, chay bang `python -m pytest` trong thu muc python
   tools/                    sinh du lieu demo
   demo-data-nwv/            bo du lieu sap import, kem README-import.md
   docs/                     tai lieu
@@ -253,7 +253,7 @@ trich no lam bang chung gui PM hay khach.
 
 ```
 cd python
-python -m pytest -q                      # 502 test
+python -m pytest -q                      # 571 test
 python tools_bc.py extensions | upload <app> | ws <Ham> '<json>'   # quan tri BC qua S2S: publish, goi web service
 python -m bc_agent.probe --json --sample 2000   # kiem S2S va do san sang du lieu
                                                 # probe luon goi BC that, khong phu thuoc BC_MODE
@@ -1761,6 +1761,87 @@ CONTOSO, khong co so sach that nao bi dung, va chinh Marou neu tu dong hoa inter
   chay rieng va chay lai ca bo deu qua.
 - Bay: `tools_bc.py ws <Ham> '<json>'` truyen tham so THEO TEN cua ham AL. Ham nhan `configJson: Text` thi payload phai la
   `{"configJson": "<chuoi json>"}`, khong phai chinh object do.
+
+### Nhan hang lien cong ty (A4), chay tron vong, 16/09/2026
+
+App dang chay tren NWV01: `NWV Marou Agent` **1.7.0.0**, `NWV Marou Demo Setup` **1.8.3.0**. 571 test.
+
+Dung chot cach xu ly, va no **khong doi xung hai dau**:
+  - Phia Marou (ban) khong co gi tu dong. Nguoi kho post xuat kho trong BC nhu moi ngay.
+  - Phia Dakao (mua): doi tac post xuat kho TRONG NGAY thi tro ly bao ngay qua chat va email cho cua hang nhan hang
+    va Supply Chain, chi bao, khong ghi gi. Qua ngay hom sau van chua post nhan thi nhac lai VA ghi mot de xuat
+    PostReceipt. Nguoi duyet bam Duyet thi BC moi post phieu nhan. Khong ai duyet thi khong co gi duoc post.
+
+**AL, app san pham:**
+- Codeunit 70113 `NWV IC Receipt`. `ShipmentStatus(configJson)` doc sang company doi tac bang `ChangeCompany`, noi hai
+  chung tu bang `Sales Shipment Header."External Document No."` = so don mua (Intercompany dien san). `PostReceipt`
+  post Receive kem dung so lo doi tac da xuat, doc trong Item Ledger Entry cua phieu giao hang ben do.
+- Ten company doi tac lay tu `IC Partner."Inbox Details"` khi `Inbox Type` = Database, co kiem `Company.Get` truoc
+  khi ChangeCompany.
+- Enum `NWV Proposal Action` them `PostReceipt` (9); bang de xuat them field 17 `Source Document No.`; API page them
+  `sourceDocumentNo`. Day la loai de xuat DUY NHAT ma viec duyet lam BC post that mot chung tu.
+- Permission set 70102 **`NWV AGENT POST RCPT`** tach rieng quyen post (`IncludedPermissionSets = "D365 PURCH DOC, POST"`),
+  khong gop vao NWV AGENT REVIEW. Ten permission set toi da 20 ky tu, nen khong dat duoc "NWV AGENT POST RECEIPT".
+- Web service `NWVAgentICService` (dang ky trong `NWV Replen. Service Install`).
+
+**AL, app demo:** `NWVDemoIntercompany.PostSalesShipmentOn(docNo, postingDateText)` post Ship thay nguoi kho Marou.
+Gan lo FEFO **hai luot**: luot dau chi lay lo con han theo Work Date, luot hai moi den lo qua han. Mot luot tho thi
+no xuat ngay mot lo da het han sang cua hang. Dong ban thieu Location Code thi lay kho cua chinh khach hang.
+
+**Python:** `assistant/skills/ic_nhan_hang.py`, intent `IC_SHIP`, policy **P-12** (PostReceipt luon can nguoi duyet),
+`POST /api/ic-nhan-hang`, nut demo `POST /api/demo/marou-xuat-kho` (khong truyen so don thi lay don dau tien doi tac
+chua xuat kho). Hai nut trong khay Dieu khien demo. `memory.proposals` them cot `source_doc`, va `Memory._them_cot_thieu`
+ALTER TABLE cho file cu vi bo nho gio nam tren dia.
+
+**Bon bay tra gia trong ngay nay:**
+1. **Truong ngan cat chuoi im lang.** `Your Reference` va `External Document No.` la Text[35], `Document No.` la Code[20].
+   Nhet `Format(Proposal."Proposal Id")` (GUID 38 ky tu) vao thi ra `AGENT {EAB7F98D-D8B3-4F2D-8248-6F36`. Dung
+   `Entry No.`. Da xay ra hai lan trong hai ngay, ca hai lan Dung nhin thay tren man hinh roi hoi.
+2. **Ngay neo cua tro ly khong phai ngay that.** `gw.today()` doc `As Of Date` cua bang ket qua (18/09 voi bo demo),
+   con chung tu mua ban post theo ngay that. Vong nhan hang lien cong ty so ngay xuat kho voi **dong ho tro ly**
+   (`mem.now()`), khong phai As Of Date, vi phieu giao hang mang ngay that. Lay nham thi buoc "bao trong ngay" khong
+   bao gio chay.
+3. **Them intent moi phai them vao `dinh_tuyen.TU_DU_LIEU`.** Thieu thi rule bi coi la khong chac, cau di sang model,
+   va model phan loai nham. "hang Marou da xuat kho chua" tung ra TRACKING. Cung loi voi NHAC_POST va WASTE_WHY.
+4. **Dakao van con lo tren he demo.** NWV-DAKAO la ban sao cua NWV nen 68 ma van co Item Tracking Code va 25 nghin dong
+   ILE, `TestNoEntriesExist` khong cho go ma lo ra nua. Nghia la BC VAN doi so lo khi post phieu nhan o Dakao. Tro ly
+   lay dung lo Marou da xuat thay vi bia, va **khong hien so lo trong tin va email gui cua hang**, chi hien o the nguoi
+   duyet. Dung bac cho nay: ban le khong quan ly lo.
+
+**Da chay that tren NWV01:** don HO106201 (Dakao) -> Sales Order S90014 (Marou) -> phieu giao hang 102043 ->
+de xuat PostReceipt -> Hung duyet -> phieu nhan 107110 tai S0010, cung lo. Va mot vong nua voi HO106202 -> S90015 ->
+phieu 102045 ngay 17/09.
+
+### Trang thai du lieu hai company, do ngay 16/09/2026
+
+Hai company van gan nhu la ban sao cua nhau, **chua tach theo nghiep vu**:
+
+| | NWV-MAROU | NWV-DAKAO |
+|---|---|---|
+| Item co Item Tracking Code | 68 | 68 |
+| Item Ledger Entry | 25.181, 13.582 dong co lo | 25.178, 13.579 dong co lo |
+| Dia diem co ton | 5 cua hang + W0003 | 5 cua hang + W0003 |
+| Inventory Health | 167 dong, 45/32/47/4/1/38 | 167 dong, 45/32/47/4/1/38 |
+
+Sai voi nghiep vu: Marou la nha san xuat ma van co 5 cua hang ban le voi 13.195 dong Sale; Dakao la ban le ma van
+quan ly lo va van co ton o kho trung tam. **Dung lai du lieu la viec sau demo**, va doi hoi xoa ILE roi post lai
+(mot buoi toi, xem muc "Post lai du lieu kho qua S2S"). Dung 16/09 chot: chua lam lai truoc demo, vi moi con so tren
+slide va trong tai lieu 09, 10, 13 deu do tren bo hien tai.
+
+### Bo slide 12, demo script 13, va guide cho du an AL/Demo, 16/09/2026
+
+- `docs/12 Marou POC - Kien truc va kich ban UC2 (slide).pptx`: **30 slide**, dung bang `docs/build_slide_uc2_v2.py`.
+  Them kich ban 16 "Nhan hang lien cong ty" va mot slide bang chung kem anh email. Danh muc 16 dong, 13 tinh nang AI.
+  Soat bang cach xuat PNG qua PowerPoint COM roi nhin tung to; da sua ba cho tran chu.
+  **Bay khi soat:** PowerPoint giu ban da mo trong bo nho, xuat PNG ra anh cu du file da ghi lai. Phai
+  `Stop-Process POWERPNT` roi mo mot BAN SAO cua file thi anh moi dung.
+- `docs/13 Marou POC - Demo script (noi bo).docx` (`build_13.js`, 14 trang): runbook thao tac, khac speaker note.
+  Muc 0 noi ve chuyen ngay demo khong trung ngay neo cua du lieu. **`ghiChu`, `luuY`, `table` cua lib_brand tra ve MOT
+  MANG**, phai `c.push(...table(...))`; push ca mang vao thi Word khong mo duoc file. Va `ghiChu` nhan mot CHUOI,
+  dua mang vao thi khoi hien ra trong.
+- `AL/Demo/CLAUDE.md` va `AL/Demo/tools/bc.py`: guide cho phien lam viec ben du an Demo, huong dan lam moi thu qua S2S
+  thay vi dieu khien Chrome. Da kiem tren NWV02 bang chinh Entra app nay: doc company, liet ke extension, tai symbol
+  deu chay. Entra app da duoc dang ky san trong NWV02, khong phai dang ky lai.
 
 ### Vai tro dia diem doc tu LS Central, app 1.5.2.0, 15/09/2026
 
