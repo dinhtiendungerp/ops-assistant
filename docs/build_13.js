@@ -27,6 +27,11 @@ function noiDung() {
     ["5 · Liên công ty khép vòng", "18 đến 21", "A4", "27 đến 34"],
     ["6 · Bất thường và chi phí", "22, 23", "AI, vận hành", "34 đến 38"],
   ], [4.6, 2.2, 3.0, 2.2]));
+  c.push(...ghiChu("Với AI đang bật, mọi câu trả lời dạng dữ liệu (dự báo, vì sao LS, CTKM, đơn quá hạn, nhà cung cấp, lô hết hạn) "
+    + "có phần lời do model viết: điều quan trọng nhất, một hai insight, việc nên làm. Bảng số thu gọn bên dưới, bấm “Dữ liệu code đã tra” "
+    + "để mở. Nhãn ở chân câu trả lời cho biết câu đó AI viết, câu mẫu, hay đọc thẳng từ dữ liệu. Mỗi con số model viết đều phải có trong "
+    + "bảng; sai một số là hệ thống giữ nguyên câu của rule, nên thỉnh thoảng một câu không có nhãn AI: đó là phép kiểm đã chặn, nói thẳng với khách.",
+    "AI kể lại kết quả tra cứu"));
   c.push(...ghiChu("Khi bị cắt giờ, giữ các bước 2, 3, 4, 7, 9, 16, 18, 20. Đó là một vòng trọn: AI tóm tắt, cửa hàng kêu hết hàng, LS "
     + "giải thích, người duyệt, AI phân tích đề xuất bất thường, AI chọn phương án, Marou xuất kho, trợ lý post phiếu nhận sau khi được duyệt.",
     "Bản 15 phút"));
@@ -160,9 +165,10 @@ function noiDung() {
     ["Độ chính xác đo bằng WAPE trên kỳ kiểm tra 28 ngày, học 84 ngày trước đó. Ngày hết hàng và ngày có sự kiện đã khai bị bỏ khỏi phép đo.",
      "Holt-Winters là mô hình thống kê chuỗi thời gian, chưa phải AI. Nói thẳng."]);
   buoc(11, "Dự báo đang sai ở đâu", "trang.sc · Dakao",
-    "Nút 11.",
-    "Câu trả lời: Holt-Winters sai 37,0%, trung bình 28 ngày 38,0%, trung bình cùng thứ 37,2%; 20 cặp vượt ngưỡng; sai số theo điểm bán và nhóm hàng.",
-    ["Sai nhiều nhất là bánh croissant: dự báo cao hơn bán thực tế vì cửa hàng hay hết hàng. Đó lại nối về câu chuyện Out of Stock ở bước 5."]);
+    "Nút 11. Câu: dự báo đang lệch nhiều ở nhóm hàng nào, và vì sao.",
+    "AI viết vài câu: nhóm BEVERAGES lệch nhất (88,9%), croissant dự báo cao hơn bán thực tế; bảng sai số theo điểm bán và nhóm hàng thu gọn bên dưới; số tổng Holt-Winters 37,0%, 74 cặp, 20 cặp cần xem.",
+    ["Sai nhiều nhất là bánh croissant: dự báo cao hơn bán thực tế vì cửa hàng hay hết hàng. Đó lại nối về câu chuyện Out of Stock ở bước 5.",
+     "Model đọc bảng sai số rồi kể lại; Holt-Winters là thống kê, chưa phải AI. Nói rõ hai lớp đó."]);
   buoc(12, "Choco bowl S0010: 7 ngày tới và CTKM", "trang.sc · Dakao",
     "Nút 12.",
     "Thẻ Dự báo Choco bowl tại S0010: dự báo 7 ngày tới đã ghi vào Retail Forecast Entry của LS (tổng 25,2), sự kiện KM-CHOCOBOWL-09 cộng 150% từ 23 đến 25/09.",
