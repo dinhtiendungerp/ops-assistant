@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><title>Marou Ops Assistant · kiến trúc tổng quan</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{width:1600px;background:#fff;font-family:"Segoe UI",Arial,sans-serif;color:#2a211c;padding:38px 46px 34px}
+  h1{font-size:30px;color:#6e1a1a;font-weight:700}
+  .sub{font-size:15px;color:#6b5d52;margin:7px 0 0}
+  .stage{position:relative;margin-top:26px;height:648px}
+  svg.link{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .lane{position:absolute;display:flex;align-items:center;gap:0}
+
+  /* nguoi dung va tro ly */
+  .node{position:absolute;text-align:center;width:230px}
+  .disc{width:132px;height:132px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;
+        font-size:58px;background:#fff;border:6px solid #cfc3b6}
+  .disc.agent{background:#8b1e1e;border-color:#f0d9d9;color:#fff}
+  .cap{margin-top:12px;display:inline-block;border-radius:999px;padding:7px 20px;font-size:17px;font-weight:600;
+       background:#f4efe9;color:#3f352e}
+  .cap.agent{background:#8b1e1e;color:#fff}
+  .note{margin-top:8px;font-size:13.5px;color:#7b6c60;line-height:1.4}
+
+  /* ba nhom */
+  .grp{position:absolute;left:720px;width:830px;border-radius:18px;padding:16px 20px 18px;background:#fff;border:2px solid}
+  .grp .ttl{position:absolute;top:-16px;left:24px;border-radius:999px;padding:5px 20px;font-size:16px;font-weight:700;color:#fff}
+  .grp h3{font-size:16.5px;margin:6px 0 10px;color:#241b16}
+  .pills{display:flex;flex-wrap:wrap;gap:9px}
+  .pill{border-radius:10px;padding:7px 14px;font-size:14.5px;line-height:1.25;background:#f7f4f0;color:#3f352e;border:1px solid #e3dad0}
+  .pill.hi{font-weight:700}
+  .g-doc{border-color:#bcd0e4}.g-doc .ttl{background:#23507d}.g-doc .pill{background:#eef4fa;border-color:#cfdeeb}
+  .g-nghi{border-color:#e6cb95}.g-nghi .ttl{background:#c9902a}.g-nghi .pill{background:#fdf6e8;border-color:#f0e0bd}
+  .g-lam{border-color:#e0b7b7}.g-lam .ttl{background:#8b1e1e}.g-lam .pill{background:#fbeeee;border-color:#eed3d3}
+  .g-nghi .pill.hi{background:#c9902a;color:#fff;border-color:#c9902a}
+  .chev{position:absolute;left:660px;font-size:27px;color:#b9a795;font-family:Arial,sans-serif}
+
+  .out{margin-top:20px;display:flex;align-items:stretch;gap:0;border-radius:16px;overflow:hidden;border:2px solid #23507d}
+  .out .who{background:#8b1e1e;color:#fff;padding:16px 22px;font-size:17px;font-weight:700;display:flex;align-items:center;gap:12px;flex:none;width:330px}
+  .out .arrow{background:#f4efe9;color:#8b1e1e;font-size:26px;display:flex;align-items:center;padding:0 16px;flex:none;font-family:Arial,sans-serif}
+  .out .docs{background:#eef4fa;padding:13px 22px;flex:1;display:flex;flex-direction:column;justify-content:center;gap:7px}
+  .out .docs .r{display:flex;gap:9px;flex-wrap:wrap}
+  .out .docs .d{background:#fff;border:1px solid #cfdeeb;border-radius:10px;padding:6px 14px;font-size:14.5px;color:#23507d;font-weight:600}
+  .out .docs small{font-size:13.5px;color:#5c6f82}
+
+  .foot{margin-top:18px;display:flex;gap:14px}
+  .foot div{flex:1;border-left:5px solid #8b1e1e;background:#faf7f4;border-radius:8px;padding:10px 16px;font-size:14.5px;line-height:1.45;color:#3f352e}
+  .foot b{display:block;font-size:15px;color:#6e1a1a;margin-bottom:2px}
+</style></head><body>
+
+<h1>Marou Ops Assistant · trợ lý vận hành làm việc thế nào</h1>
+<div class="sub">Một vòng: đọc số Business Central đã tính, suy luận trên đó, rồi đề xuất và nhắc. Chi tiết từng lớp nằm ở sơ đồ kiến trúc hệ thống.</div>
+
+<div class="stage">
+  <svg class="link" viewBox="0 0 1508 648" preserveAspectRatio="none">
+    <defs>
+      <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 1 L9 5 L0 9" fill="none" stroke="#a89584" stroke-width="1.6"/>
+      </marker>
+    </defs>
+    <g fill="none" stroke="#cfc3b6" stroke-width="2.5" marker-end="url(#ar)">
+      <path d="M196 252 H384"/>
+      <path d="M384 296 H196"/>
+      <path d="M548 272 C630 272 620 104 646 104"/>
+      <path d="M548 272 C630 272 620 330 646 330"/>
+      <path d="M548 272 C630 272 620 552 646 552"/>
+    </g>
+  </svg>
+
+  <div class="node" style="left:0;top:180px">
+    <div class="disc">👤</div>
+    <div class="cap">Người của Marou</div>
+    <div class="note">Quản lý cửa hàng, kho, điều phối,<br>Supply Chain, Retail Ops</div>
+  </div>
+
+  <div class="node" style="left:352px;top:180px">
+    <div class="disc agent">🤖</div>
+    <div class="cap agent">Trợ lý Marou</div>
+    <div class="note">NaviWorld host, bật tắt được,<br>có trần chi phí</div>
+  </div>
+
+  
+
+  <div class="grp g-doc" style="top:22px">
+    <div class="ttl">1 · Đọc</div>
+    <h3>Số liệu Business Central và LS đã tính, trợ lý không tính lại</h3>
+    <div class="pills">
+      <span class="pill">Sức khỏe tồn kho theo lô</span>
+      <span class="pill">Đề xuất bổ sung của LS</span>
+      <span class="pill">Dự báo và độ chính xác</span>
+      <span class="pill">Sổ kho, lô, hạn dùng</span>
+      <span class="pill">Đơn mua, nhà cung cấp</span>
+      <span class="pill">Chương trình khuyến mãi</span>
+    </div>
+  </div>
+
+  <div class="grp g-nghi" style="top:242px">
+    <div class="ttl">2 · Suy luận</div>
+    <h3>Ghép số với ngữ cảnh, rồi mới nói thành lời</h3>
+    <div class="pills" style="margin-bottom:9px">
+      <span class="pill">Bộ nhớ: việc đang chờ, đề xuất đã bị từ chối</span>
+      <span class="pill">Kiến thức: cách LS tính, ngưỡng Marou đặt, policy duyệt</span>
+    </div>
+    <div class="pills">
+      <span class="pill hi">Model chọn việc, chọn phương án, viết lời</span>
+      <span class="pill">Kiểm: con số nào không có trong dữ liệu thì bỏ, dùng câu mẫu</span>
+    </div>
+  </div>
+
+  <div class="grp g-lam" style="top:472px">
+    <div class="ttl">3 · Đề xuất và nhắc</div>
+    <h3>Việc đến tay đúng người, theo đến khi xong</h3>
+    <div class="pills">
+      <span class="pill">Ghi đề xuất vào BC, trạng thái Proposed</span>
+      <span class="pill">Gửi thẻ cho người duyệt</span>
+      <span class="pill">Nhắc qua chat và email</span>
+      <span class="pill">Tự quét mỗi sáng</span>
+      <span class="pill">Theo dõi đến khi chứng từ được post</span>
+    </div>
+  </div>
+</div>
+
+<div class="out">
+  <div class="who"><span style="font-size:24px">✓</span> Người của Marou bấm Duyệt</div>
+  <div class="arrow">›</div>
+  <div class="docs">
+    <div class="r">
+      <span class="d">Transfer Order</span><span class="d">Purchase Order</span><span class="d">Dòng Item Journal hủy, có lô</span>
+      <span class="d">Chặn mua thêm</span>
+    </div>
+    <small>Business Central tạo chứng từ ở trạng thái nháp, kèm số đề xuất. Trợ lý không release, không post.</small>
+  </div>
+</div>
+
+<div class="foot">
+  <div><b>Số do Business Central tính</b>Trợ lý đọc lại; model không tự đếm, không tự suy ra con số.</div>
+  <div><b>Người quyết định</b>Mọi việc ghi sổ đều qua policy và người duyệt của Marou.</div>
+  <div><b>Tắt AI vẫn chạy</b>Số liệu, dashboard và luồng duyệt không đổi, chỉ mất phần viết bằng lời.</div>
+</div>
+
+</body></html>

@@ -1705,6 +1705,12 @@ khong co dong Sale sau han; document no rong.
   chua post trong mot batch o company NWV-*; bat buoc ten batch (khong xoa ca Item Journal). Da xoa hai dong thu cua luong huy trong
   batch ITEM/AGENT cua NWV-MAROU (AGENT-{F8D9F9A9-AF40 va AGENT-95). Kiem lai: batch AGENT rong, khong ILE nao mang hai Document No.
   do, ton hai lo khong doi (33116 L260908-33116B 9, 33130 L260910-33130 17) vi dong chua post. Dong ITEM/NWVDEMO cua bo demo giu nguyen.
+- **Hai so do kien truc, dung hai cho khac nhau** (Hung dev de nghi 16/09: hinh chi tiet present cho nguoi moi thi mat thoi gian
+  nam bat, can them mot hinh tong quan tach bach thong tin). `kien-truc-tong-quan.html` + `.png` (1600x1025): mot vong
+  Nguoi dung <-> Tro ly -> 1 Doc, 2 Suy luan, 3 De xuat va nhac, roi bang "Nguoi cua Marou bam Duyet -> BC tao chung tu nhap".
+  Bo cuc theo mau Hung gui (User Request / AI Agent / Perception / Cognition / Action) nhung nhan va noi dung ANH XA sang he thong
+  that, khong bung nhan cua mau (khong co camera, audio, sensor). Mau theo bo tai lieu Marou de hai hinh noi duoc voi nhau:
+  xanh = doc tu BC, vang = phan AI, do = tro ly va hanh dong. Mo dau buoi present bang hinh nay, hinh chi tiet de phan sau.
 - So do kien truc `docs/kien-truc/kien-truc-chi-tiet.html` viet lai theo trang thai 16/09: hai company, email va lich nen, dai
   "AI o dau trong UC2" bon nhom 12 tinh nang, lop 3 co Purchase va WriteOff, 34 API page. Render: Chrome headless
   `--screenshot --window-size=1800,3400` roi cat day bang Pillow (lenh trong lich su phien, khong co script rieng).
