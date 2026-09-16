@@ -733,8 +733,8 @@ dùng khi không còn gì khác. Đây là lỗi tìm ra khi chạy thật, và 
 """)
 
 # ---- UC3 nhac post
-s = slide(pr, "KỊCH BẢN BỔ SUNG · UC3", "Nhắc post nhận hàng: việc Marou đang phải thuê người làm",
-          "Khảo sát: hàng mua về cửa hàng, chứng từ dồn tới cuối tháng mới post nhận.")
+s = slide(pr, "KỊCH BẢN BỔ SUNG · UC3", "Nhắc post nhận hàng",
+          "Việc Marou đang phải thuê người ngoài làm · Khảo sát: hàng mua về cửa hàng, chứng từ dồn tới cuối tháng mới post nhận.")
 the_ngang(s, [
     ("Trợ lý phát hiện", ["Đơn mua quá ngày nhận dự kiến mà còn số lượng chưa nhận",
                           "Gom theo số đơn và địa điểm nhận"], NAVY),
