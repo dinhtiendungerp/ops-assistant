@@ -229,6 +229,9 @@ function noiDung() {
     ["Sao bên bán lẻ Dakao cũng thấy số lô, trong khi bán lẻ không quản lý lô?",
      "Hai đơn vị đang dùng chung một bộ dữ liệu mô phỏng, dữ liệu bán lẻ riêng cho Dakao nằm ở bước sau. "
      + "Riêng việc phiếu nhận mang đúng lô Marou đã xuất thì là có chủ ý: nhờ vậy truy được cả chuỗi từ lô sản xuất tới lô đang nằm ở cửa hàng."],
+    ["Sao email gửi từ một địa chỉ Gmail?",
+     "Môi trường demo nằm trên tenant thử nghiệm không có license Exchange Online, nên POC gửi qua SMTP. "
+     + "Khi triển khai thật, thư đi bằng hộp thư của Marou; đây là cấu hình một lần, không đụng vào code."],
     ["Số liệu trong buổi này là thật chứ?",
      "Không. Đây là bộ dữ liệu mô phỏng do NaviWorld dựng trên danh mục thật của Marou, chạy trên môi trường demo. Nói câu này ít nhất một lần trong buổi."],
   ], [4.2, 7.8]));
