@@ -1705,6 +1705,13 @@ khong co dong Sale sau han; document no rong.
   chua post trong mot batch o company NWV-*; bat buoc ten batch (khong xoa ca Item Journal). Da xoa hai dong thu cua luong huy trong
   batch ITEM/AGENT cua NWV-MAROU (AGENT-{F8D9F9A9-AF40 va AGENT-95). Kiem lai: batch AGENT rong, khong ILE nao mang hai Document No.
   do, ton hai lo khong doi (33116 L260908-33116B 9, 33130 L260910-33130 17) vi dong chua post. Dong ITEM/NWVDEMO cua bo demo giu nguyen.
+- **Ba hinh, dung theo thu tu khi present** (Hung dev de nghi 16/09; xem muc duoi ve hinh tong quan):
+  1. `kien-truc-tong-quan.png` tro ly lam viec the nao (mot vong),
+  2. `ban-do-tinh-nang.png` ban do tinh nang: hai cot doc Bao mat va quyen / Van hanh, bay lop ngang Giao dien, Kiem soat,
+     Tro ly, Nang luc AI, Du lieu cua tro ly, Model, Business Central. **Chi ten tinh nang, khong mo ta** (Hung: "khong nen
+     co mo ta chi tiet feature o buoc nay"), de present bi han che thoi gian thi skip phan chi tiet ma nguoi nghe khong mat thong tin.
+     Bo cuc theo mau Supervity AI Agent Platform Hung gui.
+  3. `kien-truc-chi-tiet.png` chi tiet tung lop.
 - **Hai so do kien truc, dung hai cho khac nhau** (Hung dev de nghi 16/09: hinh chi tiet present cho nguoi moi thi mat thoi gian
   nam bat, can them mot hinh tong quan tach bach thong tin). `kien-truc-tong-quan.html` + `.png` (1600x1025): mot vong
   Nguoi dung <-> Tro ly -> 1 Doc, 2 Suy luan, 3 De xuat va nhac, roi bang "Nguoi cua Marou bam Duyet -> BC tao chung tu nhap".

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><title>Marou Ops Assistant · bản đồ tính năng</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{width:1600px;background:#fff;font-family:"Segoe UI",Arial,sans-serif;color:#1f1a16;padding:40px 46px 34px}
+  h1{font-size:33px;color:#6e1a1a;font-weight:700;letter-spacing:-.4px}
+  .sub{font-size:14.5px;color:#6b5d52;margin:8px 0 26px}
+  .wrap{display:flex;gap:20px;align-items:stretch}
+
+  /* hai cot doc */
+  .side{width:255px;border-radius:22px;background:#fff;border:1.5px solid #ddd3c8;padding:18px 18px 20px;position:relative;
+        box-shadow:-7px 0 0 -1px var(--c)}
+  .side h2{font-size:18px;display:flex;align-items:center;gap:10px;padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid #eae2d8}
+  .side h2 span{width:34px;height:34px;border-radius:50%;background:var(--c);color:#fff;display:flex;align-items:center;
+                justify-content:center;font-size:17px;flex:none}
+  .side li{list-style:none;font-size:15px;line-height:1.3;color:#2f2823;padding:7px 0 7px 22px;position:relative}
+  .side li:before{content:"▸";position:absolute;left:0;top:7px;color:var(--c);font-size:14px}
+
+  /* cac lop ngang */
+  .rows{flex:1;display:flex;flex-direction:column;gap:14px}
+  .lay{border-radius:18px;background:#fff;border:1.5px solid #ddd3c8;padding:15px 22px;display:flex;align-items:center;
+       box-shadow:0 7px 0 -1px var(--c)}
+  .lay .nm{font-size:17.5px;font-weight:700;width:225px;flex:none;color:#1f1a16;display:flex;align-items:center;gap:9px}
+  .lay .nm i{font-style:normal;font-size:19px}
+  .lay .it{flex:1;display:flex;align-items:center}
+  .lay .it span{flex:1;text-align:center;font-size:15.5px;color:#2f2823;padding:0 10px;border-left:1px solid #e6ddd3;line-height:1.28}
+  .lay .it span:first-child{border-left:none}
+  .lay .it span b{font-weight:600}
+  .ui{--c:#e08a3c}.gr{--c:#2f9ec4}.ag{--c:#8b1e1e}.ai{--c:#c9902a}.dt{--c:#d9738f}.lm{--c:#6f58a8}.bc{--c:#23507d}
+  .sec{--c:#5b6bbf}.ops{--c:#4c8a52}
+  .lay.ui .it span{font-weight:600}
+  .lay.ai .it span{font-weight:700}
+
+  .note{margin-top:22px;font-size:14px;color:#6b5d52;display:flex;gap:26px}
+  .note b{color:#6e1a1a}
+</style></head><body>
+
+<h1>Marou Ops Assistant · bản đồ tính năng</h1>
+<div class="sub">Tên tính năng theo lớp. Chi tiết từng tính năng nằm ở tài liệu UC2 và sơ đồ kiến trúc hệ thống.</div>
+
+<div class="wrap">
+  <div class="side sec">
+    <h2><span>🔒</span>Bảo mật và quyền</h2>
+    <ul>
+      <li>S2S OAuth 2.0 qua Entra app</li>
+      <li>Permission set riêng cho agent và người duyệt</li>
+      <li>Phân quyền theo vai và theo company</li>
+      <li>Agent không release, không post chứng từ</li>
+      <li>Nhật ký agent và lịch sử duyệt</li>
+      <li>Secret không nằm trong mã nguồn</li>
+      <li>Chỉ gửi cho model kết quả đã lọc</li>
+      <li>Chọn được nơi xử lý dữ liệu của model</li>
+    </ul>
+  </div>
+
+  <div class="side ops">
+    <h2><span>⚙</span>Vận hành</h2>
+    <ul>
+      <li>Lịch chạy nền mỗi sáng</li>
+      <li>Bộ nhớ trợ lý lưu trên đĩa</li>
+      <li>Bộ nhớ đệm cho lệnh đọc Business Central</li>
+      <li>Định tuyến rule trước, model sau</li>
+      <li>Bản đối chiếu độc lập bằng Python</li>
+      <li>Bộ test tự động</li>
+      <li>Đổi nguồn dữ liệu ngay trên giao diện</li>
+      <li>Chạy được trên dữ liệu mô phỏng</li>
+      <li>Publish và quản trị app qua S2S</li>
+    </ul>
+  </div>
+
+  <div class="rows">
+    <div class="lay ui">
+      <div class="nm"><i>🖥</i>Giao diện</div>
+      <div class="it">
+        <span>Trò chuyện</span><span>Thẻ việc có nút duyệt</span><span>Dashboard theo UC</span><span>Email</span><span>MCP cho agent ngoài</span>
+      </div>
+    </div>
+
+    <div class="lay gr">
+      <div class="nm"><i>🛡</i>Kiểm soát</div>
+      <div class="it">
+        <span>Policy và người duyệt</span><span>Kiểm số của model</span><span>Chống trùng đề xuất</span><span>Trần chi phí AI</span><span>Công tắc bật tắt AI</span>
+      </div>
+    </div>
+
+    <div class="lay ag">
+      <div class="nm"><i>🤖</i>Trợ lý</div>
+      <div class="it">
+        <span>Hỏi đáp</span><span>Brief và báo cáo</span><span>Đề xuất và duyệt</span><span>Nhắc và theo dõi</span><span>Truy xuất lô</span>
+      </div>
+    </div>
+
+    <div class="lay ai">
+      <div class="nm"><i>✨</i>Năng lực AI</div>
+      <div class="it">
+        <span>Tóm tắt</span><span>Tạo sinh nội dung</span><span>Khám phá và phân tích</span><span>Tự động hóa</span>
+      </div>
+    </div>
+
+    <div class="lay dt">
+      <div class="nm"><i>🗄</i>Dữ liệu của trợ lý</div>
+      <div class="it">
+        <span>API chỉ đọc của Business Central</span><span>Bộ nhớ và việc đang theo dõi</span><span>Kiến thức cách LS tính</span><span>Kịch bản đã duyệt</span><span>Sổ chi phí và sổ thư đi</span>
+      </div>
+    </div>
+
+    <div class="lay lm">
+      <div class="nm"><i>🧠</i>Model</div>
+      <div class="it">
+        <span>Azure OpenAI <b>gpt-4.1-mini</b></span><span>Trả lời theo JSON schema</span><span>Đếm token và ước tính chi phí</span><span>Đổi được sang model khác</span>
+      </div>
+    </div>
+
+    <div class="lay bc">
+      <div class="nm"><i>🏢</i>Business Central</div>
+      <div class="it">
+        <span>Lớp tính toán bằng AL</span><span>LS Central Replenishment</span><span>Bảng kết quả và ngưỡng</span><span>Đề xuất và chứng từ</span><span>Job Queue</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="note">
+  <span><b>Thứ tự trình bày:</b> trợ lý làm việc thế nào → bản đồ tính năng này → chi tiết từng nhóm tính năng.</span>
+  <span><b>Mức đáp ứng:</b> xem tài liệu UC2, mục đối chiếu theo use case của đề bài POC.</span>
+</div>
+
+</body></html>
