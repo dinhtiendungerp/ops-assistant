@@ -10,6 +10,8 @@ codeunit 70258 "NWV Demo Intercompany"
     var
         ThieuMaErr: Label 'Phai truyen minhLa va doiTac (ma IC Partner).';
         KhongPhaiICErr: Label 'Don mua %1 khong co IC Partner: vendor chua duoc gan IC Partner Code.', Comment = '%1 = so don';
+        KhongThayDonBanErr: Label 'Khong thay don ban nao trong company %2 mang External Document No. hoac so %1.', Comment = '%1 = so don, %2 = company';
+        KhongDuLoErr: Label 'Ton dang mo cua %1 tai %2 khong du de gan lo cho don ban %3.', Comment = '%1 = item, %2 = location, %3 = so don';
 
     procedure EnsurePartners(configJson: Text): Text
     var
@@ -91,8 +93,13 @@ codeunit 70258 "NWV Demo Intercompany"
             if CustPostingGroup.Get(Customer."Customer Posting Group") then
                 ICPartner."Receivables Account" := CustPostingGroup."Receivables Account";
             Customer."IC Partner Code" := DoiTac;
-            Customer.Modify();
+            // Kho xuat cho don ban intercompany. Dung chot 16/09/2026: lay W0003. Sales Header lay Location Code cua khach
+            // khi validate Sell-to Customer No., nen dat o day la moi don ban tu Dakao deu co kho xuat.
+            if GetText(Config, 'locationCode') <> '' then
+                Customer.Validate("Location Code", CopyStr(GetText(Config, 'locationCode'), 1, MaxStrLen(Customer."Location Code")));
+            Customer.Modify(true);
             Result.Add('customer', CustNo);
+            Result.Add('customerLocation', Customer."Location Code");
         end;
         if VendNo <> '' then begin
             Vendor.Get(VendNo);
@@ -140,6 +147,127 @@ codeunit 70258 "NWV Demo Intercompany"
         Result.Add('outboxTransactions', ICOutbox.Count());
         Result.WriteTo(Output);
         exit(Output);
+    end;
+
+    /// <summary>
+    /// Marou xuat kho: post Ship cho don ban ma Intercompany da tao tu don mua `docNo` cua Dakao.
+    ///
+    /// Tren he that day la viec cua nguoi kho Marou, bam Post Shipment trong BC. O day co ham nay de demo chay duoc mot
+    /// minh, va de khoi phai chon lo bang tay: mat hang cua Marou quan ly lo nen dong ban phai co Item Tracking truoc khi
+    /// post. Lo chon theo FEFO (han dung gan nhat truoc) tren chinh ton dang mo tai kho xuat, khong bia so lo.
+    /// </summary>
+    procedure PostSalesShipment(docNo: Text): Text
+    var
+        SalesHeader: Record "Sales Header";
+        SalesShptHeader: Record "Sales Shipment Header";
+        SalesPost: Codeunit "Sales-Post";
+        Result: JsonObject;
+        Output: Text;
+    begin
+        SalesHeader.SetRange("Document Type", SalesHeader."Document Type"::Order);
+        SalesHeader.SetRange("External Document No.", CopyStr(docNo, 1, MaxStrLen(SalesHeader."External Document No.")));
+        if not SalesHeader.FindLast() then begin
+            SalesHeader.Reset();
+            if not SalesHeader.Get(SalesHeader."Document Type"::Order, CopyStr(docNo, 1, MaxStrLen(SalesHeader."No."))) then
+                Error(KhongThayDonBanErr, docNo, CompanyName());
+        end;
+        GanLoFEFO(SalesHeader);
+        SalesHeader.Ship := true;
+        SalesHeader.Invoice := false;
+        SalesPost.Run(SalesHeader);
+        Result.Add('company', CompanyName());
+        Result.Add('salesOrder', SalesHeader."No.");
+        Result.Add('externalDocumentNo', SalesHeader."External Document No.");
+        SalesShptHeader.SetCurrentKey("Order No.");
+        SalesShptHeader.SetRange("Order No.", SalesHeader."No.");
+        if SalesShptHeader.FindLast() then begin
+            Result.Add('shipment', SalesShptHeader."No.");
+            Result.Add('postingDate', Format(SalesShptHeader."Posting Date", 0, 9));
+        end;
+        Result.WriteTo(Output);
+        exit(Output);
+    end;
+
+    local procedure GanLoFEFO(SalesHeader: Record "Sales Header")
+    var
+        SalesLine: Record "Sales Line";
+        Item: Record Item;
+    begin
+        SalesLine.SetRange("Document Type", SalesHeader."Document Type");
+        SalesLine.SetRange("Document No.", SalesHeader."No.");
+        SalesLine.SetRange(Type, SalesLine.Type::Item);
+        SalesLine.SetFilter("Outstanding Quantity", '>%1', 0);
+        if SalesLine.FindSet() then
+            repeat
+                if Item.Get(SalesLine."No.") then
+                    if Item."Item Tracking Code" <> '' then
+                        GanLoChoDongBan(SalesLine);
+            until SalesLine.Next() = 0;
+    end;
+
+    local procedure GanLoChoDongBan(SalesLine: Record "Sales Line")
+    var
+        ReservEntry: Record "Reservation Entry";
+        ConLai: Decimal;
+    begin
+        ReservEntry.SetSourceFilter(Database::"Sales Line", SalesLine."Document Type".AsInteger(), SalesLine."Document No.", SalesLine."Line No.", false);
+        if not ReservEntry.IsEmpty() then
+            exit;
+        ConLai := SalesLine."Qty. to Ship";
+        if ConLai <= 0 then
+            ConLai := SalesLine."Outstanding Quantity";
+        // Hai luot, khong mot luot. FEFO tho lay lo co han gan nhat, ma kho demo con lo da qua han nen luot dau tien
+        // xuat ngay mot lo het han sang cua hang (bat duoc 16/09/2026 voi don HO106201, lo L260908-33110B han 11/09).
+        // Luot 1 chi lay lo con han tinh theo Work Date; luot 2 moi den lo qua han, va chi khi khong con gi khac.
+        ConLai := LayLo(SalesLine, ConLai, StrSubstNo('%1..', Format(WorkDate(), 0, 9)));
+        if ConLai > 0 then
+            ConLai := LayLo(SalesLine, ConLai, StrSubstNo('<%1', Format(WorkDate(), 0, 9)));
+        if ConLai > 0 then
+            Error(KhongDuLoErr, SalesLine."No.", SalesLine."Location Code", SalesLine."Document No.");
+    end;
+
+    local procedure LayLo(SalesLine: Record "Sales Line"; ConLai: Decimal; LocHanDung: Text) ConThieu: Decimal
+    var
+        ItemLedgEntry: Record "Item Ledger Entry";
+        Qty: Decimal;
+    begin
+        ConThieu := ConLai;
+        ItemLedgEntry.SetCurrentKey("Item No.", Open, "Variant Code", Positive, "Location Code", "Expiration Date");
+        ItemLedgEntry.SetRange("Item No.", SalesLine."No.");
+        ItemLedgEntry.SetRange(Open, true);
+        ItemLedgEntry.SetRange(Positive, true);
+        ItemLedgEntry.SetRange("Location Code", SalesLine."Location Code");
+        ItemLedgEntry.SetFilter("Lot No.", '<>%1', '');
+        ItemLedgEntry.SetFilter("Remaining Quantity", '>%1', 0);
+        ItemLedgEntry.SetFilter("Expiration Date", LocHanDung);
+        ItemLedgEntry.SetAscending("Expiration Date", true);
+        if ItemLedgEntry.FindSet() then
+            repeat
+                Qty := ItemLedgEntry."Remaining Quantity";
+                if Qty > ConThieu then
+                    Qty := ConThieu;
+                if Qty > 0 then begin
+                    ChenLo(SalesLine, ItemLedgEntry."Lot No.", ItemLedgEntry."Expiration Date", Qty);
+                    ConThieu -= Qty;
+                end;
+            until (ItemLedgEntry.Next() = 0) or (ConThieu <= 0);
+    end;
+
+    local procedure ChenLo(SalesLine: Record "Sales Line"; LotNo: Code[50]; HanDung: Date; Qty: Decimal)
+    var
+        ForReservEntry: Record "Reservation Entry";
+        CreateReservEntry: Codeunit "Create Reserv. Entry";
+        ReservStatus: Enum "Reservation Status";
+    begin
+        ForReservEntry.Init();
+        ForReservEntry."Lot No." := LotNo;
+        CreateReservEntry.SetDates(0D, HanDung);
+        CreateReservEntry.CreateReservEntryFor(
+            Database::"Sales Line", SalesLine."Document Type".AsInteger(), SalesLine."Document No.", '', 0, SalesLine."Line No.",
+            SalesLine."Qty. per Unit of Measure", Qty, Qty * SalesLine."Qty. per Unit of Measure", ForReservEntry);
+        CreateReservEntry.CreateEntry(
+            SalesLine."No.", SalesLine."Variant Code", SalesLine."Location Code", SalesLine.Description,
+            0D, SalesLine."Shipment Date", 0, ReservStatus::Surplus);
     end;
 
     /// <summary>Dem chung tu IC de kiem sau khi gui: outbox ben gui, inbox va Sales Order ben nhan.</summary>

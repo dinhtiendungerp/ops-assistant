@@ -91,3 +91,25 @@ permissionset 70101 "NWV AGENT REVIEW"
         codeunit "NWV Agent Job Runner" = X,
         codeunit "NWV Agent Calc Service" = X;
 }
+
+/// <summary>
+/// Quyen post phieu nhan hang intercompany, tach rieng ra khoi NWV AGENT REVIEW (16/09/2026).
+/// Vi sao tach: moi loai de xuat khac chi TAO chung tu nhap, con PostReceipt thi POST that. Gan set nay cho ai la mot
+/// quyet dinh rieng, ky vao mot lan, khong di kem quyen duyet thong thuong. Khong gan thi de xuat PostReceipt bao thieu
+/// quyen ngay khi duyet, chu khong am tham khong lam gi.
+/// </summary>
+permissionset 70102 "NWV AGENT POST RCPT"
+{
+    Caption = 'NWV Agent - Post intercompany receipt';
+    Assignable = true;
+    IncludedPermissionSets = "D365 PURCH DOC, POST";
+
+    Permissions =
+        tabledata "NWV Agent Proposal" = RIMD,
+        tabledata "IC Partner" = R,
+        tabledata "IC Setup" = R,
+        tabledata "Sales Shipment Header" = R,
+        tabledata "Sales Shipment Line" = R,
+        codeunit "NWV IC Receipt" = X,
+        codeunit "NWV Agent Proposal Mgt." = X;
+}

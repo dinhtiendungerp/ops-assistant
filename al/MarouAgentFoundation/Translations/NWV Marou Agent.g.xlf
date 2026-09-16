@@ -128,6 +128,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Scenario - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 4267346559 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Chung tu co san ma de xuat nay noi toi, vi du so don mua can post nhan hang. Rong voi cac loai de xuat tao chung tu moi.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Source Document No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 2085949398 - Field 4267346559 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Source Document No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table NWV Agent Proposal - Field Source Document No. - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 2085949398 - Field 513339096 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Status</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -1388,6 +1398,11 @@
           <note from="Developer" annotates="general" priority="2">%1 = Proposal Id</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Agent Proposal Mgt. - NamedType MissingPurchaseDataErr</note>
         </trans-unit>
+        <trans-unit id="Codeunit 1753186934 - NamedType 2376018359" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Proposal %1 lacks the purchase order number (Source Document No.) to post a receipt for.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Proposal Id</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Agent Proposal Mgt. - NamedType MissingReceiptDataErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 1753186934 - NamedType 1059098542" size-unit="char" translate="yes" xml:space="preserve">
           <source>Proposal %1 lacks From/To Location or Quantity for a Transfer.</source>
           <note from="Developer" annotates="general" priority="2">%1 = Proposal Id</note>
@@ -1437,6 +1452,26 @@
           <source>Dự báo thấp hơn bán thực tế %1%.</source>
           <note from="Developer" annotates="general" priority="2">%1 = bias</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV Forecast Accuracy Calc - NamedType UnderTxt</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2690277867 - NamedType 1392668250" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item %1 on purchase order %2 needs lot numbers, but the partner shipment does not carry any.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = item, %2 = order</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV IC Receipt - NamedType MissingLotErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2690277867 - NamedType 1844529598" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Purchase order %1 has no intercompany partner company to read from.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = purchase order no.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV IC Receipt - NamedType NoPartnerErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2690277867 - NamedType 2966424376" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Partner company %1 has not posted a shipment for purchase order %2 yet.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = company, %2 = order no.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV IC Receipt - NamedType NoShipmentErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2690277867 - NamedType 1006522484" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Purchase order %1 has no quantity left to receive.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = purchase order no.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit NWV IC Receipt - NamedType NothingToReceiveErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 2410736051 - NamedType 1536342137" size-unit="char" translate="yes" xml:space="preserve">
           <source> Đã loại %1 ngày hết hàng khỏi phép tính.</source>
@@ -1958,6 +1993,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Proposal Action - EnumValue Markdown - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Enum 964245463 - EnumValue 4113027088 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Post Purchase Receipt</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum NWV Proposal Action - EnumValue PostReceipt - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Enum 964245463 - EnumValue 395510365 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Purchase</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -2012,6 +2052,11 @@
           <source>NWV Agent - LS Replenishment Read</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PermissionSet NWV AGENT LS READ - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PermissionSet 2749552693 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>NWV Agent - Post intercompany receipt</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PermissionSet NWV AGENT POST RCPT - Property Caption</note>
         </trans-unit>
         <trans-unit id="PermissionSet 2880086384 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>NWV Agent - Reviewer</source>

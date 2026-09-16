@@ -84,6 +84,8 @@ DEFAULT_RULES: list[Rule] = [
          description="Chuyển giữa các cửa hàng, hoặc giá trị lớn: cần người duyệt"),
     Rule("P-11", "StoreReplenishment", "Purchase", Mode.APPROVE,
          description="Đặt mua từ nhà cung cấp giao thẳng cửa hàng (Dakao mua từ Marou): người mua duyệt, BC tạo Purchase Order Open"),
+    Rule("P-12", "StoreReplenishment", "PostReceipt", Mode.APPROVE,
+         description="Post phiếu nhận hàng intercompany thay người: luôn cần người duyệt, vì đây là việc duy nhất trợ lý ghi thẳng vào sổ kho"),
     Rule("P-03", "StoreReplenishment", "Escalate", Mode.APPROVE,
          description="Kho hết hàng: báo người, trợ lý không tự xử lý được"),
     Rule("P-04", "InventoryHealth", "Markdown", Mode.APPROVE,

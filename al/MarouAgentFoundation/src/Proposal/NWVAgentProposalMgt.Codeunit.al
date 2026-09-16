@@ -11,6 +11,7 @@ codeunit 70102 "NWV Agent Proposal Mgt."
         MissingTransferDataErr: Label 'Proposal %1 lacks From/To Location or Quantity for a Transfer.', Comment = '%1 = Proposal Id';
         MissingPurchaseDataErr: Label 'Proposal %1 lacks Vendor No., To Location or Quantity for a Purchase.', Comment = '%1 = Proposal Id';
         MissingWriteOffDataErr: Label 'Proposal %1 lacks From Location or Quantity for a Write-off.', Comment = '%1 = Proposal Id';
+        MissingReceiptDataErr: Label 'Proposal %1 lacks the purchase order number (Source Document No.) to post a receipt for.', Comment = '%1 = Proposal Id';
         DefaultTemplateTok: Label 'ITEM', Locked = true;
         DefaultBatchTok: Label 'AGENT', Locked = true;
         DefaultReasonTok: Label 'AGENT-EXP', Locked = true;
@@ -65,6 +66,16 @@ codeunit 70102 "NWV Agent Proposal Mgt."
                     Proposal."Result Document No." := TransferNo;
                     Proposal.Status := Proposal.Status::Executed;
                 end;
+            Proposal."Action Type"::PostReceipt:
+                begin
+                    // Intercompany (16/09/2026): Marou da post xuat kho, don mua ben Dakao qua ngay van chua nhan.
+                    // Day la loai de xuat DUY NHAT post chung tu, va chi post khi nguoi duyet bam Duyet: so lo lay tu phieu
+                    // giao hang cua doi tac, khong bia. Thieu quyen post thi codeunit ben duoi bao loi, khong am tham bo qua.
+                    TransferNo := PostPurchaseReceipt(Proposal);
+                    Proposal."Result Document Type" := 'Purchase Receipt';
+                    Proposal."Result Document No." := TransferNo;
+                    Proposal.Status := Proposal.Status::Executed;
+                end;
             Proposal."Action Type"::WriteOff:
                 begin
                     // UC2 G2/A3 (16/09/2026): dong Item Journal (Negative Adjmt.) CHUA POST, co lo va reason code. Ke toan
@@ -80,6 +91,17 @@ codeunit 70102 "NWV Agent Proposal Mgt."
                 Proposal.Status := Proposal.Status::Executed;
         end;
         Proposal.Modify(true);
+    end;
+
+    local procedure PostPurchaseReceipt(Proposal: Record "NWV Agent Proposal"): Code[20]
+    var
+        PurchHeader: Record "Purchase Header";
+        ICReceipt: Codeunit "NWV IC Receipt";
+    begin
+        if Proposal."Source Document No." = '' then
+            Error(MissingReceiptDataErr, Proposal."Proposal Id");
+        PurchHeader.Get(PurchHeader."Document Type"::Order, Proposal."Source Document No.");
+        exit(ICReceipt.PostReceipt(PurchHeader));
     end;
 
     local procedure CreateWriteOffJournalLine(Proposal: Record "NWV Agent Proposal"): Code[20]
@@ -182,7 +204,10 @@ codeunit 70102 "NWV Agent Proposal Mgt."
         // In-Transit Code: BC tu dien tu Transfer Route (from/to). Neu Marou chua setup Transfer Route
         // thi nguoi kho dien tay truoc khi release; POC khong bia gia tri.
         TransferHeader.Validate("Posting Date", Today());
-        TransferHeader."External Document No." := CopyStr('AGENT ' + Format(Proposal."Proposal Id"), 1, MaxStrLen(TransferHeader."External Document No."));
+        // Entry No. chu khong phai Proposal Id. Proposal Id la GUID 38 ky tu, ma External Document No. chi co 35, nen no ra
+        // 'AGENT {EAB7F98D-D8B3-4F2D-8248-6F36': khong doc duoc, khong tra nguoc ve de xuat duoc, va khong chac duy nhat.
+        // Dung bat duoc 16/09/2026 tren Your Reference cua don mua, cung mot loi voi Document No. cua chung tu huy.
+        TransferHeader."External Document No." := CopyStr('AGENT ' + Format(Proposal."Entry No."), 1, MaxStrLen(TransferHeader."External Document No."));
         TransferHeader.Modify(true);
 
         TransferLine.Init();
@@ -212,7 +237,7 @@ codeunit 70102 "NWV Agent Proposal Mgt."
         PurchaseHeader.Validate("Location Code", Proposal."To Location Code");
         PurchaseHeader.Validate("Order Date", WorkDate());
         PurchaseHeader.Validate("Posting Date", WorkDate());
-        PurchaseHeader."Your Reference" := CopyStr('AGENT ' + Format(Proposal."Proposal Id"), 1, MaxStrLen(PurchaseHeader."Your Reference"));
+        PurchaseHeader."Your Reference" := CopyStr('AGENT ' + Format(Proposal."Entry No."), 1, MaxStrLen(PurchaseHeader."Your Reference"));
         PurchaseHeader.Modify(true);
 
         PurchaseLine.Init();

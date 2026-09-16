@@ -252,12 +252,17 @@ def on_approve(asst, user, prop, payload) -> list[Delivery]:
     to_no = res.get("resultDocumentNo", "")
     prop.update({"status": "Executed", "approver": user["user_id"], "approved_at": asst.mem.now().isoformat(), "result_doc": to_no})
     asst.mem.save_proposal(prop)
-    item_desc = asst.gw.find_item(prop["item_no"])["description"]
+    it = asst.gw.find_item(prop["item_no"]) or {}
+    item_desc = it.get("description") or prop.get("item_desc") or prop["item_no"]
     if prop.get("action_type") == "WriteOff" and res.get("resultDocumentType") == "Item Journal Line" and to_no:
         # UC2 G2/A3 (16/09/2026): BC tao dong Item Journal nhap; tro ly soan bien ban, email bo phan post, theo doi den khi post.
         from . import uc2_huy
         prop["item_desc"] = prop.get("item_desc") or item_desc
         return uc2_huy.on_duyet_huy(asst, user, prop, res)
+    if prop.get("action_type") == "PostReceipt" or res.get("resultDocumentType") == "Purchase Receipt":
+        # Intercompany (16/09/2026): day la loai de xuat DUY NHAT ma viec duyet lam BC post that su mot chung tu.
+        from . import ic_nhan_hang
+        return ic_nhan_hang.on_duyet_post(asst, user, prop, res)
     if not to_no:
         # De xuat khong sinh chung tu chuyen hang (chan mua, giam gia, ra soat): khong bao kho.
         label = res.get("resultDocumentType", prop["action_type"])

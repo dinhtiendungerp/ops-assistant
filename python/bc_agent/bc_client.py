@@ -140,14 +140,16 @@ class BCClient:
         self._raise(r)
         return r.json()
 
-    def web_service(self, service: str, fn: str, body: dict[str, Any] | None = None, timeout: int = 300) -> Any:
+    def web_service(self, service: str, fn: str, body: dict[str, Any] | None = None, timeout: int = 300,
+                    company: str = "") -> Any:
         """Goi unbound action ODataV4 cua mot codeunit web service: POST .../ODataV4/<service>_<fn>?company=<ten>.
 
         Dung cho viec chi lam duoc bang AL, vi du gui Purchase Order sang company doi tac (Intercompany, 16/09/2026).
         Ham AL tra Text JSON nen thu giai; khong phai JSON thi tra nguyen chuoi."""
         from urllib.parse import quote
         root = f"{API_ROOT}/{self.s.bc_environment}/ODataV4"
-        r = requests.post(f"{root}/{service}_{fn}?company={quote(self.s.bc_company_name)}",
+        # company: goi sang company khac, dung khi tro ly o Dakao can bam mot nut demo ben Marou (16/09/2026).
+        r = requests.post(f"{root}/{service}_{fn}?company={quote(company or self.s.bc_company_name)}",
                           headers=self._headers(), json=body or {}, timeout=timeout)
         self._raise(r)
         val = r.json().get("value")

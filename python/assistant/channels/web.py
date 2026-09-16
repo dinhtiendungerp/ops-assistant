@@ -266,6 +266,45 @@ def quet_uc2_ngay(x: QuetIn):
     return {"delivered": [d.user_id for d in out]}
 
 
+class ICIn(BaseModel):
+    user: str = ""
+    doc_no: str = ""
+    chay_lai: bool = False
+
+
+@app.post("/api/ic-nhan-hang")
+def ic_nhan_hang_quet(x: ICIn):
+    """Intercompany phia nguoi mua: bao don doi tac vua xuat kho, nhac don qua ngay chua post nhan, va ghi de xuat
+    PostReceipt cho nhung don do. Xem skills/ic_nhan_hang.py."""
+    from ..skills import ic_nhan_hang
+    a = asst(x.user or None)
+    u = a.mem.user(x.user) if x.user else None
+    out = a._deliver(ic_nhan_hang.quet(a, u, bat_buoc=x.chay_lai))
+    return {"delivered": [d.user_id for d in out]}
+
+
+@app.post("/api/demo/marou-xuat-kho")
+def demo_marou_xuat_kho(x: ICIn):
+    """Chi demo: bam thay nguoi kho Marou, post xuat kho cho don ban ma Intercompany da tao tu don mua `doc_no`.
+    Tren he that day la thao tac cua nguoi kho ben Marou trong BC; tro ly khong bao gio goi duong nay."""
+    from ..skills import ic_nhan_hang
+    a = asst(x.user or None)
+    if not x.doc_no:
+        raise HTTPException(status_code=400, detail="Thiếu số đơn mua.")
+    doi_tac = ""
+    for d in a.gw.ic_giao_hang(ic_nhan_hang.NHA_CUNG_CAP_IC):
+        if d["purchaseOrder"] == x.doc_no:
+            doi_tac = d.get("partnerCompany") or ""
+    try:
+        kq = a.gw.post_giao_hang_doi_tac(x.doc_no, doi_tac)
+    except NotImplementedError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    a.gw.quen_nho()
+    u = a.mem.user(x.user) if x.user else None
+    out = a._deliver(ic_nhan_hang.quet(a, u, bat_buoc=True))
+    return {"ket_qua": kq, "delivered": [d.user_id for d in out]}
+
+
 @app.post("/api/demo/post-huy")
 def demo_post_huy(x: QuetIn):
     """Chi mo phong: gia lap ke toan da post cac dong Item Journal huy, de xem vong A3 khep lai. Tren BC that thi post trong Item Journal."""

@@ -134,6 +134,15 @@ def quet(asst: Any, nguoi: dict[str, Any] | None = None, bat_buoc: bool = False)
         except Exception as exc:
             log.warning("Quet: bao cao tuan hong: %s", exc)
 
+    # 4c. Intercompany: doi tac da xuat kho chua, don nao qua ngay van chua post nhan (16/09/2026).
+    try:
+        from . import ic_nhan_hang
+        ic_out = ic_nhan_hang.quet(asst)
+        out += ic_out
+        tom_tat["ic"] = len(ic_out)
+    except Exception as exc:
+        log.warning("Quet: vong intercompany hong: %s", exc)
+
     # 5. Viec theo doi (A3 va chuyen hang).
     try:
         td_out = asst.run_followups()          # da ghi hop thu roi (meta da_ghi), gop vao de nguoi bam nut thay
@@ -146,7 +155,8 @@ def quet(asst: Any, nguoi: dict[str, Any] | None = None, bat_buoc: bool = False)
     cau = (f"Quét sáng xong: {tom_tat['de_xuat_huy']} đề xuất hủy mới cho lô hết hạn, {tom_tat['phuong_an']} phương án cho lô cận date, "
            f"brief gửi {tom_tat['brief']} người" + (f", email {tom_tat['email']}" if tom_tat["email"] else "")
            + (f", nhắc {tom_tat['nhac_duyet']} đề xuất chờ duyệt" if tom_tat["nhac_duyet"] else "")
-           + (f", {tom_tat['theo_doi']} tin theo dõi" if tom_tat["theo_doi"] else "") + ".")
+           + (f", {tom_tat['theo_doi']} tin theo dõi" if tom_tat["theo_doi"] else "")
+           + (f", {tom_tat['ic']} tin về hàng intercompany" if tom_tat.get("ic") else "") + ".")
     nhan = {u["user_id"] for u in asst.mem.users_by_role("admin")} | ({nguoi["user_id"]} if nguoi else set())
     for uid in sorted(nhan):
         out.append(Delivery(uid, cau, skill=SKILL, ref="quet-uc2"))

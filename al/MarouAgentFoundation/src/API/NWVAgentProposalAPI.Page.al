@@ -35,6 +35,7 @@ page 70113 "NWV Agent Proposal API"
                 field(toLocationCode; Rec."To Location Code") { }
                 field(vendorNo; Rec."Vendor No.") { }
                 field(quantity; Rec.Quantity) { }
+                field(sourceDocumentNo; Rec."Source Document No.") { }
                 field(referenceKey; Rec."Reference Key") { }
                 field(rationale; Rec.Rationale) { }
                 field(evidenceJson; EvidenceText)

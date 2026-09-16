@@ -302,7 +302,7 @@ txt(s, 1.20, 7.3, 14.95, 0.95,
     ["Mọi chữ số model viết phải có trong dữ liệu code đưa; mọi dòng hoặc phương án model chọn phải nằm trong danh sách code đưa.",
      "Sai một điều là thay bằng câu mẫu, thẻ ghi rõ “Người soạn: mẫu có sẵn” kèm lý do. Tắt AI thì tính năng vẫn chạy bằng mẫu."],
     18, False, BODY, space=3)
-bang_nguon(s, "Còn chờ khảo sát Marou: G3 chương trình giảm giá cận date, G4 và A4 thu hồi lô, S4 tóm tắt tin báo sự cố, D5 học ngưỡng.")
+bang_nguon(s, "Mỗi đầu ra AI đều ghi người soạn và nguồn số liệu; người đọc kiểm lại được ngay trên màn hình.")
 note(s, """
 Đây là slide trả lời thẳng câu hỏi khách chắc chắn hỏi: "AI nằm ở đâu, hay chỉ là phần mềm thường?"
 Bốn nhóm này là kim chỉ nam đã chốt. Đọc lướt tên 12 tính năng, đừng giải thích từng cái ở đây vì các slide sau sẽ diễn.
@@ -507,7 +507,7 @@ Cách tính bây giờ: bán được tại chỗ bằng tốc độ bán nhân 
 Ví dụ thật trên slide: Choco pillar tại một cửa hàng, 470 cái, còn 25 ngày, bán 10,8 một ngày. Giữ tại chỗ thì dư 199. Cửa hàng bán nhanh
 hơn nhận được nhiều hơn số đó, nên chuyển 199 là hết dư, cứu được toàn bộ giá trị.
 Model được phép chọn khác gợi ý của code nếu nêu được lý do trên số đã có; nếu nó viết ra số lạ thì hệ thống bỏ và dùng gợi ý của code.
-Mức giảm giá chưa có, vì Marou chưa cho quy tắc; đó là câu hỏi khảo sát G3.
+Mức giảm giá chưa có vì chưa có quy tắc của Marou; nếu khách hỏi thì nói đó là thứ cần chốt cùng Supply Chain, đừng nêu mã tính năng nội bộ.
 """)
 
 kb("09", "Đề xuất và người duyệt", "Supply Chain và điều phối · có trong POC",
@@ -724,8 +724,8 @@ the_ngang(s, [
     ("Đã chạy thật", ["Sức khỏe tồn kho theo lô, sáu tầng", "Truy xuất lô", "Đề xuất và người duyệt, ba loại chứng từ nháp",
                       "12 tính năng AI trong bốn nhóm", "Hai company, mua thẳng từ Marou",
                       "Intercompany: đơn mua thành đơn bán bên kia", "Email và lịch chạy nền"], GREEN),
-    ("Cần dữ liệu hoặc quy trình của Marou", ["Mức giảm giá cho lô cận date", "Quy trình thu hồi lô", "Kênh Teams thay cho chat web",
-                                              "Phiếu kiểm kê và reason code", "Ngưỡng cận date theo nhóm hàng"], AMBER),
+    ("Đang mở rộng", ["Chương trình giảm giá cho lô cận date", "Điều phối thu hồi lô nhiều bước", "Kênh Teams thay cho chat web",
+                      "Ngưỡng cận date theo nhóm hàng"], AMBER),
     ("Cần Marou quyết", ["Có cho tự động post hai đầu không", "Kho xuất hàng bên Marou cho đơn bán",
                          "Có cho trợ lý post chứng từ không", "Vùng xử lý dữ liệu của model", "Ngưỡng và policy chính thức"], RED),
 ], t=2.9, h=3.6)

@@ -20,6 +20,9 @@ codeunit 70276 "NWV Replen. Service Install"
             TenantWebService."Object Type"::Codeunit, Codeunit::"NWV Replen. Service", 'NWVReplenService', true);
         WebServiceManagement.CreateTenantWebService(
             TenantWebService."Object Type"::Codeunit, Codeunit::"NWV Agent Calc Service", 'NWVAgentCalcService', true);
+        // Intercompany phia nguoi mua: tro ly doc phieu giao hang cua company doi tac (16/09/2026).
+        WebServiceManagement.CreateTenantWebService(
+            TenantWebService."Object Type"::Codeunit, Codeunit::"NWV IC Receipt", 'NWVAgentICService', true);
     end;
 }
 

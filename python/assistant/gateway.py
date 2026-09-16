@@ -47,6 +47,7 @@ class BCGateway:
         self.is_mock = client.__class__.__name__ == "MockBCClient"
         self._transfers: dict[str, dict[str, Any]] = {}
         self._journal: dict[str, dict[str, Any]] = {}     # mock: dong Item Journal nhap do duyet de xuat Write-off sinh ra (UC2 G2/A3)
+        self._ic: dict[str, dict[str, Any]] = {}          # mock: don mua intercompany va phieu giao hang ben doi tac (16/09/2026)
         self._to_seq = 1022
         self._sales_cache: list[dict[str, Any]] | None = None
         self._as_of = None
@@ -326,13 +327,14 @@ class BCGateway:
     # ---------- ghi
     def create_proposal(self, *, scenario: str, action_type: str, item_no: str, from_loc: str, to_loc: str,
                         quantity: float, reference_key: str, rationale: str, priority: int, evidence: dict[str, Any],
-                        run_id: str, model_name: str, lot_no: str = "", vendor_no: str = "") -> dict[str, Any]:
+                        run_id: str, model_name: str, lot_no: str = "", vendor_no: str = "", source_doc: str = "") -> dict[str, Any]:
         # lot_no: de xuat theo lo (huy, giam gia lo can date) phai mang so lo. Truoc 14/09/2026 cho nay ghi cung "",
         # nen de xuat huy 33100 tai W0003 len BC khong co lo, nguoi duyet khong biet huy lo nao. Dung bat duoc.
         # vendor_no: de xuat Purchase (Dakao mua thang tu Marou, 15/09/2026); duyet thi BC tao Purchase Order.
         body = {
             "scenario": scenario, "actionType": action_type, "itemNo": item_no, "lotNo": (lot_no or "")[:50],
             "fromLocationCode": from_loc, "toLocationCode": to_loc, "quantity": quantity, "vendorNo": (vendor_no or "")[:20],
+            "sourceDocumentNo": (source_doc or "")[:20],
             "referenceKey": reference_key, "rationale": rationale[:2000], "priorityScore": int(priority),
             "evidenceJson": json.dumps(evidence, ensure_ascii=False, default=str), "modelName": model_name[:50], "runId": run_id[:50],
         }
@@ -358,7 +360,8 @@ class BCGateway:
                     "itemNo": "item_no", "fromLocationCode": "from_loc", "toLocationCode": "to_loc",
                     "resultDocumentNo": "result_doc", "resultDocumentType": "result_doc_type",
                     "reviewedBy": "approver", "reviewedAt": "approved_at", "createdAt": "created_at",
-                    "referenceKey": "reference_key", "lotNo": "lot_no", "vendorNo": "vendor_no"}
+                    "referenceKey": "reference_key", "lotNo": "lot_no", "vendorNo": "vendor_no",
+                    "sourceDocumentNo": "source_doc"}
 
     def de_xuat(self, top: int = 500) -> list[dict[str, Any]]:
         """De xuat doc tu BC, da doi ten truong cho khop bo nho tro ly.
@@ -400,11 +403,30 @@ class BCGateway:
             # Mock: gia lap Purchase Order nhu BC that (codeunit NWV Agent Proposal Mgt. tao PO Open cho vendor cua de xuat)
             self._to_seq += 1
             po_no = f"PO-{self._to_seq}"
+            # Don mua intercompany: ghi vao bo don gia lap de vong "doi tac da xuat kho chua" chay duoc tren mock.
+            self.gia_lap_don_ic(po_no, prop["itemNo"], prop.get("itemDescription") or prop["itemNo"],
+                                float(prop["quantity"]), prop["toLocationCode"], prop.get("vendorNo") or "MAROU")
             for r in self.client.data["agentProposals"]:
                 if r["id"] == bc_id:
                     r.update({"status": "Executed", "reviewedBy": approver_bc_user, "reviewComment": comment,
                               "resultDocumentType": "Purchase Order", "resultDocumentNo": po_no})
             return {"resultDocumentNo": po_no, "resultDocumentType": "Purchase Order", "status": "Executed"}
+        if prop["actionType"] == "PostReceipt":
+            # Mock: gia lap codeunit NWV IC Receipt post Receive cho don mua, kem so lo doi tac da xuat.
+            self._to_seq += 1
+            rcpt = f"RCPT-{self._to_seq}"
+            d = self._ic.get(prop.get("sourceDocumentNo") or "")
+            if d:
+                for l in d["lines"]:
+                    l["received"] = l["quantity"]
+                    l["outstanding"] = 0
+                d["received"], d["outstanding"] = d["quantity"], 0
+                d["purchaseReceipt"] = rcpt
+            for r in self.client.data["agentProposals"]:
+                if r["id"] == bc_id:
+                    r.update({"status": "Executed", "reviewedBy": approver_bc_user, "reviewComment": comment,
+                              "resultDocumentType": "Purchase Receipt", "resultDocumentNo": rcpt})
+            return {"resultDocumentNo": rcpt, "resultDocumentType": "Purchase Receipt", "status": "Executed"}
         if prop["actionType"] == "WriteOff":
             # Mock: gia lap codeunit NWV Agent Proposal Mgt. 1.6.0.0 tao dong Item Journal (Negative Adjmt.) CHUA POST,
             # Document No. AGENT-<id>, lo va reason code. Ke toan post; tro ly theo doi bang ILE cung Document No.
@@ -534,8 +556,52 @@ class BCGateway:
             so = f"SO-{self._to_seq}"
             self._transfers[so] = {"no": so, "status": "Released", "shipped": False, "received": False,
                                    "itemNo": "", "quantity": 0, "toLocationCode": "", "fromLocationCode": ""}
+            if doc_no in self._ic:
+                self._ic[doc_no]["salesOrder"] = so
             return {"purchaseOrder": doc_no, "status": "Released", "icPartner": "MAROU", "salesOrder": so}
         return self.client.web_service("NWVDemoIntercompany", "SendPurchaseOrder", {"docNo": doc_no})
+
+    # ---------- Intercompany phia nguoi mua: doi tac da xuat kho chua (16/09/2026)
+    def ic_giao_hang(self, vendor_no: str = "") -> list[dict[str, Any]]:
+        """Don mua intercompany cua company nay, kem phieu giao hang ben company doi tac (neu doi tac da post).
+
+        Live: web service `NWVAgentICService.ShipmentStatus`, doc sang company kia bang ChangeCompany. Ham chi doc.
+        Mock: dung bo don gia lap trong `self._ic`, do nut demo dung len."""
+        if self.is_mock:
+            return [dict(d) for d in self._ic.values() if not vendor_no or d.get("vendorNo") == vendor_no]
+        kq = self.client.web_service("NWVAgentICService", "ShipmentStatus",
+                                     {"configJson": json.dumps({"vendorNo": vendor_no}, ensure_ascii=False)})
+        return (kq or {}).get("docs", []) if isinstance(kq, dict) else []
+
+    def gia_lap_don_ic(self, doc_no: str, item_no: str, description: str, quantity: float, location: str,
+                       vendor_no: str = "MAROU", sales_order: str = "") -> dict[str, Any]:
+        """Chi mock: dung mot don mua intercompany de demo vong bao xuat kho va post nhan hang."""
+        if not self.is_mock:
+            raise NotImplementedError("Chỉ mô phỏng. Trên Business Central đơn mua do duyệt đề xuất Purchase sinh ra.")
+        d = {"purchaseOrder": doc_no, "vendorNo": vendor_no, "vendorName": "Marou Chocolate (san xuat)", "icPartner": vendor_no,
+             "partnerCompany": "NWV-MAROU", "status": "Released", "orderDate": self.today().strftime("%Y-%m-%d"),
+             "expectedReceiptDate": "", "locationCode": location, "quantity": quantity, "outstanding": quantity, "received": 0.0,
+             "salesOrder": sales_order,
+             "lines": [{"lineNo": 10000, "itemNo": item_no, "description": description, "locationCode": location,
+                        "quantity": quantity, "outstanding": quantity, "received": 0.0, "unitOfMeasureCode": "PCS"}],
+             "shipment": {"posted": False}}
+        self._ic[doc_no] = d
+        return d
+
+    def post_giao_hang_doi_tac(self, doc_no: str, company: str = "") -> dict[str, Any]:
+        """Nut demo "Marou da xuat kho": post Ship cho don ban ben company doi tac. Tren he that day la viec cua nguoi kho
+        Marou bam trong BC, tro ly khong bao gio goi. O day chi de demo chay duoc mot minh."""
+        if self.is_mock:
+            d = self._ic[doc_no]
+            d["shipment"] = {"posted": True, "no": f"SHP-{len(self._ic)}{doc_no[-3:]}",
+                             "postingDate": self.today().strftime("%Y-%m-%d"), "salesOrder": d.get("salesOrder", ""),
+                             "sellToCustomerNo": "DAKAO", "locationCode": "W0003", "shipmentCount": 1,
+                             "lines": [{"itemNo": l["itemNo"], "description": l["description"], "quantity": l["quantity"],
+                                        "lots": [{"lotNo": f"L-{l['itemNo']}", "quantity": l["quantity"], "expirationDate": ""}]}
+                                       for l in d["lines"]]}
+            return {"company": company or "NWV-MAROU", "salesOrder": d.get("salesOrder", ""), "shipment": d["shipment"]["no"],
+                    "postingDate": d["shipment"]["postingDate"]}
+        return self.client.web_service("NWVDemoIntercompany", "PostSalesShipment", {"docNo": doc_no}, company=company)
 
     def transfer(self, to_no: str) -> dict[str, Any] | None:
         if self.is_mock:

@@ -17,6 +17,8 @@ PAGE = {
     "item_journal": 40,                  # Item Journal, loc theo Journal Batch Name (dong huy nhap do duyet de xuat Write-off)
     "purchase_order": 50,
     "purchase_lines": 518,
+    "purchase_receipt": 138,             # Posted Purchase Receipt (phieu nhan do de xuat PostReceipt sinh ra)
+    "sales_shipment": 130,               # Posted Sales Shipment, chung tu xuat kho ben company ban
     "lot_info_list": 6508,
     "agent_proposals": 70101,
     "inventory_health": 70102,

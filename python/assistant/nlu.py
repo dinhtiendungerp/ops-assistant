@@ -37,7 +37,7 @@ log = logging.getLogger(__name__)
 INTENT_SCHEMA = {
     "type": "object",
     "properties": {
-        "intent": {"type": "string", "enum": ["STOCKOUT", "STOCK_QUERY", "DAMAGE", "ANSWER", "BRIEF", "TRACKING", "PO_OVERDUE", "NHAC_POST", "EXPIRY", "FORECAST", "SUPPLIER", "TRACE", "PROMO", "REPLEN_WHY", "ANOMALY", "WASTE_WHY", "WASTE_REPORT", "INVESTIGATE", "SELF_REVIEW", "PLAN", "HELP"]},
+        "intent": {"type": "string", "enum": ["STOCKOUT", "STOCK_QUERY", "DAMAGE", "ANSWER", "BRIEF", "TRACKING", "PO_OVERDUE", "NHAC_POST", "EXPIRY", "FORECAST", "SUPPLIER", "TRACE", "PROMO", "IC_SHIP", "REPLEN_WHY", "ANOMALY", "WASTE_WHY", "WASTE_REPORT", "INVESTIGATE", "SELF_REVIEW", "PLAN", "HELP"]},
         "item_text": {"type": "string", "description": "cum chu chi mat hang, rong neu khong co"},
         "quantity": {"type": "number", "description": "so luong nguoi noi, 0 neu khong co"},
         "store_hint": {"type": "string", "description": "ten cua hang neu nguoi noi nhac den, rong neu khong"},
@@ -75,6 +75,11 @@ _PO_QUA_HAN = re.compile(r"(\bpo\b|purchase order|đơn mua|don mua|đơn đặt
                          r"chưa post|chua post|chưa receive|chua receive)|"
                          r"(chưa nhận hàng|chua nhan hang|chưa post nhận|chua post nhan|quá hạn nhận|qua han nhan)", re.I)
 # Yeu cau tro ly nhac nguoi post chung tu (chat va email). Dat truoc PO_OVERDUE vi "nhac post don mua chua nhan" trung ca hai.
+# Intercompany: doi tac da xuat kho chua, don nao cho nhan (16/09/2026)
+_IC_SHIP = re.compile(r"(marou|đối tác|doi tac|liên công ty|lien cong ty|intercompany|ic).{0,30}"
+                      r"(xuất kho|xuat kho|giao hàng|giao hang|đã ship|da ship|xuất hàng|xuat hang)"
+                      r"|(xuất kho|xuat kho|giao hàng|giao hang).{0,20}(marou|đối tác|doi tac|intercompany)"
+                      r"|(hàng|hang).{0,15}(marou).{0,15}(về|ve|chưa|chua)", re.I)
 _NHAC_POST = re.compile(r"(nhắc|nhac|gửi mail|gui mail|gửi email|gui email|gửi thư|gui thu|\bemail\b|\bmail\b)"
                         r".*(post|nhập kho|nhap kho|nhận hàng|nhan hang|chứng từ|chung tu|đơn mua|don mua|\bpo\b)", re.I)
 # UC2 D3, D2, S3 (16/09/2026). Dat truoc REPLEN_WHY va INVESTIGATE vi "vi sao huy nhieu" cung co "vi sao".
@@ -149,6 +154,10 @@ class RuleNLU:
         item_text = re.sub(r"\s+", " ", item_text).strip(" ,.!?")
         if _REVIEW.search(t):
             return Intent("SELF_REVIEW")
+        # Truoc NHAC_POST: "Marou da xuat kho chua" va "nhac post nhan hang" deu nhac chuyen post nhan, nhung cau co
+        # ten cong ty ban hoac chu "xuat kho / giao hang / intercompany" la hoi vong intercompany.
+        if _IC_SHIP.search(t):
+            return Intent("IC_SHIP", raw={"text": t})
         if _NHAC_POST.search(t):
             return Intent("NHAC_POST", raw={"text": t})
         if _PO_QUA_HAN.search(t):

@@ -222,6 +222,9 @@ class Assistant:
             out = self._ls_vi_sao(user, intent, text)
         elif intent.intent == "PO_OVERDUE":
             out = po_qua_han.handle(self, user)
+        elif intent.intent == "IC_SHIP":
+            from .skills import ic_nhan_hang
+            out = ic_nhan_hang.handle(self, user, text)
         elif intent.intent == "NHAC_POST":
             from .skills import nhac_post
             out = nhac_post.handle(self, user, text)
