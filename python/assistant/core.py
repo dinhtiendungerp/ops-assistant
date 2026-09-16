@@ -265,6 +265,9 @@ class Assistant:
         # thay vi tra ve mot cau hoi lai vo nghia.
         if len(out) == 1 and out[0].meta.get("unresolved") and self._dua_cho_planner(text):
             out = plan.handle(self, user, text)
+        # Lop AI ke lai: the du lieu cua skill rule duoc model viet lai phan loi (insight, viec nen lam), bang giu nguyen.
+        from . import ke_lai
+        out = ke_lai.ke_lai(self, user, text, out)
         return self._deliver(out)
 
     def de_xuat_gop(self) -> list[dict[str, Any]]:

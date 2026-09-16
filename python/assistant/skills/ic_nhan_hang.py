@@ -31,7 +31,7 @@ from .nhac_post import _dat_kv, _kv
 
 log = logging.getLogger(__name__)
 SKILL = "ic_nhan_hang"
-VAI_TRO_CHU_VIEC = ("supply_chain",)
+VAI_TRO_CHU_VIEC = ("supply_chain", "dispatcher")     # dieu phoi cung nhan (16/09: Hung bam Kiem hang ma hop thu trong)
 VAI_TRO_TAI_DIEM = ("store_manager", "warehouse")
 VAI_DUYET = ("supply_chain", "dispatcher")
 VAI_TRO_DUOC_GOI = ("supply_chain", "dispatcher", "admin")

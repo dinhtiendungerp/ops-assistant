@@ -103,6 +103,8 @@
   .chuong { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:10px 0 5px; }
   .buoc-hint { font-size:12px; line-height:1.45; padding:8px 10px; margin-top:4px; border-left:3px solid var(--gold); background:#fbf8f3; color:#333; border-radius:0 8px 8px 0; }
   .buoc-hint b { display:block; margin-bottom:2px; }
+  .buoc-hint b.lam { display:inline; color:var(--red); }
+  .buoc-hint { margin:-2px 0 8px; }
   details.how { margin-top:18px; border-top:1px solid var(--line); padding-top:12px; }
   details.how summary { cursor:pointer; font-weight:600; font-size:13px; list-style:none; display:flex; justify-content:space-between; }
   details.how summary::after { content:"⌄"; color:var(--muted); }
@@ -166,10 +168,13 @@
   @keyframes nhay { 0%, 70%, 100% { opacity:.25; } 35% { opacity:1; } }
   @media (prefers-reduced-motion: reduce) { .cham i { animation:none; opacity:.6; } }
   .msg.in .ts { color:#f3d9d6; }
-  .nguon { display:inline-block; padding:1px 7px; border-radius:9px; font-size:10px; letter-spacing:.02em; }
-  .nguon.ai { background:#fde9e7; color:#b3261e; font-weight:600; }
-  .nguon.mau { background:#fff3d6; color:#8a5a00; }
-  .nguon.du-lieu { background:#eef2f5; color:#556; }
+  .nguon { display:inline; padding:1px 7px; border-radius:9px; font-size:10px; letter-spacing:.02em; white-space:nowrap; vertical-align:baseline; }
+  .nguon-ai { background:#fde9e7; color:#b3261e; font-weight:600; }
+  .nguon-mau { background:#fff3d6; color:#8a5a00; }
+  .nguon-du-lieu { background:#eef2f5; color:#556; }
+  .chi-tiet summary { cursor:pointer; font-size:12px; color:var(--muted); margin:4px 0 6px; list-style:none; }
+  .chi-tiet summary::before { content:'▸ '; }
+  .chi-tiet[open] summary::before { content:'▾ '; }
   .stack { flex:1; min-width:0; max-width:820px; }
 
   /* ---------- man hinh chao, chi hien khi hoi thoai con trong ---------- */
@@ -487,7 +492,6 @@
 
   <div class="kicker">Kịch bản demo · bấm theo thứ tự</div>
   <div id="poc"></div>
-  <div id="buocHint" class="buoc-hint" hidden></div>
   <details class="how" style="margin-top:8px">
     <summary>Kịch bản khác (dữ liệu mô phỏng)</summary>
     <div style="margin-top:6px">
@@ -659,44 +663,44 @@ const CHUONG = [
      mo: "Thẻ ba việc quan trọng nhất: model chọn trong danh sách code đưa và nói vì sao; mọi chữ số phải có trong dữ liệu, sai là về câu mẫu. Mất khoảng 20 giây."},
   ]},
   {ten: "2 · Cửa hàng hết hàng, LS tính, AI đề xuất", buoc: [
-    {ten: "Minh (S0002): sắp hết Ice cream", loai: "chat", ai: "minh.s0002", ct: "NWV-DAKAO", uc: "UC5", ghi_bc: true,
+    {ten: "Sắp hết Ice cream ở cửa hàng tôi", y: "Minh, cửa hàng Hà Nội, báo hết hàng", loai: "chat", ai: "minh.s0002", ct: "NWV-DAKAO", uc: "UC5", ghi_bc: true,
      text: "sắp hết Ice cream ở cửa hàng tôi",
      mo: "LS Replenishment đã tính 12 (min-max 8/20). Trợ lý ghi đề xuất đặt mua từ Marou giao thẳng cửa hàng và gửi Hùng duyệt. Ghi thật vào BC."},
-    {ten: "Vì sao LS ra 12 Ice cream", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC5",
+    {ten: "Vì sao LS đề xuất Ice cream cho S0002?", y: "min-max 8/20, tồn 8 nên mua 12", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC5",
      text: "vì sao LS đề xuất Ice cream cho S0002",
      mo: "Đọc nhật ký tính của LS: Stock Levels, Reorder Point 8, Maximum 20, tồn 8 nên mua 12. Trợ lý không tính lại."},
-    {ten: "Croissant chocolate: 42 ngày hết hàng", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC5 · OOS",
+    {ten: "Vì sao LS đề xuất Croissant chocolate cho S0002?", y: "Out of Stock: 42 trên 56 ngày hết hàng", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC5 · OOS",
      text: "vì sao LS đề xuất Croissant chocolate cho S0002",
      mo: "Out of Stock: LS đếm 42 trên 56 ngày là hết hàng và bỏ những ngày đó khỏi bán bình quân. Trợ lý cảnh báo quá nửa cửa sổ, bánh tươi hủy cuối ngày nên tồn về 0."},
-    {ten: "Choco nuts S0001: tồn 0, 82 đang về", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC5 → IC",
+    {ten: "Vì sao LS đề xuất Choco nuts cho S0001?", y: "tồn 0, 82 đang về từ Marou", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC5 → IC",
      text: "vì sao LS đề xuất Choco nuts cho S0001",
      mo: "Cửa hàng bán 11,9/ngày mà tồn 0. LS biết 82 đang về theo đơn HO106202 nên chỉ đề xuất thêm 2. Đơn này Marou đã xuất kho, xem phần 5."},
     {ten: "Hùng duyệt đặt mua, gửi đơn sang Marou", loai: "huong_dan", ai: "hung.dieuphoi", ct: "NWV-DAKAO", uc: "UC5", ghi_bc: true,
      mo: "Trong hộp thư Hùng: thẻ Đề xuất đặt mua Ice cream, bấm Duyệt đặt mua. Thẻ Đã tạo Purchase Order hiện nút Gửi đơn sang Marou, bấm tiếp: đơn Released, bên Marou tự sinh Sales Order."},
-    {ten: "Câu hỏi mở cho model", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "AI", can_ai: true,
+    {ten: "So sánh tốc độ bán Choco nuts giữa các cửa hàng 30 ngày qua", y: "câu mở, model tự dựng chuỗi tra cứu", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "AI", can_ai: true,
      text: "so sánh tốc độ bán Choco nuts giữa các cửa hàng trong 30 ngày qua",
      mo: "Không có rule nào cho câu này. Model tự dựng chuỗi tra cứu (khoảng 7 bước), mỗi con số chép từ kết quả tool; thẻ có nút Xem các bước đã tra."},
-    {ten: "Đề xuất bổ sung nào bất thường", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "AI · UC5", can_ai: true,
+    {ten: "Tổng hợp những đề xuất bổ sung bất thường", y: "AI phân tích insight trên đề xuất của LS", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "AI · UC5", can_ai: true,
      text: "tổng hợp những đề xuất bổ sung bất thường",
      mo: "Khám phá và phân tích insight: model gọi tool đọc mọi đề xuất của LS kèm cờ code tính (hết hàng quá nửa cửa sổ, không có bán bình quân, đề xuất vượt bán nhân ngày phủ, kho không đủ, tồn bằng 0), chọn dòng đáng xem và nói vì sao, kèm việc nên làm."},
   ]},
   {ten: "3 · Dự báo nối sang bổ sung", buoc: [
     {ten: "Tab Dự báo: ba phương pháp", loai: "tab", tab: "uc1", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC1",
      mo: "Holt-Winters, trung bình 28 ngày, trung bình cùng thứ; đo trên 74 cặp, kỳ 21/08 đến 17/09. Biểu đồ theo ngày và 28 ngày tới."},
-    {ten: "Dự báo đang sai ở đâu", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC1",
-     text: "độ chính xác dự báo thế nào", mo: "Sai số theo điểm bán và nhóm hàng, các cặp vượt ngưỡng 50%. Nói rõ Holt-Winters là thống kê, chưa phải AI."},
-    {ten: "Choco bowl S0010: 7 ngày tới và CTKM", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC1",
+    {ten: "Dự báo đang lệch nhiều ở nhóm hàng nào, và vì sao?", y: "nối về chuyện hết hàng ở bước 5", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC1",
+     text: "dự báo đang lệch nhiều ở nhóm hàng nào, và vì sao", mo: "Bánh croissant dự báo cao hơn bán thực tế vì cửa hàng hay hết hàng, nối về chuyện Out of Stock ở bước 5. AI đọc bảng sai số và kể lại; Holt-Winters là thống kê, chưa phải AI."},
+    {ten: "Dự báo Choco bowl ở S0010 sai bao nhiêu?", y: "7 ngày tới đã ghi vào LS, có CTKM 23 đến 25/09", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC1",
      text: "dự báo Choco bowl ở S0010 sai bao nhiêu",
      mo: "Dự báo 7 ngày tới đã ghi vào Retail Forecast Entry của LS; sự kiện KM-CHOCOBOWL-09 (+150%, 23 đến 25/09) sắp tới."},
-    {ten: "CTKM đang chạy và sắp tới", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC7 → UC5",
+    {ten: "CTKM nào đang chạy và sắp tới?", y: "cửa hàng nào LS chưa cộng nhu cầu khuyến mãi", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC7 → UC5",
      text: "CTKM nào đang chạy và sắp tới",
      mo: "Đọc Periodic Discount của LS. Điểm nhấn: CTKM Choco bowl có Planned Event cho S0001, S0010 nhưng S0002, S0005 chưa có, LS sẽ tính như ngày thường."},
-    {ten: "LS cộng khuyến mãi vào dự báo", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC1 → UC5",
+    {ten: "Vì sao LS đề xuất Choco bowl cho S0010?", y: "dự báo 25,17 cộng khuyến mãi thành 35,22", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC1 → UC5",
      text: "vì sao LS đề xuất Choco bowl cho S0010",
      mo: "Kiểu tính Retail Forecast: dự báo 25,17 trong cửa sổ phủ, cộng Planned Sales Demand thành 35,22, trừ tồn 34 ra 2."},
   ]},
   {ten: "4 · Một lô cận date, AI chọn phương án", buoc: [
-    {ten: "Lô nào sắp hết hạn", loai: "chat", ai: "trang.sc", ct: "NWV-MAROU", uc: "UC2",
+    {ten: "Lô nào sắp hết hạn?", y: "36 lô cận date, thẻ Choco pillar S0010", loai: "chat", ai: "trang.sc", ct: "NWV-MAROU", uc: "UC2",
      text: "lô nào sắp hết hạn", mo: "36 lô cận date, 5 lô giá trị lớn nhất thành thẻ. Thẻ Choco pillar S0010: 470 cái, 26 ngày, bán không kịp."},
     {ten: "Phương án xử lý cho Choco pillar", loai: "huong_dan", ai: "trang.sc", ct: "NWV-MAROU", uc: "AI", can_ai: true,
      mo: "Trên thẻ Choco pillar bấm Phương án xử lý. Code tính năm phương án (giữ, chuyển, chuyển kèm giảm giá, giảm giá, hủy) kèm giá trị cứu được; model chọn một (chuyển 199 sang S0001 bán nhanh hơn) và giải thích. Bấm nút ghi đề xuất."},
@@ -714,7 +718,7 @@ const CHUONG = [
      mo: "Nút demo thay người kho Marou bấm Post Shipment cho đơn Ice cream ở bước 2. Trợ lý báo ngay Minh (S0002) chuẩn bị nhận hàng, khép vòng từ lúc cửa hàng kêu hết hàng."},
   ]},
   {ten: "6 · Bất thường và chi phí", buoc: [
-    {ten: "Có gì bất thường 28 ngày qua", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "AI", can_ai: true,
+    {ten: "Có gì bất thường trong 28 ngày qua không?", y: "code quét 5 tín hiệu, AI chọn và nhận xét", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "AI", can_ai: true,
      text: "có gì bất thường trong 28 ngày qua không",
      mo: "Code quét 5 tín hiệu (bán sau hạn, nhận hạn ngắn, hủy tăng, tồn không bán, hết hàng lặp); model chọn tối đa 3 và viết nhận xét, mã tín hiệu phải nằm trong danh sách."},
     {ten: "Chi phí AI đo được", loai: "tab", tab: "caidat", ai: "dung.admin", ct: "NWV-MAROU", uc: "Vận hành",
@@ -831,6 +835,7 @@ function switchUser(id) {
   loadUsers(); poll();
 }
 let buocChon = "";       // "c:b" cua buoc dang chon trong kich ban 17/09
+let buocHintHtml = "";   // goi y cua buoc dang chon, ve ngay duoi nut do (Dung 16/09: "de duoi cung thi khong ai doc")
 function renderQuick() {
   const ve = (q, i, ho) => {
     const key = `${ho}:${i}`;
@@ -843,8 +848,9 @@ function renderQuick() {
     n += 1;
     const key = `${ci}:${bi}`;
     const cls = ['scn', buocChon === key ? 'on' : '', b.loai === 'huong_dan' ? 'hd' : ''].filter(Boolean).join(' ');
-    const nhan = [b.uc, b.can_ai ? 'cần AI' : '', b.ghi_bc ? 'ghi BC' : ''].filter(Boolean).join(' · ');
-    return `<button class="${cls}" onclick="runBuoc(${ci},${bi})" title="${esc(b.mo || '')}"><span class="so">${n}</span><span class="lb">${esc(b.ten)}<small class="uc">${esc(nhan)}</small></span></button>`;
+    const nhan = [b.uc, b.y || '', b.can_ai ? 'cần AI' : '', b.ghi_bc ? 'ghi BC' : ''].filter(Boolean).join(' · ');
+    const goiY = buocChon === key ? `<div class="buoc-hint" id="buocHint">${buocHintHtml}</div>` : '';
+    return `<button class="${cls}" onclick="runBuoc(${ci},${bi})" title="${esc(b.mo || '')}"><span class="so">${n}</span><span class="lb">${esc(b.ten)}<small class="uc">${esc(nhan)}</small></span></button>${goiY}`;
   }).join('')).join('');
   $('#ladder').innerHTML = LADDER.map((q,i)=>ve(q,i,'ladder')).join('');
   $('#quick').innerHTML = QUICK.map((q,i)=>ve(q,i,'quick')).join('');
@@ -860,18 +866,27 @@ async function chuanBiBuoc(b) {
 }
 async function runBuoc(ci, bi) {
   const b = CHUONG[ci].buoc[bi];
-  buocChon = `${ci}:${bi}`; scnChon = ""; renderQuick();
-  const h = $('#buocHint');
   const vai = TEN_VAI_DEMO[b.ai] || b.ai || '';
   const ct = b.ct === 'NWV-DAKAO' ? 'Dakao (bán lẻ)' : b.ct === 'NWV-MAROU' ? 'Marou (sản xuất)' : '';
-  h.innerHTML = `<b>${esc(b.ten)}</b>${vai ? esc(vai) + (ct ? ' · ' + esc(ct) : '') + '. ' : ''}${esc(b.mo || '')}`;
-  h.hidden = false;
+  const lam = b.loai === 'huong_dan' ? '<b class="lam">Bước này bấm trên thẻ trong hộp thư, console chỉ đổi vai.</b> ' : '';
+  buocHintHtml = `<b>${esc(b.ten)}</b>${vai ? esc(vai) + (ct ? ' · ' + esc(ct) : '') + '. ' : ''}${lam}${esc(b.mo || '')}`;
+  buocChon = `${ci}:${bi}`; scnChon = ""; renderQuick();
   await chuanBiBuoc(b);
   if (b.loai === 'chat') { showTab('chat'); $('#text').value = b.text; await send(); }
   else if (b.loai === 'tab') { showTab(b.tab); }
   else if (b.loai === 'brief') { showTab('chat'); await brief(); }
-  else if (b.loai === 'api') { showTab('chat'); const r = await post(b.url, Object.assign({user: me}, b.body || {})); if (!r.loi) poll(); }
-  else { showTab('chat'); }
+  else if (b.loai === 'api') {
+    showTab('chat');
+    const r = await post(b.url, Object.assign({user: me}, b.body || {}));
+    if (!r.loi) {
+      // Tin cua vong nay co the di sang hop thu nguoi KHAC (cua hang, Supply Chain). Noi ro de nguoi bam khong tuong nut chet.
+      const ai = [...new Set(r.delivered || [])];
+      const ten = ai.map(u => (users.find(x => x.user_id === u) || {display_name: u}).display_name.replace(/\s*\(.*\)/, ''));
+      baoOk(ai.length ? `Đã gửi tin cho: ${ten.join(', ')}.` + (ai.includes(me) ? '' : ' Đổi sang vai đó để xem.') : 'Không có gì mới để báo.');
+      poll();
+    }
+  }
+  else { showTab('chat'); baoOk(`Đã đổi sang ${vai}. ${b.mo || ''}`); }
 }
 async function guiKichBan(q) {
   showTab('chat');
@@ -883,7 +898,7 @@ async function runQuick(i, ho) {
   const src = ho === 'ladder' ? LADDER : QUICK;
   const q = src[i];
   scnChon = `${ho}:${i}`; buocChon = ""; renderQuick();
-  $('#buocHint').hidden = true;
+  buocHintHtml = '';
   // Kich ban noi tiep: chay cai truoc no da, neu khong tro ly khong co ngu canh de hieu.
   if (q.sau !== undefined) { await guiKichBan(src[q.sau]); await new Promise(r=>setTimeout(r,600)); }
   await guiKichBan(q);
@@ -1022,7 +1037,7 @@ function propHtml(c, mid, ts) {
         ${other.map(a=>`<button class="btn ${a.style==='positive'?'positive':(a.style==='destructive'?'destructive':'')}" onclick="act('${a.id}','${esc(c.ref)}',${mid},null,{})">${esc(a.label || LABEL[a.id] || a.id)}</button>`).join('')}
       </div></div>` : ''}
     ${linksHtml(c)}
-    <div class="src">ⓘ ${bcMode==='live' ? 'Số do Business Central tính' : 'Dữ liệu mô phỏng'}<span class="dot"></span>trợ lý đọc lại, không tự tính<span class="dot"></span>${esc(ts)}</div>
+    <div class="src">${nhanNguon({card: c}).replace(/^ · /, '')}<span class="dot"></span>ⓘ ${bcMode==='live' ? 'Số do Business Central tính' : 'Dữ liệu mô phỏng'}<span class="dot"></span>trợ lý đọc lại, không tự tính<span class="dot"></span>${esc(ts)}</div>
   </div>`;
 }
 function locName(code) {
@@ -1030,11 +1045,21 @@ function locName(code) {
   const u = users.find(x => x.store_code === code);
   return u ? u.display_name.replace(/^.*QL\s*/,'').replace(/,.*\)$/,'').replace(/\)$/,'') : '';
 }
-function renderCard(c, mid, ts, skill) {
+// Skill rule ma AI da ke lai phan loi (xem assistant/ke_lai.py): bang du lieu tho thu gon lai, bam moi mo. Dung 16/09/2026:
+// "phan thong tin nay trong rat roi, sao khong dung chinh AI tong hop roi tra ket qua luon".
+const SKILL_KE_LAI = new Set(['du_bao', 'ls_giai_thich', 'khuyen_mai', 'po_qua_han', 'nha_cung_cap', 'truy_xuat', 'tracking', 'inventory_health', 'replenishment', 'ic_nhan_hang', 'plan']);
+function renderCard(c, mid, ts, skill, thuGon) {
   const f = factMap(c);
   if (c.kind === 'proposal' && f['Từ'] !== undefined && f['Số lượng'] !== undefined) return propHtml(c, mid, ts);
   let h = `<div class="card"><div class="head"><h3 style="font-size:19px">${esc(c.title)}</h3>${c.kind ? `<span class="pill info">${esc({info:'Thông tin', brief:'Brief', proposal:'Đề xuất'}[c.kind]||c.kind)}</span>` : ''}</div>`;
-  if (c.body) h += `<div class="prose">${esc(c.body)}</div>`;
+  if (c.body && thuGon && c.body.length > 300) {
+    // Doan dau (loi AI hoac cau mo dau) hien luon; phan bang/danh sach phia sau thu gon, bam moi mo.
+    const i = c.body.indexOf('\n\n');
+    const dau = i > 0 ? c.body.slice(0, i) : '', con = i > 0 ? c.body.slice(i + 2) : c.body;
+    if (dau) h += `<div class="prose">${esc(dau)}</div>`;
+    h += `<details class="chi-tiet"><summary>Dữ liệu code đã tra, bấm để xem</summary><div class="prose">${esc(con)}</div></details>`;
+  }
+  else if (c.body) h += `<div class="prose">${esc(c.body)}</div>`;
   if (c.facts?.length) h += `<div class="facts">${c.facts.map(x=>`<span class="k">${esc(x.label)}</span><span class="v">${esc(x.value)}</span>`).join('')}</div>`;
   h += actionsHtml(c, mid);
   h += linksHtml(c);
@@ -1128,7 +1153,8 @@ function _veMotTin(div, m) {
       const tom = (m.text || m.card?.title || '').replace(/\s+/g, ' ').trim().slice(0, 90);
       const nut = tom ? `<button class="traloi" onclick="traLoi(${m.id}, ${JSON.stringify(tom).replace(/"/g, '&quot;')})">↩ Trả lời</button>` : '';
       const body = (m.text && !dup) ? `<div class="bubble">${esc(m.text)}<span class="ts">Trợ lý · ${ts}${nhanNguon(m)}${nut}</span></div>` : '';
-      div.innerHTML = `${DAU_AI('san-sang')}<div class="stack">${body}${m.card ? renderCard(m.card, m.id, ts, m.skill) : ''}</div>`;
+      const aiKeLai = !!(m.card && m.text && SKILL_KE_LAI.has(m.skill) && /^AI/.test(String((m.card.facts || []).find(f => f.label === 'Người soạn')?.value || '')));
+      div.innerHTML = `${DAU_AI('san-sang')}<div class="stack">${body}${m.card ? renderCard(m.card, m.id, ts, m.skill, aiKeLai) : ''}</div>`;
     }
 }
 // Nhin vao la biet cau nay AI viet hay code doc tu du lieu. Dung hoi 16/09/2026: "nhin vo day thi sao biet la AI tra loi
@@ -1137,10 +1163,10 @@ function nhanNguon(m) {
   const f = (m.card && m.card.facts) || [];
   const lay = (ten) => { const x = f.find(y => (Array.isArray(y) ? y[0] : y.label) === ten); return x ? String(Array.isArray(x) ? x[1] : x.value) : ''; };
   const soan = lay('Người soạn'), nguon = lay('Nguồn');
-  if (/^AI/.test(soan)) return ` · <span class="nguon ai">AI viết · ${esc(soan.replace(/^AI\s*\(?/, '').replace(/\)$/, ''))}</span>`;
-  if (/mẫu/.test(soan)) return ` · <span class="nguon mau">câu mẫu, ${esc(soan.replace(/^mẫu có sẵn\s*\(?/, '').replace(/\)$/, ''))}</span>`;
-  if (/kịch bản|bản ghi|không gọi model/.test(soan + ' ' + nguon)) return ' · <span class="nguon du-lieu">kịch bản đã duyệt, không gọi model</span>';
-  return ' · <span class="nguon du-lieu">đọc từ dữ liệu, không gọi model</span>';
+  if (/^AI/.test(soan)) return ` · <span class="nguon nguon-ai">AI viết · ${esc(soan.replace(/^AI\s*\(?/, '').replace(/\)$/, ''))}</span>`;
+  if (/mẫu/.test(soan)) return ` · <span class="nguon nguon-mau">câu mẫu, ${esc(soan.replace(/^mẫu có sẵn\s*\(?/, '').replace(/\)$/, ''))}</span>`;
+  if (/kịch bản|bản ghi|không gọi model/.test(soan + ' ' + nguon)) return ' · <span class="nguon nguon-du-lieu">kịch bản đã duyệt, không gọi model</span>';
+  return ' · <span class="nguon nguon-du-lieu">đọc từ dữ liệu, không gọi model</span>';
 }
 function _sauHopThu(rows, st) {
   tinRa = st.tin_ra || {};
@@ -1583,7 +1609,7 @@ const so = n => (n ?? 0).toLocaleString('vi-VN');
 // nhin khong biet cai nao dat cai nao re, nen so nho thi giu them hai chu so.
 const usd = n => '$' + (n ?? 0).toFixed(n >= 1 ? 2 : (n >= 0.01 ? 4 : 6));
 const gia = n => '$' + (n ?? 0).toFixed(2);        // don gia cong bo, luon hai chu so
-const VIEC = {nlu:'Hiểu câu người dùng', rationale:'Viết lại câu trả lời', planner:'Tự dựng chuỗi tra cứu',
+const VIEC = {nlu:'Hiểu câu người dùng', rationale:'Viết lại câu trả lời', planner:'Tự dựng chuỗi tra cứu', ke_lai:'Kể lại kết quả tra cứu bằng lời',
               evidence:'Đọc câu giải trình', agent:'Vòng lặp agent', brief:'Viết brief sức khỏe tồn kho',
               giai_thich_lo:'Giải thích lô bằng lời', d4:'Chọn phương án cho lô cận date', bien_ban:'Soạn biên bản hủy', d3:'Xếp tín hiệu bất thường', d2:'Kết luận nguyên nhân hủy', bao_cao_huy:'Viết báo cáo tuần hàng hủy', thu:'Soạn email nhắc post'};
 

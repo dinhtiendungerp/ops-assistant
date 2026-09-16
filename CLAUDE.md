@@ -62,7 +62,7 @@ AL/Marou/
                             demo_data.py doc bo demo-data-nwv; make_fixtures.py dung mock cua tro ly
                             tu chinh bo do (xem "Mock cua tro ly").
   python/assistant/         tro ly cua C: skill, planner, replays, giao dien web, so chi phi
-  python/tests/             577 test, chay bang `python -m pytest` trong thu muc python
+  python/tests/             581 test, chay bang `python -m pytest` trong thu muc python
   tools/                    sinh du lieu demo
   demo-data-nwv/            bo du lieu sap import, kem README-import.md
   docs/                     tai lieu
@@ -253,7 +253,7 @@ trich no lam bang chung gui PM hay khach.
 
 ```
 cd python
-python -m pytest -q                      # 577 test
+python -m pytest -q                      # 581 test
 python tools_bc.py extensions | upload <app> | ws <Ham> '<json>'   # quan tri BC qua S2S: publish, goi web service
 python -m bc_agent.probe --json --sample 2000   # kiem S2S va do san sang du lieu
                                                 # probe luon goi BC that, khong phu thuoc BC_MODE
@@ -1858,13 +1858,24 @@ kheo giua UC2 voi UC1, UC5, va dua AI vao vai tro trong yeu. Da lam:
 - **Nhan nguon duoi moi cau tra loi** (Dung: "nhin vo day sao biet AI tra loi hay soan san"): `nhanNguon(m)` doc fact "Nguoi
   soan"/"Nguon" cua the: "AI viet · gpt-4.1-mini" (do), "cau mau, ..." (vang), "doc tu du lieu, khong goi model" (xam), "kich
   ban da duyet". Planner them fact "Nguoi soan". Ten skill noi bo khong in ra chan bong bong nua.
+- **Lop AI ke lai** (`assistant/ke_lai.py`, goi cuoi `handle_message`; Dung: "AI lam rat tot viec tong hop, phan tich insight,
+  truyen tai ngon ngu tu nhien, sao cac phan hoi dang nay khong dung AI"): khi AI bat, the du lieu cua skill rule (du bao,
+  LS giai thich, CTKM, don qua han, nha cung cap, truy xuat, het han...) duoc model viet lai phan loi 3-6 cau (dieu quan
+  trong nhat, insight, viec nen lam); moi chu so phai co trong the (`uc2_tom_tat.so_la`), sai thi giu cau rule. The AI co
+  san (D3, S1...) thi doan AI o dau the duoc dua len lam cau tra loi. Giao dien: bang tho thu gon "Du lieu code da tra,
+  bam de xem" (doan dau van hien), nhan nguon o chan the. Muc chi phi `ke_lai` ("Ke lai ket qua tra cuu bang loi").
+- **Console theo phan hoi 16/09 toi:** nhan nut chat = dung cau se gui (Dung bam 14 thay chat hien cau khac), dong nho la
+  mach chuyen (`y`); goi y hien NGAY DUOI nut vua bam; buoc api bao "Da gui tin cho: Hung, Trang, Lan" (tin di sang hop thu
+  nguoi khac); buoc huong_dan noi ro chi doi vai. `VAI_TRO_CHU_VIEC` cua IC them dispatcher: Hung bam Kiem hang ma hop thu
+  trong vi tin chi di cho cua hang va Supply Chain. Luu y: HO106200 xuat 16/09 nen HOM NAY la "trong ngay"; sang 17/09 moi
+  thanh qua ngay va sinh de xuat post nhan (buoc 20), dung thay toi 16/09 khong co the ma tuong hong.
 - **Co bat thuong cua tool `replenishment_suggestions` viet tieng Viet** ("het hang qua nua cua so tinh", "kieu min-max (khong
   co ban binh quan la binh thuong)"...) va SYSTEM planner cam in ten truong ky thuat, vi model chep nguyen "flags min_max,
   oos_qua_nua_cua_so" ra cau tra loi.
 
 ### Nhan hang lien cong ty (A4), chay tron vong, 16/09/2026
 
-App dang chay tren NWV01: `NWV Marou Agent` **1.7.0.0**, `NWV Marou Demo Setup` **1.8.6.0**. 577 test.
+App dang chay tren NWV01: `NWV Marou Agent` **1.7.0.0**, `NWV Marou Demo Setup` **1.8.6.0**. 581 test.
 
 Dung chot cach xu ly, va no **khong doi xung hai dau**:
   - Phia Marou (ban) khong co gi tu dong. Nguoi kho post xuat kho trong BC nhu moi ngay.
