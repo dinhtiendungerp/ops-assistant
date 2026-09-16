@@ -404,7 +404,7 @@ def kb(ma, tieu_de, vai, dau_vao, thao_tac, dau_ra, hinh=None, nguon="", ghi_chu
 kb("01", "Dashboard sức khỏe tồn kho", "Supply Chain · có trong POC",
    "Kết quả tính tồn theo lô, giá trị, hạn dùng và phân tầng do Business Central chạy.",
    "Mở tab Sức khỏe tồn kho. Đọc tổng giá trị và sáu tầng.",
-   "5.088,4 nằm ở bốn tầng có vấn đề, chiếm 38,1% của 13.370,2; 82 trên 167 dòng.",
+   "Bốn con số lớn ở hàng trên là giá trị tồn đang có vấn đề; số thật hiện trên màn hình lúc trình diễn.",
    ANH / "uc2-01-tong-quan.png",
    "Ảnh chụp trên môi trường demo, số liệu của bộ dữ liệu mô phỏng.",
    """

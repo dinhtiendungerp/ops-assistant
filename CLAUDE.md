@@ -1762,6 +1762,49 @@ CONTOSO, khong co so sach that nao bi dung, va chinh Marou neu tu dong hoa inter
 - Bay: `tools_bc.py ws <Ham> '<json>'` truyen tham so THEO TEN cua ham AL. Ham nhan `configJson: Text` thi payload phai la
   `{"configJson": "<chuoi json>"}`, khong phai chinh object do.
 
+### Doi ngay neo bo du lieu trinh dien sang 17/09/2026, chieu 16/09/2026
+
+Dung chot: buoi demo dien ngay 17/09 nen du lieu phai tinh theo 17/09, va man hinh khong duoc hien 18/09. Toi tung
+khuyen giu 18/09 vi so tren slide se doi; Dung da quyet, lam theo.
+
+**Da tinh lai tren NWV01, ca hai company, Work Date 17/09/2026:** `NWVAgentCalcService.RunCalculations` voi INVHEALTH,
+DISCGOV, FORECAST, SUPPLIER; roi `ls_replen_setup.py --company X apply --reset-oos` va `calc`.
+
+| | NWV-MAROU | NWV-DAKAO |
+|---|---|---|
+| Inventory Health | 166 dong | 167 dong |
+| Qua han / Can han / Rui ro dut hang | 41 / 36 / 47 | 41 / 36 / 48 |
+| Cham luan chuyen / Ton thua / Binh thuong | 4 / 1 / 37 | 4 / 1 / 37 |
+| Gia tri ton / bon tang xau | 13.276,8 / 7.232,6 | 13.372,6 / 7.328,4 |
+
+Bo so cu **45/32/47/4/1/38 va 167 dong khong con dung tren BC that**. Doi mot ngay neo thi 4 lo tu qua han sang can han.
+Hai company gio lech nhau mot dong vi Dakao da post phieu nhan 107110 tai S0010.
+
+- `tools/repost_demo.py` va `tools/ls_replen_setup.py`: `WORK_DATE` mac dinh 2026-09-17, doi tam bang bien `MAROU_WORK_DATE`.
+- **Tu choi 19 de xuat cu** (12 Transfer o Marou, 7 Purchase o Dakao) kem ghi chu "LS tinh lai theo Work Date 17/09/2026".
+  So cua chung tinh theo 18/09 nen khong con khop LS. Brief se ghi de xuat moi. Giu nguyen WriteOff va PostReceipt.
+- **Mock van neo 18/09** (`gw.today()` mock, `make_fixtures.CALC_AT`, `uc2-expected.json`) va khoang muoi file test dua vao
+  bo so cu. Chua doi vi rui ro truoc demo, ma mock chi dung khi mat mang. Doi thi phai sinh lai fixtures va sua test.
+- **Dai nguon KHONG hien ngay chot.** Ngay chot hien o the "Chot ngay ..." tren man hinh Suc khoe ton kho, va trong thong
+  bao khi doi nguon hoac bam Doc lai tu BC. Tai lieu 13 ban truoc ghi sai cho nay, Dung bat duoc.
+- Slide 01 dashboard bo con so cu (5.088,4 / 13.370,2 / 167 dong) vi anh chup tu bo mo phong, de so that hien tren man hinh.
+
+**Hai loi AL lo ra khi tinh lai, da sua (Demo Setup 1.8.5.0):**
+1. `ApplyItems`: `if ItemObj.Get('fromWarehouse', Value) and not Value.AsValue().AsBoolean()` la dung bay AL khong
+   short-circuit `and`. Cau hinh Marou khong co khoa `fromWarehouse` (chi Dakao co) nen `apply` cho NWV-MAROU chet tu
+   15/09 voi "Unable to convert NavJsonValue to System.Boolean". Doi sang if long.
+2. `DeleteStaleOutOfStock` voi `resetOutOfStockLog`: xoa log theo ma hang VA dia diem demo, nhung xoa con tro "ILE cuoi da
+   quet" theo ma hang o MOI dia diem. Lan quet lai dam vao dong con sot o dia diem khac: "Replen. Out of Stock Log already
+   exists ... Location Code='NCC-NHAN'". Khi reset thi bo loc dia diem.
+
+**Bay do sai tu lam minh mat mot vong:** doc `goi_y_ls()` bang `r["quantity"]` ra 0 moi dong, tuong LS hong. Truong dung
+la `suggestedQty`. Va Marou co ca hai template MAROU-TO lan MAROU-PO cho cung cap cua hang x mat hang, gom vao mot dict
+theo (cua hang, mat hang) thi dong sau de dong truoc.
+
+**Bay PowerPoint:** file dang mo thi ghi de bao PermissionError. `build_slide_ngan.py` nhan ten file ra qua tham so dong lenh.
+Kiem file bang COM thi KHONG goi `$app.Quit()` khi nguoi dung dang mo PowerPoint, vi COM gan vao dung phien do va Quit la dong
+cua so cua ho.
+
 ### Nhan hang lien cong ty (A4), chay tron vong, 16/09/2026
 
 App dang chay tren NWV01: `NWV Marou Agent` **1.7.0.0**, `NWV Marou Demo Setup` **1.8.3.0**. 571 test.

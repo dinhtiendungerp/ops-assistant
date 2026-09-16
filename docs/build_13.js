@@ -12,33 +12,33 @@ function noiDung() {
 
   // ------------------------------------------------------------------ 1
   c.push(h1("0. Ngày demo không trùng ngày neo của dữ liệu"));
-  c.push(p("Bộ dữ liệu trình diễn được tính với Work Date 18/09/2026. Buổi demo diễn ra ngày khác thì vẫn chạy bình thường, "
-    + "miễn là làm đúng ba điều dưới đây."));
+  c.push(p("Bộ dữ liệu trình diễn đã được tính lại với Work Date 17/09/2026, đúng ngày demo. Ba điều dưới đây để giữ cho nó "
+    + "không lệch trong lúc trình bày."));
   c.push(...table(["Điều", "Làm gì", "Vì sao"], [
-    ["Giữ Work Date 18/09/2026", "Không đổi Work Date của phiên Business Central, không chạy lại Run Inventory Health",
-      "Kết quả sáu tầng và số dòng đã tính theo ngày này. Đổi ngày rồi tính lại thì số trên slide không còn khớp màn hình."],
+    ["Giữ Work Date 17/09/2026", "Không đổi Work Date của phiên Business Central, không chạy lại Run Inventory Health",
+      "Kết quả sáu tầng và số dòng đã tính theo ngày này. Đổi ngày rồi tính lại thì mọi con số đổi theo."],
     ["Chứng từ mua bán vẫn mang ngày thật", "Không phải làm gì, Business Central tự ghi",
       "Đơn mua và phiếu giao hàng post theo ngày thao tác, nên hai loại ngày này lệch nhau. Đó là bình thường."],
     ["Đồng hồ trợ lý là ngày thật", "Xem dòng “Giờ hệ thống” trong khay Điều khiển demo",
       "Vòng nhận hàng liên công ty so ngày xuất kho với đồng hồ này, nên nút +24 giờ vẫn diễn được cảnh sáng hôm sau."],
   ], [3.0, 4.6, 4.4]));
-  c.push(...ghiChu("Trợ lý hiển thị ngày chốt 18/09/2026 trên dải nguồn. Nếu khách hỏi vì sao không phải hôm nay, trả lời thẳng: "
-    + "đây là bộ dữ liệu mô phỏng, ngày chốt là ngày lớp tính toán trong Business Central chạy lần gần nhất.",
-    "Câu trả lời nếu khách để ý ngày"));
+  c.push(...ghiChu("Ngày chốt hiện ở màn hình Sức khỏe tồn kho, trên thẻ “Chốt ngày 17/09/2026”, chứ không nằm trên dải nguồn. "
+    + "Dải nguồn chỉ ghi đang đọc Business Central hay dữ liệu mô phỏng, kèm số dòng kết quả.",
+    "Ngày chốt hiện ở đâu"));
 
   c.push(pageBreak());
   c.push(h1("1. Trước buổi demo: 20 phút chuẩn bị"));
   c.push(p("Làm đủ bảy việc dưới đây rồi mới mở phòng họp. Mỗi việc đều có cách kiểm, đừng tin là xong nếu chưa nhìn thấy dấu hiệu."));
   c.push(...table(["Việc", "Cách làm", "Dấu hiệu đã xong"], [
     ["Chạy máy chủ trợ lý", "Trong thư mục python: python -m uvicorn assistant.channels.web:app --port 8188 --reload", "Mở http://127.0.0.1:8188 thấy màn hình chào"],
-    ["Chọn nguồn dữ liệu", "Dải ngay dưới thanh tiêu đề, bấm Business Central", "Dải chuyển xanh, ghi số dòng kết quả và ngày chốt 18/09/2026"],
+    ["Chọn nguồn dữ liệu", "Dải ngay dưới thanh tiêu đề, bấm Business Central", "Dải chuyển xanh và ghi số dòng kết quả; mở tab Sức khỏe tồn kho thấy thẻ Chốt ngày 17/09/2026"],
     ["Kiểm hai đơn vị", "Trên dải nguồn có hai nút NWV-MAROU và NWV-DAKAO", "Bấm qua lại, số dòng kết quả đổi theo"],
     ["Bật AI", "Chọn vai quản trị, tab Cài đặt AI, bật công tắc", "Ô trạng thái ghi AI đang bật, còn trần chi phí"],
     ["Kiểm trần chi phí", "Cùng tab Cài đặt AI", "Còn ít nhất 1 USD trong trần ngày"],
     ["Mở sẵn Business Central", "Một tab trình duyệt riêng, đăng nhập môi trường NWV01", "Bấm link trong thẻ là mở được ngay, không phải đăng nhập giữa buổi"],
     ["Biết đơn liên công ty đang ở trạng thái nào", "Khay Điều khiển demo, bấm Kiểm hàng Marou đã xuất kho", "Trợ lý liệt kê đơn nào vừa xuất kho hôm nay, đơn nào đã quá ngày mà chưa nhận. Đọc kỹ để biết màn 16 bắt đầu từ bước nào"],
   ], [2.4, 5.4, 4.2]));
-  c.push(...ghiChu("Work Date của Business Central để 18/09/2026: lớp tính toán trong BC dùng Work Date, còn chứng từ mua bán thì post theo ngày thật. "
+  c.push(...ghiChu("Work Date của Business Central để 17/09/2026: lớp tính toán trong BC dùng Work Date, còn chứng từ mua bán thì post theo ngày thật. "
     + "Và đừng bấm Reset trong khay demo trước buổi họp, nó xoá hộp thư cùng các việc đang theo dõi, và bạn sẽ mất đơn đang chờ nhận hàng.",
     "Hai điều dễ quên"));
 
@@ -228,9 +228,9 @@ function noiDung() {
      "Còn. Số liệu, dashboard và luồng duyệt không đổi. Các đoạn văn chuyển sang câu mẫu do code ghép."],
     ["Dữ liệu có ra khỏi Việt Nam không?",
      "Môi trường demo hiện dùng Azure OpenAI ở Mỹ. Khi triển khai, extension của NaviWorld tự chọn được vùng xử lý, giữ được trong Asia Pacific. Đây là điểm cần ghi vào phần governance."],
-    ["Sao email và báo cáo đề ngày 18/09 mà hôm nay chưa tới ngày đó?",
-     "18/09 là ngày lớp tính toán trong Business Central chạy lần gần nhất, trợ lý neo theo đó chứ không neo theo ngày máy chạy. "
-     + "Nếu neo theo ngày máy thì cửa sổ lịch sử bán và số ngày kể từ lần bán cuối đều lệch. Chứng từ mua bán thì vẫn mang ngày thật."],
+    ["Ngày trên email, báo cáo và bảng tồn kho lấy từ đâu?",
+     "Từ ngày lớp tính toán trong Business Central chạy lần gần nhất, không phải ngày máy chủ. Nếu neo theo ngày máy thì cửa sổ lịch sử "
+     + "bán và số ngày kể từ lần bán cuối đều lệch. Chứng từ mua bán thì vẫn mang ngày thật của lúc thao tác."],
     ["Sao bên bán lẻ Dakao cũng thấy số lô, trong khi bán lẻ không quản lý lô?",
      "Vì hai đơn vị đang dùng chung một bộ dữ liệu mô phỏng, bên Dakao vẫn còn bật quản lý lô. Trợ lý xử lý số lô chỉ khi mặt hàng bên "
      + "mua có bật; lúc đó nó lấy đúng lô bên bán đã xuất chứ không bịa, còn không bật thì phiếu nhận post bình thường không có lô. "
@@ -268,7 +268,7 @@ function noiDung() {
       footer: `Demo script UC2 · Bản 1.0, ${NGAY}`,
       cover: ["Người đọc: người trình diễn và người hỗ trợ kỹ thuật trong buổi họp",
         "Môi trường: Business Central NWV01, hai company NWV-MAROU và NWV-DAKAO",
-        `Soạn ngày ${NGAY}. Work Date cua Business Central giu o 18/09/2026 du buoi demo dien ngay khac.`,
+        `Soạn ngày ${NGAY}. Bộ dữ liệu đã tính lại với Work Date 17/09/2026, đúng ngày demo.`,
         "Đi kèm bộ slide 12; slide có speaker note, tài liệu này có thao tác."],
     },
     noiDung(),

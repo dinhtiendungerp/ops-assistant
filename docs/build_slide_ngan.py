@@ -14,6 +14,11 @@ from pptx import Presentation
 NGOAI = Path(r"C:/Users/dungdt.NWV/Demo-Marou")
 NGUON = NGOAI / "Marou POC - slide demo.pptx"
 RA = NGOAI / "Marou POC - slide demo (ban ngan).pptx"
+# Ten file ra doi duoc qua tham so dong lenh. Can khi ban cu dang mo trong PowerPoint: ghi de len file dang mo thi
+# PermissionError, va neu nguoi dung da sua gi tren ban do thi ghi de la mat cong cua ho.
+import sys as _sys
+if len(_sys.argv) > 1:
+    RA = NGOAI / _sys.argv[1]
 
 # So thu tu slide trong bo day du (bat dau tu 1) va ly do giu lai.
 GIU = {

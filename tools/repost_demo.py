@@ -17,6 +17,7 @@ import calendar
 import csv
 import json
 import subprocess
+import os
 import sys
 import time
 from datetime import date, datetime
@@ -31,7 +32,9 @@ import demo_scenario as ds  # noqa: E402
 import tools_bc as t  # noqa: E402
 
 FILE = ROOT / "demo-data-nwv" / "import-full-journal.txt"
-WORK_DATE = "2026-09-18"
+# Ngay neo cua bo du lieu trinh dien. Dung chot 16/09/2026: doi sang 17/09 vi buoi demo dien ngay do.
+# Doi tam mot lan chay thi dat bien moi truong MAROU_WORK_DATE.
+WORK_DATE = os.environ.get("MAROU_WORK_DATE", "2026-09-17")
 VARIANT_ITEMS = ["30091", "33150"]
 CHUNK = 1000
 

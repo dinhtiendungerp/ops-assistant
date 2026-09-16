@@ -18,6 +18,7 @@ Ngay neo demo 18/09/2026 truyen vao phien web service lam Work Date.
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -27,7 +28,9 @@ sys.path.insert(0, str(HERE.parent / "python"))
 
 import demo_scenario as ds  # noqa: E402
 
-WORK_DATE = "2026-09-18"
+# Ngay neo cua bo du lieu trinh dien. Dung chot 16/09/2026: doi sang 17/09 vi buoi demo dien ngay do.
+# Doi tam mot lan chay thi dat bien moi truong MAROU_WORK_DATE.
+WORK_DATE = os.environ.get("MAROU_WORK_DATE", "2026-09-17")
 SALES_PROFILE = "DEFAULT"   # co san: 3 tuan gan nhat trong so 75, 3-6 tuan 15, 6-8 tuan 10
 TEMPLATE_TO = "MAROU-TO"
 TEMPLATE_PO = "MAROU-PO"

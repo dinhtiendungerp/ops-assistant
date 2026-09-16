@@ -86,6 +86,7 @@ codeunit 70253 "NWV Demo LS Replen. Setup"
         ReorderPoint: Decimal;
         MaxInventory: Decimal;
         Changed: Boolean;
+        BoQuaKho: Boolean;
     begin
         foreach Token in Items do begin
             ItemObj := Token.AsObject();
@@ -187,7 +188,13 @@ codeunit 70253 "NWV Demo LS Replen. Setup"
             if Changed then
                 Item.Modify(true);
 
-            if ItemObj.Get('fromWarehouse', Value) and not Value.AsValue().AsBoolean() then
+            // AL KHONG short-circuit `and`: thieu khoa thi Get tra false nhung AsValue van duoc goi, ma Value con giu gia tri
+            // cu cua lan Get truoc nen no "Unable to convert NavJsonValue to System.Boolean". Cau hinh cua NWV-MAROU khong
+            // co khoa nay (chi Dakao co), nen `apply` cho Marou chet tu 15/09/2026. Phai viet if long.
+            BoQuaKho := false;
+            if ItemObj.Get('fromWarehouse', Value) then
+                BoQuaKho := not Value.AsValue().AsBoolean();
+            if BoQuaKho then
                 RemoveFromWarehouse(Item."No.")
             else
                 EnsureFromWarehouse(Item."No.", Warehouse);
@@ -360,11 +367,15 @@ codeunit 70253 "NWV Demo LS Replen. Setup"
             ItemFilter += Value.AsValue().AsText();
         end;
         OutOfStockLog.SetFilter("Item No.", ItemFilter);
-        OutOfStockLog.SetFilter("Location Code", LocationFilter);
         // AL khong short-circuit `and`: thieu khoa thi Token van la mang items va AsValue() bao loi, nen doc rieng.
         ResetAll := false;
         if Config.Get('resetOutOfStockLog', Token) then
             ResetAll := Token.AsValue().AsBoolean();
+        // Khi reset thi KHONG loc theo dia diem. Con tro "ILE cuoi da quet" xoa theo ma hang o moi dia diem, nen neu chi xoa
+        // log cua dia diem demo thi lan quet lai se dam vao dong con sot o dia diem khac va bao trung khoa:
+        // "The record in table Replen. Out of Stock Log already exists ... Location Code='NCC-NHAN'". Bat duoc 16/09/2026.
+        if not ResetAll then
+            OutOfStockLog.SetFilter("Location Code", LocationFilter);
         // resetOutOfStockLog = true: xoa MOI dong cua mat hang va dia diem demo, dung sau khi post lai
         // Item Ledger Entry, vi log cu tinh tren so ton cu. Khong co co do thi chi xoa dong mo truoc ngay dau.
         if not ResetAll then begin
