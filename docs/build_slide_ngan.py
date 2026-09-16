@@ -65,6 +65,22 @@ def xoa_slide(pr, giu_1based):
         ids.remove(ids[i])
 
 
+def bo_section(pr):
+    """Xoa danh sach section trong presentation.xml.
+
+    Template cua NaviWorld khai ba section tro toi 32 slide. Xoa bot slide thi nhung tro do thanh mo coi, va
+    PowerPoint bao khong mo duoc file (bat duoc 16/09/2026 voi ban rut gon 16 slide). Section chi la cach nhom
+    slide o khung ben trai, bo di khong mat noi dung gi.
+    """
+    el = pr.part._element
+    for ext_lst in [e for e in el if e.tag.endswith("}extLst")]:
+        for ext in list(ext_lst):
+            if any(ch.tag.endswith("}sectionLst") for ch in ext):
+                ext_lst.remove(ext)
+        if len(ext_lst) == 0:
+            el.remove(ext_lst)
+
+
 def main() -> None:
     if not NGUON.exists():
         raise SystemExit(f"Khong thay bo day du o {NGUON}. Chay build_slide_uc2_v2.py roi chep ra {NGOAI}.")
@@ -75,6 +91,7 @@ def main() -> None:
     if thieu:
         print("CANH BAO: bo day du co", tong, "slide, chua xep slide:", thieu)
     xoa_slide(pr, set(GIU))
+    bo_section(pr)
     pr.save(str(RA))
     print("da ghi:", RA)
     print("so slide:", len(Presentation(str(RA)).slides._sldIdLst))

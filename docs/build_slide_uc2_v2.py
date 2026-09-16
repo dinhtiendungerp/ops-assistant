@@ -821,6 +821,23 @@ Câu cuối bắt buộc phải nói: toàn bộ số liệu trong buổi này l
 số liệu vận hành thật.
 """)
 
+def bo_section(pr):
+    """Xoa danh sach section trong presentation.xml.
+
+    Template cua NaviWorld khai ba section tro toi 32 slide. Xoa bot slide thi nhung tro do thanh mo coi, va
+    PowerPoint bao khong mo duoc file (bat duoc 16/09/2026 voi ban rut gon 16 slide). Section chi la cach nhom
+    slide o khung ben trai, bo di khong mat noi dung gi.
+    """
+    el = pr.part._element
+    for ext_lst in [e for e in el if e.tag.endswith("}extLst")]:
+        for ext in list(ext_lst):
+            if any(ch.tag.endswith("}sectionLst") for ch in ext):
+                ext_lst.remove(ext)
+        if len(ext_lst) == 0:
+            el.remove(ext_lst)
+
+
+bo_section(pr)
 RA.parent.mkdir(parents=True, exist_ok=True)
 try:
     pr.save(str(RA))
