@@ -223,6 +223,12 @@ function noiDung() {
      "Còn. Số liệu, dashboard và luồng duyệt không đổi. Các đoạn văn chuyển sang câu mẫu do code ghép."],
     ["Dữ liệu có ra khỏi Việt Nam không?",
      "Môi trường demo hiện dùng Azure OpenAI ở Mỹ. Khi triển khai, extension của NaviWorld tự chọn được vùng xử lý, giữ được trong Asia Pacific. Đây là điểm cần ghi vào phần governance."],
+    ["Sao email và báo cáo đề ngày 18/09 mà hôm nay chưa tới ngày đó?",
+     "18/09 là ngày lớp tính toán trong Business Central chạy lần gần nhất, trợ lý neo theo đó chứ không neo theo ngày máy chạy. "
+     + "Nếu neo theo ngày máy thì cửa sổ lịch sử bán và số ngày kể từ lần bán cuối đều lệch. Chứng từ mua bán thì vẫn mang ngày thật."],
+    ["Sao bên bán lẻ Dakao cũng thấy số lô, trong khi bán lẻ không quản lý lô?",
+     "Hai đơn vị đang dùng chung một bộ dữ liệu mô phỏng, dữ liệu bán lẻ riêng cho Dakao nằm ở bước sau. "
+     + "Riêng việc phiếu nhận mang đúng lô Marou đã xuất thì là có chủ ý: nhờ vậy truy được cả chuỗi từ lô sản xuất tới lô đang nằm ở cửa hàng."],
     ["Số liệu trong buổi này là thật chứ?",
      "Không. Đây là bộ dữ liệu mô phỏng do NaviWorld dựng trên danh mục thật của Marou, chạy trên môi trường demo. Nói câu này ít nhất một lần trong buổi."],
   ], [4.2, 7.8]));
