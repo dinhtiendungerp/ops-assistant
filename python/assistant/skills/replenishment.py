@@ -77,7 +77,10 @@ def handle_stockout(asst, user: dict[str, Any], intent) -> list[Delivery]:
     item = gw.find_item(intent.item_text) if intent.item_text else None
     if not item:
         names = ", ".join(i["description"] for i in gw.items()[:6])
-        return [Delivery(user["user_id"], f"Tôi chưa nhận ra mặt hàng. Bạn nói rõ tên giúp tôi, ví dụ: {names}.", skill=SKILL)]
+        # unresolved: bat AI thi core dua cau cho planner tu dung chuoi tra cuu (16/09/2026, Minh hoi "co nhung mat hang nao
+        # sap het hang" ma nhan lai cau mau nay; Dung: AI phai tu phan tich, goi tool, tong hop, khong tra cau mac dinh).
+        return [Delivery(user["user_id"], f"Tôi chưa nhận ra mặt hàng. Bạn nói rõ tên giúp tôi, ví dụ: {names}.", skill=SKILL,
+                         meta={"unresolved": True})]
 
     plan = _plan(gw, store, item["itemNo"], intent.quantity)
     ref = f"{store}|{item['itemNo']}"

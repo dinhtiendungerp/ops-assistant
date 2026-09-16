@@ -178,3 +178,76 @@ def test_ket_qua_do_bang_dung_don_vi_cua_baseline(asst):
     assert r["covered_vnd"] > 0
     labels = dict(kpi.card(asst).facts)
     assert "chưa đo được" not in labels["Giá trị tồn xấu đã có hướng xử lý"]
+
+
+def test_cau_chung_khong_co_ten_hang_la_unresolved_de_planner_nhan():
+    """16/09/2026: Minh (S0002) hoi "co nhung mat hang nao sap het hang". Rule bat STOCKOUT, khong co ten hang, tra cau mau
+    "Toi chua nhan ra mat hang". Dung: AI phai tu tra tool roi tong hop. Cau mau do gio danh dau unresolved, core dua cho planner."""
+    from assistant.core import Assistant
+    from assistant.skills import replenishment
+    from bc_agent.mock_client import MockBCClient
+
+    a = Assistant(MockBCClient())
+    out = replenishment.handle_stockout(a, a.mem.user("minh.s0002"), type("I", (), {"item_text": "nhung mat hang nao", "quantity": 0, "store_hint": ""})())
+    assert out[0].meta.get("unresolved")
+
+
+def test_tool_inventory_health_va_stores_at_risk_loc_theo_cua_hang():
+    from assistant import toolbox
+    from assistant.core import Assistant
+    from bc_agent.mock_client import MockBCClient
+
+    a = Assistant(MockBCClient())
+    u = a.mem.user("minh.s0002")
+    kq = toolbox.run_tool(a, u, "inventory_health", {"location": "S0002"})
+    assert kq["matched"] >= 1 and all(r["location"] == "S0002" and r["tier"] != "Healthy" for r in kq["rows"])
+    assert len(kq["rows"]) <= 40 and kq["rows"] == sorted(kq["rows"], key=lambda r: -int(r["riskScore"] or 0))
+    kq2 = toolbox.run_tool(a, u, "inventory_health", {"location": "S0002", "tier": "StockOutRisk"})
+    assert all(r["tier"] == "StockOutRisk" for r in kq2["rows"])
+    rui_ro = toolbox.run_tool(a, u, "stores_at_risk", {"location": "S0001"})
+    assert rui_ro and all(r["store"] == "S0001" for r in rui_ro)
+    assert {t["name"] for t in toolbox.TOOLS} >= {"inventory_health", "stores_at_risk"}
+
+
+def test_tool_de_xuat_bo_sung_co_co_bat_thuong_va_giai_thich():
+    from assistant import toolbox
+    from assistant.core import Assistant
+    from bc_agent.mock_client import MockBCClient
+
+    a = Assistant(MockBCClient())
+    u = a.mem.user("trang.sc")
+    kq = toolbox.run_tool(a, u, "replenishment_suggestions", {})
+    assert kq["count"] >= 1 and all(r["suggestedQty"] > 0 for r in kq["rows"])
+    assert all(isinstance(r["flags"], list) for r in kq["rows"])
+    # Dong co nhieu co len truoc
+    assert [len(r["flags"]) for r in kq["rows"]] == sorted([len(r["flags"]) for r in kq["rows"]], reverse=True)
+    mot = toolbox.run_tool(a, u, "replenishment_suggestions", {"location": kq["rows"][0]["store"]})
+    assert all(r["store"] == kq["rows"][0]["store"] for r in mot["rows"])
+    gt = toolbox.run_tool(a, u, "explain_replenishment", {"item_no": "33323", "location": "S0001"})
+    assert gt["available"] is False                      # mo phong khong co nhat ky LS, tool noi thang
+
+
+def test_cau_de_xuat_bat_thuong_khong_roi_vao_quet_so_kho():
+    """"tong hop nhung de xuat bat thuong" la phan tich de xuat bo sung cua LS (nhom Kham pha va phan tich), phai ve planner.
+    Truoc 16/09/2026 chu "bat thuong" bi rule bat thanh ANOMALY (quet so kho D3)."""
+    from assistant.nlu import RuleNLU
+
+    n = RuleNLU()
+    assert n.parse("tổng hợp những đề xuất bổ sung bất thường").intent != "ANOMALY"
+    assert n.parse("đề xuất nào của LS bất thường").intent != "ANOMALY"
+    assert n.parse("có gì bất thường trong 28 ngày qua không").intent == "ANOMALY"
+    assert n.parse("tổng hợp những đề xuất bất thường").intent not in ("ANOMALY", "BRIEF")
+    assert n.parse("tổng hợp việc hôm nay").intent == "BRIEF"
+
+
+def test_kiem_so_nhan_cot_store_trong_dong_ket_qua():
+    """Bo kiem so tung bao "du lieu da tra cua S0002 khong co so 11" trong khi 11 la onHand cua dong store=S0002 (16/09/2026)."""
+    from assistant.kich_ban import so_sai_dia_diem
+
+    buoc = [{"tool": "stores_at_risk", "args": {}, "result": [
+        {"store": "S0002", "itemNo": "33110", "description": "Croissant - chocolate", "onHand": 11, "avgDailySalesQty": 8.59, "suggestedQty": 7},
+        {"store": "S0001", "itemNo": "33110", "description": "Croissant - chocolate", "onHand": 3, "avgDailySalesQty": 4.2, "suggestedQty": 5}]}]
+    assert so_sai_dia_diem("S0002: Croissant - chocolate tồn 11, bán 8.59/ngày, đề xuất 7.", buoc) == []
+    assert so_sai_dia_diem("S0002: tồn 3.", buoc)          # 3 la cua S0001, van phai bao
+    assert so_sai_dia_diem("S0002 với mặt hàng Croissant - chocolate (33110) tồn 11.", buoc) == []   # ma hang khong phai so
+    assert so_sai_dia_diem("S0002 tính đến 2026-09-17: tồn 11.", buoc) == []                         # ngay thang khong phai so

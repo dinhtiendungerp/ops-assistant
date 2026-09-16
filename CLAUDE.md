@@ -62,7 +62,7 @@ AL/Marou/
                             demo_data.py doc bo demo-data-nwv; make_fixtures.py dung mock cua tro ly
                             tu chinh bo do (xem "Mock cua tro ly").
   python/assistant/         tro ly cua C: skill, planner, replays, giao dien web, so chi phi
-  python/tests/             572 test, chay bang `python -m pytest` trong thu muc python
+  python/tests/             577 test, chay bang `python -m pytest` trong thu muc python
   tools/                    sinh du lieu demo
   demo-data-nwv/            bo du lieu sap import, kem README-import.md
   docs/                     tai lieu
@@ -253,7 +253,7 @@ trich no lam bang chung gui PM hay khach.
 
 ```
 cd python
-python -m pytest -q                      # 572 test
+python -m pytest -q                      # 577 test
 python tools_bc.py extensions | upload <app> | ws <Ham> '<json>'   # quan tri BC qua S2S: publish, goi web service
 python -m bc_agent.probe --json --sample 2000   # kiem S2S va do san sang du lieu
                                                 # probe luon goi BC that, khong phu thuoc BC_MODE
@@ -1836,10 +1836,23 @@ kheo giua UC2 voi UC1, UC5, va dua AI vao vai tro trong yeu. Da lam:
   `(ban ngan, 17-09 v2).pptx` 15 slide, bo slide truy xuat lo.
 - Smoke test toi 16/09 tren BC that (AI bat): brief S1, D3, D4 the, planner, 5 cau LS, du bao, CTKM deu chay; tong chi phi
   ngay 16/09 duoi 0,3 USD.
+- **Cau chung phai ve planner, khong tra cau mau** (Dung, toi 16/09: Minh hoi "co nhung mat hang nao sap het hang" nhan
+  "Toi chua nhan ra mat hang"; "chung ta dang xay AI Agent, khong phai application"). Sua: cau mau cua `handle_stockout` danh
+  dau `unresolved` de core dua cho planner; prompt NLU model: STOCKOUT phai co ten hang, hoi chung la PLAN; planner them tool
+  `inventory_health` (bang da xep tang, loc dia diem/tang, 40 dong rui ro cao nhat) va `stores_at_risk` loc theo cua hang, kem
+  so ngay het hang trong cua so; SYSTEM planner: quan ly cua hang hoi chung thi mac dinh cua hang cua ho. MCP server tu co tool moi.
+  Quy tac chung: skill nao khong giai duoc cau thi tra Delivery `meta={"unresolved": True}`, dung tra cau mau roi dung.
+- **"Tong hop nhung de xuat bat thuong"** (Dung: nhom Kham pha va phan tich insight, AI phai tu goi tool replenishment roi
+  tong hop). Planner them tool `replenishment_suggestions` (dong LS de xuat, kem `flags` code tinh: oos_qua_nua_cua_so,
+  khong_co_ban_binh_quan, de_xuat_vuot_ban_x_phu, kho_khong_du, ton_bang_0, de_xuat_bi_chan) va `explain_replenishment`
+  (nhat ky LS cho mot cap). Rule: "bat thuong" kem "de xuat / bo sung / LS" thi KHONG phai ANOMALY (D3) cung KHONG phai BRIEF
+  ("tong hop"), de cau roi ve model. Bo kiem so cua planner (`kich_ban.so_sai_dia_diem`) sua hai cho: dong ket qua cung ma hang
+  o nhieu cua hang thi duong dan ghep `?store=S0002.#itemNo=33110` (`_seg_dong`), va ma hang viet sau ma cua hang khong bi coi la
+  con so; truoc do cau tra loi dung van bi gan "4 so khong khop".
 
 ### Nhan hang lien cong ty (A4), chay tron vong, 16/09/2026
 
-App dang chay tren NWV01: `NWV Marou Agent` **1.7.0.0**, `NWV Marou Demo Setup` **1.8.6.0**. 572 test.
+App dang chay tren NWV01: `NWV Marou Agent` **1.7.0.0**, `NWV Marou Demo Setup` **1.8.6.0**. 577 test.
 
 Dung chot cach xu ly, va no **khong doi xung hai dau**:
   - Phia Marou (ban) khong co gi tu dong. Nguoi kho post xuat kho trong BC nhu moi ngay.

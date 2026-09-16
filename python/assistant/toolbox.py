@@ -35,9 +35,48 @@ TOOLS: list[dict[str, Any]] = [
     },
     {
         "name": "stores_at_risk",
-        "description": "Cac cua hang dang duoi nguong ton, tu bang NWV Repl. Suggestion. Dung de kiem tra rut hang khoi kho trung tam co lam vo ke hoach cua cua hang khac khong.",
+        "description": "Cac cap cua hang x mat hang ma LS Replenishment dang de xuat bo sung, tuc sap het hang (stock-out risk): ton, "
+                       "hang dang ve, ban binh quan, so ngay con ban duoc, so luong de xuat, so ngay het hang trong cua so tinh. "
+                       "Dung cho cau 'mat hang nao sap het', 'cua hang nao co nguy co het hang', va de kiem tra rut hang khoi kho "
+                       "trung tam co lam vo ke hoach cua cua hang khac khong.",
         "input_schema": {"type": "object", "properties": {
-            "item_no": {"type": "string", "description": "Rong la lay tat ca mat hang"}}, "required": []},
+            "item_no": {"type": "string", "description": "Rong la lay tat ca mat hang"},
+            "location": {"type": "string", "description": "Ma cua hang, vi du S0002. Rong la moi cua hang."}}, "required": []},
+    },
+    {
+        "name": "inventory_health",
+        "description": "Bang Suc khoe ton kho (NWV Inventory Health) Business Central da tinh: moi dong la mat hang x dia diem x lo, "
+                       "xep tang Expired (het han), NearExpiry (can date), StockOutRisk (sap het hang), SlowMoving (cham luan chuyen), "
+                       "Excess (ton thua), Healthy. Tra toi da 40 dong rui ro cao nhat kem ly do xep tang. Dung cho cau 'o cua hang toi "
+                       "co gi can lo', 'lo nao sap het han', 'mat hang nao sap het hang', 'hang nao ton lau khong ban'.",
+        "input_schema": {"type": "object", "properties": {
+            "location": {"type": "string", "description": "Ma dia diem. Rong la moi dia diem."},
+            "tier": {"type": "string", "enum": ["Expired", "NearExpiry", "StockOutRisk", "SlowMoving", "Excess", "Healthy", ""],
+                     "description": "Loc mot tang. Rong la lay moi tang tru Healthy."},
+            "item_no": {"type": "string"}}, "required": []},
+    },
+    {
+        "name": "replenishment_suggestions",
+        "description": "Danh sach de xuat bo sung hang cua LS Replenishment (LS Central da tinh, tro ly khong tinh lai): moi dong "
+                       "la mat hang x cua hang, gom so luong LS de xuat, muc LS tinh truoc khi chan, ban binh quan ngay, so ngay phu "
+                       "yeu cau, ton, hang dang ve, ton kha dung o kho cap, so ngay het hang trong cua so tinh, quyet dinh cua LS, "
+                       "kieu (chuyen tu kho hay mua tu vendor), nguon. Kem `flags` do code tinh de nhin ra dong bat thuong: "
+                       "min_max (kieu Stock Levels, khong co ban binh quan la binh thuong), oos_qua_nua_cua_so, khong_co_ban_binh_quan, "
+                       "de_xuat_vuot_ban_x_phu, kho_khong_du, ton_bang_0, de_xuat_bi_chan (kho khong du nen LS chia lai). "
+                       "Dung cho cau 'tong hop de xuat bo sung', 'de xuat nao bat thuong', 'LS dang de xuat gi cho cua hang toi'. "
+                       "Muon biet vi sao MOT dong ra so do thi goi explain_replenishment.",
+        "input_schema": {"type": "object", "properties": {
+            "location": {"type": "string", "description": "Ma cua hang. Rong la moi cua hang."},
+            "item_no": {"type": "string"},
+            "only_suggested": {"type": "boolean", "description": "true (mac dinh): chi dong LS de xuat so luong > 0"}},
+            "required": []},
+    },
+    {
+        "name": "explain_replenishment",
+        "description": "Vi sao LS Replenishment ra so luong do cho MOT mat hang tai MOT cua hang: cac buoc doc tu nhat ky tinh cua LS "
+                       "(kieu tinh, tham so, ton kha dung, cong thuc, quyet dinh) va nhat ky nguyen van. Chi co khi noi Business Central.",
+        "input_schema": {"type": "object", "properties": {"item_no": {"type": "string"}, "location": {"type": "string"}},
+                         "required": ["item_no", "location"]},
     },
     {
         "name": "sales_rate",
@@ -112,10 +151,89 @@ def run_tool(asst: Any, user: dict[str, Any], name: str, args: dict[str, Any]) -
         rows = gw.risky_suggestions(100)
         if args.get("item_no"):
             rows = [r for r in rows if r["itemNo"] == args["item_no"]]
+        if args.get("location"):
+            rows = [r for r in rows if r["storeLocationCode"] == args["location"]]
         return [{"store": r["storeLocationCode"], "itemNo": r["itemNo"], "description": r.get("itemDescription"),
                  "onHand": r["storeQtyOnHand"], "inTransit": r.get("storeQtyInTransit", 0),
                  "avgDailySalesQty": r["avgDailySalesQty"], "daysOfCover": r["daysOfCover"],
-                 "suggestedQty": r.get("suggestedQty"), "reason": r.get("reason")} for r in rows]
+                 "suggestedQty": r.get("suggestedQty"), "source": r.get("sourceLocationCode") or r.get("vendorNo"),
+                 "replenType": r.get("replenType", "Transfer"), "daysOutOfStockInWindow": r.get("daysCensored"),
+                 "reason": r.get("reason")} for r in rows]
+    if name == "inventory_health":
+        # Bang da tinh trong BC; tool chi loc va rut gon, khong tinh lai. 40 dong rui ro cao nhat de khong vuot han muc token.
+        conds = []
+        if args.get("location"):
+            conds.append(("locationCode", "eq", args["location"]))
+        if args.get("item_no"):
+            conds.append(("itemNo", "eq", args["item_no"]))
+        rows = gw.doc("inventoryHealthLines", conds, top=5000)
+        tier = args.get("tier") or ""
+        rows = [r for r in rows if (r.get("tier") == tier if tier else r.get("tier") != "Healthy")]
+        rows.sort(key=lambda r: -int(r.get("riskScore") or 0))
+        return {"asOf": gw.today().isoformat(), "matched": len(rows),
+                "rows": [{"itemNo": r["itemNo"], "description": r.get("itemDescription"), "location": r["locationCode"],
+                          "lot": r.get("lotNo") or "", "tier": r.get("tier"), "qty": r.get("quantityOnHand"),
+                          "value": r.get("inventoryValue"), "avgDailySalesQty": r.get("avgDailySalesQty"),
+                          "daysOfCover": r.get("daysOfCover"), "daysToExpiry": r.get("daysToExpiry"),
+                          "expiry": r.get("expirationDate"), "riskScore": r.get("riskScore"), "reason": r.get("riskReason")}
+                         for r in rows[:40]]}
+    if name == "replenishment_suggestions":
+        rows = gw.doc("replenishmentSuggestions", [], top=5000)
+        # Model hay dien kho trung tam vao location (16/09/2026: "W0003 khong co de xuat nao"); de xuat la cua CUA HANG nen
+        # kho trung tam nghia la khong loc.
+        if args.get("location") and (args["location"] == gw.central_wh or gw.la_kho(args["location"])):
+            args = dict(args, location="")
+        if args.get("location"):
+            rows = [r for r in rows if r.get("storeLocationCode") == args["location"]]
+        if args.get("item_no"):
+            rows = [r for r in rows if r.get("itemNo") == args["item_no"]]
+        if args.get("only_suggested", True):
+            rows = [r for r in rows if float(r.get("suggestedQty") or 0) > 0]
+        ra = []
+        for r in rows:
+            avg = float(r.get("avgDailySalesQty") or 0)
+            phu = float(r.get("targetDays") or 0)
+            sug = float(r.get("suggestedQty") or 0)
+            muc = float(r.get("targetQty") or 0)
+            oos = int(r.get("daysCensored") or 0)
+            kho = float(r.get("warehouseQtyAvailable") or 0)
+            ton = float(r.get("storeQtyOnHand") or 0)
+            quyet = str(r.get("lsDecision") or "")
+            # Stock Levels (min-max): LS khong ghi ban binh quan va System Suggested Quantity la Maximum Inventory, nen "khong co
+            # ban binh quan" va "de xuat bi chan" la binh thuong voi kieu tinh nay, khong phai bat thuong. Danh dau rieng.
+            min_max = "Maximum Inventory" in quyet
+            flags = []
+            if min_max:
+                flags.append("min_max")
+            if oos >= 28:
+                flags.append("oos_qua_nua_cua_so")        # cua so Sales Profile DEFAULT 56 ngay; qua nua la het hang
+            if sug > 0 and avg <= 0 and not min_max:
+                flags.append("khong_co_ban_binh_quan")
+            if avg > 0 and phu > 0 and sug > avg * phu * 1.5:
+                flags.append("de_xuat_vuot_ban_x_phu")
+            if r.get("replenType", "Transfer") == "Transfer" and muc > 0 and kho < muc:
+                flags.append("kho_khong_du")
+            if ton <= 0:
+                flags.append("ton_bang_0")
+            if muc > 0 and sug < muc and not min_max and r.get("replenType", "Transfer") == "Transfer":
+                flags.append("de_xuat_bi_chan")
+            ra.append({"store": r.get("storeLocationCode"), "itemNo": r.get("itemNo"), "description": r.get("itemDescription"),
+                       "suggestedQty": sug, "lsTargetQty": muc, "avgDailySalesQty": avg, "coverDays": phu,
+                       "onHand": ton, "inTransit": r.get("storeQtyInTransit", 0), "daysOfCover": r.get("daysOfCover"),
+                       "sourceAvailable": kho, "daysOutOfStockInWindow": oos, "decision": r.get("lsDecision") or "",
+                       "replenType": r.get("replenType", "Transfer"), "source": r.get("sourceLocationCode") or r.get("vendorNo"),
+                       "flags": flags})
+        ra.sort(key=lambda x: (-len(x["flags"]), -x["suggestedQty"]))
+        return {"asOf": gw.today().isoformat(), "count": len(ra), "windowDays": 56, "rows": ra[:60]}
+    if name == "explain_replenishment":
+        from .skills import ls_giai_thich
+        if gw.is_mock:
+            return {"available": False, "reason": "Giai thich theo nhat ky LS chi co khi noi Business Central."}
+        kq = ls_giai_thich.giai_thich(gw, args["item_no"], args["location"])
+        if not kq:
+            return {"available": False, "reason": f"LS chua co dong {args['item_no']} tai {args['location']}."}
+        return {"available": True, "itemNo": args["item_no"], "location": args["location"], "suggestedQty": kq.get("de_xuat"),
+                "steps": kq.get("y", []), "lsLog": kq.get("nhat_ky_ls", [])[:12]}
     if name == "sales_rate":
         days = int(args.get("days") or 90)
         hist = gw.sales_history(args["item_no"], args.get("location"), days=days)

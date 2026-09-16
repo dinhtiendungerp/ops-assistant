@@ -195,6 +195,40 @@ _KET_LUAN = re.compile(r"(nhất|nên |đề xuất|khuyến nghị|cao hơn|th�
 _SO = re.compile(r"(?<![\w/:.,\-])(\d{1,3}(?:\.\d{3})+(?:,\d+)?|\d+(?:[.,]\d+)?)(?![\w/])(?![.,]\d)")
 
 
+_NGAY_RE = re.compile(r"(?<!\d)\d{4}-\d{2}-\d{2}(?!\d)|(?<![\d/])\d{1,2}/\d{1,2}(?:/\d{2,4})?(?![\d/])")
+
+
+def _NGAY_SPAN(dong: str) -> list[tuple[int, int]]:
+    return [m.span() for m in _NGAY_RE.finditer(dong)]
+
+
+def _chuoi(obj: Any) -> list[str]:
+    """Moi gia tri chuoi trong ket qua tool, de nhan ra ma hang."""
+    if isinstance(obj, str):
+        return [obj]
+    if isinstance(obj, dict):
+        return [c for v in obj.values() for c in _chuoi(v)]
+    if isinstance(obj, list):
+        return [c for x in obj for c in _chuoi(x)]
+    return []
+
+
+def _seg_dong(x: dict[str, Any], rows: list[dict[str, Any]]) -> str | None:
+    """Doan duong dan cho mot dong trong danh sach: `#itemNo=33110` khi ma do la duy nhat trong danh sach; khi khong duy nhat
+    (cung mat hang o nhieu cua hang, ket qua stores_at_risk) thi ghep them khoa thu hai `?store=S0002.#itemNo=33110`, dang ma
+    `planner._resolve` doc lai duoc (loc roi chon). None thi dung chi so vi tri."""
+    khoa = [k for k in _ID if isinstance(x.get(k), str) and x.get(k) and "." not in x[k]]
+    if not khoa:
+        return None
+    k1 = khoa[0]
+    if sum(1 for r in rows if r.get(k1) == x[k1]) == 1:
+        return f"#{k1}={x[k1]}"
+    for k2 in khoa[1:]:
+        if sum(1 for r in rows if r.get(k1) == x[k1] and r.get(k2) == x[k2]) == 1:
+            return f"?{k2}={x[k2]}.#{k1}={x[k1]}"
+    return f"#{k1}={x[k1]}"
+
+
 def _chi_muc(obj: Any, path: str = "") -> list[tuple[str, float]]:
     """Moi o so trong ket qua tool, kem duong dan `_resolve` doc lai duoc.
 
@@ -210,18 +244,41 @@ def _chi_muc(obj: Any, path: str = "") -> list[tuple[str, float]]:
         for k, v in obj.items():
             ra += _chi_muc(v, noi(k))
     elif isinstance(obj, list):
+        dicts = [x for x in obj if isinstance(x, dict)]
         for i, x in enumerate(obj):
             seg = str(i)
             if isinstance(x, dict):
-                k = next((k for k in _ID if isinstance(x.get(k), str) and x.get(k) and "." not in x[k]), None)
-                if k:
-                    seg = f"#{k}={x[k]}"
+                seg = _seg_dong(x, dicts) or seg
             ra += _chi_muc(x, noi(seg))
-        dicts = [x for x in obj if isinstance(x, dict)]
         so_truong = {k for d in dicts for k, v in d.items() if isinstance(v, (int, float)) and not isinstance(v, bool)}
         for k in sorted(so_truong):
             ra.append((noi(f"@sum:{k}"), sum(float(d.get(k) or 0) for d in dicts)))
         ra.append((noi("@len"), float(len(obj))))
+    return ra
+
+
+def _ma_dong(obj: Any, path: str = "") -> list[tuple[str, str]]:
+    """Moi dong ket qua (dict trong list) co mot cot dia diem thi ghi (duong dan cua dong, ma dia diem).
+
+    Vi sao (16/09/2026): `stores_at_risk` tra dong {"store": "S0002", "itemNo": "33110", "onHand": 11}. `_chi_muc` dat duong dan
+    theo itemNo (khoa dau tien trong _ID) nen `#itemNo=33110.onHand` khong mang chu S0002, va bo kiem bao "du lieu da tra cua
+    S0002 khong co so 11" du so do nam dung dong cua S0002. Bang nay cho bo kiem biet dong nao thuoc dia diem nao."""
+    noi = (lambda seg: f"{path}.{seg}" if path else seg)
+    ra: list[tuple[str, str]] = []
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            ra += _ma_dong(v, noi(k))
+    elif isinstance(obj, list):
+        dicts = [x for x in obj if isinstance(x, dict)]
+        for i, x in enumerate(obj):
+            seg = str(i)
+            if isinstance(x, dict):
+                seg = _seg_dong(x, dicts) or seg
+                dd = next((x[c] for c in ("locationCode", "store", "location", "storeLocationCode") if isinstance(x.get(c), str)
+                           and _MA_DD.fullmatch(x[c])), None)
+                if dd:
+                    ra.append((noi(seg), dd))
+            ra += _ma_dong(x, noi(seg))
     return ra
 
 
@@ -261,11 +318,19 @@ def so_sai_dia_diem(tra_loi: str, buoc: list[dict[str, Any]]) -> list[str]:
         ma_buoc = {m for v in (s.get("args") or {}).values() if isinstance(v, str) for m in _MA_DD.findall(v)}
         if isinstance(res, dict):
             ma_buoc |= {m for v in res.values() if isinstance(v, str) for m in _MA_DD.findall(v)}
+        dong = _ma_dong(res)
         for p, v in _chi_muc(res):
             mon = re.findall(r"#itemNo=([^.#]+)", p)
             if hang and mon and mon[-1] not in hang:
                 continue
-            o.append((p, v, ma_buoc))
+            # O nam trong mot dong co cot dia diem thi o do thuoc dia diem cua dong, du duong dan dat theo ma hang.
+            cua_dong = {dd for pre, dd in dong if p == pre or p.startswith(pre + ".")}
+            o.append((p, v, ma_buoc | cua_dong))
+    # Ma mat hang (33110) la chuoi trong ket qua, model viet no sau ma cua hang thi khong phai con so de kiem (16/09/2026:
+    # "S0002 voi mat hang Croissant - chocolate (33110)" bi bao "33110 khong co trong du lieu da tra").
+    ma_hang_chuoi: set[str] = set()
+    for s in buoc:
+        ma_hang_chuoi |= {str(v) for v in _chuoi(s.get("result")) if re.fullmatch(r"\d{4,7}", str(v))}
     canh_bao: list[str] = []
     for dong in tra_loi.splitlines():
         for m in _SO.finditer(dong):
@@ -273,11 +338,19 @@ def so_sai_dia_diem(tra_loi: str, buoc: list[dict[str, Any]]) -> list[str]:
             if not truoc:
                 continue
             ma = truoc[-1]
+            if m.group(1) in ma_hang_chuoi:
+                continue
+            # Ngay thang (2026-09-17, 17/09/2026) khong phai con so can doi chieu; "2026" tung bi bao "khong co trong du lieu".
+            if any(a <= m.start() < b for a, b in _NGAY_SPAN(dong)):
+                continue
             gia_tri, le = _doc_so(m.group(1))
             if le == 0 and gia_tri in hang_so:
                 continue
             bang = [(p, mb) for p, v, mb in o if _bang(v, gia_tri, le)]
             dung = [p for p, mb in bang if f"={ma}" in p or (not _MA_DD.search(p) and ma in mb)]
+            if not dung:
+                # Duong dan theo ma hang (khong co ma dia diem) nhung dong do thuoc dung dia diem duoc nhac.
+                dung = [p for p, mb in bang if ma in mb and not any(m != ma for m in _MA_DD.findall(p))]
             if not dung:
                 ly_do = "không có trong dữ liệu đã tra" if not bang else f"dữ liệu đã tra của {ma} không có số này"
                 canh_bao.append(f"“{m.group(1)}” ở dòng “{dong.strip()[:90]}”: {ly_do}")

@@ -17,18 +17,18 @@ function noiDung() {
   c.push(h1("0. Mạch của buổi demo"));
   c.push(p("Một buổi sáng ở Dakao và Marou. Cửa hàng kêu hết hàng, LS Replenishment đã tính sẵn con số, trợ lý ghi đề xuất và giải "
     + "thích, người của Marou duyệt, đơn mua tự sang Marou, Marou xuất kho, trợ lý báo cửa hàng chuẩn bị nhận và xin phép post phiếu "
-    + "nhận. Xen giữa là dự báo nối sang bổ sung, và một lô cận date để AI chọn phương án. Sáu phần, 20 bước, mỗi bước là một nút "
+    + "nhận. Xen giữa là dự báo nối sang bổ sung, và một lô cận date để AI chọn phương án. Sáu phần, 23 bước, mỗi bước là một nút "
     + "trên cột trái của console, bấm theo số thứ tự."));
   c.push(...table(["Phần", "Bước", "UC", "Phút"], [
     ["1 · Nhìn toàn cảnh buổi sáng", "1, 2", "UC2, AI", "0 đến 4"],
-    ["2 · Cửa hàng hết hàng, LS tính, AI đề xuất", "3 đến 8", "UC5, OOS, AI", "4 đến 14"],
-    ["3 · Dự báo nối sang bổ sung", "9 đến 13", "UC1, UC7 nối UC5", "14 đến 21"],
-    ["4 · Một lô cận date, AI chọn phương án", "14 đến 16", "UC2, AI", "21 đến 26"],
-    ["5 · Liên công ty khép vòng", "17 đến 20", "A4", "26 đến 33"],
-    ["6 · Bất thường và chi phí", "21, 22", "AI, vận hành", "33 đến 37"],
+    ["2 · Cửa hàng hết hàng, LS tính, AI đề xuất", "3 đến 9", "UC5, OOS, AI", "4 đến 15"],
+    ["3 · Dự báo nối sang bổ sung", "10 đến 14", "UC1, UC7 nối UC5", "15 đến 22"],
+    ["4 · Một lô cận date, AI chọn phương án", "15 đến 17", "UC2, AI", "22 đến 27"],
+    ["5 · Liên công ty khép vòng", "18 đến 21", "A4", "27 đến 34"],
+    ["6 · Bất thường và chi phí", "22, 23", "AI, vận hành", "34 đến 38"],
   ], [4.6, 2.2, 3.0, 2.2]));
-  c.push(...ghiChu("Khi bị cắt giờ, giữ các bước 2, 3, 4, 7, 15, 17, 19. Đó là một vòng trọn: AI tóm tắt, cửa hàng kêu hết hàng, LS "
-    + "giải thích, người duyệt, AI chọn phương án, Marou xuất kho, trợ lý post phiếu nhận sau khi được duyệt.",
+  c.push(...ghiChu("Khi bị cắt giờ, giữ các bước 2, 3, 4, 7, 9, 16, 18, 20. Đó là một vòng trọn: AI tóm tắt, cửa hàng kêu hết hàng, LS "
+    + "giải thích, người duyệt, AI phân tích đề xuất bất thường, AI chọn phương án, Marou xuất kho, trợ lý post phiếu nhận sau khi được duyệt.",
     "Bản 15 phút"));
 
   // ------------------------------------------------------------------ 1
@@ -37,18 +37,18 @@ function noiDung() {
   c.push(p("Tối 16/09 tôi dựng sẵn trạng thái dưới đây trên Business Central NWV01. Không phải làm lại gì trước buổi họp, chỉ kiểm."));
   c.push(...table(["Đã có sẵn", "Ở đâu", "Dùng cho bước"], [
     ["Bộ dữ liệu tính lại theo Work Date 17/09/2026: Inventory Health, dự báo, scorecard, LS Replenishment, cả hai company", "NWV-MAROU và NWV-DAKAO", "Tất cả"],
-    ["LS ở Dakao đề xuất 12 Ice cream cho S0002 (min-max 8/20), 7 Croissant chocolate cho S0002 (42 ngày hết hàng), 2 Choco nuts cho S0001 (tồn 0, 82 đang về)", "Journal MAROU-PO của NWV-DAKAO", "3 đến 6"],
-    ["Đơn mua HO106202: 82 Choco nuts từ Marou giao S0001. Đã sang Marou thành Sales Order S90015, Marou đã post xuất kho phiếu 102045 đề ngày 17/09", "NWV-DAKAO và NWV-MAROU", "6, 17, 18"],
-    ["Đơn mua HO106200: 1 Blueberry muffin giao S0005, Marou xuất kho phiếu 102044 ngày 16/09, chưa post nhận", "NWV-DAKAO", "17, 19"],
-    ["Bốn CTKM và bốn Planned Event của LS: Choco bowl giảm 15% ngày 23 đến 25/09 có nhu cầu cho S0001 và S0010, cố ý thiếu S0002 và S0005", "LS Periodic Discount, Planned Event", "11 đến 13"],
-    ["Dự báo Holt-Winters 28 ngày tới đã ghi vào Retail Forecast Entry; Choco pillar và Choco bowl tính kiểu Retail Forecast", "LS Forecast Entry", "9 đến 13"],
-    ["Lô Choco pillar L260829-33310-SD tại S0010: 470 cái, hạn 13/10, bán không kịp; S0001 bán nhanh hơn", "Inventory Health NWV-MAROU", "14 đến 16"],
+    ["LS ở Dakao đề xuất 12 Ice cream cho S0002 (min-max 8/20), 7 Croissant chocolate cho S0002 (42 ngày hết hàng), 2 Choco nuts cho S0001 (tồn 0, 82 đang về)", "Journal MAROU-PO của NWV-DAKAO", "3 đến 6, 9"],
+    ["Đơn mua HO106202: 82 Choco nuts từ Marou giao S0001. Đã sang Marou thành Sales Order S90015, Marou đã post xuất kho phiếu 102045 đề ngày 17/09", "NWV-DAKAO và NWV-MAROU", "6, 18, 19"],
+    ["Đơn mua HO106200: 1 Blueberry muffin giao S0005, Marou xuất kho phiếu 102044 ngày 16/09, chưa post nhận", "NWV-DAKAO", "18, 20"],
+    ["Bốn CTKM và bốn Planned Event của LS: Choco bowl giảm 15% ngày 23 đến 25/09 có nhu cầu cho S0001 và S0010, cố ý thiếu S0002 và S0005", "LS Periodic Discount, Planned Event", "12 đến 14"],
+    ["Dự báo Holt-Winters 28 ngày tới đã ghi vào Retail Forecast Entry; Choco pillar và Choco bowl tính kiểu Retail Forecast", "LS Forecast Entry", "10 đến 14"],
+    ["Lô Choco pillar L260829-33310-SD tại S0010: 470 cái, hạn 13/10, bán không kịp; S0001 bán nhanh hơn", "Inventory Health NWV-MAROU", "15 đến 17"],
   ], [6.4, 3.4, 2.2]));
   c.push(h2("Đã dọn"));
   c.push(...table(["Đã xoá", "Vì sao"], [
     ["19 đề xuất chuyển hàng đã từ chối ở Marou, 7 đề xuất đặt mua đã từ chối ở Dakao", "Tính theo Work Date 18/09, không còn khớp LS. Cột Theo dõi xử lý giờ không còn dòng Rejected."],
     ["13 đề xuất huỷ lô hết hạn ở Dakao (12 chờ duyệt, 1 đã thực thi từ 14/09)", "Sinh ra từ các lần chạy quét sáng khi thử. Mạch demo mới không dùng luồng huỷ."],
-    ["2 đề xuất post nhận hàng còn treo (HO106200, HO106202) và các đề xuất thử tối 16/09", "Trợ lý ghi lại đúng lúc khi bấm Kiểm hàng Marou đã xuất kho ở bước 17."],
+    ["2 đề xuất post nhận hàng còn treo (HO106200, HO106202) và các đề xuất thử tối 16/09", "Trợ lý ghi lại đúng lúc khi bấm Kiểm hàng Marou đã xuất kho ở bước 18."],
     ["Đơn mua HO106199 (1 muffin, tạo trước khi có Intercompany) và hai dòng Item Journal rỗng SL260918", "Rác của các lần thử, không thuộc kịch bản nào."],
     ["Hộp thư của trợ lý ở cả hai company (nút Reset)", "Xoá lịch sử các lần thử; sáng 17/09 mọi vai bắt đầu từ màn hình chào."],
   ], [6.0, 6.0]));
@@ -70,11 +70,11 @@ function noiDung() {
   ], [2.6, 5.2, 4.2]));
   c.push(h2("Người dùng demo"));
   c.push(...table(["Đăng nhập", "Vai", "Đơn vị", "Bước"], [
-    ["trang.sc", "Supply Chain", "Cả hai", "1, 2, 4 đến 6, 8 đến 15, 21"],
-    ["minh.s0002", "Quản lý Cửa hàng Hà Nội (S0002)", "Dakao", "3, 20"],
-    ["hung.dieuphoi", "Điều phối kho", "Cả hai", "7, 16, 17, 19, 20"],
-    ["lan.s0001", "Quản lý Cửa hàng Quận 1 (S0001)", "Dakao", "18"],
-    ["dung.admin", "Quản trị", "Cả hai", "22"],
+    ["trang.sc", "Supply Chain", "Cả hai", "1, 2, 4 đến 6, 8 đến 16, 22"],
+    ["minh.s0002", "Quản lý Cửa hàng Hà Nội (S0002)", "Dakao", "3, 21"],
+    ["hung.dieuphoi", "Điều phối kho", "Cả hai", "7, 17, 18, 20, 21"],
+    ["lan.s0001", "Quản lý Cửa hàng Quận 1 (S0001)", "Dakao", "19"],
+    ["dung.admin", "Quản trị", "Cả hai", "23"],
   ], [2.2, 4.0, 2.0, 3.8]));
   c.push(...ghiChu("Bấm nút kịch bản là console tự đổi vai và đổi company cho đúng bước, rồi điền câu và gửi. Ô hướng dẫn màu vàng "
     + "dưới danh sách ghi bước đó chứng minh điều gì. Các bước vẽ nét đứt là bước bấm trên thẻ trong hộp thư, console chỉ đổi vai và "
@@ -82,7 +82,7 @@ function noiDung() {
 
   // ------------------------------------------------------------------ 3
   c.push(pageBreak());
-  c.push(h1("3. Hai mươi hai bước"));
+  c.push(h1("3. Hai mươi ba bước"));
   c.push(p("Mỗi bước bốn cột: bấm gì, khách thấy gì, nói gì. Cột khách thấy gì là dấu hiệu bước đã xong, đừng bấm tiếp khi chưa thấy."));
 
   const buoc = (so, ten, vai, bam, thay, noi, luuYs) => {
@@ -142,83 +142,91 @@ function noiDung() {
     "Nút 8. Câu: so sánh tốc độ bán Choco nuts giữa các cửa hàng trong 30 ngày qua.",
     "Sau khoảng 15 giây: bảng tốc độ bán từng cửa hàng và kết luận S0001 bán nhanh nhất. Thẻ ghi Nguồn: model tự dựng chuỗi tra cứu, 7 bước, số token, nút Xem 7 bước tôi đã tra.",
     ["Không có rule nào cho câu này. Model tự chọn đọc gì, đọc mấy lần, rồi trả lời. Mỗi con số chép từ kết quả tra cứu, bấm nút là thấy từng bước.",
-     "Câu này khoảng 12 nghìn token, tức chưa tới nửa cent. Chi phí xem ở bước 22."],
+     "Câu này khoảng 12 nghìn token, tức chưa tới nửa cent. Chi phí xem ở bước 23."],
     ["Câu hỏi có chữ “Marou” kèm “về” hay “xuất kho” sẽ bị hiểu là hỏi hàng liên công ty. Giữ đúng câu trên nút."]);
 
+  buoc(9, "Đề xuất bổ sung nào bất thường", "trang.sc · Dakao",
+    "Nút 9. Câu: tổng hợp những đề xuất bổ sung bất thường.",
+    "Sau khoảng 10 giây: danh sách vài dòng LS đang đề xuất mà có dấu hiệu lạ, mỗi dòng nói vì sao (số ngày hết hàng, bán bình quân, số ngày phủ, kho cấp) và việc nên làm. Thẻ ghi Nguồn: model tự dựng chuỗi tra cứu.",
+    ["Đây là nhóm Khám phá và phân tích insight. Không ai viết sẵn câu trả lời: model gọi tool đọc toàn bộ đề xuất của LS, đọc các cờ do code tính, chọn dòng đáng xem và giải thích.",
+     "Code tính cờ, model diễn giải và ưu tiên. Con số nào model viết cũng phải có trong kết quả tool.",
+     "Câu này trước đây bị hiểu là tổng hợp việc hôm nay; giờ chữ bất thường đi với đề xuất là chuyển cho model."],
+    ["Câu trả lời đổi theo dữ liệu, không học thuộc. Nếu model chọn dòng khác với dự kiến thì đọc lý do nó nêu, đó chính là điểm muốn cho khách thấy."]);
+
   c.push(h2("Phần 3 · Dự báo nối sang bổ sung"));
-  buoc(9, "Tab Dự báo: ba phương pháp", "trang.sc · Dakao",
-    "Nút 9. Console mở tab Dự báo.",
+  buoc(10, "Tab Dự báo: ba phương pháp", "trang.sc · Dakao",
+    "Nút 10. Console mở tab Dự báo.",
     "Ba phương pháp, 74 cặp, kỳ kiểm tra 21/08 đến 17/09; biểu đồ theo ngày, 28 ngày tới, ngày sự kiện tô vàng.",
     ["Độ chính xác đo bằng WAPE trên kỳ kiểm tra 28 ngày, học 84 ngày trước đó. Ngày hết hàng và ngày có sự kiện đã khai bị bỏ khỏi phép đo.",
      "Holt-Winters là mô hình thống kê chuỗi thời gian, chưa phải AI. Nói thẳng."]);
-  buoc(10, "Dự báo đang sai ở đâu", "trang.sc · Dakao",
-    "Nút 10.",
+  buoc(11, "Dự báo đang sai ở đâu", "trang.sc · Dakao",
+    "Nút 11.",
     "Câu trả lời: Holt-Winters sai 37,0%, trung bình 28 ngày 38,0%, trung bình cùng thứ 37,2%; 20 cặp vượt ngưỡng; sai số theo điểm bán và nhóm hàng.",
     ["Sai nhiều nhất là bánh croissant: dự báo cao hơn bán thực tế vì cửa hàng hay hết hàng. Đó lại nối về câu chuyện Out of Stock ở bước 5."]);
-  buoc(11, "Choco bowl S0010: 7 ngày tới và CTKM", "trang.sc · Dakao",
-    "Nút 11.",
+  buoc(12, "Choco bowl S0010: 7 ngày tới và CTKM", "trang.sc · Dakao",
+    "Nút 12.",
     "Thẻ Dự báo Choco bowl tại S0010: dự báo 7 ngày tới đã ghi vào Retail Forecast Entry của LS (tổng 25,2), sự kiện KM-CHOCOBOWL-09 cộng 150% từ 23 đến 25/09.",
     ["Dự báo không nằm ở bảng riêng của NaviWorld. Nó ghi vào bảng chuẩn của LS, nên LS Replenishment dùng được ngay.",
      "Sự kiện lấy từ Planned Sales Demand của LS, cũng bảng chuẩn."]);
-  buoc(12, "CTKM đang chạy và sắp tới", "trang.sc · Dakao",
-    "Nút 12.",
+  buoc(13, "CTKM đang chạy và sắp tới", "trang.sc · Dakao",
+    "Nút 13.",
     "Thẻ CTKM: 3 đang chạy, 2 sắp tới, 2 CTKM thiếu nhu cầu trong LS. Dòng cảnh báo: Choco bowl giảm 15% có Planned Event cho S0001, S0010 nhưng S0002, S0005 chưa có.",
     ["Trợ lý đọc Periodic Discount của LS và soi xem LS đã cộng nhu cầu khuyến mãi cho cửa hàng nào. Thiếu thì nói rõ: LS sẽ tính như ngày thường và cửa hàng đó sẽ thiếu hàng đúng ngày khuyến mãi.",
      "Lỗ hổng này tôi cố ý để lại trong dữ liệu để thấy trợ lý bắt được."]);
-  buoc(13, "LS cộng khuyến mãi vào dự báo", "trang.sc · Dakao",
-    "Nút 13.",
+  buoc(14, "LS cộng khuyến mãi vào dự báo", "trang.sc · Dakao",
+    "Nút 14.",
     "Thẻ Vì sao LS đề xuất 2 Choco bowl cho S0010: kiểu Retail Forecast, dự báo 25,17 trong cửa sổ phủ, chỉnh theo Planned Sales Demand thành 35,22, trừ tồn 34.",
     ["Đây là chỗ UC1 nối sang UC5: dự báo của NaviWorld, sự kiện của Marou, phép tính của LS, và trợ lý kể lại cả chuỗi bằng một thẻ."]);
 
   c.push(h2("Phần 4 · Một lô cận date, AI chọn phương án"));
-  buoc(14, "Lô nào sắp hết hạn", "trang.sc · Marou",
-    "Nút 14. Console đổi về Marou.",
+  buoc(15, "Lô nào sắp hết hạn", "trang.sc · Marou",
+    "Nút 15. Console đổi về Marou.",
     "36 lô cận date, chia theo địa điểm; 5 thẻ lô giá trị lớn nhất. Thẻ Choco pillar S0010: 470 cái, 26 ngày, bán không kịp; hai nút Đề xuất giảm giá và Phương án xử lý.",
     ["Câu này không gọi model, trợ lý đọc thẳng bảng. Điều phối thấy toàn hệ thống; quản lý cửa hàng hỏi cùng câu chỉ thấy cửa hàng mình."]);
-  buoc(15, "Phương án xử lý cho Choco pillar", "trang.sc · Marou",
-    "Nút 15 chỉ hiện hướng dẫn. Trên thẻ Choco pillar bấm Phương án xử lý.",
+  buoc(16, "Phương án xử lý cho Choco pillar", "trang.sc · Marou",
+    "Nút 16 chỉ hiện hướng dẫn. Trên thẻ Choco pillar bấm Phương án xử lý.",
     "Sau khoảng 6 giây: thẻ bảng năm phương án kèm giá trị cứu được hoặc mất, lời khuyên của model (chuyển 199 sang S0001 bán nhanh hơn), nút ghi đề xuất.",
     ["Code tính năm phương án: giữ, chuyển, chuyển kèm giảm giá, giảm giá, huỷ. Khả năng nhận của từng cửa hàng bằng bán bình quân nhân ngày còn lại trừ tồn họ đang có.",
      "Model chọn một và nói vì sao. Nó được chọn khác code, miễn nói được lý do trên số đã có. Khoá phương án phải nằm trong bảng, chữ số phải có trong dữ liệu.",
      "Đây cũng là UC5 nhìn từ UC2: hàng cận date đi về nơi bán nhanh, không phải huỷ."]);
-  buoc(16, "Hùng duyệt chuyển hàng", "hung.dieuphoi · Marou",
-    "Nút 16 đổi sang Hùng. Bấm Duyệt chuyển hàng trên thẻ đề xuất 199 Choco pillar S0010 sang S0001.",
+  buoc(17, "Hùng duyệt chuyển hàng", "hung.dieuphoi · Marou",
+    "Nút 17 đổi sang Hùng. Bấm Duyệt chuyển hàng trên thẻ đề xuất 199 Choco pillar S0010 sang S0001.",
     "Thẻ Đã duyệt kèm số Transfer Order và link mở trong BC; cột phải Transfer Order có dòng mới, trạng thái Open.",
     ["Chứng từ mang số đề xuất, kiểm toán truy ngược được từ chứng từ về đề xuất và về dòng dữ liệu gốc."]);
 
   c.push(h2("Phần 5 · Liên công ty khép vòng"));
-  buoc(17, "Kiểm hàng Marou đã xuất kho", "hung.dieuphoi · Dakao",
-    "Nút 17. Console gọi vòng kiểm đơn liên công ty.",
+  buoc(18, "Kiểm hàng Marou đã xuất kho", "hung.dieuphoi · Dakao",
+    "Nút 18. Console gọi vòng kiểm đơn liên công ty.",
     "Ba thứ: thẻ Marou đã xuất kho đơn HO106202 (82 Choco nuts, giao Cửa hàng Quận 1, phiếu 102045 ngày 17/09); dòng đơn HO106200 xuất từ 16/09 chưa post nhận kèm thẻ Cho trợ lý post nhận hàng; dòng đã gửi email.",
     ["Bên Marou không có gì tự động, người kho post xuất kho như mọi ngày. Bên Dakao, trợ lý đọc sang company bên kia bằng Intercompany và nối hai chứng từ.",
      "Xuất kho trong ngày thì chỉ báo. Qua ngày hôm sau vẫn chưa post nhận thì nhắc lại và xin phép post thay. Không ai duyệt thì không có gì được post.",
      "Đây là vấn đề số một trong khảo sát: hàng về mà chứng từ dồn tới cuối tháng, Marou đang thuê người ngoài để post."]);
-  buoc(18, "Lan (S0001) nhận tin chuẩn bị nhận hàng", "lan.s0001 · Dakao",
-    "Nút 18 đổi sang Lan.",
+  buoc(19, "Lan (S0001) nhận tin chuẩn bị nhận hàng", "lan.s0001 · Dakao",
+    "Nút 19 đổi sang Lan.",
     "Hộp thư Lan có thẻ Marou đã xuất kho đơn HO106202: Choco nuts 82, giao Cửa hàng Quận 1, link mở đơn mua. Email cùng nội dung đã tới hộp thư.",
     ["Cửa hàng ở bước 6 đang hết Choco nuts; giờ họ biết 82 cái đang tới, trước khi xe về.",
      "Thẻ không có số lô: bán lẻ không quản lý lô, trợ lý không đẩy số lô ra cho cửa hàng."]);
-  buoc(19, "Hùng duyệt cho trợ lý post nhận HO106200", "hung.dieuphoi · Dakao",
-    "Nút 19 đổi sang Hùng. Trên thẻ Cho trợ lý post nhận hàng đơn HO106200, bấm Duyệt cho post nhận hàng.",
+  buoc(20, "Hùng duyệt cho trợ lý post nhận HO106200", "hung.dieuphoi · Dakao",
+    "Nút 20 đổi sang Hùng. Trên thẻ Cho trợ lý post nhận hàng đơn HO106200, bấm Duyệt cho post nhận hàng.",
     "Thẻ Đã post phiếu nhận 1071xx kèm link mở phiếu nhận trong BC. Mở link: phiếu nhận đã post, đúng mặt hàng và số lượng của đơn mua.",
     ["Đây là loại đề xuất duy nhất mà việc duyệt làm Business Central post thật một chứng từ. Mọi loại khác dừng ở chứng từ nháp.",
      "Quyền post nằm trong permission set riêng, gán tay. Không gán thì bấm Duyệt báo thiếu quyền, không âm thầm bỏ qua.",
      "Số lượng lấy từ đơn mua. Mặt hàng bên mua có bật quản lý lô thì số lô lấy từ sổ kho bên bán, không bịa; bán lẻ không bật thì phiếu post bình thường."]);
-  buoc(20, "Marou xuất kho đơn Ice cream vừa gửi", "hung.dieuphoi · Dakao, rồi xem hộp thư Minh",
-    "Nút 20. Nút demo post xuất kho thay người kho Marou cho đơn Ice cream ở bước 7. Sau đó bấm vai Minh.",
+  buoc(21, "Marou xuất kho đơn Ice cream vừa gửi", "hung.dieuphoi · Dakao, rồi xem hộp thư Minh",
+    "Nút 21. Nút demo post xuất kho thay người kho Marou cho đơn Ice cream ở bước 7. Sau đó bấm vai Minh.",
     "Trợ lý báo Marou đã xuất kho, số phiếu giao hàng. Hộp thư Minh có thẻ chuẩn bị nhận 12 Ice cream.",
-    ["Vòng khép lại: 17 phút trước Minh gõ một câu là sắp hết Ice cream; giờ hàng đã rời kho Marou và Minh được báo trước.",
+    ["Vòng khép lại: 20 phút trước Minh gõ một câu là sắp hết Ice cream; giờ hàng đã rời kho Marou và Minh được báo trước.",
      "Nút này là công cụ demo, không thuộc sản phẩm. Trên hệ thật đó là người kho Marou bấm Post Shipment."],
-    ["Muốn diễn tiếp cảnh hôm sau: bấm +24 giờ trong khay demo rồi bấm lại nút 17, trợ lý nhắc và ghi đề xuất post nhận cho đơn Ice cream. Chỉ làm sau khi xong bước 18, vì +24 giờ làm HO106202 thành quá ngày."]);
+    ["Muốn diễn tiếp cảnh hôm sau: bấm +24 giờ trong khay demo rồi bấm lại nút 18, trợ lý nhắc và ghi đề xuất post nhận cho đơn Ice cream. Chỉ làm sau khi xong bước 19, vì +24 giờ làm HO106202 thành quá ngày."]);
 
   c.push(h2("Phần 6 · Bất thường và chi phí"));
-  buoc(21, "Có gì bất thường 28 ngày qua", "trang.sc · Dakao",
-    "Nút 21.",
+  buoc(22, "Có gì bất thường 28 ngày qua", "trang.sc · Dakao",
+    "Nút 22.",
     "Thẻ 16 tín hiệu bất thường: 15 nhận hàng hạn quá ngắn, 1 hết hàng lặp lại; model ưu tiên ba tín hiệu ở S0001 và viết nhận xét; Người soạn AI.",
     ["Năm tín hiệu code quét: bán sau hạn, nhận hàng hạn ngắn bất thường, huỷ tăng gấp đôi, tồn không bán, hết hàng lặp lại. Model chọn tối đa ba và giải thích; mã tín hiệu phải nằm trong danh sách.",
      "Lệch kiểm kê chưa đo được vì bộ dữ liệu không có phiếu kiểm kê. Nói thẳng chỗ này."]);
-  buoc(22, "Chi phí AI đo được", "dung.admin · Marou",
-    "Nút 22. Console mở tab Cài đặt AI.",
+  buoc(23, "Chi phí AI đo được", "dung.admin · Marou",
+    "Nút 23. Console mở tab Cài đặt AI.",
     "Token vào, token ra, ước tính tiền theo ngày và theo việc; công tắc bật tắt AI; trần chi phí sửa được tại chỗ.",
     ["Token là số đếm thật từ nhà cung cấp, tiền là ước tính theo đơn giá công bố; hoá đơn thật mới là số cuối.",
      "Tắt AI thì hệ thống vẫn chạy: số liệu, dashboard, luồng duyệt không đổi, các đoạn văn chuyển sang câu mẫu."]);
@@ -228,7 +236,11 @@ function noiDung() {
   c.push(h1("4. Câu hỏi hay gặp và cách trả lời"));
   c.push(...table(["Khách hỏi", "Trả lời"], [
     ["AI nằm ở đâu, hay chỉ là phần mềm thường?",
-     "Trong buổi này AI ở bốn chỗ: brief chọn việc (bước 2), câu hỏi mở tự dựng chuỗi tra cứu (8), chọn phương án cho lô cận date (15), đọc tín hiệu bất thường (21). Còn lại là LS và Business Central tính, trợ lý đọc và giải thích. Tính năng không thuộc bốn nhóm tóm tắt, tạo sinh, phân tích, tự động hoá thì chúng tôi gọi đúng tên là tính năng ứng dụng."],
+     "Trong buổi này AI ở năm chỗ: brief chọn việc (bước 2), câu hỏi mở tự dựng chuỗi tra cứu (8), phân tích đề xuất bổ sung bất thường (9), chọn phương án cho lô cận date (16), đọc tín hiệu bất thường (22). Còn lại là LS và Business Central tính, trợ lý đọc và giải thích. Tính năng không thuộc bốn nhóm tóm tắt, tạo sinh, phân tích, tự động hoá thì chúng tôi gọi đúng tên là tính năng ứng dụng."],
+    ["Khách gõ một câu không có trong kịch bản thì sao?",
+     "Cứ để khách gõ. Câu nào rule đọc chắc thì trả lời bằng dữ liệu, không tốn model; câu nào rule không giải được thì "
+     + "chuyển cho model tự chọn tool (tồn theo địa điểm, sức khỏe tồn kho theo tầng, LS đề xuất bổ sung, tốc độ bán, lô, khuyến mãi) "
+     + "rồi tổng hợp, thẻ có nút xem từng bước đã tra. Ví dụ đã chạy: “có những mặt hàng nào sắp hết hàng” từ quản lý cửa hàng."],
     ["AI có bịa số không?",
      "Không thể đưa ra con số không có trong dữ liệu. Mọi chữ số model viết đều bị đối chiếu với dữ liệu code đưa; sai một chỗ là bỏ cả đoạn và thay bằng câu mẫu, thẻ ghi rõ lý do."],
     ["Trợ lý có tự ghi vào sổ không?",
@@ -262,11 +274,11 @@ function noiDung() {
     ["Bước 8 trả lời về hàng liên công ty", "Câu hỏi có chữ Marou kèm về hoặc xuất kho", "Dùng đúng câu trên nút; không thêm chữ Marou"],
     ["Đoạn văn ghi mẫu có sẵn thay vì AI", "Phép kiểm số đã chặn, hoặc AI đang tắt, hoặc hết trần", "Hành vi đúng. Mở tab Cài đặt AI xem trạng thái rồi giải thích"],
     ["Màn hình chậm khoảng 20 giây", "Đang đọc dữ liệu thật từ Business Central", "Nói trước khi bấm; bấm Đọc lại từ BC trước buổi họp để làm nóng bộ nhớ đệm"],
-    ["Bước 17 không thấy thẻ HO106202", "Đơn đã được post nhận, hoặc đồng hồ ảo đã bị đẩy sang ngày khác", "Xem dòng Giờ hệ thống trong khay demo. Nếu đã +24 giờ thì HO106202 thành quá ngày, vẫn có thẻ đề xuất post, diễn tiếp bằng thẻ đó"],
+    ["Bước 18 không thấy thẻ HO106202", "Đơn đã được post nhận, hoặc đồng hồ ảo đã bị đẩy sang ngày khác", "Xem dòng Giờ hệ thống trong khay demo. Nếu đã +24 giờ thì HO106202 thành quá ngày, vẫn có thẻ đề xuất post, diễn tiếp bằng thẻ đó"],
     ["Trợ lý nhắc một đơn cũ không nằm trong kịch bản", "Đơn đó xuất kho từ hôm trước mà chưa ai post nhận", "Đó là đúng việc trợ lý phải làm. Duyệt luôn hoặc nói rõ đây là đơn tồn từ hôm trước"],
   ], [3.4, 4.2, 4.4]));
   c.push(...ghiChu("Phương án cuối cùng nếu mạng hỏng: đổi dải nguồn sang dữ liệu mô phỏng. Bộ mô phỏng neo ngày 18/09 và LS trong đó là công thức "
-    + "cũ, nên các bước 4, 5, 6, 13 (nhật ký tính LS) không có; các bước còn lại diễn được nhưng số khác. Nói rõ với khách là đang ở bộ mô phỏng.",
+    + "cũ, nên các bước 4, 5, 6, 9, 14 (nhật ký tính LS) không có; các bước còn lại diễn được nhưng số khác. Nói rõ với khách là đang ở bộ mô phỏng.",
     "Mất mạng giữa buổi"));
 
   return c;
@@ -275,7 +287,7 @@ function noiDung() {
 (async () => {
   await build(
     "Demo script: một buổi sáng ở Dakao và Marou",
-    "Runbook 22 bước cho buổi trình diễn 17/09/2026: dữ liệu đã tạo sẵn, bấm gì, khách thấy gì, nói gì",
+    "Runbook 23 bước cho buổi trình diễn 17/09/2026: dữ liệu đã tạo sẵn, bấm gì, khách thấy gì, nói gì",
     {
       headerLeft: "NaviWorld", headerRight: "Marou • Demo script • Nội bộ",
       footer: `Demo script · Bản 2.0, ${NGAY}`,
