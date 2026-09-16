@@ -704,6 +704,34 @@ Nếu khách hỏi tại sao không cho tự động luôn: vì tồn kho là s�
 Duyệt rẻ hơn nhiều so với đi sửa sổ.
 """)
 
+# ---- Kich ban 16b: bang chung
+s = slide(pr, "KỊCH BẢN 16 · BẰNG CHỨNG", "Đã chạy thật trên Business Central",
+          "Bên trái là email trợ lý gửi khi Marou vừa xuất kho. Bên phải là một đơn khác đã đi hết vòng.")
+anh(s, ANH / "uc2ai-12-email-lien-cong-ty.png", 1.20, 2.62, 8.30, 5.00)
+txt(s, 9.90, 2.62, 6.25, 0.45, "Đơn HO106201 đi hết bốn bước", 22, True, NAVY)
+for i, (ten, mo) in enumerate([
+        ("1 · Dakao đặt mua", "Purchase Order HO106201, 2 Croissant chocolate, giao Quán cà phê Đà Nẵng"),
+        ("2 · Sang Marou", "Intercompany tạo Sales Order S90014, khách hàng DAKAO, xuất từ kho W0003"),
+        ("3 · Marou xuất kho", "Phiếu giao hàng 102043, lô L260908-33110B"),
+        ("4 · Dakao nhận hàng", "Người duyệt bấm Duyệt, Business Central post phiếu nhận 107110, cùng lô đó")]):
+    y = 3.22 + i * 1.02
+    hop(s, 9.90, y, 6.25, 0.92, BOXBG)
+    txt(s, 10.12, y + 0.09, 5.80, 0.32, ten, 18, True, NAVY)
+    txt(s, 10.12, y + 0.43, 5.80, 0.44, mo, 17, False, BODY, space=0, line=0.95)
+bang_nguon(s, "Email gửi thật qua SMTP, không phải ảnh dựng. Số chứng từ đọc lại từ Business Central ngày 16/09/2026.")
+note(s, """
+Slide bằng chứng, dành cho người hỏi "cái này chạy thật hay chỉ là slide".
+Bên trái là email trợ lý tự soạn và tự gửi khi phát hiện Marou đã post xuất kho. Danh sách đơn, mặt hàng, số lượng và link mở đơn
+đều do code điền từ Business Central. Chỉ ra chỗ quan trọng: email này KHÔNG có số lô, vì Dakao là bán lẻ, số lô không phải việc
+của cửa hàng. Số lô chỉ hiện ở thẻ người duyệt, nơi cần biết Business Central sẽ ghi lô nào vào phiếu nhận.
+Bên phải là một đơn khác đã đi hết bốn bước, để thấy vòng khép kín chứ không dừng ở chỗ gửi thông báo.
+Điểm đáng nhấn ở bước 4: phiếu nhận mang đúng lô mà Marou đã xuất, đọc từ sổ kho của công ty bên kia chứ không bịa. Nhờ vậy truy
+được cả chuỗi từ lô sản xuất ở Marou tới lô đang nằm ở cửa hàng.
+Nếu khách để ý và hỏi hạn dùng của lô L260908-33110B: nói thẳng là phiếu đó post trước khi chúng tôi sửa quy tắc chọn lô, lúc đó
+hệ thống lấy lô hạn gần nhất nên vớ phải một lô đã quá hạn trong bộ dữ liệu demo. Đã sửa, giờ ưu tiên lô còn hạn, lô quá hạn chỉ
+dùng khi không còn gì khác. Đây là lỗi tìm ra khi chạy thật, và cách sửa cho thấy quy trình làm việc.
+""")
+
 # ---- UC3 nhac post
 s = slide(pr, "KỊCH BẢN BỔ SUNG · UC3", "Nhắc post nhận hàng: việc Marou đang phải thuê người làm",
           "Khảo sát: hàng mua về cửa hàng, chứng từ dồn tới cuối tháng mới post nhận.")
