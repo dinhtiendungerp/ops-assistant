@@ -347,6 +347,11 @@ def _chay_lich_nhac() -> None:
                 if not gio or bay_gio.strftime("%H:%M") < gio:
                     continue
                 da = _json.loads(duong.read_text(encoding="utf-8")) if duong.exists() else {}
+                if da.get("tam_dung"):
+                    # Khoa "tam_dung": true trong runs/lich-nhac.json thi khong chay lich nao. Dat toi 16/09/2026 cho buoi demo
+                    # 17/09: quet sang tu ghi toi 10 de xuat huy moi company va gui email, ma khoi dong lai may chu sau 07:30
+                    # la no chay ngay. Xoa khoa (hoac dat false) la lich chay lai binh thuong.
+                    continue
                 for ten in cac_cong_ty():
                     khoa = ten if viec == "nhac_post" else f"{ten}|{viec}"     # khoa cu cua nhac post giu nguyen
                     if da.get(khoa) == hom_nay:

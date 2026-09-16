@@ -33,6 +33,7 @@ codeunit 70256 "NWV Demo Repost"
         CleanupTok: Label 'XOA-THU-AGENT-NWV', Locked = true;
         WrongConfirmErr: Label 'Sai chuoi xac nhan. Truyen dung %1 de xoa ledger kho.', Comment = '%1 = chuoi';
         CompanyErr: Label 'Chi chay tren company NWV, dang o %1.', Comment = '%1 = company';
+        MissingFilterErr: Label 'Phai truyen it nhat mot bo loc: actionType, status hoac resultDocNo.';
         MissingBatchErr: Label 'Phai truyen ten batch. Khong xoa toan bo Item Journal.';
 
     procedure Preview(): Text
@@ -315,6 +316,49 @@ codeunit 70256 "NWV Demo Repost"
         end;
         Result.Add('company', CompanyName());
         Result.Add('actionType', actionType);
+        Result.Add('deleted', Proposals.Count());
+        Proposals.DeleteAll(true);
+        Proposals.Close();
+        Result.WriteTo(Output);
+        exit(Output);
+    end;
+
+    /// <summary>
+    /// Xoa de xuat theo bo loc hep hon DeleteProposals: loai hanh dong, trang thai, va so chung tu ket qua. Dung 16/09/2026
+    /// de don du lieu truoc buoi demo: bo 19 de xuat Transfer da tu choi o Marou, 7 Purchase da tu choi o Dakao, hai de xuat
+    /// PostReceipt con Proposed cua lan dien thu, ma KHONG dung den de xuat Executed dang tro toi PO va phieu nhan that.
+    /// Tham so rong la khong loc theo truong do. Chi chay o company NWV-*.
+    /// </summary>
+    procedure DeleteProposalsFiltered(confirmText: Text; actionType: Text; status: Text; resultDocNo: Text): Text
+    var
+        Proposals: RecordRef;
+        F: FieldRef;
+        Result: JsonObject;
+        Output: Text;
+    begin
+        if confirmText <> CleanupTok then
+            Error(WrongConfirmErr, CleanupTok);
+        if CopyStr(CompanyName(), 1, 3) <> 'NWV' then
+            Error(CompanyErr, CompanyName());
+        if (actionType = '') and (status = '') and (resultDocNo = '') then
+            Error(MissingFilterErr);
+        Proposals.Open(70102);
+        if actionType <> '' then begin
+            F := Proposals.Field(4);            // "Action Type"
+            F.SetFilter(actionType);
+        end;
+        if status <> '' then begin
+            F := Proposals.Field(5);            // "Status"
+            F.SetFilter(status);
+        end;
+        if resultDocNo <> '' then begin
+            F := Proposals.Field(51);           // "Result Document No."
+            F.SetFilter(resultDocNo);
+        end;
+        Result.Add('company', CompanyName());
+        Result.Add('actionType', actionType);
+        Result.Add('status', status);
+        Result.Add('resultDocNo', resultDocNo);
         Result.Add('deleted', Proposals.Count());
         Proposals.DeleteAll(true);
         Proposals.Close();

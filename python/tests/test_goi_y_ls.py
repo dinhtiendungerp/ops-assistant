@@ -196,3 +196,31 @@ def test_gui_don_sang_company_doi_tac():
     # Cua hang khong co quyen
     ra = a.handle_action("lan.s0001", "ic_gui_don", "HO106200", {})
     assert "việc của người mua" in ra[0].text
+
+
+def test_cua_hang_dakao_bao_sap_het_thi_de_xuat_dat_mua_tu_marou():
+    """16/09/2026: Minh (S0002, Dakao) go "sap het Ice cream". LS cho Dakao la journal MAROU-PO (mua tu MAROU giao thang
+    cua hang), nhung nhanh bao sap het van ra "chuyen 12 tu W0003" vi ton kho tong sao chep con o Dakao. Gio dong LS kieu
+    Purchase thi de xuat Purchase, the "De xuat dat mua", va cau tra loi khong ghi "du 9999 ngay" khi LS khong co ban binh quan."""
+    from assistant.core import Assistant
+
+    d = dict(LSClient.DATA["replenJournalDetails"][0], id="p3", replenishmentTemplateCode="MAROU-PO", itemNo="33150",
+             description="Ice cream", locationCode="S0002", replenishmentLocationCode="", vendorNo="MAROU",
+             systemSuggestedQuantity=20, quantity=12, effectiveInventory=8, averageDailySales=0, warehouseEffectiveInventory=0,
+             decision="Brought_x0020_to_x0020_Maximum_x0020_Inventory")
+    ih = {"itemNo": "33150", "itemDescription": "Ice cream", "locationCode": "S0002", "quantityOnHand": 8,
+          "avgDailySalesQty": 1.5, "daysOfCover": 5.3, "inventoryValue": 40}
+    LSClient.DATA["replenJournalDetails"].append(d)
+    LSClient.DATA["inventoryHealthLines"].append(ih)
+    LSClient.DATA.setdefault("nwvItems", []).append({"itemNo": "33150", "description": "Ice cream", "unitCost": 5})
+    try:
+        a = Assistant(LSClient())
+        out = a.handle_message("minh.s0002", "sắp hết Ice cream ở cửa hàng tôi")
+        assert "đặt mua 12 từ MAROU" in out[0].text and "9999" not in out[0].text
+        the = next(x for x in out if x.card and x.card.title == "Đề xuất đặt mua")
+        assert ("Mua từ", "MAROU") in the.card.facts and the.card.actions[0].label == "Duyệt đặt mua"
+        p = next(p for p in a.mem.proposals() if p.get("to_loc") == "S0002")
+        assert p["action_type"] == "Purchase" and p["vendor_no"] == "MAROU" and p["quantity"] == 12 and p["from_loc"] == ""
+    finally:
+        LSClient.DATA["replenJournalDetails"].remove(d)
+        LSClient.DATA["inventoryHealthLines"].remove(ih)

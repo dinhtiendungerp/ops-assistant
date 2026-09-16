@@ -62,7 +62,7 @@ AL/Marou/
                             demo_data.py doc bo demo-data-nwv; make_fixtures.py dung mock cua tro ly
                             tu chinh bo do (xem "Mock cua tro ly").
   python/assistant/         tro ly cua C: skill, planner, replays, giao dien web, so chi phi
-  python/tests/             571 test, chay bang `python -m pytest` trong thu muc python
+  python/tests/             572 test, chay bang `python -m pytest` trong thu muc python
   tools/                    sinh du lieu demo
   demo-data-nwv/            bo du lieu sap import, kem README-import.md
   docs/                     tai lieu
@@ -253,7 +253,7 @@ trich no lam bang chung gui PM hay khach.
 
 ```
 cd python
-python -m pytest -q                      # 571 test
+python -m pytest -q                      # 572 test
 python tools_bc.py extensions | upload <app> | ws <Ham> '<json>'   # quan tri BC qua S2S: publish, goi web service
 python -m bc_agent.probe --json --sample 2000   # kiem S2S va do san sang du lieu
                                                 # probe luon goi BC that, khong phu thuoc BC_MODE
@@ -1805,9 +1805,41 @@ theo (cua hang, mat hang) thi dong sau de dong truoc.
 Kiem file bang COM thi KHONG goi `$app.Quit()` khi nguoi dung dang mo PowerPoint, vi COM gan vao dung phien do va Quit la dong
 cua so cua ho.
 
+### Kich ban demo 17/09 xep lai theo mot cau chuyen, toi 16/09/2026
+
+Dung nhan xet: cac case lo va han dung chiem nhieu qua so voi bai toan ban le; phai xen UC5 (OOS, stock-out risk) va UC1, noi
+kheo giua UC2 voi UC1, UC5, va dua AI vao vai tro trong yeu. Da lam:
+- **Console:** cot "Kich ban demo, bam theo thu tu" trong `index.html` la mang `CHUONG` (6 phan, 22 buoc), moi buoc co
+  `loai` (chat / tab / brief / api / huong_dan), `ai` (vai), `ct` (company), `text`, `mo`. `runBuoc` dat company vao
+  localStorage cua vai roi `switchUser`, nen mot cu bam la dung vai, dung company, dung cau. O `#buocHint` ghi buoc do
+  chung minh gi. Kich ban mo phong cu (tiec 150 khach, mua dot, bac thang) nam trong `<details>` "Kich ban khac".
+- **Mach:** Minh (S0002, Dakao) go "sap het Ice cream" -> LS 12 (min-max) -> de xuat dat mua tu MAROU -> Hung duyet, gui
+  don sang Marou -> (phan 3 du bao va CTKM noi sang LS) -> (phan 4 mot lo can date, D4) -> Kiem hang Marou da xuat kho:
+  HO106202 (82 Choco nuts S0001, phieu 102045 de ngay 17/09) bao Lan; HO106200 qua ngay -> de xuat post nhan -> Hung duyet
+  -> phieu nhan; nut demo Marou xuat kho don Ice cream -> bao Minh. Cau hoi mo cho model: "so sanh toc do ban Choco nuts
+  giua cac cua hang trong 30 ngay qua" (7 buoc, ~12k token, khong bi flag so). Cau co "Marou" + "ve" roi vao IC_SHIP.
+- **Loi sua:** `replenishment.handle_stockout` o Dakao ra "chuyen 12 tu W0003" vi ton kho tong sao chep con o Dakao; gio dong
+  LS `replenType == "Purchase"` thi de xuat Purchase (vendor MAROU, from_loc rong), the "De xuat dat mua". `_plan` lay ban
+  binh quan tu Inventory Health khi LS (Stock Levels) khong co, het "du 9999 ngay". Test trong `test_goi_y_ls.py`.
+- **Man hinh chao trong tron (Dung bao o vai dieu phoi):** `_poll` gio boc phan ve trong try/finally, `daTaiHopThu = true`
+  va `veHero()` luon chay; moi tin ve trong try rieng (`_veMotTin`) de mot the hong khong lam mat ca hop thu.
+- **Lich quet nen tam dung:** khoa `"tam_dung": true` trong `runs/lich-nhac.json`, `_chay_lich_nhac` bo qua khi thay. Khong
+  co thi khoi dong may chu sau 07:30 la quet sang chay ngay: toi 10 de xuat huy moi company va email truoc gio hop. Sau demo
+  xoa khoa.
+- **Don du lieu:** `NWVDemoRepost.DeleteProposalsFiltered(confirmText, actionType, status, resultDocNo)` (Demo Setup
+  **1.8.6.0**): xoa 19 Transfer Rejected (Marou), 1 Markdown, 13 WriteOff, 7 Purchase Rejected, 2 PostReceipt Proposed, de
+  xuat Executed cua HO106199 (Dakao); `DeleteJournalLines` xoa dong NWVDEMO rong SL260918 hai company; PO HO106199 xoa qua
+  API v2.0 `purchaseOrders` DELETE. Bo nho tro ly Reset. De xuat con lai o Dakao: 4 Purchase Executed (HO106200..202) va
+  1 PostReceipt Executed (107110); Marou: 0.
+- **Tai lieu 13 ban 2.0** (`build_13.js`): muc 0 mach, muc 1 "da tao san gi, da don gi", 22 buoc x (bam gi / khach thay
+  gi / noi gi), FAQ, su co. Ban giao `Demo-Marou/Marou POC - demo script (17-09, ban 2).docx`. Bo slide rut gon
+  `(ban ngan, 17-09 v2).pptx` 15 slide, bo slide truy xuat lo.
+- Smoke test toi 16/09 tren BC that (AI bat): brief S1, D3, D4 the, planner, 5 cau LS, du bao, CTKM deu chay; tong chi phi
+  ngay 16/09 duoi 0,3 USD.
+
 ### Nhan hang lien cong ty (A4), chay tron vong, 16/09/2026
 
-App dang chay tren NWV01: `NWV Marou Agent` **1.7.0.0**, `NWV Marou Demo Setup` **1.8.3.0**. 571 test.
+App dang chay tren NWV01: `NWV Marou Agent` **1.7.0.0**, `NWV Marou Demo Setup` **1.8.6.0**. 572 test.
 
 Dung chot cach xu ly, va no **khong doi xung hai dau**:
   - Phia Marou (ban) khong co gi tu dong. Nguoi kho post xuat kho trong BC nhu moi ngay.

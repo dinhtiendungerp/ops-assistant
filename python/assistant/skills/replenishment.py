@@ -25,7 +25,11 @@ def _plan(gw, store: str, item_no: str, requested_qty: float) -> dict[str, Any]:
     wh = locs.get(gw.central_wh, {"qty": 0.0})
     sug = gw.suggestion(store, item_no)
     transit = float(sug["storeQtyInTransit"]) if sug else 0.0
-    avg = float(sug["avgDailySalesQty"]) if sug else float(st.get("avgDaily") or 0)
+    avg = float(sug["avgDailySalesQty"] or 0) if sug else float(st.get("avgDaily") or 0)
+    if avg <= 0:
+        # Journal Stock Levels cua LS khong ghi ban binh quan (min-max khong can). Lay tu dong Inventory Health de cau tra loi
+        # khong ghi "du 9999 ngay" (bat duoc 16/09/2026 khi thu "sap het Ice cream" o S0002).
+        avg = float(st.get("avgDaily") or 0)
     onhand = float(sug["storeQtyOnHand"]) if sug else float(st["qty"])
     wh_avail = float(sug["warehouseQtyAvailable"]) if sug else float(wh["qty"])
     doc = round((onhand + transit) / avg, 1) if avg > 0 else 9999
@@ -85,6 +89,23 @@ def handle_stockout(asst, user: dict[str, Any], intent) -> list[Delivery]:
             f"đủ {plan['doc']} ngày. " + (f"{plan['nguon']} chưa đề xuất chuyển cho dòng này." if plan["nguon"] else f"Theo ngưỡng {REORDER_DOC} ngày thì chưa cần chuyển.") + f" Nếu có sự kiện sắp tới bạn nói số lượng, tôi chuyển yêu cầu cho điều phối.", skill=SKILL, ref=ref))
         return out
 
+    sug = gw.suggestion(store, item["itemNo"])
+    if sug and sug.get("replenType") == "Purchase":
+        # Dakao (16/09/2026): LS de xuat MUA thang tu vendor (MAROU), giao toi cua hang, khong co kho trung tam de chuyen.
+        # Truoc do nhanh nay roi xuong de xuat Transfer tu W0003 (ton sao chep cua bo demo), sai nghiep vu hai company.
+        vendor = sug.get("vendorNo") or ""
+        qty = plan["need"]
+        rationale = asst.write_rationale(
+            f"{store} còn {fmt_qty(plan['onhand'])} {item['description']}" + (f", bán {plan['avg']:.1f}/ngày" if plan["avg"] > 0 else "")
+            + f". LS Replenishment đề xuất đặt mua {fmt_qty(qty)} từ {vendor}, giao thẳng tới {store}"
+            + (f" ({sug.get('reason')})" if sug.get("reason") else "") + ".")
+        prop = _create(asst, user, item, store, "", qty, "Purchase", plan, ref, rationale, vendor_no=vendor)
+        downstream = _to_dispatchers(asst, prop, item, plan)
+        head = f"Đã ghi nhận. {item['description']} tại {store} còn {fmt_qty(plan['onhand'])}" + (f", đủ {plan['doc']} ngày. " if plan["doc"] < 9999 else ". ")
+        out.append(Delivery(user["user_id"], head + f"Theo LS Replenishment tôi đề xuất đặt mua {fmt_qty(qty)} từ {vendor} giao thẳng tới "
+                                              f"{store}, đang xin điều phối duyệt.", skill=SKILL, ref=ref))
+        return out + [d for d in downstream if d.user_id != user["user_id"]]
+
     if plan["constrained"] <= 0 and not plan["alt"]:
         # kho het, khong co store du: leo thang
         prop = _create(asst, user, item, store, gw.central_wh, 0, "Escalate", plan, ref,
@@ -106,7 +127,7 @@ def handle_stockout(asst, user: dict[str, Any], intent) -> list[Delivery]:
     prop = _create(asst, user, item, store, from_loc, qty, "Transfer", plan, ref, rationale)
     # Quyet dinh policy TRUOC khi tra loi cua hang, de khong noi sai ("dang xin duyet" trong khi da tu lam)
     downstream = _to_dispatchers(asst, prop, item, plan)
-    head = (f"Đã ghi nhận. {item['description']} tại {store} còn {fmt_qty(plan['onhand'])}, đủ {plan['doc']} ngày. ")
+    head = (f"Đã ghi nhận. {item['description']} tại {store} còn {fmt_qty(plan['onhand'])}" + (f", đủ {plan['doc']} ngày. " if plan["doc"] < 9999 else ". "))
     if prop.get("status") == "Executed":
         out.append(Delivery(user["user_id"], head + f"Tôi đã lên đơn {prop['result_doc']} chuyển {fmt_qty(qty)} từ {from_loc}, kho sẽ ship hôm nay.", skill=SKILL, ref=ref))
         downstream = [d for d in downstream if d.user_id != user["user_id"]]
