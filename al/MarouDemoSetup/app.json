@@ -2,7 +2,7 @@
   "id": "f8014c06-cab8-4e04-b624-20dbd20f8916",
   "name": "NWV Marou Demo Setup",
   "publisher": "NaviWorld Vietnam",
-  "version": "1.6.2.0",
+  "version": "1.6.3.0",
   "brief": "Cac thao tac quanh viec nap du lieu demo Marou, gom mot trang duy nhat",
   "description": "Thay cac buoc bam tay trong BC khi nap bo du lieu demo cho POC Marou: tao Item Journal Template ITEM va batch NWVDEMO, noi rong Allow Posting From/To cho dung khoang ngay cua du lieu, post batch theo tung thang thay vi mot lan 24.759 dong, khoa lo dung cho kich ban thu hoi, va tu 1.1.0.0 dien master data module Replenishment cua LS Central (web service NWVDemoReplenSetup). Chi dung tren sandbox. Phu thuoc LS Central tu 1.1.0.0.",
   "privacyStatement": "",

@@ -33,6 +33,7 @@ codeunit 70256 "NWV Demo Repost"
         CleanupTok: Label 'XOA-THU-AGENT-NWV', Locked = true;
         WrongConfirmErr: Label 'Sai chuoi xac nhan. Truyen dung %1 de xoa ledger kho.', Comment = '%1 = chuoi';
         CompanyErr: Label 'Chi chay tren company NWV, dang o %1.', Comment = '%1 = company';
+        MissingBatchErr: Label 'Phai truyen ten batch. Khong xoa toan bo Item Journal.';
 
     procedure Preview(): Text
     var
@@ -317,6 +318,40 @@ codeunit 70256 "NWV Demo Repost"
         Result.Add('deleted', Proposals.Count());
         Proposals.DeleteAll(true);
         Proposals.Close();
+        Result.WriteTo(Output);
+        exit(Output);
+    end;
+
+    /// <summary>
+    /// Xoa dong Item Journal CHUA POST trong mot batch, o company NWV-*. Dung 16/09/2026: hai dong nhap do thu luong huy
+    /// (UC2 G2) nam trong batch AGENT cua NWV-MAROU, trong do mot dong mang Document No. cat cut tu GUID truoc khi doi sang
+    /// Entry No. Chi xoa dong journal; khong dung den Item Ledger Entry hay de xuat da sinh ra chung.
+    /// </summary>
+    procedure DeleteJournalLines(confirmText: Text; templateName: Text; batchName: Text): Text
+    var
+        ItemJnlLine: Record "Item Journal Line";
+        Result: JsonObject;
+        DocNos: JsonArray;
+        Output: Text;
+    begin
+        if confirmText <> CleanupTok then
+            Error(WrongConfirmErr, CleanupTok);
+        if CopyStr(CompanyName(), 1, 3) <> 'NWV' then
+            Error(CompanyErr, CompanyName());
+        if batchName = '' then
+            Error(MissingBatchErr);
+        ItemJnlLine.SetRange("Journal Template Name", CopyStr(templateName, 1, MaxStrLen(ItemJnlLine."Journal Template Name")));
+        ItemJnlLine.SetRange("Journal Batch Name", CopyStr(batchName, 1, MaxStrLen(ItemJnlLine."Journal Batch Name")));
+        if ItemJnlLine.FindSet() then
+            repeat
+                DocNos.Add(ItemJnlLine."Document No.");
+            until ItemJnlLine.Next() = 0;
+        Result.Add('company', CompanyName());
+        Result.Add('template', templateName);
+        Result.Add('batch', batchName);
+        Result.Add('deleted', ItemJnlLine.Count());
+        Result.Add('documentNos', DocNos);
+        ItemJnlLine.DeleteAll(true);
         Result.WriteTo(Output);
         exit(Output);
     end;

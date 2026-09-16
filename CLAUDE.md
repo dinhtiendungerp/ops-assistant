@@ -1700,8 +1700,11 @@ khong co dong Sale sau han; document no rong.
 - `web._bo_nho(live, ten)`: moi company va moi nguon mot file `runs/bo-nho-<bc|mock>-<company>.sqlite` (hop thu, de xuat, viec theo
   doi A3, kv gom doan AI da soan va lich quet). `--reload` hay khoi dong lai khong mat gi nua. Nut Reset (`POST /api/reset`) xoa file
   cua nguon dang chay; doi nguon (`/api/mode`) giu file. Duoi pytest van dung ":memory:". Da kiem: hai file tao ra, 10 user moi file.
-- Da xoa 34 de xuat WriteOff trong NWV-MAROU (`NWVDemoRepost.DeleteProposals`, ca Proposed lan Executed). Hai dong Item Journal nhap
-  trong batch AGENT (AGENT-{F8D9F9A9-AF40 va AGENT-95) van con, xoa tay hoac post.
+- Da xoa 34 de xuat WriteOff trong NWV-MAROU (`NWVDemoRepost.DeleteProposals`, ca Proposed lan Executed).
+- `NWV Marou Demo Setup` **1.6.3.0**: `NWVDemoRepost.DeleteJournalLines(confirmText, templateName, batchName)` xoa dong Item Journal
+  chua post trong mot batch o company NWV-*; bat buoc ten batch (khong xoa ca Item Journal). Da xoa hai dong thu cua luong huy trong
+  batch ITEM/AGENT cua NWV-MAROU (AGENT-{F8D9F9A9-AF40 va AGENT-95). Kiem lai: batch AGENT rong, khong ILE nao mang hai Document No.
+  do, ton hai lo khong doi (33116 L260908-33116B 9, 33130 L260910-33130 17) vi dong chua post. Dong ITEM/NWVDEMO cua bo demo giu nguyen.
 - So do kien truc `docs/kien-truc/kien-truc-chi-tiet.html` viet lai theo trang thai 16/09: hai company, email va lich nen, dai
   "AI o dau trong UC2" bon nhom 12 tinh nang, lop 3 co Purchase va WriteOff, 34 API page. Render: Chrome headless
   `--screenshot --window-size=1800,3400` roi cat day bang Pillow (lenh trong lich su phien, khong co script rieng).
