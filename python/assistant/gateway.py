@@ -40,13 +40,36 @@ class BCGateway:
 
     def __init__(self, client: Any, central_wh: str = "W0003"):
         self.client = client
-        self.central_wh = central_wh
+        # Kho trung tam mac dinh, dung cho mock va khi BC chua khai. Tren BC that doc tu API nwvLocations
+        # (isCentralWarehouse = LSC Replen. Setup."Default Central Warehouse", tu 15/09/2026), xem `central_wh`.
+        self._central_wh_mac_dinh = central_wh
+        self._central_wh: str | None = None
         self.is_mock = client.__class__.__name__ == "MockBCClient"
         self._transfers: dict[str, dict[str, Any]] = {}
+        self._journal: dict[str, dict[str, Any]] = {}     # mock: dong Item Journal nhap do duyet de xuat Write-off sinh ra (UC2 G2/A3)
         self._to_seq = 1022
         self._sales_cache: list[dict[str, Any]] | None = None
         self._as_of = None
         self._nho: dict[Any, tuple[float, Any]] = {}
+
+    @property
+    def central_wh(self) -> str:
+        """Kho trung tam cua company: LSC Replen. Setup tren BC that, hang so tren mock. Doc mot lan."""
+        if self._central_wh is None:
+            self._central_wh = self._central_wh_mac_dinh
+            if not self.is_mock:
+                try:
+                    locs = self.doc("nwvLocations", [], ttl=3600, select="code,isWarehouse,isCentralWarehouse")
+                    chinh = [l["code"] for l in locs if l.get("isCentralWarehouse")]
+                    kho = [l["code"] for l in locs if l.get("isWarehouse")]
+                    self._central_wh = (chinh or kho or [self._central_wh_mac_dinh])[0]
+                except Exception as exc:               # API cu chua co field, hoac BC loi: giu mac dinh
+                    log.warning("Khong doc duoc kho trung tam tu BC, dung %s: %s", self._central_wh_mac_dinh, exc)
+        return self._central_wh
+
+    @central_wh.setter
+    def central_wh(self, value: str) -> None:
+        self._central_wh = value
 
     # ---------- nho lai cac lenh doc, de mot man hinh khong hoi BC ba bon lan cung mot thu
     def doc(self, entity_set: str, conds: list[Condition] | None = None, ttl: float | None = None,
@@ -81,54 +104,72 @@ class BCGateway:
         return list(gt)
 
     # ---------- de xuat bo sung lay tu LS Replenishment
+    # Hai journal: MAROU-TO chuyen hang tu kho tong (Marou), MAROU-PO mua hang. Tu 15/09/2026 o Dakao MAROU-PO la
+    # "Purchase Orders for Receiving Locations": moi cua hang mot don mua tu vendor MAROU, giao thang, khong qua kho.
     LS_TEMPLATE_CHUYEN = "MAROU-TO"
+    LS_TEMPLATES = {"MAROU-TO": "Transfer", "MAROU-PO": "Purchase"}
+
+    def _kho(self) -> set[str]:
+        """Ma cac kho theo LS (nwvLocations.isWarehouse). Rong neu API chua co truong nay."""
+        try:
+            return {l["code"] for l in self.doc("nwvLocations", [], ttl=3600, select="code,isWarehouse") if l.get("isWarehouse")}
+        except Exception:
+            return set()
 
     def goi_y_ls(self) -> list[dict[str, Any]]:
         """Dong de xuat bo sung cua cua hang, doc tu LS Replenishment, dua ve hinh dang cua bang NWV Repl. Suggestion.
 
-        Nguon: `replenJournalDetails` cua template chuyen hang `MAROU-TO` (so LS tinh theo tung cua hang) va
-        `replenItemQuantities` (ton, hang dang ve). Trong dong ra, chi `daysOfCover` la phep chia do tro ly lam:
-        ton hieu dung chia ban binh quan ngay, ca hai so lay nguyen tu LS. `stockOutRisk` la LS co de xuat
-        so luong lon hon 0, khong phai nguong cua tro ly.
+        Nguon: `replenJournalDetails` cua hai template (chuyen hang MAROU-TO, mua hang MAROU-PO; dong mua ve kho thi bo,
+        chi giu dong mua giao thang cua hang) va `replenItemQuantities` (ton, hang dang ve). Trong dong ra, chi `daysOfCover`
+        la phep chia do tro ly lam: ton hieu dung chia ban binh quan ngay, ca hai so lay nguyen tu LS. `stockOutRisk` la
+        LS co de xuat so luong lon hon 0, khong phai nguong cua tro ly. `replenType` cho biet Transfer hay Purchase.
         """
         from bc_agent.bc_data import unescape_option
 
-        chi_tiet = self.doc("replenJournalDetails", [("replenishmentTemplateCode", "eq", self.LS_TEMPLATE_CHUYEN)],
-                            top=5000)
         riq = {(r["itemNo"], r["locationCode"]): r
                for r in self.doc("replenItemQuantities", [], top=5000) if not r.get("variantCode")}
-        lo = self.doc("replenJournalBatches", [("replenishmentTemplateCode", "eq", self.LS_TEMPLATE_CHUYEN)], top=1)
-        luc_tinh = str(lo[0].get("lastRunDate") or "") if lo else ""
+        kho = self._kho()
         ra = []
-        for d in chi_tiet:
-            q = riq.get((d["itemNo"], d["locationCode"]), {})
-            ban = float(d.get("averageDailySales") or 0)
-            ton_hd = float(d.get("effectiveInventory") or 0)
-            de_xuat = float(d.get("systemSuggestedQuantity") or 0)
-            # Số cuối cùng của LS là Quantity, sau các bước điều chỉnh (Stock Levels trừ tồn khả dụng, chia lại khi kho
-            # thiếu). System Suggested Quantity với Stock Levels là mức Maximum Inventory, không phải số cần chuyển:
-            # ngày 14/09/2026 brief ghi đề xuất Ice cream x S0002 = 20 trong khi LS ra 11.
-            chuyen = float(d["quantity"]) if d.get("quantity") is not None else de_xuat
-            phu = float(d.get("requiredCoverageDays") or 0)
-            quyet = unescape_option(d.get("decision")) or ""
-            ly_do = (f"LS Replenishment: tồn khả dụng {ton_hd:g}, bán bình quân {ban:g}/ngày, cần phủ {phu:g} ngày, "
-                     f"đề xuất chuyển {chuyen:g} từ {d.get('replenishmentLocationCode') or ''}"
-                     + (f" ({quyet})." if quyet else "."))
-            ra.append({
-                "id": d.get("id"), "storeLocationCode": d["locationCode"], "itemNo": d["itemNo"],
-                "itemDescription": d.get("description") or d["itemNo"],
-                "storeQtyOnHand": float(q.get("inventory") or 0),
-                "storeQtyInTransit": float(q.get("quantityInTransferIn") or 0),
-                "avgDailySalesQty": ban,
-                "daysOfCover": round(ton_hd / ban, 1) if ban else 9999.0,
-                "targetQty": de_xuat, "suggestedQty": chuyen, "constrainedQty": chuyen,
-                "warehouseQtyAvailable": float(d.get("warehouseEffectiveInventory") or 0),
-                "sourceLocationCode": d.get("replenishmentLocationCode") or self.central_wh,
-                "targetDays": phu, "shelfLifeDays": 0, "cappedByShelfLife": False,
-                "demandBasis": "LS", "daysCensored": int(q.get("noOfDaysOutOfStock") or 0),
-                "stockOutRisk": chuyen > 0, "reason": ly_do, "calculatedAt": luc_tinh,
-                "lsDecision": quyet,
-            })
+        for template, loai in self.LS_TEMPLATES.items():
+            chi_tiet = self.doc("replenJournalDetails", [("replenishmentTemplateCode", "eq", template)], top=5000)
+            if not chi_tiet:
+                continue
+            lo = self.doc("replenJournalBatches", [("replenishmentTemplateCode", "eq", template)], top=1)
+            luc_tinh = str(lo[0].get("lastRunDate") or "") if lo else ""
+            for d in chi_tiet:
+                if loai == "Purchase" and (d["locationCode"] in kho or d["locationCode"] == self.central_wh):
+                    continue                       # mua ve kho tong: viec cua nguoi mua, khong phai de xuat cho cua hang
+                q = riq.get((d["itemNo"], d["locationCode"]), {})
+                ban = float(d.get("averageDailySales") or 0)
+                ton_hd = float(d.get("effectiveInventory") or 0)
+                de_xuat = float(d.get("systemSuggestedQuantity") or 0)
+                # Số cuối cùng của LS là Quantity, sau các bước điều chỉnh (Stock Levels trừ tồn khả dụng, chia lại khi kho
+                # thiếu). System Suggested Quantity với Stock Levels là mức Maximum Inventory, không phải số cần chuyển:
+                # ngày 14/09/2026 brief ghi đề xuất Ice cream x S0002 = 20 trong khi LS ra 11.
+                chuyen = float(d["quantity"]) if d.get("quantity") is not None else de_xuat
+                phu = float(d.get("requiredCoverageDays") or 0)
+                quyet = unescape_option(d.get("decision")) or ""
+                vendor = d.get("vendorNo") or ""
+                nguon = vendor if loai == "Purchase" else (d.get("replenishmentLocationCode") or self.central_wh)
+                dong_tac = "mua" if loai == "Purchase" else "chuyển"
+                ly_do = (f"LS Replenishment: tồn khả dụng {ton_hd:g}, bán bình quân {ban:g}/ngày, cần phủ {phu:g} ngày, "
+                         f"đề xuất {dong_tac} {chuyen:g} từ {nguon}" + (f" ({quyet})." if quyet else "."))
+                ra.append({
+                    "id": d.get("id"), "storeLocationCode": d["locationCode"], "itemNo": d["itemNo"],
+                    "itemDescription": d.get("description") or d["itemNo"],
+                    "storeQtyOnHand": float(q.get("inventory") or 0),
+                    "storeQtyInTransit": float(q.get("quantityInTransferIn") or 0),
+                    "avgDailySalesQty": ban,
+                    "daysOfCover": round(ton_hd / ban, 1) if ban else 9999.0,
+                    "targetQty": de_xuat, "suggestedQty": chuyen, "constrainedQty": chuyen,
+                    # Mua tu vendor thi khong bi ton kho tong chan
+                    "warehouseQtyAvailable": chuyen if loai == "Purchase" else float(d.get("warehouseEffectiveInventory") or 0),
+                    "sourceLocationCode": nguon,
+                    "targetDays": phu, "shelfLifeDays": 0, "cappedByShelfLife": False,
+                    "demandBasis": "LS", "daysCensored": int(q.get("noOfDaysOutOfStock") or 0),
+                    "stockOutRisk": chuyen > 0, "reason": ly_do, "calculatedAt": luc_tinh,
+                    "lsDecision": quyet, "replenType": loai, "lsTemplate": template, "vendorNo": vendor,
+                })
         return ra
 
     def quen_nho(self, entity_set: str | None = None) -> None:
@@ -238,6 +279,36 @@ class BCGateway:
                 for i, r in enumerate(read_ile(), 1)]
         return [r for r in BCGateway._ILE_DEMO if (r["lotNo"] or "").upper() == lot_no.upper()]
 
+    def la_kho(self, loc: str) -> bool:
+        """Kho (khong phai cua hang): theo LS (nwvLocations.isWarehouse) hoac ma bat dau bang W (bo demo, mock)."""
+        return loc in self._kho() or str(loc).upper().startswith("W")
+
+    def ile_cua_so(self, days: int = 90) -> list[dict[str, Any]]:
+        """Moi dong Item Ledger Entry trong `days` ngay, moi loai (Sale, Positive/Negative Adjmt., Purchase, Transfer), ten
+        truong theo API page, entryType da giai ma Option, expirationDate None neu rong. Dung cho D3 bat thuong, D2 nguyen
+        nhan huy, S3 bao cao tuan (16/09/2026). Live doc theo cua so chung nhu `sales_history` roi loc trong Python."""
+        from datetime import timedelta
+
+        from bc_agent.bc_data import norm_date, unescape_option
+        since = (self.today() - timedelta(days=days)).isoformat()
+        if self.is_mock:
+            self.ile_theo_lo("__nap__")               # nap _ILE_DEMO mot lan
+            return [dict(r) for r in BCGateway._ILE_DEMO if r["postingDate"] >= since]
+        cua_so = next((b for b in self.CUA_SO_BAN if b >= days), self.CUA_SO_BAN[-1])
+        tu = (self.today() - timedelta(days=cua_so)).isoformat()
+        rows = self.doc("nwvItemLedgerEntries", [("postingDate", "ge", tu)], top=100000,
+                        select="entryNo,postingDate,entryType,itemNo,locationCode,quantity,lotNo,expirationDate,documentNo")
+        out = []
+        for r in rows:
+            ngay = str(r["postingDate"])[:10]
+            if ngay < since:
+                continue
+            hd = norm_date(r.get("expirationDate"))
+            out.append({"entryNo": r.get("entryNo"), "postingDate": ngay, "entryType": unescape_option(r.get("entryType")),
+                        "itemNo": r["itemNo"], "locationCode": r["locationCode"], "quantity": float(r.get("quantity") or 0),
+                        "lotNo": r.get("lotNo") or "", "expirationDate": str(hd) if hd else None, "documentNo": r.get("documentNo", "")})
+        return out
+
     def health_lines(self, min_score: int = 60, top: int = 20) -> list[dict[str, Any]]:
         return self.doc("inventoryHealthLines", [("riskScore", "ge", min_score)], orderby="riskScore desc", top=top)
 
@@ -255,12 +326,13 @@ class BCGateway:
     # ---------- ghi
     def create_proposal(self, *, scenario: str, action_type: str, item_no: str, from_loc: str, to_loc: str,
                         quantity: float, reference_key: str, rationale: str, priority: int, evidence: dict[str, Any],
-                        run_id: str, model_name: str, lot_no: str = "") -> dict[str, Any]:
+                        run_id: str, model_name: str, lot_no: str = "", vendor_no: str = "") -> dict[str, Any]:
         # lot_no: de xuat theo lo (huy, giam gia lo can date) phai mang so lo. Truoc 14/09/2026 cho nay ghi cung "",
         # nen de xuat huy 33100 tai W0003 len BC khong co lo, nguoi duyet khong biet huy lo nao. Dung bat duoc.
+        # vendor_no: de xuat Purchase (Dakao mua thang tu Marou, 15/09/2026); duyet thi BC tao Purchase Order.
         body = {
             "scenario": scenario, "actionType": action_type, "itemNo": item_no, "lotNo": (lot_no or "")[:50],
-            "fromLocationCode": from_loc, "toLocationCode": to_loc, "quantity": quantity,
+            "fromLocationCode": from_loc, "toLocationCode": to_loc, "quantity": quantity, "vendorNo": (vendor_no or "")[:20],
             "referenceKey": reference_key, "rationale": rationale[:2000], "priorityScore": int(priority),
             "evidenceJson": json.dumps(evidence, ensure_ascii=False, default=str), "modelName": model_name[:50], "runId": run_id[:50],
         }
@@ -286,7 +358,7 @@ class BCGateway:
                     "itemNo": "item_no", "fromLocationCode": "from_loc", "toLocationCode": "to_loc",
                     "resultDocumentNo": "result_doc", "resultDocumentType": "result_doc_type",
                     "reviewedBy": "approver", "reviewedAt": "approved_at", "createdAt": "created_at",
-                    "referenceKey": "reference_key", "lotNo": "lot_no"}
+                    "referenceKey": "reference_key", "lotNo": "lot_no", "vendorNo": "vendor_no"}
 
     def de_xuat(self, top: int = 500) -> list[dict[str, Any]]:
         """De xuat doc tu BC, da doi ten truong cho khop bo nho tro ly.
@@ -323,6 +395,30 @@ class BCGateway:
         # mot TO 0 cai di tu kho trung tam ve chinh kho trung tam roi bao kho di ship.
         # Live: BlockPurchase set Item."Blocked"/"Purchasing Blocked"; Markdown tao Sales Price;
         # WriteOff tao Item Journal Line; ReviewOnly chi danh dau. Xem design 0.2 phu luc C.
+        if prop["actionType"] == "Purchase":
+            # Mock: gia lap Purchase Order nhu BC that (codeunit NWV Agent Proposal Mgt. tao PO Open cho vendor cua de xuat)
+            self._to_seq += 1
+            po_no = f"PO-{self._to_seq}"
+            for r in self.client.data["agentProposals"]:
+                if r["id"] == bc_id:
+                    r.update({"status": "Executed", "reviewedBy": approver_bc_user, "reviewComment": comment,
+                              "resultDocumentType": "Purchase Order", "resultDocumentNo": po_no})
+            return {"resultDocumentNo": po_no, "resultDocumentType": "Purchase Order", "status": "Executed"}
+        if prop["actionType"] == "WriteOff":
+            # Mock: gia lap codeunit NWV Agent Proposal Mgt. 1.6.0.0 tao dong Item Journal (Negative Adjmt.) CHUA POST,
+            # Document No. AGENT-<id>, lo va reason code. Ke toan post; tro ly theo doi bang ILE cung Document No.
+            self._to_seq += 1
+            doc_no = f"AGENT-{self._to_seq}"      # BC that: 'AGENT-' + Entry No. cua de xuat (codeunit 70102, 1.6.0.0)
+            self._journal[doc_no] = {"id": doc_no, "documentNo": doc_no, "journalTemplateName": "ITEM", "journalBatchName": "AGENT",
+                                     "lineNo": 10000 * (len(self._journal) + 1), "entryType": "Negative Adjmt.",
+                                     "postingDate": self.today().isoformat(), "itemNo": prop["itemNo"],
+                                     "locationCode": prop["fromLocationCode"], "quantity": prop["quantity"],
+                                     "lotNo": prop.get("lotNo", ""), "reasonCode": "AGENT-EXP", "posted": False}
+            for r in self.client.data["agentProposals"]:
+                if r["id"] == bc_id:
+                    r.update({"status": "Executed", "reviewedBy": approver_bc_user, "reviewComment": comment,
+                              "resultDocumentType": "Item Journal Line", "resultDocumentNo": doc_no})
+            return {"resultDocumentNo": doc_no, "resultDocumentType": "Item Journal Line", "status": "Executed"}
         if prop["actionType"] != "Transfer":
             label = {"BlockPurchase": "Chan mua them", "Markdown": "De nghi giam gia",
                      "WriteOff": "De nghi dieu chinh", "ReviewOnly": "Danh dau cho ra soat",
@@ -390,6 +486,32 @@ class BCGateway:
             for r in self.client.data["agentProposals"]:
                 if r["id"] == bc_id:
                     r.update({"status": "Rejected", "reviewedBy": approver_bc_user, "reviewComment": comment})
+
+    # ---------- dong Item Journal nhap cua de xuat Write-off (UC2 G2/A3, 16/09/2026)
+    def dong_journal(self, doc_no: str) -> list[dict[str, Any]]:
+        """Dong Item Journal con trong journal (chua post) mang Document No. nay. Live: API page nwvItemJournalLines (app 1.6.0.0)."""
+        if self.is_mock:
+            j = self._journal.get(doc_no)
+            return [dict(j)] if j and not j["posted"] else []
+        return self.doc("nwvItemJournalLines", [("documentNo", "eq", doc_no)], ttl=30, top=20)
+
+    def da_post_journal(self, doc_no: str) -> bool:
+        """Ke toan da post chua: co Item Ledger Entry mang Document No. AGENT-<id>."""
+        if self.is_mock:
+            j = self._journal.get(doc_no)
+            return bool(j and j["posted"])
+        return bool(self.doc("nwvItemLedgerEntries", [("documentNo", "eq", doc_no)], ttl=30, top=5))
+
+    def gia_lap_post_journal(self, doc_no: str = "") -> list[str]:
+        """Chi mock: gia lap ke toan post. Rong = post het. Tra danh sach Document No. da post."""
+        if not self.is_mock:
+            raise NotImplementedError("Chỉ mô phỏng. Trên Business Central kế toán post trong Item Journal.")
+        ra = []
+        for k, j in self._journal.items():
+            if (not doc_no or k == doc_no) and not j["posted"]:
+                j["posted"] = True
+                ra.append(k)
+        return ra
 
     def transfer(self, to_no: str) -> dict[str, Any] | None:
         if self.is_mock:

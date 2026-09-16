@@ -19,7 +19,7 @@ phai xac dinh dang noi luong nao, chua ro thi hoi lai, dung gop hai luong lam mo
 |---|---|
 | Tenant | `bfea8d1a-c0a1-45fd-ba95-903daff0cb05` (tenant demo, CONTOSO M365x8772913) |
 | BC environment | `NWV01`, ban 28.4.53241.53312, co LS Central |
-| Company dich | `NWV` |
+| Company dich | `NWV-MAROU` (san xuat) va `NWV-DAKAO` (ban le) tu 15/09/2026; `NWV` la company goc da sao chep |
 | Entra app (S2S) | client `70b548dd-6795-4dcc-9a19-7e3809f8f06b`, secret ten `Marou` het han 3/10/2027 |
 
 Company `NWV` co day du master data (865 item, 32 location, Item Tracking Code) va **khong co
@@ -1126,9 +1126,12 @@ ILE dang co.
 
 ## Khao sat Marou ngay 13/09/2026 (Dung cung cap), va UC1, UC3 lam lai
 
-Cau truc: **Dakao** (nha may san xuat, kho tong) la company/entity khac voi **Marou Retail**. Marou
-Retail mua hang tu Dakao ve kho tong cua minh roi Transfer toi cua hang. Tuc la co nghiep vu
-intercompany mua ban giua hai company.
+**Cau truc entity, Dung dinh chinh ngay 14/09/2026 (thay dong ghi ngay 13/09 bi nguoc):** Marou co hai entity.
+**Marou la san xuat, co quan ly lo. Dakao la ban le, KHONG quan ly lo.** Agent lam cho ca hai entity. Hang di tu
+san xuat sang ban le qua nghiep vu intercompany mua ban giua hai company (chung mot moi truong BC).
+He qua cho UC2: phan tang theo lo chi dung o phia san xuat; ben ban le theo mat hang x dia diem, han dung phai suy tu
+dot giao. Khi khao sat khong hoi cau nao ve POS co lo. Khong can ghi thong tin entity vao tai lieu gui khach.
+(Dong cu ghi "Dakao nha may, Marou Retail ban le" la sai.)
 
 Van de ton kho ban le Dung khao sat duoc:
 1. Nhap PO khong kip thoi: hang mua ve cua hang don chung tu toi cuoi thang moi post receive. Marou
@@ -1499,6 +1502,226 @@ Demo Setup` **1.5.0.0**, da publish NWV01.
   kho, scorecard, tro ly), cau hoi hay gap. Anh chup lai bang `tools/chup_man_hinh.mjs` (them 01b, 01c, 03b, 05b, 16, 16b,
   17, 18). Anh kien truc cap nhat 1.5.1.0, 33 API page, 16 tool MCP.
 - Doc PDF cua docx tren may nay: Word COM (`SaveAs2` dinh dang 17) roi `pypdfium2`; khong co soffice va pdftoppm.
+
+### UC2: kim chi nam 4 nhom nang luc AI va hai tai lieu, 14/09/2026 toi
+
+Dung nhan xet: tinh nang UC2 "deu thay la application, khong thay AI can thiep nhieu". Chot kim chi nam: moi tinh nang AI
+cua agent phai thuoc mot trong bon nhom **Tom tat, Tao sinh noi dung, Kham pha va phan tich insight, Tu dong hoa**;
+tinh nang khong thuoc nhom nao la tinh nang ung dung. Nguyen tac: BC tinh so, AI khong tinh lai; moi dau ra AI co nguon;
+hanh dong ghi so qua policy va nguoi duyet; AI bat tat duoc, co tran chi phi; model chi nhan ket qua tool da loc.
+- Hien trang doc code: trong UC2 model chi o hai cho, planner cau hoi mo (D1) va write_rationale viet lai ly do de xuat
+  (G1), ca hai khi bat AI. Brief, hoi het han, truy xuat la rule; de xuat va duyet la luong ung dung.
+- Danh muc 17 tinh nang AI co ma S1-S4, G1-G4, D1-D5, A1-A4 nam trong `docs/build_uc2.js` (mang AI). Thu tu de xuat lam
+  tiep: S1 brief do AI viet, S2 giai thich lo bang loi, D4 goi y hanh dong toi uu cho lo can date (sua luon viec de xuat
+  chuyen ca ton lo), G2+A3 luong huy khep kin co chung tu nhap, A2 tu quet va nhac qua Teams.
+- `docs/build_uc2.js` ra hai file tu cung noi dung: "09 UC2 Inventory Health - Tai lieu tinh nang (noi bo).docx" (26
+  trang, co kim chi nam, bang chung, luong, khoang trong, KPI; khong co cau hoi khao sat) va "10 UC2 Inventory Health -
+  Gioi thieu tinh nang va khao sat (ban gui khach).docx" (21 trang: gioi thieu, 4 nhom nang luc voi muc dap ung, user
+  story, man hinh, 8 cau hoi khao sat dat gia moi cau nham mot tinh nang AI cong 2 cau xac nhan du lieu, da bo phieu cham diem dau; khong co bang chung ky thuat, luong,
+  khoang trong, de xuat them, cach khao sat). Ban 09 cu (co khao sat) va build_09.js chuyen vao `_to_delete/superseded`.
+- **Brand kit Word "Aqua Blue & Warm Sand"** (Dung gui 14/09/2026) nam trong `docs/lib_brand.js`, cung API voi lib.js cong
+  `ghiChu()` (nen Ice Blue #DAEEF3, vach Aqua #4BACC6) va `luuY()` (vach Warm Sand #C89B72): Aptos Display 20pt / Aptos Semibold
+  14 va 12pt co vach Aqua trai / Aptos 11pt / caption Aptos Italic 9pt, chu Graphite #27343A, A4 le 20 mm, gian dong 1,15, bang
+  header nen Aqua vien 0,5 pt dem 2 mm lap header, header trang "NaviWorld | MAROU • ..." va footer co duong ke Aqua.
+  Tai lieu moi dung lib_brand.js.
+- Cau hoi khao sat da sua theo hai entity (xem muc Khao sat Marou): khong con cau POS quet lo.
+- Hai tai lieu da ra van phong bang skill `natural-writing` (Dung hoi co dung chua, lan dau chua). Viet tai lieu phai goi skill do.
+- Slide "11 UC2 Inventory Health - Kien truc va kich ban (slide).pptx" (20 slide, 15/09/2026): kien truc ve bang shape, luong du lieu,
+  phan tang, 10 kich ban dau vao / thao tac / dau ra kem anh, muc dap ung. `python tools/cat_anh_slide_uc2.py` cat anh vao
+  `docs/uc2/slide`, roi `cd docs; node build_slide_uc2.js`. pptxgenjs cai o `C:\Users\dungdt.NWV\node_modules`. Soat hinh bang
+  PowerPoint COM `Slide.Export` (may khong co soffice). Margin o bang cua pptxgenjs tinh bang inch, margin cua text box tinh bang point.
+- Anh `docs/anh-uc2` chup bang `node tools/chup_uc2.mjs` (anh 10-12 tam doi nguon sang mo phong de khong ghi de xuat that);
+  so do luong `docs/uc2` ve bang `python tools/ve_luong_uc2.py`.
+- Sua cung dot: `uc2-reconcile --from al` het KeyError dong de xuat dieu chuyen; lo NearExpiry con 0 ngay bam chuyen thi noi
+  "het han hom nay" thay vi "da het han".
+
+### Hai company NWV-MAROU va NWV-DAKAO, email nhac post, 15/09/2026
+
+Dung tao hai company tren NWV01: **NWV-MAROU** (san xuat, co lo) va **NWV-DAKAO** (ban le, khong lo). Luc tao, ca hai la
+ban sao y het company NWV (25.177 ILE, 167 dong Inventory Health, 22 de xuat, ngay chot 18/09). Dung chot: du lieu Dakao
+con lo thi ke, Marou con cua hang thi ke, dung lai du lieu sau.
+- **Ket noi da kiem:** Entra app doc duoc ca hai company (permission set gan cho moi company, khong 403). Web service
+  `NWVReplenService.ReadTable` va `NWVAgentCalcService.RunCalculations INVHEALTH` chay o Dakao, ghi 167 dong. App cai theo
+  environment nen khong phai publish lai.
+- **Python:** `.env` co `BC_COMPANIES=NWV-MAROU,NWV-DAKAO`, `BC_COMPANY_NAME=NWV-MAROU` (mac dinh cho cong cu dong lenh).
+  `assistant/cong_ty.py`: vai nao o company nao (quan ly cua hang va Retail Ops o Dakao; kho o Marou; Supply Chain, dieu phoi,
+  quan tri o ca hai). `web.py` giu **moi company mot tro ly rieng** (bo nho, de xuat, policy rieng), dung khi co request dau
+  tien. Giao dien gan header `X-Cong-Ty` vao moi lenh goi (boc `window.fetch`); middleware ASGI dat ContextVar
+  `cong_ty.hien_tai`, `bc_link` doc ra de link BC mo dung company. Nguoi chi co mot company thay nhan co dinh, nguoi co hai
+  thay hai nut tren dai nguon. `tools_bc.py --company NWV-DAKAO ...`. Cong tac AI, tran chi phi, policy ap cho moi company.
+  Test gan `web.state["asst"]` van chay (moi company dung tro ly do).
+- **Nhac post nhan hang** (`skills/nhac_post.py`, intent `NHAC_POST`): cua hang bam "Hang da ve, chua nhap" thi tro ly gui
+  email ngay cho bo phan post (`MAIL_TO`); moi sang 08:00 (`NHAC_POST_GIO`, thread trong web.py, ghi `runs/lich-nhac.json`)
+  va khi Supply Chain go "gui mail nhac post" thi nhac lai qua chat va email; don khong con Outstanding thi bao da post va
+  dong viec. Danh sach don, so luong, ngay, link BC do code dien; model chi viet doan mo dau va cau ket, doan co chu so khong
+  co trong du lieu thi bo, dung mau. Chong gui trung theo khoa trong ngay (ngay theo dong ho tro ly, co dong ho ao).
+- **Gui mail** (`assistant/thu_dien_tu.py`): MAIL_MODE auto: `MAIL_SENDER` thi Microsoft Graph sendMail bang chinh Entra app
+  (can quyen Mail.Send loai Application + admin consent, Dung tu cap; ngay 15/09 token Graph cua app chua co role nao),
+  `SMTP_HOST` thi SMTP, khong co gi thi chi luu `.eml` vao `runs/thu-di/`. Moi thu ghi `runs/thu-di.sqlite`, xem
+  `GET /api/thu-di?user=dung.admin`. `MAIL_TO=dungdt@naviworld.com.vn`. Test luon ep kenh file (conftest).
+- Bat duoc khi chay that: thu dau ghi "lan nhac thu 2" (dem hai lan); model viet ngay 13/09 nhung du lieu dua model thieu
+  ngay du kien nen bi loai; the tra loi cua hang hua "da gui email" trong khi hom do da gui roi. Da sua ca ba, 516 test.
+- Chua lam: Job Queue theo tung company (chua kiem trong ban sao), brief Supply Chain gop hai company, luong intercompany.
+- **Email qua Graph tren tenant CONTOSO khong gui duoc**: Dung da cap Mail.Send + admin consent (token co role), nhung moi
+  hop thu trong tenant (admin@, NestorW@, LidiaH@M365x87729130.OnMicrosoft.com) tra `MailboxNotEnabledForRESTAPI`, tuc khong
+  co license Exchange Online. Duong con lai: SMTP (Gmail App Password) hoac app Graph rieng trong tenant NaviWorld.
+- Dung chot: hang tu Marou giao thang toi tung cua hang Dakao, khong qua kho trung tam Dakao.
+
+### Dot 1 hai company: Dakao mua thang tu Marou, giao toi tung cua hang, 15/09/2026 chieu
+
+Dung chot: hang tu Marou giao thang toi cua hang Dakao, khong qua kho trung tam Dakao; tu tao doi tac MAROU va DAKAO;
+Default Central Warehouse cua NWV-MAROU da sua ve W0003.
+- `NWV Marou Demo Setup` **1.6.1.0**: codeunit 70258 `NWV Demo Intercompany` (web service `NWVDemoIntercompany.EnsurePartners`)
+  tao vendor MAROU trong NWV-DAKAO (posting group chep tu 44020) va customer DAKAO trong NWV-MAROU (chep tu customer "1").
+  `Apply` nhan them cho item `vendor`, `fromWarehouse=false` (xoa quy tac Replen. From Warehouse), `purchOrderDelivery`
+  ("To Store") va cho template `purchaseOrderType` ("Receiving Locations").
+- `tools/ls_replen_setup.py --company NWV-DAKAO partners|apply|calc`: cau hinh Dakao = Item."Vendor No." MAROU,
+  `LSC Purch. Order Delivery` = To Store, template MAROU-PO kieu "Purchase Orders for Receiving Locations", Location Code
+  rong (mau RT00003 cua Cronus). **Doc trong Calc. Log cua LS:** journal Receiving Locations chi xet mat hang To Store,
+  mat hang To Warehouse ghi "NOT processed"; ma To Store thi journal chuyen hang MAROU-TO khong xet nua (Dakao: 0 dong).
+  Ket qua Dakao: MAROU-PO 19 dong, 71 chi tiet, 13 co so luong mua, 33323 x S0001 = 82 tu MAROU (bang so TO truoc day).
+  Vendor tren RIQ lay theo FindReplenVendor: Replen. Item Store Rec, SKU, roi Item.
+- Tro ly: `BCGateway.goi_y_ls` doc ca hai template, dong mua ve kho bo, dong mua thang cua hang co `replenType=Purchase`,
+  `vendorNo`, `sourceLocationCode` = vendor. Brief dieu phoi chi BAO dong mua (the thong tin, link journal MAROU-PO), khong
+  tao de xuat chuyen; `ls_giai_thich` tim journal TO roi PO. Chua co loai de xuat "mua" trong bang NWV Agent Proposal va chua
+  co luong tao PO intercompany: viec dot ke tiep.
+- NWV-MAROU chua doi: van MAROU-TO tu W0003 va MAROU-PO ve kho, cho den khi dung lai du lieu.
+
+**Toi 15/09/2026, tiep:**
+- Email SMTP Gmail da gui that (App Password Dung dien vao `SMTP_PASSWORD`; `.env` co du SMTP_HOST/PORT/USER/PASSWORD). Thu dau
+  di kenh smtp trang thai `da_gui` toi dungdt@naviworld.com.vn. Doi `.env` phai khoi dong lai server (Settings doc luc import).
+- `NWV Marou Demo Setup` **1.6.2.0**: `NWVDemoRepost.DeleteProposals(confirmText, actionType)` xoa de xuat theo loai o company
+  NWV-*. Da xoa 19 de xuat Transfer sao chep trong NWV-DAKAO (con 3 WriteOff). NWV-MAROU van giu 22 de xuat cu.
+- `NWV Marou Agent` **1.5.3.0**: enum NWV Proposal Action them `Purchase` (8), bang de xuat them field 16 `Vendor No.`, API
+  `vendorNo`. `NWV Agent Proposal Mgt.Execute` Purchase -> `CreatePurchaseOrder`: Purchase Header Order, Buy-from = Vendor No.,
+  Location = To Location, Your Reference 'AGENT <id>', mot Purchase Line; trang thai Open, khong release. Permission set
+  NWV AGENT REVIEW them Purchase Header/Line = RIM. Da duyet that mot de xuat o NWV-DAKAO: **PO HO106199**, 1 Blueberry
+  muffin tu MAROU giao S0010.
+- Tro ly: brief dieu phoi o Dakao tao de xuat loai Purchase (vendor tu dong LS), the "De xuat dat mua" nut "Duyet dat mua";
+  policy P-11 StoreReplenishment/Purchase = APPROVE; duyet thi bao PO kem link, khong bao kho ship. `memory.proposals` them cot
+  `vendor_no`. Mock gia lap PO-xxxx. 517 test.
+- Chua co: Intercompany (PO cua Dakao thanh Sales Order ben Marou): can Intercompany Partner, IC Setup Auto Send/Accept.
+
+### UC2 nhom Tom tat: S1 brief do AI viet, S2 giai thich lo bang loi, 15/09/2026 toi
+
+Dung nhac: ke hoach phai tap trung tinh nang AI cho UC2, khong troi sang viec ung dung (intercompany, dung lai du lieu). Thu tu
+lam theo tai lieu 09: S1, S2 (xong), roi D4, G2+A3, A2. `assistant/skills/uc2_tom_tat.py`, 10 test `tests/test_uc2_tom_tat.py`, 527 test.
+- **Cach lam chung, giong email nhac post:** code doc bang Inventory Health da tinh, chon dong ung vien, tinh "du kien du"
+  (ton tru ban duoc truoc han), tim cua hang ban nhanh hon, gom de xuat dang cho va ly do tu choi 14 ngay gan day (tu
+  `outcome_note`, `on_reject` gio luu ly do). Model chi viet loi theo JSON schema. Sau khi model viet: moi chu so phai co trong
+  du lieu dua model, moi dong chon phai co trong danh sach; sai la dung mau do code ghep, the ghi ro "Nguoi soan: mau co san
+  (ly do)". Tat AI thi khong goi model. Chi phi ghi muc `brief` va `giai_thich_lo` tren trang Cai dat AI.
+- **S1** `brief_ai`: the kind `brief` "3 viec quan trong nhat sang nay" (mo dau, 3 viec kem ly do, ket) len dau brief cua
+  Supply Chain, va them vao brief quan ly cua hang (chi cua hang minh); the tung dong xep dong duoc chon truoc. Link mo so kho
+  cua tung lo. Chay that tren NWV-MAROU: 22,8 giay (phan lon la doc BC), model chon 3 lo Croissant - plain, cau dung so.
+- **S2** `giai_thich_lo`, `GET /api/uc2/giai-thich?line_id=`: doan 3-5 cau tren trang Chi tiet lo, muc "Noi bang loi" ngay duoi
+  ten lo, tu load. Doan AI nho theo dong va `calculatedAt` (kv `giai_thich_lo:<id>|<calculatedAt>`) nen mo lai khong tra tien.
+  Chay that: Choco pillar S0010 6,4 giay, dung; lo Choco nuts het han bi bo vi model viet "07" (doc ma lo L260720 thanh ngay
+  20/07, tuc tu suy ra), roi ve mau. Day la dung y thiet ke, dung noi long phep kiem so.
+- Gioi han da biet: phep kiem so theo `\d+` nen so nho (1, 2) gan nhu luon co trong du lieu; model bia "2 lo" thi khong bat duoc.
+  Model chon viec theo diem rui ro nen ba viec co the cung mot mat hang; muon da dang thi them quy tac vao prompt, chua lam.
+
+### UC2 D4: goi y hanh dong toi uu cho lo can date, 16/09/2026
+
+`assistant/skills/uc2_hanh_dong.py`, 7 test `tests/test_uc2_hanh_dong.py`. Thay nut "Chuyen sang store ban nhanh" (de xuat chuyen
+CA TON LO sang cua hang ban nhanh nhat, khong xet ho co ban het khong) bang nut "Phuong an xu ly" tren the lo can date.
+- **Code tinh** (`phan_tich`, ham thuan): ban duoc tai cho truoc han = ban binh quan x ngay con lai (lam tron xuong), phan du;
+  kha nang nhan cua tung cua hang = ban binh quan cua ho x (ngay con lai - 1 ngay van chuyen) - ton ho dang co; chuyen greedy toi
+  da 2 noi; bang phuong an giu / chuyen / chuyen + giam gia / giam gia / huy kem gia tri cuu duoc hay mat theo gia von; mot de xuat
+  theo quy tac. Muc giam gia chua co quy tac cua Marou (G3) nen de xuat giam gia chi mang so luong.
+- **Model chon va giai thich** (`goi_y`, muc chi phi `d4`): doc bang phuong an, chon mot khoa, viet vi sao; duoc chon khac code neu
+  noi duoc ly do tren so da co. Kiem: khoa phai co trong bang, moi chu so phai co trong du lieu; sai thi ve de xuat cua code va cau
+  mau. Nho theo dong va `calculatedAt` (kv `d4:`).
+- **Nguoi ghi de xuat** (`on_ap_dung`, verb `ih_d4_apply`): moi phan mot de xuat, khoa rieng `item|kho|lo|TO|<den>`, `|MD`, `|WO`,
+  `|GIU` de khong bi coi la trung nhau; `inventory_health.on_propose` nhan `quantity`, `ref`, `rationale` va gio ghi `value_vnd`
+  (so luong x gia von) nen policy P-06 (chuyen lo can date gia von duoi 100 tu lam) xet duoc gia tri that.
+- Trang Chi tiet lo co muc "Phuong an xu ly" (`GET /api/uc2/phuong-an`) cho lo NearExpiry: bang phuong an va loi khuyen, chi doc;
+  ghi de xuat thi qua the trong Tro chuyen.
+- Chay that NWV-MAROU (AI bat): Choco pillar S0010 470 cai con 25 ngay ban 10,8/ngay: giu thi du 199; S0001 (21,2/ngay, ton 154)
+  nhan duoc 354 nen chuyen 199, du 0, cuu 218,90; model chon "chuyen", cau dung so, 5,5 giay. Choco bowl S0005 chuyen 74 sang S0001.
+  Carrot cake W0003 ban het truoc han, model chon "giu". Loi van cua model doi cho lung cung ("chuyen dung ngay 1") nhung so dung.
+- Gioi han: kha nang nhan gia dinh ton cua noi nhan ban het truoc (khong xet han cua ton do); chua tinh chi phi van chuyen; chua co
+  phuong an "dung noi bo" vi chua co du lieu.
+
+### UC2 G2 + A3 luong huy khep kin, A2 quet sang tu dong, 16/09/2026
+
+App `NWV Marou Agent` **1.6.1.0** da publish NWV01. `assistant/skills/uc2_huy.py`, `uc2_quet.py`, 8 test `tests/test_uc2_huy_quet.py`.
+- **BC (codeunit 70102):** duyet de xuat Write-off tao dong Item Journal Negative Adjmt. CHUA POST trong template/batch/reason cua
+  Setup (field 70-72, mac dinh ITEM / AGENT / AGENT-EXP, tu tao neu thieu, batch bat Item Tracking on Lines de Lot No. song),
+  Document No. `AGENT-<Entry No.>`, Result Document Type 'Item Journal Line'. Lan dau dung Proposal Id (GUID) nen ra
+  `AGENT-{F8D9F9A9-AF40`, da doi sang Entry No. (1.6.1.0); dong thu do (1 Blueberry muffin S0010) van nam trong batch AGENT
+  cua NWV-MAROU, xoa tay hoac post. API page 70289 `nwvItemJournalLines` chi doc. Permission REVIEW them Item Journal
+  Line/Batch RIM, Template va Reason Code RI; RUN them Item Journal Line R. Khong co quyen post.
+- **G2 bien ban** (`uc2_huy.soan_bien_ban`, muc chi phi `bien_ban`): code dien bang so lieu (lo lay tu dong journal vi bo nho tro ly
+  khong luu lot_no), model viet `dien_bien` va `de_nghi`, kiem so nhu S1. The cho nguoi duyet va nguoi de nghi, email cho MAIL_TO
+  kem link page 40 loc batch. `replenishment.on_approve` re nhanh khi Result Document Type = 'Item Journal Line'.
+- **A3 theo doi** (`uc2_huy.theo_doi`, followup kind `write_off_post`, 24 gio mot lan): co ILE cung Document No. thi bao "da post",
+  dong viec; con trong journal thi nhac lan N qua chat + email (mot thu mot ngay), lan 3 bao nguoi duyet; khong con trong journal
+  ma khong co ILE thi bao co the bi xoa, dong viec. Mock: `gw.gia_lap_post_journal()`, nut demo "Gia lap ke toan post chung tu huy",
+  `POST /api/demo/post-huy`.
+- **A2 quet sang** (`uc2_quet.quet`): lo het han chua co de xuat -> tu ghi de xuat Write-off (nguoi de nghi `tro_ly`, toi da 10 mot
+  lan, P-05 bat nguoi duyet); lo can date moi con du -> the D4 cho Supply Chain (toi da 3); brief S1 cho Supply Chain va tung cua
+  hang, ban Supply Chain gui email; nhac de xuat cho duyet qua 1 ngay; chay followups. Da bao thi kv `quet_da_bao:<lo>`, mot ngay
+  mot lan (kv `quet_uc2_ngay`), `POST /api/quet-uc2 {user, chay_lai}`, nut demo, lich nen `QUET_UC2_GIO` (mac dinh 07:30, thread
+  `_chay_lich_nhac` gio chay ca hai viec, khoa `<company>|quet_uc2` trong runs/lich-nhac.json).
+- Chay that NWV-MAROU 16/09: duyet huy Blueberry muffin S0010 -> dong journal that co lot va reason, bien ban AI dung so, email
+  da gui, 11,6 giay. Quet sang: 112 giay, 10 de xuat huy ghi vao BC (Proposed, cho Hung duyet), 3 phuong an, brief 5 nguoi, email.
+- Bay: chay smoke ngoai pytest thi conftest khong chan email, thu di that (4 thu sang 16/09 la thu nghiem). Server `--reload` mat
+  bo nho `Memory(":memory:")` moi lan sua file Python, nen hop thu trong sau khi sua code.
+
+### UC2 D3 bat thuong, D2 nguyen nhan huy, S3 bao cao tuan hang huy, va QA AI, 16/09/2026
+
+`assistant/skills/uc2_bat_thuong.py`, `uc2_nguyen_nhan.py`, `uc2_bao_cao_huy.py`; 15 test `tests/test_uc2_phan_tich.py`; 558 test.
+Nguon chung: `BCGateway.ile_cua_so(days)` (moi loai ILE, live doc theo cua so chung `CUA_SO_BAN` roi loc, mock lay `_ILE_DEMO`),
+`gw.la_kho(loc)`. Trong bo demo va tren BC: cua hang nhan bang Positive Adjmt., huy bang Negative Adjmt. co lo ngay sau khi het han;
+khong co dong Sale sau han; document no rong.
+- **D3** (`quet`, 28 ngay, chi cua hang): 5 tin hieu ban_sau_han, nhan_han_ngan (han luc nhan < 1/2 trung vi mat hang), huy_tang
+  (14 ngay gap doi 14 ngay truoc, >= 5), ton_khong_ban (7 ngay khong ban ma noi khac ban), het_hang_lap (StockOutRisk, censored >= 5).
+  "Lech kiem ke lon" khong lam duoc: khong co phieu kiem ke / reason code. Model chon toi da 3 id va viet nhan xet (kiem id + so).
+  Intent `ANOMALY`, `GET /api/uc2/bat-thuong?noi=`, cua hang chi thay cua hang minh. BC that: 16 tin hieu (15 nhan han ngan, 1 het
+  hang lap), model uu tien T2-T4 deu o S0001.
+- **D2** (`phan_tich`, 90 ngay): moi cap mat hang x cua hang co huy: nhan/ban (> 1,25 nhan du), ban binh quan so voi cua hang khac
+  (< 0,7 ban cham), han luc nhan so voi trung vi (< 0,7 han ngan), lan nhan lon nhat > 1,5 x ban binh quan x han thong thuong
+  (don cuc; nguong 1,0 bat 22/25 cap nen vo nghia). "Chuyen tre" khong do duoc (khong co TO). Model viet ket luan. Intent
+  `WASTE_WHY` ("vi sao X huy nhieu", ten cua hang qua `_tim_cua_hang`), `GET /api/uc2/nguyen-nhan-huy?item=&noi=`.
+  BC that: Chocolate cake 355 cai, S0001 huy 41,9% so nhan.
+- **S3** (`so_lieu`, tuan 7 ngay so tuan truoc, top mat hang va cua hang theo gia tri, lo het han con ton, de xuat huy cho duyet,
+  chung tu chua post, nguyen nhan D2 28 ngay): model viet mo_dau, nhan_xet, viec_tuan_toi. The kind brief cho Supply Chain va admin,
+  email mot lan moi tuan ISO. Intent `WASTE_REPORT`, `POST /api/bao-cao-huy`, quet sang A2 tu gui vao thu Hai. Tuan 12-18/09 huy 0
+  vi 45 lo het han chua post huy (dung, khong phai loi). Lan chay dau model viet "(trieu dong)" va "don hang": prompt gio noi ro
+  don vi cai va khong them don vi tien.
+- **QA AI tren NWV-MAROU 16/09 (AI bat, qua API tro ly):** S1, S2, D4, D3, D2, S3, G2 (bien ban), A2 deu ra "AI (gpt-4.1-mini)",
+  so qua phep kiem; chat ba intent moi di duong rule khong goi model. Chi phi ca ngay 0,085 USD / 146 luot. A2 chay lai them 10 de
+  xuat huy, khong trung; NWV-MAROU dang co 31 de xuat WriteOff Proposed do quet (xoa bang `NWVDemoRepost.DeleteProposals` neu can).
+  Bay: server `--reload` moi lan sua file la mat hop thu (Memory :memory:), QA qua API phai doc lai ngay sau khi goi.
+
+### Bo nho tro ly xuong dia, don de xuat huy, kien truc 16/09/2026
+
+- `web._bo_nho(live, ten)`: moi company va moi nguon mot file `runs/bo-nho-<bc|mock>-<company>.sqlite` (hop thu, de xuat, viec theo
+  doi A3, kv gom doan AI da soan va lich quet). `--reload` hay khoi dong lai khong mat gi nua. Nut Reset (`POST /api/reset`) xoa file
+  cua nguon dang chay; doi nguon (`/api/mode`) giu file. Duoi pytest van dung ":memory:". Da kiem: hai file tao ra, 10 user moi file.
+- Da xoa 34 de xuat WriteOff trong NWV-MAROU (`NWVDemoRepost.DeleteProposals`, ca Proposed lan Executed). Hai dong Item Journal nhap
+  trong batch AGENT (AGENT-{F8D9F9A9-AF40 va AGENT-95) van con, xoa tay hoac post.
+- So do kien truc `docs/kien-truc/kien-truc-chi-tiet.html` viet lai theo trang thai 16/09: hai company, email va lich nen, dai
+  "AI o dau trong UC2" bon nhom 12 tinh nang, lop 3 co Purchase va WriteOff, 34 API page. Render: Chrome headless
+  `--screenshot --window-size=1800,3400` roi cat day bang Pillow (lenh trong lich su phien, khong co script rieng).
+
+### Vai tro dia diem doc tu LS Central, app 1.5.2.0, 15/09/2026
+
+Dung bac hai field tren NWV Agent Setup: `Central Warehouse Code` trung `LSC Replen. Setup."Default Central Warehouse"`,
+`Store Location Filter` khong duoc phep tinh nao dung. Da lam:
+- Codeunit 70112 `NWV Location Role`: store = `LSC Store."Location Code"` (Store Type = Store) hoac `LSC Store Location`
+  (10001416); warehouse = Default Central Warehouse / Warehouse 2 / 3 cua Replen. Setup hoac `Location."LSC Location is a
+  Warehouse"`. `NWV Demand Calc.Build(AsOf, Days)` bo tham so kho; kho nao cung lay Outflow. Forecast chi do cap `IsStore`.
+- Hai field cu ObsoleteState = Pending (khong doi schema), bo khoi page. Nhom Locations tren page hien Central Warehouse va
+  so store (chi doc). Moi caption va ToolTip cua Setup, page va action doi sang tieng Anh (Dung yeu cau).
+- API `nwvLocations` them `isStore`, `storeNo`, `isWarehouse`, `isCentralWarehouse`. `BCGateway.central_wh` tren BC that doc
+  tu day (mot lan, TTL 1 gio), mock giu W0003. Permission set NWV AGENT LS READ them `LSC Store Location` = R.
+- Kiem sau publish: ca hai company van 167 dong 45/32/47/4/1/38, 222 dong forecast, 2.072 Forecast Entry. W0001-3 co co
+  Warehouse nen nhu cau kho khong doi. **NWV-MAROU dang de Default Central Warehouse = W0001 (Cronus)**, Dakao = W0003;
+  Dung can sua Replen. Setup cua NWV-MAROU ve W0003, neu khong tro ly o Marou de xuat chuyen tu W0001.
+- Build: `"$DOTNET" "$ALC" /project:al/MarouAgentFoundation /packagecachepath:../Demo/.alpackages /outfolder:al/MarouAgentFoundation/out`
+  (symbol LS nam o AL/Demo/.alpackages), publish `python tools_bc.py upload <app>`.
 
 ### UC3: tro ly bao don mua qua han nhan, lam ngay 13/09/2026 toi
 

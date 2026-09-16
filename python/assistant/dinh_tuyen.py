@@ -24,7 +24,8 @@ log = logging.getLogger(__name__)
 # Intent chi tra loi dung khi biet mat hang nao. Khong tra duoc ma thi phai hoi model.
 CAN_MAT_HANG = ("STOCKOUT", "STOCK_QUERY", "INVESTIGATE", "DAMAGE", "REPLEN_WHY")
 # Intent doc thang tu bang, khong bao gio can model.
-TU_DU_LIEU = ("BRIEF", "TRACKING", "PO_OVERDUE", "EXPIRY", "FORECAST", "SUPPLIER", "TRACE", "PROMO", "SELF_REVIEW")
+TU_DU_LIEU = ("BRIEF", "TRACKING", "PO_OVERDUE", "EXPIRY", "FORECAST", "SUPPLIER", "TRACE", "PROMO", "SELF_REVIEW",
+              "ANOMALY", "WASTE_REPORT")
 
 
 @dataclass

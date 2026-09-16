@@ -11,9 +11,10 @@
 ///
 /// 2. Nhu cau tai kho. Kho xuat hang di cua hang bang Negative Adjmt. hoac Transfer chu khong
 ///    bang dong Sale. Dem dong Sale se thay kho khong co nhu cau va xep moi lo o kho vao cham
-///    luan chuyen. O day: kho trung tam (Setup."Central Warehouse Code") luon lay tong luong
-///    xuat, ke ca khi kho co ban si tai cho; cac dia diem khac khong he co dong Sale thi cung
-///    lay tong luong xuat. Chot ngay 12/09/2026.
+///    luan chuyen. O day: kho (theo codeunit NWV Location Role: LSC Replen. Setup va co
+///    "LSC Location is a Warehouse") luon lay tong luong xuat, ke ca khi kho co ban si tai cho;
+///    cac dia diem khac khong he co dong Sale thi cung lay tong luong xuat. Chot ngay 12/09/2026,
+///    doi nguon kho tu Setup sang LS ngay 15/09/2026.
 ///
 /// 3. Han dung do tu du lieu: trung vi cua (Expiration Date - Posting Date) tren dong nhap.
 ///    Dung de chan muc ton muc tieu khi bo sung. Khong doc Expiration Calculation tren Item.
@@ -29,20 +30,20 @@ codeunit 70110 "NWV Demand Calc"
         ShelfDays: Dictionary of [Code[20], Integer];
         AsOfDate: Date;
         SinceDate: Date;
-        CentralWarehouse: Code[10];
+        LocationRole: Codeunit "NWV Location Role";
         IsBuilt: Boolean;
         NotBuiltErr: Label 'NWV Demand Calc chua duoc Build.';
 
     /// <summary>
     /// AsOf la ngay neo, HistoryDays la do dai cua so. Cua so gom HistoryDays ngay ket thuc
-    /// tai AsOf, tuc tu AsOf - (HistoryDays - 1) den AsOf. CentralWh la kho trung tam, tai do
-    /// nhu cau luon la tong luong xuat.
+    /// tai AsOf, tuc tu AsOf - (HistoryDays - 1) den AsOf. Kho (theo NWV Location Role) luon
+    /// lay nhu cau bang tong luong xuat.
     /// </summary>
-    procedure Build(AsOf: Date; HistoryDays: Integer; CentralWh: Code[10])
+    procedure Build(AsOf: Date; HistoryDays: Integer)
     var
         ItemLedgerEntry: Record "Item Ledger Entry";
     begin
-        CentralWarehouse := CentralWh;
+        Clear(LocationRole);
         MoveBuf.Reset();
         MoveBuf.DeleteAll();
         ProfileBuf.Reset();
@@ -256,10 +257,10 @@ codeunit 70110 "NWV Demand Calc"
         until ProfileBuf.Next() = 0;
     end;
 
-    /// <summary>Cua hang co dong Sale thi dem Sale. Kho trung tam luon dem tong luong xuat.</summary>
+    /// <summary>Cua hang co dong Sale thi dem Sale. Kho luon dem tong luong xuat.</summary>
     local procedure UseSale(Profile: Record "NWV Demand Profile Buffer" temporary): Boolean
     begin
-        if (CentralWarehouse <> '') and (Profile."Location Code" = CentralWarehouse) then
+        if LocationRole.IsWarehouse(Profile."Location Code") then
             exit(false);
         exit(Profile."Has Sale");
     end;

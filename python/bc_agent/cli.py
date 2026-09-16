@@ -148,8 +148,10 @@ def cmd_uc2_reconcile(args: argparse.Namespace) -> int:
     for tier in TIERS:
         print(f"{TIER_VI[tier]:<18}{actual['tier_counts'][tier]:>8}"
               f"{expected.get('tier_counts', {}).get(tier, '-'):>10}")
-    print(f"{'de xuat dieu chuyen':<18}{actual['so_de_xuat_dieu_chuyen']:>8}"
-          f"{expected.get('so_de_xuat_dieu_chuyen', '-'):>10}")
+    # De xuat bo sung do LS Replenishment tinh tu 14/09/2026, bang AL khong con; --from al khong co so nay.
+    if "so_de_xuat_dieu_chuyen" in actual:
+        print(f"{'de xuat dieu chuyen':<18}{actual['so_de_xuat_dieu_chuyen']:>8}"
+              f"{expected.get('so_de_xuat_dieu_chuyen', '-'):>10}")
 
     diffs = compare(actual, expected)
     if not diffs:

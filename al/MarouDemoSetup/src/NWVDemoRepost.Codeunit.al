@@ -291,6 +291,36 @@ codeunit 70256 "NWV Demo Repost"
         exit(Output);
     end;
 
+    /// <summary>
+    /// Xoa de xuat cua agent theo loai (vi du 'Transfer'), o company NWV-* bat ky. Dung 15/09/2026: NWV-DAKAO sao chep
+    /// tu NWV mang theo 22 de xuat chuyen hang tu W0003, khong con dung khi Dakao mua thang tu Marou. Xoa hang loat, khong
+    /// dong Transfer Order nao (de xuat da Executed thi TO da co nguoi xu ly). actionType rong la xoa het.
+    /// </summary>
+    procedure DeleteProposals(confirmText: Text; actionType: Text): Text
+    var
+        Proposals: RecordRef;
+        ActionField: FieldRef;
+        Result: JsonObject;
+        Output: Text;
+    begin
+        if confirmText <> CleanupTok then
+            Error(WrongConfirmErr, CleanupTok);
+        if CopyStr(CompanyName(), 1, 3) <> 'NWV' then
+            Error(CompanyErr, CompanyName());
+        Proposals.Open(70102);
+        if actionType <> '' then begin
+            ActionField := Proposals.Field(4);          // "Action Type"
+            ActionField.SetFilter(actionType);
+        end;
+        Result.Add('company', CompanyName());
+        Result.Add('actionType', actionType);
+        Result.Add('deleted', Proposals.Count());
+        Proposals.DeleteAll(true);
+        Proposals.Close();
+        Result.WriteTo(Output);
+        exit(Output);
+    end;
+
     local procedure AddCounts(var Result: JsonObject)
     var
         ItemLedgEntry: Record "Item Ledger Entry";

@@ -18,6 +18,7 @@ from bc_agent.config import settings
 
 from .. import budget as budget_mod
 from .. import caidat
+from .. import cong_ty as cong_ty_mod
 
 from ..core import Assistant, la_quan_tri
 from ..memory import Memory
@@ -26,16 +27,48 @@ log = logging.getLogger("web")
 STATIC = Path(__file__).resolve().parent.parent / "static"
 
 
-def _client(live: bool | None = None):
-    """`live=None` nghia la theo BC_MODE trong .env. Nut tren giao dien truyen True hoac False."""
+def _client(live: bool | None = None, cong_ty: str = ""):
+    """`live=None` nghia la theo BC_MODE trong .env. Nut tren giao dien truyen True hoac False.
+    `cong_ty` la ten company; mock khong phan biet company, moi company doc cung bo fixtures."""
     if settings.bc_live if live is None else live:
+        from dataclasses import replace
+
         from bc_agent.bc_client import BCClient
-        return BCClient(settings)
+        s = settings if not cong_ty or cong_ty == settings.bc_company_name else replace(
+            settings, bc_company_name=cong_ty, bc_company_id="")
+        return BCClient(s)
     from bc_agent.mock_client import MockBCClient
     return MockBCClient()
 
 
 app = FastAPI(title="Marou Ops Assistant (demo)")
+
+
+class _CongTyMiddleware:
+    """Doc company cua request tu header `X-Cong-Ty` (giao dien tu gan) hoac tham so `cong_ty`, dat vao
+    ContextVar `cong_ty.hien_tai`. ASGI thuan, khong dung BaseHTTPMiddleware vi cai do lam mat ContextVar."""
+
+    def __init__(self, app_):
+        self.app = app_
+
+    async def __call__(self, scope, receive, send):
+        if scope.get("type") != "http":
+            return await self.app(scope, receive, send)
+        from urllib.parse import parse_qs, unquote
+        ten = ""
+        for k, v in scope.get("headers") or []:
+            if k.decode("latin-1").lower() == "x-cong-ty":
+                ten = unquote(v.decode("latin-1")).strip()
+        if not ten:
+            ten = (parse_qs(scope.get("query_string", b"").decode()).get("cong_ty") or [""])[0].strip()
+        token = cong_ty_mod.hien_tai.set(ten if ten in cong_ty_mod.danh_sach(settings) else "")
+        try:
+            await self.app(scope, receive, send)
+        finally:
+            cong_ty_mod.hien_tai.reset(token)
+
+
+app.add_middleware(_CongTyMiddleware)
 
 
 @app.exception_handler(BCError)
@@ -48,7 +81,12 @@ def _loi_bc(request, exc: BCError):
     log.warning("BC tu choi: %s", exc)
     return JSONResponse(status_code=502, content={"loi": str(exc)[:600]})
 # bc_live_override: None la theo .env, True/False la nguoi dung da bam nut tren giao dien.
-state: dict[str, Any] = {"asst": Assistant(_client(), Memory(":memory:")), "bc_live_override": None}
+# tro_ly: moi company mot tro ly, dung khi co request dau tien cua company do (dung mot tro ly tren BC that
+# mat vai chuc giay vi phai chot baseline).
+import threading
+
+state: dict[str, Any] = {"tro_ly": {}, "bc_live_override": None}
+_khoa_tro_ly = threading.Lock()
 
 
 def bc_is_live() -> bool:
@@ -56,12 +94,68 @@ def bc_is_live() -> bool:
     return settings.bc_live if ov is None else bool(ov)
 
 
+def cac_cong_ty() -> list[str]:
+    return cong_ty_mod.danh_sach(settings)
+
+
+def _bo_nho(live: bool, ten: str) -> Memory:
+    """Bo nho tro ly nam tren dia, moi company va moi nguon (BC that / mo phong) mot file: runs/bo-nho-<nguon>-<company>.sqlite.
+
+    Truoc 16/09/2026 la Memory(":memory:"): moi lan `--reload` sau khi sua file Python hay khoi dong lai la mat hop thu, de xuat da
+    nap, viec theo doi chung tu huy (A3) va cac doan AI da soan. Dung yeu cau chuyen xuong dia. Test van dung ":memory:" (pytest
+    dat state["asst"] hoac tu tao Memory), nen khi chay duoi pytest van giu ban trong RAM de khong ghi vao runs/ that."""
+    import re as _re
+    import sys
+    if "pytest" in sys.modules:
+        return Memory(":memory:")
+    duong = Path(settings.log_dir) / f"bo-nho-{'bc' if live else 'mock'}-{_re.sub(r'[^A-Za-z0-9_-]+', '_', ten) or 'mac-dinh'}.sqlite"
+    duong.parent.mkdir(parents=True, exist_ok=True)
+    return Memory(duong)
+
+
+def _tro_ly_cua(ten: str) -> Assistant:
+    # Test gan san mot tro ly vao state["asst"] thi moi company dung tro ly do.
+    if state.get("asst") is not None:
+        return state["asst"]
+    with _khoa_tro_ly:
+        a = state["tro_ly"].get(ten)
+        if a is None:
+            live = bc_is_live()
+            a = Assistant(_client(live, ten), _bo_nho(live, ten), cong_ty=ten)
+            state["tro_ly"][ten] = a
+        return a
+
+
+def _dung_lai_tro_ly(live: bool, xoa_bo_nho: bool = False) -> None:
+    """Doi nguon du lieu hoac reset: bo moi tro ly, dung lai company mac dinh ngay de bao loi som neu hong.
+    `xoa_bo_nho` (nut Reset): xoa file bo nho cua nguon do de bat dau sach; doi nguon thi giu, moi nguon co file rieng."""
+    with _khoa_tro_ly:
+        cu = state["tro_ly"]
+        state["tro_ly"] = {}
+        state.pop("asst", None)
+    if xoa_bo_nho:
+        for a in cu.values():
+            try:
+                a.mem.conn.close()
+            except Exception:
+                pass
+        for f in Path(settings.log_dir).glob(f"bo-nho-{'bc' if live else 'mock'}-*.sqlite"):
+            try:
+                f.unlink()
+            except OSError as exc:
+                log.warning("Khong xoa duoc %s: %s", f, exc)
+    ten = cac_cong_ty()[0]
+    a = Assistant(_client(live, ten), _bo_nho(live, ten), cong_ty=ten)
+    with _khoa_tro_ly:
+        state["tro_ly"][ten] = a
+
+
 # Giao dien goi `/api/state` moi 2 giay, va cho nay dem hai bang ket qua moi lan. Tren BC that
 # hai lenh do mat khoang 3,4 giay, tuc lau hon ca chu ky poll: cac vong poll chong len nhau va
 # ca man hinh cham theo. Ca hai lenh gio di qua ban nho cua gateway (`BCGateway.doc`), dung chung
 # voi man hinh Suc khoe ton kho va voi brief. Bat duoc ngay 13/09/2026.
 def _dem_dong_ket_qua(live: bool) -> dict[str, Any]:
-    a = state.get("asst")
+    a = asst()
     try:
         n_health = len(a.gw.doc("inventoryHealthLines", [], top=5000))
         n_sugg = len(a.gw.doc("replenishmentSuggestions", [], top=5000))
@@ -72,9 +166,8 @@ def _dem_dong_ket_qua(live: bool) -> dict[str, Any]:
 
 
 def quen_dem() -> None:
-    """Bo ban nho de lan doc sau lay so moi tu BC."""
-    a = state.get("asst")
-    if a is not None:
+    """Bo ban nho de lan doc sau lay so moi tu BC, o moi company dang chay."""
+    for a in list(state["tro_ly"].values()):
         a.gw.quen_nho()
 
 
@@ -86,19 +179,161 @@ def bc_status() -> dict[str, Any]:
     chua ai bam Run Inventory Health.
     """
     live = bc_is_live()
+    ten = cong_ty_dang_chon()
     out: dict[str, Any] = {
         "live": live,
         "theo_env": state.get("bc_live_override") is None,
         "bc_mode_env": settings.bc_mode,
-        "nguon": (f"{settings.bc_environment} / {settings.bc_company_name}" if live
-                  else "fixtures trong python/bc_agent/fixtures"),
+        "cong_ty": ten, "cong_ty_nhan": cong_ty_mod.nhan(ten, "day_du"),
+        "nguon": (f"{settings.bc_environment} / {ten}" if live
+                  else f"fixtures trong python/bc_agent/fixtures ({cong_ty_mod.nhan(ten)})"),
     }
     out.update(_dem_dong_ket_qua(live))
     return out
 
 
-def asst() -> Assistant:
-    return state["asst"]
+def cong_ty_dang_chon(user: str | None = None) -> str:
+    """Company cua request: header/tham so ma giao dien gui, neu hop le va nguoi dung duoc lam o do.
+    Khong co thi company mac dinh cua vai nguoi dung, cuoi cung la company dau tien."""
+    co = cac_cong_ty()
+    ten = cong_ty_mod.hien_tai.get()
+    if user:
+        from ..core import DEMO_USERS
+        u = next((x for x in DEMO_USERS if x["user_id"] == user), None)
+        duoc = cong_ty_mod.cua_vai(u, co)
+        if ten not in duoc:
+            ten = duoc[0]
+    return ten if ten in co else co[0]
+
+
+def asst(user: str | None = None) -> Assistant:
+    """Tro ly cua company dang chon. Dat luon ContextVar de link BC trong the tro dung company."""
+    ten = cong_ty_dang_chon(user)
+    cong_ty_mod.hien_tai.set(ten)
+    return _tro_ly_cua(ten)
+
+
+def _moi_tro_ly() -> list[Assistant]:
+    """Cong tac AI, tran chi phi, policy la cai dat chung: ap cho moi company dang chay."""
+    if state.get("asst") is not None:
+        return [state["asst"]]
+    if not state["tro_ly"]:
+        _tro_ly_cua(cac_cong_ty()[0])
+    return list(state["tro_ly"].values())
+
+
+# ---------------------------------------------------------------- nhac post nhan hang (chat + email)
+class NhacIn(BaseModel):
+    user: str = ""
+    gui_lai: bool = False
+
+
+@app.post("/api/nhac-post")
+def nhac_post_ngay(x: NhacIn):
+    """Chay mot vong nhac post cho company dang chon, giong lich chay nen moi sang. Xem skills/nhac_post.py."""
+    from ..skills import nhac_post
+    a = asst(x.user or None)
+    u = a.mem.user(x.user) if x.user else None
+    out = a._deliver(nhac_post.nhac(a, u, bat_buoc=x.gui_lai))
+    return {"delivered": [d.user_id for d in out]}
+
+
+@app.get("/api/thu-di")
+def thu_di(user: str = ""):
+    """Email tro ly da soan: gui that, chi luu file, hay loi. Chi quan tri xem."""
+    from .. import thu_dien_tu as td
+    _chan_neu_khong_phai_quan_tri(user)
+    return {"kenh": td.kenh(), "nguoi_nhan": td.nguoi_nhan_mac_dinh(), "thu": td.gan_day(50)}
+
+
+class QuetIn(BaseModel):
+    user: str = ""
+    chay_lai: bool = False
+
+
+@app.post("/api/quet-uc2")
+def quet_uc2_ngay(x: QuetIn):
+    """UC2 A2: chay mot vong quet sang cho company dang chon (de xuat huy lo het han, phuong an lo can date, brief, nhac, theo doi).
+    Giong lich chay nen moi sang. Xem skills/uc2_quet.py."""
+    from ..skills import uc2_quet
+    a = asst(x.user or None)
+    u = a.mem.user(x.user) if x.user else None
+    out = a._deliver(uc2_quet.quet(a, u, bat_buoc=x.chay_lai))
+    return {"delivered": [d.user_id for d in out]}
+
+
+@app.post("/api/demo/post-huy")
+def demo_post_huy(x: QuetIn):
+    """Chi mo phong: gia lap ke toan da post cac dong Item Journal huy, de xem vong A3 khep lai. Tren BC that thi post trong Item Journal."""
+    a = asst(x.user or None)
+    try:
+        da = a.gw.gia_lap_post_journal()
+    except NotImplementedError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    out = a.run_followups()
+    return {"da_post": da, "delivered": [d.user_id for d in out]}
+
+
+def _cac_lich() -> list[tuple[str, str, Any]]:
+    """(ten viec, gio HH:MM, ham(asst) -> list[Delivery]). Gio rong = tat viec do."""
+    from ..skills import nhac_post, uc2_quet
+    return [("nhac_post", (settings.nhac_post_gio or "").strip(), nhac_post.nhac),
+            ("quet_uc2", (settings.quet_uc2_gio or "").strip(), uc2_quet.quet)]
+
+
+def _chay_lich_nhac() -> None:
+    """Moi phut xem da toi gio cua tung viec nen chua (NHAC_POST_GIO, QUET_UC2_GIO); toi gio thi moi company chay mot lan trong ngay.
+    Ngay da chay ghi vao runs/lich-nhac.json theo khoa "<company>|<viec>" de khoi dong lai trong ngay khong chay lai."""
+    import json as _json
+    import time
+    from datetime import datetime
+
+    duong = Path(settings.log_dir) / "lich-nhac.json"
+    while True:
+        try:
+            bay_gio = datetime.now()
+            hom_nay = bay_gio.strftime("%Y-%m-%d")
+            for viec, gio, ham in _cac_lich():
+                if not gio or bay_gio.strftime("%H:%M") < gio:
+                    continue
+                da = _json.loads(duong.read_text(encoding="utf-8")) if duong.exists() else {}
+                for ten in cac_cong_ty():
+                    khoa = ten if viec == "nhac_post" else f"{ten}|{viec}"     # khoa cu cua nhac post giu nguyen
+                    if da.get(khoa) == hom_nay:
+                        continue
+                    a = _tro_ly_cua(ten)
+                    cong_ty_mod.hien_tai.set(ten)
+                    try:
+                        out = a._deliver(ham(a))
+                        log.info("Lich %s %s: %d tin", viec, ten, len(out))
+                    except Exception as exc:
+                        log.warning("Lich %s %s hong: %s", viec, ten, exc)
+                    da[khoa] = hom_nay
+                    duong.parent.mkdir(parents=True, exist_ok=True)
+                    duong.write_text(_json.dumps(da), encoding="utf-8")
+        except Exception as exc:                    # lich chay nen khong duoc lam chet may chu
+            log.warning("Lich chay nen hong: %s", exc)
+        time.sleep(60)
+
+
+@app.on_event("startup")
+def _bat_lich_nhac() -> None:
+    import sys
+    if "pytest" in sys.modules or not any(gio for _, gio, _ in _cac_lich()):
+        return
+    threading.Thread(target=_chay_lich_nhac, name="lich-chay-nen", daemon=True).start()
+
+
+@app.get("/api/cong-ty")
+def cong_ty_cua_nguoi(user: str = ""):
+    """Company dang chay, company nguoi nay duoc lam, va company dang chon. Nguoi chi co mot company thi
+    giao dien khong hien nut doi."""
+    from ..core import DEMO_USERS
+    co = cac_cong_ty()
+    u = next((x for x in DEMO_USERS if x["user_id"] == user), None)
+    duoc = cong_ty_mod.cua_vai(u, co)
+    return {"tat_ca": cong_ty_mod.mo_ta(co), "duoc": cong_ty_mod.mo_ta(duoc),
+            "dang_chon": cong_ty_dang_chon(user) if user else co[0]}
 
 
 class MessageIn(BaseModel):
@@ -153,17 +388,17 @@ def users():
 def goi_y_theo_vai(user: str):
     """Prompt mau cua nguoi dung theo vai tro (assistant/goi_y.py): the tren man hinh chao."""
     from assistant import goi_y
-    return goi_y.cho_nguoi_dung(asst().mem.user(user))
+    return goi_y.cho_nguoi_dung(asst(user).mem.user(user))
 
 
 @app.get("/api/inbox")
 def inbox(user: str, after: int = 0):
-    return asst().mem.inbox(user, after)
+    return asst(user).mem.inbox(user, after)
 
 
 @app.post("/api/message")
 def message(m: MessageIn):
-    out = asst().handle_message(m.user, m.text, reply_to=m.reply_to)
+    out = asst(m.user).handle_message(m.user, m.text, reply_to=m.reply_to)
     return {"delivered": [d.user_id for d in out]}
 
 
@@ -175,15 +410,16 @@ def action(a: ActionIn):
     ton, khong du quyen, thieu ly do) thi cai the phai song lai, neu khong nguoi duyet ngoi
     nhin nut mo ma khong sua duoc gi. Dung mot co chung cho moi ly do tu choi, thay vi doan
     theo cau tra loi."""
-    out = asst().handle_action(a.user, a.verb, a.ref, a.payload)
-    prop = asst().mem.proposal(a.ref)
+    tl = asst(a.user)
+    out = tl.handle_action(a.user, a.verb, a.ref, a.payload)
+    prop = tl.mem.proposal(a.ref)
     return {"delivered": [d.user_id for d in out],
             "con_mo": bool(prop and prop["status"] == "Proposed")}
 
 
 @app.post("/api/brief")
 def brief(m: MessageIn):
-    out = asst().morning_brief(m.user)
+    out = asst(m.user).morning_brief(m.user)
     return {"delivered": [d.user_id for d in out]}
 
 
@@ -229,7 +465,7 @@ def autonomy(a_in: AutonomyIn):
 @app.post("/api/self_review")
 def self_review(m: MessageIn):
     from ..skills import review
-    a = asst()
+    a = asst(m.user)
     out = review.run_self_review(a, a.mem.user(m.user))
     a._deliver(out)
     return {"delivered": len(out)}
@@ -254,6 +490,52 @@ def uc2_trace(line_id: str):
         return uc2.trace(asst(), line_id)
     except Exception as e:
         raise HTTPException(status_code=404, detail=str(e)) from e
+
+
+@app.get("/api/uc2/giai-thich")
+def uc2_giai_thich(line_id: str):
+    """S2: mot doan loi thuong ve lo, model viet tu dung con so cua trang Chi tiet lo; tat AI thi code ghep mau."""
+    from ..skills import uc2_tom_tat
+    try:
+        return uc2_tom_tat.giai_thich_lo(asst(), line_id)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e)) from e
+
+
+@app.get("/api/uc2/phuong-an")
+def uc2_phuong_an(line_id: str):
+    """D4: bang phuong an cho lo can date (code tinh) cong loi khuyen (model chon, hoac mau)."""
+    from ..skills import uc2_hanh_dong
+    try:
+        kq = uc2_hanh_dong.goi_y(asst(), line_id)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e)) from e
+    kq["phan_tich"] = {k: v for k, v in kq["phan_tich"].items() if not k.startswith("_")}
+    return kq
+
+
+@app.get("/api/uc2/bat-thuong")
+def uc2_bat_thuong(noi: str = ""):
+    """D3: tin hieu bat thuong 28 ngay (code quet) cong nhan xet (model xep thu tu)."""
+    from ..skills import uc2_bat_thuong as m
+    return m.goi_y(asst(), noi=noi)
+
+
+@app.get("/api/uc2/nguyen-nhan-huy")
+def uc2_nguyen_nhan_huy(item: str = "", noi: str = ""):
+    """D2: nguyen nhan goc hang huy 90 ngay theo mat hang x cua hang."""
+    from ..skills import uc2_nguyen_nhan as m
+    return m.goi_y(asst(), item, noi)
+
+
+@app.post("/api/bao-cao-huy")
+def bao_cao_huy(x: QuetIn):
+    """S3: soan va gui bao cao tuan hang huy (the + email)."""
+    from ..skills import uc2_bao_cao_huy as m
+    a = asst(x.user or None)
+    u = a.mem.user(x.user) if x.user else None
+    out = a._deliver(m.gui(a, u, bat_buoc=x.chay_lai))
+    return {"delivered": [d.user_id for d in out]}
 
 
 @app.get("/api/uc2/lo")
@@ -319,7 +601,7 @@ def uc2_readiness():
 @app.post("/api/kpi")
 def kpi(m: MessageIn):
     from ..skills import kpi as k
-    a = asst()
+    a = asst(m.user)
     a._deliver(k.run(a, a.mem.user(m.user)))
     return {"ok": True}
 
@@ -365,12 +647,12 @@ def set_mode(m: ModeIn):
     live = settings.bc_live if override is None else override
     truoc = state.get("bc_live_override")
     try:
-        state["asst"] = Assistant(_client(live), Memory(":memory:"))
+        _dung_lai_tro_ly(live)
         state["bc_live_override"] = override
         quen_dem()
     except Exception as exc:
         state["bc_live_override"] = truoc
-        state["asst"] = Assistant(_client(bc_is_live()), Memory(":memory:"))
+        _dung_lai_tro_ly(bc_is_live())
         st = bc_status()
         st["loi"] = f"Khong doi sang {want} duoc: {exc}"[:300]
         return st
@@ -462,15 +744,18 @@ def set_ai(x: AiIn):
             out["loi"] = ly_do
             return out
         try:
-            a.set_ai(True)
+            for t in _moi_tro_ly():
+                t.set_ai(True)
             caidat.ghi({"ai_bat": True})
         except BaseException as exc:
-            a.set_ai(False)
+            for t in _moi_tro_ly():
+                t.set_ai(False)
             out = _thong_tin_ai()
             out["loi"] = str(exc)[:300]
             return out
     else:
-        a.set_ai(False)
+        for t in _moi_tro_ly():
+            t.set_ai(False)
         caidat.ghi({"ai_bat": False})
     return _thong_tin_ai()
 
@@ -498,6 +783,8 @@ def set_tran(t: TranIn):
         luu[khoa] = float(gt)
     if luu:
         caidat.ghi(luu)          # phai nho qua lan khoi dong lai, neu khong dat cung bang khong
+        for tl in _moi_tro_ly():
+            caidat.ap_vao(tl.budget, tl.policy)
     b._warned = b._warned_total = False
     return usage(t.user)
 
@@ -576,7 +863,8 @@ def set_policy(x: PolicyIn):
         moi["cau_mau"] = {x.cau_mau_key: (x.cau_mau_text or "")}
     if moi:
         caidat.ghi(moi)
-        caidat.ap_vao(a.budget, a.policy)     # ap ngay, khong doi khoi dong lai
+        for t in _moi_tro_ly():              # ap ngay cho moi company, khong doi khoi dong lai
+            caidat.ap_vao(t.budget, t.policy)
     return get_policy(x.user)
 
 
@@ -591,7 +879,7 @@ def lam_moi():
 # ---------------------------------------------------------------- doan chat
 @app.get("/api/doan-chat")
 def cac_doan(user: str):
-    return asst().mem.cac_doan(user)
+    return asst(user).mem.cac_doan(user)
 
 
 class DoanIn(BaseModel):
@@ -604,7 +892,7 @@ def doi_doan(x: DoanIn):
     """Mo doan chat khac, hoac bat dau mot doan moi.
 
     Tin cu khong mat: chung van nam trong bang `messages`, chi la hop thu loc theo doan dang mo."""
-    m = asst().mem
+    m = asst(x.user).mem
     if not m.user(x.user):
         raise HTTPException(status_code=404, detail="Khong nhan ra nguoi dung")
     if x.conv_id:
@@ -631,7 +919,8 @@ async def mcp_post(request: Request):
         return JSONResponse(status_code=400, content={"jsonrpc": "2.0", "id": None,
                                                       "error": {"code": -32700, "message": "Không đọc được JSON."}})
     tin = than if isinstance(than, list) else [than]
-    ra = [r for r in (ms.xu_ly(asst(), nguoi, t) for t in tin if isinstance(t, dict)) if r is not None]
+    tl = asst(nguoi)
+    ra = [r for r in (ms.xu_ly(tl, nguoi, t) for t in tin if isinstance(t, dict)) if r is not None]
     if not ra:
         return Response(status_code=202)
     headers = {}
@@ -712,7 +1001,7 @@ def kich_ban_bat(x: BatKichBanIn):
 
 @app.post("/api/reset")
 def reset():
-    state["asst"] = Assistant(_client(bc_is_live()), Memory(":memory:"))
+    _dung_lai_tro_ly(bc_is_live(), xoa_bo_nho=True)
     quen_dem()
     return {"ok": True}
 

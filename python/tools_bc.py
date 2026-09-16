@@ -1,17 +1,21 @@
 """Tro giup quan tri BC qua S2S cho phien lam viec: doc API, publish extension, goi action.
 
-Khong in token hay secret. Chay: python tools_bc.py <lenh> ...
+Khong in token hay secret. Chay: python tools_bc.py [--company NWV-DAKAO] <lenh> ...
   get <duong dan tuong doi sau /v2.0/<tenant>/<env>/>
   companies
   extensions
   upload <duong dan .app>
   deploy-status
+  ws <Ham> '<json>' [service]
+Khong co --company thi dung BC_COMPANY_NAME trong .env. App cai theo environment, nen upload o company nao cung duoc;
+web service va du lieu thi theo company.
 """
 from __future__ import annotations
 
 import json
 import sys
 import time
+from dataclasses import replace
 
 import requests
 
@@ -19,6 +23,10 @@ from bc_agent.auth import TokenProvider
 from bc_agent.config import Settings
 
 S = Settings()
+if "--company" in sys.argv:
+    _i = sys.argv.index("--company")
+    S = replace(S, bc_company_name=sys.argv[_i + 1], bc_company_id="")
+    del sys.argv[_i:_i + 2]
 TP = TokenProvider(S)
 BASE = f"https://api.businesscentral.dynamics.com/v2.0/{S.bc_tenant_id}/{S.bc_environment}"
 
@@ -75,7 +83,8 @@ def main(argv):
                       e["versionRevision"], "installed" if e["isInstalled"] else "-", e["publishedAs"], e["packageId"])
     elif cmd == "ws":
         # ws <Ham> '<json tham so>'  goi NWVReplenService
-        print(json.dumps(ws(argv[1], json.loads(argv[2]) if len(argv) > 2 else {}), ensure_ascii=False, indent=1)[:30000])
+        print(json.dumps(ws(argv[1], json.loads(argv[2]) if len(argv) > 2 else {},
+                            *(argv[3:4] or [])), ensure_ascii=False, indent=1)[:30000])
     elif cmd == "deploy-status":
         cid = company_id()
         show(req("GET", f"api/microsoft/automation/v2.0/companies({cid})/extensionDeploymentStatus"))

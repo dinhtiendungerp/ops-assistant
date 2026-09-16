@@ -39,6 +39,7 @@ codeunit 70120 "NWV Forecast Accuracy Calc"
         TrainLookbackDays: Integer;
         HWLookbackDays: Integer;
         EntriesWritten: Integer;
+        LocationRole: Codeunit "NWV Location Role";
 
     procedure CalculateAll()
     var
@@ -57,7 +58,7 @@ codeunit 70120 "NWV Forecast Accuracy Calc"
         HoldoutFrom := AsOf - Setup.EffHoldoutDays() + 1;
         RunAt := CurrentDateTime();
         // Cua so profile giu nhu cu (ky hoc 84 ngay + ky kiem tra) de tap cap duoc do khong doi; ILE doc het vao bo dem.
-        DemandCalc.Build(AsOf, Setup.EffHoldoutDays() + TrainLookbackDays, Setup."Central Warehouse Code");
+        DemandCalc.Build(AsOf, Setup.EffHoldoutDays() + TrainLookbackDays);
         DemandCalc.CopyProfiles(Profiles);
         LoadExceptionDays(AsOf - HWLookbackDays - Setup.EffHoldoutDays(), AsOf);
 
@@ -66,9 +67,10 @@ codeunit 70120 "NWV Forecast Accuracy Calc"
         Profiles.Reset();
         if Profiles.FindSet() then
             repeat
-                // Chi do nhu cau ban tai diem ban. Kho trung tam xuat hang theo lich chuyen nen luong xuat tung ngay giat cuc,
-                // WAPE ngay tren 100% khong noi gi ve du bao. Do lan dau tren BC 14/09/2026: cua hang 32-48%, W0003 93-129%.
-                if Profiles."Has Sale" and (Profiles."Location Code" <> Setup."Central Warehouse Code") then
+                // Chi do nhu cau ban tai cua hang (LSC Store, LSC Store Location). Kho xuat hang theo lich chuyen nen luong xuat
+                // tung ngay giat cuc, WAPE ngay tren 100% khong noi gi ve du bao. Do lan dau tren BC 14/09/2026: cua hang 32-48%,
+                // W0003 93-129%.
+                if Profiles."Has Sale" and LocationRole.IsStore(Profiles."Location Code") then
                     CalculatePair(Profiles, AsOf, HoldoutFrom, RunAt);
             until Profiles.Next() = 0;
 

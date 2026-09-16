@@ -82,6 +82,7 @@ codeunit 70253 "NWV Demo LS Replen. Setup"
         WhseCover: Decimal;
         SalesProfile: Code[10];
         CalcType: Enum "LSC Replen. Calculation Type";
+        Delivery: Enum "LSC Purch. Order Delivery";
         ReorderPoint: Decimal;
         MaxInventory: Decimal;
         Changed: Boolean;
@@ -162,10 +163,46 @@ codeunit 70253 "NWV Demo LS Replen. Setup"
                 Item.Validate("Sales Unit of Measure", Item."Base Unit of Measure");
                 Changed := true;
             end;
+            // Dakao (15/09/2026): hang mua thang tu vendor MAROU, giao toi tung cua hang. Vendor No. tren Item la uu tien
+            // cuoi cua FindReplenVendor (Replen. Item Store Rec, SKU, roi Item), demo khong co hai cai truoc.
+            if ItemObj.Get('vendor', Value) then
+                if Item."Vendor No." <> CopyStr(Value.AsValue().AsCode(), 1, 20) then begin
+                    AddLog('Item', Item."No.", 'Vendor No.', Item."Vendor No.", Value.AsValue().AsCode());
+                    Item.Validate("Vendor No.", CopyStr(Value.AsValue().AsCode(), 1, 20));
+                    Changed := true;
+                end;
+            // Journal "Purchase Orders for Receiving Locations" chi xet mat hang co Purch. Order Delivery = To Store; mac dinh
+            // Cronus la To Warehouse nen log ghi "NOT processed". Doc trong Calc. Log cua LS ngay 15/09/2026.
+            if ItemObj.Get('purchOrderDelivery', Value) then begin
+                if Value.AsValue().AsText() = 'To Store' then
+                    Delivery := Delivery::"To Store"
+                else
+                    Delivery := Delivery::"To Warehouse";
+                if Item."LSC Purch. Order Delivery" <> Delivery then begin
+                    AddLog('Item', Item."No.", 'LSC Purch. Order Delivery', Format(Item."LSC Purch. Order Delivery"), Format(Delivery));
+                    Item.Validate("LSC Purch. Order Delivery", Delivery);
+                    Changed := true;
+                end;
+            end;
             if Changed then
                 Item.Modify(true);
 
-            EnsureFromWarehouse(Item."No.", Warehouse);
+            if ItemObj.Get('fromWarehouse', Value) and not Value.AsValue().AsBoolean() then
+                RemoveFromWarehouse(Item."No.")
+            else
+                EnsureFromWarehouse(Item."No.", Warehouse);
+        end;
+    end;
+
+    /// Khong co quy tac Replen. From Warehouse thi LS roi ve Default Central Warehouse cua Replen. Setup; voi Dakao
+    /// (giao thang) cai do khong dung nua nhung van phai co de LS tinh Replen. Item Quantity. Giu Default, bo quy tac rieng.
+    local procedure RemoveFromWarehouse(ItemNo: Code[20])
+    var
+        FromWarehouse: Record "LSC Replen. From Warehouse";
+    begin
+        if FromWarehouse.Get('', '', '', ItemNo, '') then begin
+            AddLog('Replen. From Warehouse', ItemNo, 'Warehouse Location Code', FromWarehouse."Warehouse Location Code", '(xoa)');
+            FromWarehouse.Delete(true);
         end;
     end;
 
@@ -267,7 +304,11 @@ codeunit 70253 "NWV Demo LS Replen. Setup"
                 ReplenTemplate.Validate("Replenishment Type", "LSC Replenishment Type"::Transfer)
             else begin
                 ReplenTemplate.Validate("Replenishment Type", "LSC Replenishment Type"::Purchase);
-                ReplenTemplate.Validate("Purchase Order Type", "LSC Rpln. Tmpl. Pur. Ord. Type"::"One Purchase Order per Vendor");
+                // "Receiving Locations": moi cua hang mot don mua tu vendor, khong qua kho (Dakao). Mac dinh: mot don mot vendor ve kho.
+                if RowObj.Get('purchaseOrderType', Value) and (Value.AsValue().AsText() = 'Receiving Locations') then
+                    ReplenTemplate.Validate("Purchase Order Type", "LSC Rpln. Tmpl. Pur. Ord. Type"::"Purchase Orders for Receiving Locations")
+                else
+                    ReplenTemplate.Validate("Purchase Order Type", "LSC Rpln. Tmpl. Pur. Ord. Type"::"One Purchase Order per Vendor");
             end;
             RowObj.Get('description', Value);
             ReplenTemplate.Description := CopyStr(Value.AsValue().AsText(), 1, MaxStrLen(ReplenTemplate.Description));
@@ -618,6 +659,8 @@ codeunit 70254 "NWV Demo LS Replen. Install"
             TenantWebService."Object Type"::Codeunit, Codeunit::"NWV Demo Repost", 'NWVDemoRepost', true);
         WebServiceManagement.CreateTenantWebService(
             TenantWebService."Object Type"::Codeunit, Codeunit::"NWV Demo Supplier Data", 'NWVDemoSupplier', true);
+        WebServiceManagement.CreateTenantWebService(
+            TenantWebService."Object Type"::Codeunit, Codeunit::"NWV Demo Intercompany", 'NWVDemoIntercompany', true);
     end;
 }
 

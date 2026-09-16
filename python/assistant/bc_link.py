@@ -14,6 +14,7 @@ from bc_agent.config import Settings
 # Page ID dung trong the. Base App doc tu source 28.4, LS doc tu source LS Central 28.0.10.3586, NWV la app cua ta.
 PAGE = {
     "item_ledger_entries": 38,
+    "item_journal": 40,                  # Item Journal, loc theo Journal Batch Name (dong huy nhap do duyet de xuat Write-off)
     "purchase_order": 50,
     "purchase_lines": 518,
     "lot_info_list": 6508,
@@ -38,8 +39,12 @@ def link(page: str | int, filters: dict[str, str] | None = None, settings: Setti
     if not (s.bc_tenant_id and s.bc_environment):
         return ""
     page_id = PAGE.get(page, page) if isinstance(page, str) else page
+    # Company cua request dang xu ly (tang web dat), khong co thi theo .env. Thieu cho nay thi nguoi o Dakao bam
+    # link lai mo sang company khac.
+    from .cong_ty import hien_tai
+    cong_ty = (hien_tai.get() if settings is None else "") or s.bc_company_name or ""
     url = (f"https://businesscentral.dynamics.com/{s.bc_tenant_id}/{quote(s.bc_environment)}/"
-           f"?company={quote(s.bc_company_name or '')}&page={page_id}")
+           f"?company={quote(cong_ty)}&page={page_id}")
     parts = [f"'{k}' IS '{v}'" for k, v in (filters or {}).items() if v not in (None, "")]
     if parts:
         url += "&filter=" + quote(" AND ".join(parts), safe="'")

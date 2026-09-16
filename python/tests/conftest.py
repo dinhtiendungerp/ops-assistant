@@ -11,6 +11,7 @@ import pytest
 from assistant import budget as budget_mod
 from assistant import caidat as caidat_mod
 from assistant import kich_ban as kich_ban_mod
+from assistant import thu_dien_tu as thu_mod
 
 
 @pytest.fixture(autouse=True)
@@ -20,4 +21,9 @@ def _tach_khoi_file_that(tmp_path, monkeypatch):
     # Kich ban da duyet cung song qua lan khoi dong lai; test ghi vao file that thi mot kich ban
     # gia co the tra loi thay model tren man hinh demo.
     monkeypatch.setattr(kich_ban_mod, "DUONG", tmp_path / "kich-ban.sqlite")
+    # Email: test khong bao gio gui ra ngoai, ke ca khi .env da cau hinh Microsoft Graph hoac SMTP.
+    monkeypatch.setattr(thu_mod, "DUONG", tmp_path / "thu-di.sqlite")
+    monkeypatch.setattr(thu_mod, "THU_MUC_EML", tmp_path / "thu-di")
+    monkeypatch.setattr(thu_mod, "kenh", lambda s=None: "file")
+    monkeypatch.setattr(thu_mod, "nguoi_nhan_mac_dinh", lambda s=None: ["nguoi-post@example.com"])
     yield

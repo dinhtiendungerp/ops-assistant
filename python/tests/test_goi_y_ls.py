@@ -54,6 +54,25 @@ class LSClient:
     def query(self, entity_set, conds=None, orderby=None, top=None, select=None):
         return apply_in_python([dict(r) for r in self.DATA.get(entity_set, [])], conds or [], orderby, top)
 
+    def create(self, entity_set, body):
+        # Brief dieu phoi ghi de xuat; test chi can nhan ve mot ban ghi co id
+        import uuid
+        rec = dict(body, id=str(uuid.uuid4()), status="Proposed", proposalId=str(uuid.uuid4()))
+        self.DATA.setdefault(entity_set, []).append(rec)
+        return rec
+
+    def get(self, entity_set, record_id):
+        return next(r for r in self.DATA[entity_set] if r["id"] == record_id)
+
+    def bound_action(self, entity_set, record_id, action, body=None):
+        # Gia lap codeunit NWV Agent Proposal Mgt.: duyet de xuat Purchase thi tao Purchase Order Open
+        r = self.get(entity_set, record_id)
+        if action == "approve":
+            loai = "Purchase Order" if r["actionType"] == "Purchase" else "Transfer Order"
+            r.update(status="Executed", resultDocumentType=loai, resultDocumentNo=f"HO{len(self.DATA[entity_set]):06d}")
+        else:
+            r.update(status="Rejected")
+
 
 def gw() -> BCGateway:
     return BCGateway(LSClient())
@@ -107,6 +126,40 @@ def test_mock_khong_bia_giai_thich():
     a = Assistant(MockBCClient())
     out = a.handle_message("hung.dieuphoi", "vì sao LS đề xuất Choco nuts cho Cửa hàng Quận 1")
     assert "chỉ có khi nối Business Central" in out[0].text
+
+
+def test_dong_mua_thang_tu_vendor_dakao():
+    """Dakao 15/09/2026: journal MAROU-PO kieu Receiving Locations, moi cua hang mot don mua tu MAROU. Dong mua ve kho
+    (locationCode = kho tong) khong phai de xuat cho cua hang nen bo."""
+    them = [dict(LSClient.DATA["replenJournalDetails"][0], id="p1", replenishmentTemplateCode="MAROU-PO", locationCode="S0005",
+                 replenishmentLocationCode="", vendorNo="MAROU", systemSuggestedQuantity=20, quantity=20, effectiveInventory=3,
+                 warehouseEffectiveInventory=0),
+            dict(LSClient.DATA["replenJournalDetails"][0], id="p2", replenishmentTemplateCode="MAROU-PO", locationCode="W0003",
+                 replenishmentLocationCode="", vendorNo="44020", systemSuggestedQuantity=300, quantity=300)]
+    LSClient.DATA["replenJournalDetails"] += them
+    try:
+        rows = gw().goi_y_ls()
+        assert not [r for r in rows if r["storeLocationCode"] == "W0003"]
+        r = next(x for x in rows if x["storeLocationCode"] == "S0005")
+        assert r["replenType"] == "Purchase" and r["sourceLocationCode"] == "MAROU" and r["suggestedQty"] == 20
+        assert r["warehouseQtyAvailable"] == 20 and "đề xuất mua 20 từ MAROU" in r["reason"]
+        # Brief dieu phoi: dong mua thanh de xuat loai Purchase (khong phai Transfer), the co nut Duyet dat mua
+        from assistant.core import Assistant
+        a = Assistant(LSClient())
+        out = replenishment.brief_for_dispatcher(a, a.mem.user("hung.dieuphoi"))
+        assert "1 đề xuất đặt mua" in out[0].text
+        the = next(d for d in out if d.card and d.card.title == "Đề xuất đặt mua")
+        assert ("Mua từ", "MAROU") in the.card.facts and the.card.actions[0].label == "Duyệt đặt mua"
+        p = next(p for p in a.mem.proposals() if p.get("to_loc") == "S0005")
+        assert p["action_type"] == "Purchase" and p["vendor_no"] == "MAROU" and p["quantity"] == 20
+        assert a.policy.decide(p).rule_code == "P-11"
+        # Duyet: mock BC tra Purchase Order, khong bao kho ship
+        ra = replenishment.on_approve(a, a.mem.user("hung.dieuphoi"), p, {})
+        assert "Purchase Order HO" in ra[0].text and "từ MAROU" in ra[0].text
+        assert not any("Cần ship" in (d.card.title if d.card else "") for d in ra)
+    finally:
+        for d in them:
+            LSClient.DATA["replenJournalDetails"].remove(d)
 
 
 def test_so_chuyen_la_quantity_cuoi_cua_ls_khong_phai_muc_toi_da():

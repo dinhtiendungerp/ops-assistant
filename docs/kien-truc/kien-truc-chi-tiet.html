@@ -13,6 +13,8 @@
   .users>.lbl{color:#6b5d52}
   .asst{background:#fbeeee;border:2px solid #b44a4a}
   .asst>.lbl{color:#8b1e1e}
+  .ai{background:#fff7e6;border:2px solid #c9902a}
+  .ai>.lbl{color:#8a5a0e}
   .bc{background:#ecf2f8;border:2px solid #3d6b99}
   .bc>.lbl{color:#23507d}
   .ext{background:#f1edf8;border:2px solid #6f58a8}
@@ -23,12 +25,15 @@
   .box h3{font-size:15.5px;margin-bottom:5px;color:#241b16}
   .box .tag{display:inline-block;font-size:11px;font-weight:700;border-radius:5px;padding:1px 6px;margin-right:5px;vertical-align:1px;color:#fff}
   .t1{background:#3d7a4a}.t2{background:#b0501c}.t3{background:#6f58a8}.t5{background:#1f6f9a}.t7{background:#8a6d1b}.t10{background:#8b1e1e}
+  .g1{background:#c9902a}.g2{background:#a4552a}.g3{background:#2f6b8a}.g4{background:#4c8a52}
   .box ul{list-style:none;font-size:13px;line-height:1.42;color:#3f352e}
   .box li{padding-left:11px;position:relative}
   .box li:before{content:"";position:absolute;left:0;top:8px;width:4px;height:4px;border-radius:50%;background:#a08b7a}
   .col{display:flex;flex-direction:column;gap:10px;flex:1;min-width:0}
   .colh{font-size:12px;font-weight:700;color:#8b1e1e;text-transform:uppercase;letter-spacing:.06em}
   .bc .colh{color:#23507d}
+  .ai .colh{color:#8a5a0e}
+  .colh .tag{color:#fff;font-size:12px;padding:2px 9px}
   .flow{display:flex;justify-content:center;gap:60px;margin:9px 0;font-size:13.5px;color:#3f352e}
   .flow span{display:flex;align-items:center;gap:8px;background:#fff;border:1px dashed #9c8b7d;border-radius:20px;padding:5px 14px}
   .flow b{color:#8b1e1e;font-size:17px;line-height:1}
@@ -45,70 +50,67 @@
   .rules div{flex:1;background:#fff;border-left:5px solid #8b1e1e;border-radius:8px;padding:10px 14px;font-size:13.5px;line-height:1.45}
   .rules b{display:block;font-size:14.5px;margin-bottom:2px}
   .legend{display:flex;gap:16px;font-size:12.5px;color:#6b5d52;margin-top:12px;align-items:center}
+  .kiem{background:#fff;border:1.5px dashed #c9902a;border-radius:10px;padding:9px 12px;font-size:13px;line-height:1.45;color:#3f352e}
+  .kiem b{color:#8a5a0e}
 </style></head><body>
 
 <h1>Marou Ops Assistant · kiến trúc hệ thống POC</h1>
-<div class="sub">Trạng thái ngày 14/09/2026 trên Business Central NWV01, company NWV (LS Central 28.0). App <b>NWV Marou Agent 1.5.1.0</b>, <b>NWV Marou Demo Setup 1.5.0.0</b> (chỉ dùng trên sandbox). Đọc từ trên xuống: người dùng, trợ lý NaviWorld, rồi ba lớp nằm trong Business Central.</div>
+<div class="sub">Trạng thái ngày 16/09/2026 trên Business Central NWV01 (LS Central 28.0), hai company <b>NWV-MAROU</b> (sản xuất, có lô) và <b>NWV-DAKAO</b> (bán lẻ, mua thẳng từ Marou). App <b>NWV Marou Agent 1.6.1.0</b>, <b>NWV Marou Demo Setup 1.6.2.0</b> (chỉ dùng trên sandbox). Đọc từ trên xuống: người dùng, trợ lý NaviWorld với bốn nhóm năng lực AI, rồi ba lớp nằm trong Business Central.</div>
 
 <!-- NGUOI DUNG -->
 <div class="band users">
-  <div class="lbl">Người dùng và kênh vào<small>mỗi vai chỉ thấy dữ liệu và việc của mình</small></div>
+  <div class="lbl">Người dùng và kênh<small>mỗi vai chỉ thấy dữ liệu và việc của mình; mỗi company một trợ lý riêng</small></div>
   <div class="row">
     <div class="box" style="flex:1.35"><h3>Web console của trợ lý (localhost:8188)</h3><ul>
-      <li>9 vai demo: quản lý 5 cửa hàng, điều phối kho, kho trung tâm, Supply Chain, Retail Ops; thêm vai quản trị</li>
-      <li>Trò chuyện, thẻ đề xuất có nút Duyệt / Từ chối, brief buổi sáng, cột phải theo dõi đề xuất và Transfer Order</li>
-      <li>Tab dashboard: Sức khỏe tồn kho (UC2), Dự báo (UC1), Nhà cung cấp (UC3); quản trị: Nhật ký agent, Cài đặt AI</li></ul></div>
-    <div class="box" style="flex:1"><h3>Business Central web client</h3><ul>
-      <li>Người duyệt mở NWV Agent Proposals, Transfer Order, Replenishment Journal của LS</li>
-      <li>Mỗi thẻ trong trợ lý có link mở thẳng đúng page, đúng bộ lọc (vd Item Ledger Entries lọc theo lô)</li>
-      <li>NWV Agent Setup: Marou tự sửa ngưỡng, bấm Run thủ công hoặc để Job Queue chạy</li></ul></div>
-    <div class="box" style="flex:.9"><h3>Agent bên ngoài qua MCP</h3><ul>
-      <li>POST /mcp, JSON-RPC, 16 tool: 15 tool đọc và create_proposal</li>
-      <li>Dùng chung policy và luồng duyệt với chat</li>
-      <li>Chưa nối thử client thật (Foundry, Copilot Studio cần địa chỉ công khai)</li></ul></div>
+      <li>9 vai demo: quản lý 5 cửa hàng, điều phối kho, kho trung tâm, Supply Chain, Retail Ops; thêm vai quản trị. Cửa hàng và Retail Ops ở Dakao, kho ở Marou, Supply Chain và điều phối ở cả hai</li>
+      <li>Trò chuyện, thẻ có nút Duyệt / Từ chối / Phương án, brief buổi sáng do AI viết, cột phải theo dõi đề xuất và chứng từ</li>
+      <li>Tab dashboard: Sức khỏe tồn kho (UC2, trang Chi tiết lô có lời giải thích và phương án), Dự báo (UC1), Nhà cung cấp (UC3); quản trị: Nhật ký agent, Cài đặt AI</li></ul></div>
+    <div class="box" style="flex:1"><h3>Email và lịch chạy nền</h3><ul>
+      <li>SMTP: nhắc post nhận hàng, biên bản hủy, brief sáng, báo cáo tuần hàng hủy; mọi thư ghi sổ thu-di.sqlite</li>
+      <li>07:30 quét sáng UC2 (A2), 08:00 nhắc post PO; mỗi company một lần một ngày</li>
+      <li>Teams chưa nối; kênh là chat web và email</li></ul></div>
+    <div class="box" style="flex:.95"><h3>Business Central web client</h3><ul>
+      <li>Người duyệt mở NWV Agent Proposals, Transfer Order, Purchase Order, Item Journal batch AGENT</li>
+      <li>Mỗi thẻ có link mở thẳng đúng page, đúng company, đúng bộ lọc</li>
+      <li>NWV Agent Setup: ngưỡng tầng, batch hủy, bấm Run hoặc để Job Queue</li></ul></div>
+    <div class="box" style="flex:.8"><h3>Agent ngoài qua MCP</h3><ul>
+      <li>POST /mcp, JSON-RPC, 16 tool đọc và create_proposal</li>
+      <li>Chung policy và luồng duyệt với chat</li></ul></div>
   </div>
 </div>
 
-<div class="flow"><span><b>▼▲</b> REST /api/* · vòng poll 2 giây</span><span><b>▼▲</b> MCP Streamable HTTP · khóa theo người dùng</span><span><b>▲</b> link mở page BC từ thẻ</span></div>
+<div class="flow"><span><b>▼▲</b> REST /api/* · header X-Cong-Ty chọn company</span><span><b>▼▲</b> MCP Streamable HTTP</span><span><b>▲</b> email SMTP · link mở page BC</span></div>
 
 <!-- TRO LY + AZURE -->
 <div class="row" style="align-items:stretch">
 <div class="band asst" style="flex:1">
-  <div class="lbl">Trợ lý NaviWorld (cửa C) · Python FastAPI, NaviWorld host<small>đọc số đã tính, soạn đề xuất, không tự tính lại và không tạo chứng từ</small></div>
+  <div class="lbl">Trợ lý NaviWorld (cửa C) · Python FastAPI, NaviWorld host<small>đọc số đã tính, soạn đề xuất và lời giải thích; không tự tính lại, không post chứng từ</small></div>
   <div class="row">
-    <div class="col" style="flex:1.05">
+    <div class="col" style="flex:1">
       <div class="colh">1. Hiểu câu hỏi</div>
-      <div class="box">
-        <div class="step"><i>1</i><div><h3>Rule NLU</h3><ul><li>17 intent, nhận mã hàng, mã và tên cửa hàng, số lô</li><li class="zero">0 token</li></ul></div></div>
-      </div>
-      <div class="box">
-        <div class="step"><i>2</i><div><h3>Kịch bản đã duyệt</h3><ul><li>Câu hỏi quản trị đã duyệt, điền lại số trên dữ liệu mới</li><li class="zero">0 token</li></ul></div></div>
-      </div>
-      <div class="box">
-        <div class="step"><i>3</i><div><h3>Phân loại bằng model</h3><ul><li>Chỉ khi rule không chắc việc hoặc mặt hàng</li><li class="cost">vài trăm token</li></ul></div></div>
-      </div>
-      <div class="box">
-        <div class="step"><i>4</i><div><h3>Planner (câu mở)</h3><ul><li>Model tự chọn tool đọc, trả lời; code kiểm số theo đúng địa điểm</li><li class="cost">6 đến 14 nghìn token</li></ul></div></div>
-      </div>
+      <div class="box"><div class="step"><i>1</i><div><h3>Rule NLU</h3><ul><li>20 intent, nhận mã hàng, mã và tên cửa hàng, số lô</li><li class="zero">0 token</li></ul></div></div></div>
+      <div class="box"><div class="step"><i>2</i><div><h3>Kịch bản đã duyệt</h3><ul><li>Câu quản trị đã duyệt, điền lại số trên dữ liệu mới</li><li class="zero">0 token</li></ul></div></div></div>
+      <div class="box"><div class="step"><i>3</i><div><h3>Phân loại bằng model</h3><ul><li>Chỉ khi rule không chắc việc hoặc mặt hàng</li><li class="cost">vài trăm token</li></ul></div></div></div>
+      <div class="box"><div class="step"><i>4</i><div><h3>Planner (câu mở, D1)</h3><ul><li>Model tự chọn tool đọc; code kiểm số theo đúng địa điểm</li><li class="cost">6 đến 14 nghìn token</li></ul></div></div></div>
     </div>
-    <div class="col" style="flex:1.55">
-      <div class="colh">2. Skill theo use case (không gọi model)</div>
+    <div class="col" style="flex:1.5">
+      <div class="colh">2. Skill theo use case (rule, không gọi model)</div>
       <div class="box"><h3><span class="tag t1">UC1</span>du_bao</h3><ul><li>WAPE, bias; Holt-Winters và dự báo 28 ngày tới; biểu đồ theo ngày, tô ngày sự kiện</li></ul></div>
-      <div class="box"><h3><span class="tag t2">UC2</span>inventory_health · truy_xuat</h3><ul><li>Tầng tồn, lô hết hạn và cận hạn, đề xuất hủy có số lô</li><li>Hành trình lô: nhập, nhận, bán, còn ở đâu, thu hồi lấy lại ở đâu</li></ul></div>
-      <div class="box"><h3><span class="tag t3">UC3</span>nha_cung_cap · po_qua_han</h3><ul><li>Scorecard, đơn quá hạn; hỏi người nhận hàng tại địa điểm</li></ul></div>
-      <div class="box"><h3><span class="tag t5">UC5</span>replenishment · ls_giai_thich</h3><ul><li>Báo sắp hết, đề xuất chuyển theo số của LS</li><li>Giải thích vì sao LS ra số đó: đọc nhật ký tính, knowledge 194 mẫu câu log LS, nhận dạng 100% trên BC</li></ul></div>
-      <div class="box"><h3><span class="tag t7">UC7</span>discount · <span class="tag t10">UC10</span>brief · tracking · investigate</h3><ul><li>Giải trình chiết khấu (mô phỏng); khuyen_mai: CTKM đang chạy, sắp tới, cửa hàng LS chưa cộng nhu cầu</li><li>Brief theo vai, prompt mẫu theo vai trên màn hình chào, việc của tôi đến đâu, bậc thang chẩn đoán hết hàng lặp lại</li></ul></div>
+      <div class="box"><h3><span class="tag t2">UC2</span>inventory_health · truy_xuat</h3><ul><li>Tầng tồn, lô hết hạn và cận hạn, đề xuất theo lô; hành trình lô và điểm thu hồi</li></ul></div>
+      <div class="box"><h3><span class="tag t3">UC3</span>nha_cung_cap · po_qua_han · nhac_post</h3><ul><li>Scorecard, đơn quá hạn; hỏi người nhận hàng, nhắc bộ phận post qua chat và email đến khi BC có phiếu nhận</li></ul></div>
+      <div class="box"><h3><span class="tag t5">UC5</span>replenishment · ls_giai_thich</h3><ul><li>Đề xuất chuyển (Marou) hoặc đặt mua thẳng từ Marou (Dakao) theo số của LS; giải thích nhật ký tính LS, 194 mẫu câu, nhận dạng 100%</li></ul></div>
+      <div class="box"><h3><span class="tag t7">UC7</span>discount · khuyen_mai · <span class="tag t10">UC10</span>brief · tracking</h3><ul><li>Giải trình chiết khấu; CTKM đang chạy, sắp tới, cửa hàng chưa cộng nhu cầu; việc của tôi đến đâu; bậc thang chẩn đoán</li></ul></div>
     </div>
-    <div class="col" style="flex:1.1">
+    <div class="col" style="flex:1.05">
       <div class="colh">3. Kiểm soát</div>
-      <div class="box"><h3>Policy engine</h3><ul><li>Mỗi loại đề xuất: tự làm / đưa người duyệt / không bao giờ làm, kèm trần giá trị</li><li>Shadow mode, trần số việc tự làm mỗi ngày</li></ul></div>
-      <div class="box"><h3>Chặn ở lớp tool</h3><ul><li>Số lượng không vượt tồn kho nguồn</li><li>Chống trùng theo Reference Key đang còn trong BC</li></ul></div>
-      <div class="box"><h3>Ngân sách AI</h3><ul><li>Trần 2 USD mỗi ngày, 10 USD cộng dồn; vượt thì tự về rule</li><li>Công tắc bật tắt AI trên trang Cài đặt AI</li></ul></div>
+      <div class="box"><h3>Policy engine</h3><ul><li>Mỗi loại đề xuất: tự làm / đưa người duyệt / không bao giờ làm, kèm trần giá trị (P-01 đến P-11)</li><li>Shadow mode, trần số việc tự làm mỗi ngày</li></ul></div>
+      <div class="box"><h3>Chặn ở lớp tool</h3><ul><li>Số lượng không vượt tồn nguồn; chống trùng theo Reference Key còn trong BC</li><li>Đề xuất từng phần có khóa riêng (chuyển, giảm giá, hủy)</li></ul></div>
+      <div class="box"><h3>Ngân sách AI</h3><ul><li>Trần 2 USD mỗi ngày, 10 USD cộng dồn; vượt thì tự về mẫu</li><li>Công tắc bật tắt, chi phí theo từng việc trên trang Cài đặt AI</li></ul></div>
     </div>
     <div class="col" style="flex:1.05">
       <div class="colh">4. Lưu vết và kết nối</div>
-      <div class="box"><h3>Bộ nhớ và nhật ký</h3><ul><li>Tin nhắn, đoạn chat, câu hỏi đang chờ</li><li>chi-phi.sqlite: token thật từng lượt</li><li>kich-ban.sqlite: câu hỏi, chuỗi tool, đánh giá</li><li>Nhật ký agent: ai đề xuất, policy nào, ai duyệt</li></ul></div>
-      <div class="box"><h3>BCGateway</h3><ul><li>S2S OAuth 2.0 bằng Entra app</li><li>Cache theo bảng: 60 giây, ILE 15 phút</li><li>Tạo link mở page BC (bc_link)</li></ul></div>
+      <div class="box"><h3>Bộ nhớ trên đĩa, theo company</h3><ul><li>bo-nho-*.sqlite: tin nhắn, đề xuất, việc theo dõi, lý do từ chối, đoạn AI đã soạn</li><li>chi-phi.sqlite, kich-ban.sqlite, thu-di.sqlite, cai-dat.json</li><li>Nhật ký agent: ai đề xuất, policy nào, ai duyệt</li></ul></div>
+      <div class="box"><h3>BCGateway</h3><ul><li>S2S OAuth 2.0 bằng Entra app, mỗi company một client</li><li>Cache theo bảng: 60 giây, sổ kho 15 phút</li><li>Vai trò địa điểm đọc từ LS (kho, cửa hàng); link mở page BC</li></ul></div>
     </div>
   </div>
 </div>
@@ -116,42 +118,79 @@
   <div class="band ext" style="flex:1">
     <div class="lbl">Azure OpenAI</div>
     <div class="box"><h3>gpt-4.1-mini</h3><ul>
-      <li>Resource Marou, region eastus</li><li>Global Standard, 30.000 token mỗi phút</li>
-      <li>Nhận câu hỏi và kết quả tool đã lọc, không nhận nguyên bảng dữ liệu</li>
-      <li>Không tính số, không ghi vào BC</li></ul></div>
+      <li>Resource Marou, region eastus, Global Standard, 30.000 token mỗi phút</li>
+      <li>Nhận bảng số đã lọc, trả JSON theo schema</li>
+      <li>Không tính số, không ghi vào BC</li>
+      <li>16/09: cả ngày QA 146 lượt, 0,085 USD</li></ul></div>
   </div>
   <div class="band rec" style="flex:1">
     <div class="lbl">Bản đối chiếu độc lập</div>
     <div class="box"><h3>bc_agent (Python)</h3><ul>
       <li>inventory.py, forecast.py, supplier.py chép lại công thức AL</li>
-      <li>uc1-, uc2-, uc3-reconcile đọc cùng dữ liệu BC</li>
-      <li>14/09: khớp 167 / 222 dòng và 2.072 Forecast Entry / 6 dòng, không lệch</li></ul></div>
+      <li>uc1-, uc2-, uc3-reconcile đọc cùng dữ liệu BC; 14/09 khớp 100%</li>
+      <li>558 test tự động, model giả để kiểm phép kiểm số</li></ul></div>
   </div>
 </div>
 </div>
 
-<div class="flow"><span><b>▼</b> Đọc: 33 API page chỉ đọc, OData v4</span><span><b>▼</b> Ghi: chỉ bảng NWV Agent Proposal, trạng thái Proposed</span><span><b>▲</b> Quyền: permission set NWV cộng NWVMAROULSC (bảng LS)</span></div>
+<!-- AI O DAU -->
+<div class="band ai" style="margin-top:18px">
+  <div class="lbl">AI ở đâu trong UC2 · bốn nhóm năng lực, 12 tính năng đã chạy thật trên NWV-MAROU<small>code tính số và điền bảng, model chỉ viết lời hoặc chọn phương án, mọi đầu ra ghi "Người soạn"</small></div>
+  <div class="row">
+    <div class="col">
+      <div class="colh"><span class="tag g1">Tóm tắt</span></div>
+      <div class="box"><h3>S1 Brief buổi sáng do AI viết</h3><ul><li>3 việc quan trọng nhất theo vai, lý do; nhớ đề xuất bị từ chối 14 ngày, không đòi lại</li></ul></div>
+      <div class="box"><h3>S2 Giải thích lô bằng lời</h3><ul><li>Trang Chi tiết lô: vì sao vào tầng, bán bao nhiêu, dự kiến dư; nhớ theo lần tính</li></ul></div>
+      <div class="box"><h3>S3 Báo cáo tuần hàng hủy</h3><ul><li>Tuần này so tuần trước, mặt hàng, cửa hàng, lô hết hạn còn tồn, nguyên nhân; email thứ Hai</li></ul></div>
+    </div>
+    <div class="col">
+      <div class="colh"><span class="tag g2">Tạo sinh nội dung</span></div>
+      <div class="box"><h3>G1 Lý do đề xuất viết lại</h3><ul><li>Câu lý do trên thẻ cho người duyệt, giữ nguyên số</li></ul></div>
+      <div class="box"><h3>G2 Biên bản hủy</h3><ul><li>Khi duyệt hủy: bảng số liệu do code điền, model viết diễn biến và đề nghị; gửi bộ phận post kèm link Item Journal</li></ul></div>
+      <div class="box"><h3>Email nhắc post nhận hàng</h3><ul><li>Danh sách đơn do code điền, model viết mở đầu và kết</li></ul></div>
+    </div>
+    <div class="col">
+      <div class="colh"><span class="tag g3">Khám phá và phân tích</span></div>
+      <div class="box"><h3>D1 Hỏi đáp tự do</h3><ul><li>Planner tự chọn tool, kiểm số theo địa điểm; lưu thành kịch bản đã duyệt</li></ul></div>
+      <div class="box"><h3>D4 Phương án cho lô cận date</h3><ul><li>Code tính giữ / chuyển vừa đủ / giảm giá / hủy theo sức bán nơi nhận; model chọn và giải thích</li></ul></div>
+      <div class="box"><h3>D3 Bất thường · D2 Nguyên nhân hủy</h3><ul><li>Năm tín hiệu quét sổ kho 28 ngày; bốn thước đo nguyên nhân hủy 90 ngày; model xếp thứ tự và kết luận</li></ul></div>
+    </div>
+    <div class="col">
+      <div class="colh"><span class="tag g4">Tự động hóa</span></div>
+      <div class="box"><h3>A1 Đề xuất có người duyệt</h3><ul><li>Chống trùng, policy, đưa đúng người; duyệt thì BC tạo chứng từ</li></ul></div>
+      <div class="box"><h3>A2 Quét sáng</h3><ul><li>Tự ghi đề xuất hủy cho lô hết hạn, phương án cho lô cận date, brief từng vai, nhắc đề xuất chờ quá 1 ngày</li></ul></div>
+      <div class="box"><h3>A3 Luồng hủy khép kín</h3><ul><li>Theo dõi chứng từ hủy nháp mỗi ngày: post rồi thì đóng việc, chưa thì nhắc qua chat và email, lần 3 báo người duyệt</li></ul></div>
+    </div>
+    <div class="col" style="flex:.9">
+      <div class="colh">Phép kiểm chung</div>
+      <div class="kiem"><b>Mọi chữ số</b> trong đoạn model viết phải có trong dữ liệu code đưa; <b>mọi dòng hoặc phương án</b> model chọn phải có trong danh sách. Sai một thứ là thay bằng câu mẫu và ghi rõ lý do. Tắt AI thì không gọi model, tính năng vẫn chạy bằng mẫu.</div>
+      <div class="kiem" style="margin-top:10px"><b>Chưa làm, chờ khảo sát:</b> G3 chương trình giảm giá cận date, G4 và A4 thu hồi lô, S4 tóm tắt tin báo sự cố, D5 học ngưỡng.</div>
+    </div>
+  </div>
+</div>
+
+<div class="flow" style="margin-top:14px"><span><b>▼</b> Đọc: 34 API page chỉ đọc, OData v4</span><span><b>▼</b> Ghi: bảng NWV Agent Proposal, trạng thái Proposed</span><span><b>▲</b> Quyền: permission set NWV cộng NWVMAROULSC (bảng LS)</span></div>
 
 <!-- BUSINESS CENTRAL -->
 <div class="band bc">
-  <div class="lbl">Business Central NWV01 · company NWV · LS Central<small>số liệu và quyết định cuối cùng nằm ở đây; tắt trợ lý thì ba lớp này vẫn chạy</small></div>
+  <div class="lbl">Business Central NWV01 · NWV-MAROU và NWV-DAKAO · LS Central<small>số liệu và quyết định cuối cùng nằm ở đây; tắt trợ lý thì ba lớp này vẫn chạy</small></div>
 
   <div class="lane" style="margin-bottom:12px">
     <div class="ln"><b>Lớp 3</b>Đề xuất và người duyệt</div>
-    <div class="cells" style="grid-template-columns:1.2fr 1fr 1fr">
-      <div class="box"><h3>NWV Agent Proposal (70102)</h3><ul><li>Loại: Transfer, WriteOff, Markdown, BlockPurchase, ReviewOnly</li><li>Lưu lý do, số liệu đã đọc, mô hình, mã lần chạy, số lô</li></ul></div>
+    <div class="cells" style="grid-template-columns:1.1fr 1fr 1.3fr">
+      <div class="box"><h3>NWV Agent Proposal (70102)</h3><ul><li>Loại: Transfer, Purchase, WriteOff, Markdown, BlockPurchase, ReviewOnly</li><li>Lưu lý do, số liệu đã đọc, mô hình, mã lần chạy, số lô, vendor</li></ul></div>
       <div class="box"><h3>Page NWV Agent Proposals</h3><ul><li>Người của Marou Duyệt hoặc Từ chối, ghi lý do</li><li>Duyệt trên thẻ của trợ lý cũng gọi đúng hàm approve của BC</li></ul></div>
-      <div class="box"><h3>Chứng từ</h3><ul><li>Duyệt đề xuất chuyển hàng thì BC tạo Transfer Order trạng thái Open, ghi số đề xuất vào External Document No.</li><li>POC gọi approve bằng Entra app; bản chính thức chạy dưới danh tính người duyệt</li></ul></div>
+      <div class="box"><h3>Chứng từ do BC tạo khi duyệt, không post</h3><ul><li>Transfer: Transfer Order Open (Marou)</li><li>Purchase: Purchase Order Open, vendor MAROU, giao thẳng cửa hàng (Dakao)</li><li>WriteOff: dòng Item Journal Negative Adjmt. batch AGENT, có lô và reason code, Document No. AGENT-n; kế toán post</li></ul></div>
     </div>
   </div>
 
   <div class="lane" style="margin-bottom:12px">
-    <div class="ln"><b>Lớp 2</b>Tính toán bằng AL và LS, chạy trong BC<br><br><span style="opacity:.85">Job Queue: NWV Agent Job Runner. Ngưỡng: NWV Agent Setup</span></div>
+    <div class="ln"><b>Lớp 2</b>Tính toán bằng AL và LS, chạy trong BC<br><br><span style="opacity:.85">Job Queue: NWV Agent Job Runner. Ngưỡng: NWV Agent Setup. Vai trò địa điểm: NWV Location Role đọc LS Store và Replen. Setup</span></div>
     <div class="cells" style="grid-template-columns:repeat(5,1fr)">
       <div class="box"><h3><span class="tag t2">UC2</span>NWV Inv. Health Calc</h3><ul><li>Codeunit 70101 và NWV Demand Calc 70110</li><li>6 tầng: quá hạn, cận hạn, rủi ro đứt hàng, chậm luân chuyển, tồn thừa, bình thường</li><li>Theo từng lô, chặn theo hạn dùng</li></ul></div>
-      <div class="box"><h3><span class="tag t1">UC1</span>NWV Forecast Accuracy Calc</h3><ul><li>Codeunit 70120</li><li>Backtest 28 ngày: MA28, SWA8, Holt-Winters; WAPE, bias, ngoại lệ</li><li>Bỏ ngày hết hàng và ngày có Planned Sales Demand; ghi dự báo 28 ngày vào LSC Forecast Entry</li></ul></div>
-      <div class="box"><h3><span class="tag t3">UC3</span>NWV Supplier Scorecard Calc</h3><ul><li>Codeunit 70121</li><li>Đúng hạn, giao đủ lần đầu, lead time hứa và thực tế, dòng quá hạn</li><li>Theo nhà cung cấp và nhóm hàng</li></ul></div>
-      <div class="box"><h3><span class="tag t5">UC5</span>LS Central Replenishment</h3><ul><li>Calc. Item Quantities, journal MAROU-TO và MAROU-PO</li><li>Average Usage, Stock Levels (min-max), Retail Forecast (đọc Forecast Entry, cộng Planned Sales Demand)</li><li>Calc. Log Lines ghi từng bước tính</li></ul></div>
+      <div class="box"><h3><span class="tag t1">UC1</span>NWV Forecast Accuracy Calc</h3><ul><li>Codeunit 70120</li><li>Backtest 28 ngày: MA28, SWA8, Holt-Winters; WAPE, bias, ngoại lệ</li><li>Bỏ ngày hết hàng và ngày sự kiện LS; ghi dự báo 28 ngày vào LSC Forecast Entry</li></ul></div>
+      <div class="box"><h3><span class="tag t3">UC3</span>NWV Supplier Scorecard Calc</h3><ul><li>Codeunit 70121</li><li>Đúng hạn, giao đủ lần đầu, lead time hứa và thực tế, dòng quá hạn</li></ul></div>
+      <div class="box"><h3><span class="tag t5">UC5</span>LS Central Replenishment</h3><ul><li>Calc. Item Quantities, journal MAROU-TO (chuyển) và MAROU-PO (mua, kiểu Receiving Locations ở Dakao)</li><li>Average Usage, Stock Levels, Retail Forecast; Calc. Log Lines</li></ul></div>
       <div class="box"><h3><span class="tag t7">UC7</span>NWV Discount Gov. Calc</h3><ul><li>Codeunit 70104, ba rule ngoại lệ chiết khấu</li><li>Chưa có log POS trên NWV01</li></ul></div>
     </div>
   </div>
@@ -160,20 +199,20 @@
     <div class="ln"><b>Lớp 1</b>Dữ liệu chuẩn của BC và LS</div>
     <div class="cells" style="grid-template-columns:1fr">
       <div class="row" style="gap:10px">
-        <div class="box" style="flex:1.3"><h3>Tồn kho và lô</h3><ul><li>Item Ledger Entry: 24.759 dòng, lô và hạn dùng của 9 mã quản lý lô</li><li>Item, Location, Stockkeeping Unit, Lot No. Information</li></ul></div>
-        <div class="box" style="flex:1"><h3>Mua hàng</h3><ul><li>Purchase Line, Purch. Rcpt. Line</li><li>Đơn mua và phiếu nhận demo NaviWorld tạo cho 2 nhà cung cấp</li></ul></div>
-        <div class="box" style="flex:1"><h3>LS Central</h3><ul><li>Replen. Item Quantity, Item Distribution</li><li>Out of Stock Log, Sales Profile, Forecast Entry, Periodic Discount (CTKM), Planned Event</li></ul></div>
+        <div class="box" style="flex:1.3"><h3>Tồn kho và lô</h3><ul><li>Item Ledger Entry: 25.177 dòng mỗi company, lô và hạn dùng của 9 mã quản lý lô</li><li>Item, Location, Lot No. Information, Item Journal (batch AGENT), Reason Code</li></ul></div>
+        <div class="box" style="flex:1"><h3>Mua bán</h3><ul><li>Purchase Line, Purch. Rcpt. Line, Purchase Order Dakao mua từ vendor MAROU</li><li>Customer DAKAO bên Marou; Intercompany chưa bật</li></ul></div>
+        <div class="box" style="flex:1"><h3>LS Central</h3><ul><li>Replen. Item Quantity, Item Distribution, Store, Store Location</li><li>Out of Stock Log, Sales Profile, Forecast Entry, Periodic Discount, Planned Event</li></ul></div>
         <div class="box" style="flex:1"><h3>Bảng kết quả của app</h3><ul><li>NWV Inv. Health Line, NWV Forecast Accuracy, NWV Supplier Scorecard, NWV Discount Exception</li></ul></div>
       </div>
-      <div class="apis"><b>API page chỉ đọc (api/naviworld/marouagent/v1.0):</b> nwvItemLedgerEntries, nwvItems, nwvLocations, nwvLotNoInformation, nwvPurchaseOrderLines, nwvPurchaseReceiptLines, nwvSalesOrderLines, nwvValueEntries · inventoryHealthLines, forecastAccuracies, forecastDailies, supplierScorecards, discountExceptions · replenItemQuantities, replenJournalDetails, replenCalcLogLines, replenItemParameters, replenSalesProfileLines, lsForecastEntries, plannedSalesDemands, plannedEvents, lsPeriodicDiscounts, lsPeriodicDiscountLines, lsValidationPeriods, lsStorePriceGroups · <b>ghi được:</b> agentProposals</div>
+      <div class="apis"><b>API page chỉ đọc (api/naviworld/marouagent/v1.0):</b> nwvItemLedgerEntries, nwvItemJournalLines, nwvItems, nwvLocations (vai trò kho, cửa hàng), nwvLotNoInformation, nwvPurchaseOrderLines, nwvPurchaseReceiptLines, nwvSalesOrderLines, nwvValueEntries · inventoryHealthLines, forecastAccuracies, forecastDailies, supplierScorecards, discountExceptions · replenItemQuantities, replenJournalDetails, replenCalcLogLines, replenItemParameters, replenSalesProfileLines, lsForecastEntries, plannedSalesDemands, plannedEvents, lsPeriodicDiscounts, lsPeriodicDiscountLines, lsValidationPeriods, lsStorePriceGroups · <b>ghi được:</b> agentProposals · <b>web service:</b> NWVReplenService, NWVAgentCalcService, NWVDemoRepost, NWVDemoIntercompany</div>
     </div>
   </div>
 </div>
 
 <div class="rules">
-  <div><b>Số do Business Central tính</b>AL và LS tính trong BC. Trợ lý chỉ đọc lại; model không được tự đếm hay tự suy ra con số.</div>
-  <div><b>Trợ lý chỉ ghi đề xuất</b>Trạng thái luôn là Proposed. Chứng từ chỉ sinh ra khi người của Marou bấm Duyệt.</div>
-  <div><b>Model là lớp cuối</b>Rule và kịch bản đã duyệt trả lời trước, không tốn token. Tắt AI thì số liệu và dashboard không đổi.</div>
+  <div><b>Số do Business Central tính</b>AL và LS tính trong BC. Trợ lý chỉ đọc lại; model không được tự đếm hay tự suy ra con số, sai là về câu mẫu.</div>
+  <div><b>Trợ lý chỉ ghi đề xuất</b>Trạng thái luôn là Proposed. Chứng từ chỉ sinh ra khi người của Marou bấm Duyệt, và sinh ở trạng thái nháp, người post.</div>
+  <div><b>Model là lớp cuối</b>Rule và kịch bản đã duyệt trả lời trước, không tốn token. Tắt AI thì số liệu, dashboard và luồng duyệt không đổi.</div>
 </div>
 <div class="legend"><span class="box" style="padding:2px 8px"><span class="tag t1">UC1</span>Demand Planning &amp; Forecast</span><span class="box" style="padding:2px 8px"><span class="tag t2">UC2</span>Inventory Health &amp; Traceability</span><span class="box" style="padding:2px 8px"><span class="tag t3">UC3</span>Procurement &amp; Supplier</span><span class="box" style="padding:2px 8px"><span class="tag t5">UC5</span>Store Replenishment</span><span class="box" style="padding:2px 8px"><span class="tag t7">UC7</span>Discount Governance</span><span class="box" style="padding:2px 8px"><span class="tag t10">UC10</span>AI Assistant</span></div>
 </body></html>

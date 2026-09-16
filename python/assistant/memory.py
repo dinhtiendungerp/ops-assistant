@@ -22,7 +22,8 @@ CREATE TABLE IF NOT EXISTS proposals (
   proposal_id TEXT PRIMARY KEY, bc_id TEXT, scenario TEXT, action_type TEXT, status TEXT, item_no TEXT,
   from_loc TEXT, to_loc TEXT, quantity REAL, max_quantity REAL, rationale TEXT, evidence TEXT,
   requested_by TEXT, approver TEXT, approved_at TEXT, result_doc TEXT, created_at TEXT, channel_ref TEXT,
-  policy_rule TEXT, policy_mode TEXT, value_vnd REAL, item_category TEXT, outcome TEXT, outcome_note TEXT
+  policy_rule TEXT, policy_mode TEXT, value_vnd REAL, item_category TEXT, outcome TEXT, outcome_note TEXT,
+  vendor_no TEXT
 );
 CREATE TABLE IF NOT EXISTS followups (
   id INTEGER PRIMARY KEY AUTOINCREMENT, kind TEXT, ref TEXT, due_at TEXT, notify_user TEXT, escalate_user TEXT,
@@ -153,7 +154,7 @@ class Memory:
     def save_proposal(self, p: dict[str, Any]) -> None:
         cols = ("proposal_id", "bc_id", "scenario", "action_type", "status", "item_no", "from_loc", "to_loc", "quantity",
                 "max_quantity", "rationale", "evidence", "requested_by", "approver", "approved_at", "result_doc", "created_at", "channel_ref",
-                "policy_rule", "policy_mode", "value_vnd", "item_category", "outcome", "outcome_note")
+                "policy_rule", "policy_mode", "value_vnd", "item_category", "outcome", "outcome_note", "vendor_no")
         vals = [p.get(c) if c != "evidence" else json.dumps(p.get("evidence", {}), ensure_ascii=False) for c in cols]
         self.conn.execute(f"INSERT OR REPLACE INTO proposals({','.join(cols)}) VALUES({','.join('?' * len(cols))})", vals)
         self.conn.commit()

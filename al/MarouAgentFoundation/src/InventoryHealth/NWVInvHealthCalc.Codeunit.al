@@ -48,7 +48,7 @@ codeunit 70101 "NWV Inv. Health Calc"
         RunAt := CurrentDateTime();
         AsOfDate := WorkDate();
 
-        DemandCalc.Build(AsOfDate, Setup."Sales History Days", Setup."Central Warehouse Code");
+        DemandCalc.Build(AsOfDate, Setup."Sales History Days");
 
         HealthLine.DeleteAll();
 

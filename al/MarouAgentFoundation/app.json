@@ -2,7 +2,7 @@
   "id": "6f1d7a10-3c2e-4b8a-9d21-0a5e7c4b9a01",
   "name": "NWV Marou Agent",
   "publisher": "NaviWorld Vietnam",
-  "version": "1.5.1.0",
+  "version": "1.6.1.0",
   "brief": "Lop logic UC2, bang de xuat, trang nguoi duyet, custom API va cua vao LS Replenishment cho POC Marou",
   "description": "App san pham cua POC Marou Chocolate. Chua toan bo lop tinh toan viet bang AL thuan (inventory health, replenishment, discount governance), bang de xuat cua agent va trang nguoi duyet, cac custom API page chi doc, va tu 1.1.0.0 cua vao module Replenishment cua LS Central (API page doc ket qua tinh, web service NWVReplenService doc master data va chay tinh). Phu thuoc LS Central tu 1.1.0.0 vi Marou chay LS Central; app adapter rieng da gop vao day theo yeu cau khong tach nhieu app. Cong cu nap du lieu demo nam o app rieng NWV Marou Demo Setup, khong duoc cai len he thong that.",
   "privacyStatement": "",

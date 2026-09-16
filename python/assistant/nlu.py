@@ -37,7 +37,7 @@ log = logging.getLogger(__name__)
 INTENT_SCHEMA = {
     "type": "object",
     "properties": {
-        "intent": {"type": "string", "enum": ["STOCKOUT", "STOCK_QUERY", "DAMAGE", "ANSWER", "BRIEF", "TRACKING", "PO_OVERDUE", "EXPIRY", "FORECAST", "SUPPLIER", "TRACE", "PROMO", "REPLEN_WHY", "INVESTIGATE", "SELF_REVIEW", "PLAN", "HELP"]},
+        "intent": {"type": "string", "enum": ["STOCKOUT", "STOCK_QUERY", "DAMAGE", "ANSWER", "BRIEF", "TRACKING", "PO_OVERDUE", "NHAC_POST", "EXPIRY", "FORECAST", "SUPPLIER", "TRACE", "PROMO", "REPLEN_WHY", "ANOMALY", "WASTE_WHY", "WASTE_REPORT", "INVESTIGATE", "SELF_REVIEW", "PLAN", "HELP"]},
         "item_text": {"type": "string", "description": "cum chu chi mat hang, rong neu khong co"},
         "quantity": {"type": "number", "description": "so luong nguoi noi, 0 neu khong co"},
         "store_hint": {"type": "string", "description": "ten cua hang neu nguoi noi nhac den, rong neu khong"},
@@ -74,6 +74,16 @@ _PO_QUA_HAN = re.compile(r"(\bpo\b|purchase order|đơn mua|don mua|đơn đặt
                          r".*(quá hạn|qua han|trễ|\btre\b|chưa nhận|chua nhan|chưa về|chua ve|chưa nhập|chua nhap|"
                          r"chưa post|chua post|chưa receive|chua receive)|"
                          r"(chưa nhận hàng|chua nhan hang|chưa post nhận|chua post nhan|quá hạn nhận|qua han nhan)", re.I)
+# Yeu cau tro ly nhac nguoi post chung tu (chat va email). Dat truoc PO_OVERDUE vi "nhac post don mua chua nhan" trung ca hai.
+_NHAC_POST = re.compile(r"(nhắc|nhac|gửi mail|gui mail|gửi email|gui email|gửi thư|gui thu|\bemail\b|\bmail\b)"
+                        r".*(post|nhập kho|nhap kho|nhận hàng|nhan hang|chứng từ|chung tu|đơn mua|don mua|\bpo\b)", re.I)
+# UC2 D3, D2, S3 (16/09/2026). Dat truoc REPLEN_WHY va INVESTIGATE vi "vi sao huy nhieu" cung co "vi sao".
+_BAT_THUONG = re.compile(r"(bất thường|bat thuong|dấu hiệu lạ|dau hieu la|anomal|có gì lạ|co gi la|bán sau hạn|ban sau han)", re.I)
+_HUY = re.compile(r"(hủy|huy\b|hàng hỏng|hang hong|hư hỏng|hu hong|phế phẩm|phe pham|write-?off|thải bỏ|thai bo)", re.I)
+_BAO_CAO = re.compile(r"(báo cáo|bao cao|report)", re.I)
+_TUAN = re.compile(r"(tuần|tuan|week)", re.I)
+_HUY_BO = re.compile(r"(vì sao|vi sao|tại sao|tai sao|nguyên nhân|nguyen nhan|hủy|huy\b|hàng hỏng|hang hong|hư hỏng|hu hong|nhiều|nhieu|"
+                    r"lắm|lam\b|thế|the\b|vậy|vay\b|báo cáo|bao cao|tuần|tuan|này|nay\b|qua\b|gốc|goc\b|của|cua\b|hàng|hang\b|mặt|mat\b)", re.I)
 # Hoi vi sao LS / de xuat bo sung ra con so. Dat truoc INVESTIGATE (cua hang cu het hang) vi cung tu "vi sao".
 _REPLEN_WHY = re.compile(r"(vì sao|vi sao|tại sao|tai sao|giải thích|giai thich|\bsao\b).*(đề xuất|de xuat|\bls\b|replenishment|số lượng|so luong)", re.I)
 # Tu cua cau hoi LS, bo khoi item_text truoc khi tra ten mat hang.
@@ -139,6 +149,8 @@ class RuleNLU:
         item_text = re.sub(r"\s+", " ", item_text).strip(" ,.!?")
         if _REVIEW.search(t):
             return Intent("SELF_REVIEW")
+        if _NHAC_POST.search(t):
+            return Intent("NHAC_POST", raw={"text": t})
         if _PO_QUA_HAN.search(t):
             return Intent("PO_OVERDUE")
         if _NCC.search(t):
@@ -146,6 +158,13 @@ class RuleNLU:
         # Truoc BRIEF: "tong hop CTKM" la hoi khuyen mai. Sau vi sao LS va du bao: hai loai cau do co the nhac khuyen mai.
         if _KHUYEN_MAI.search(t) and not _REPLEN_WHY.search(t) and not _DU_BAO.search(t):
             return Intent("PROMO", re.sub(r"\s+", " ", _KHUYEN_MAI_BO.sub(" ", item_text)).strip(" ,.!?"), qty, store_hint)
+        # UC2 D3/D2/S3: truoc BRIEF vi "bao cao tuan hang huy" va "tong hop bat thuong" trung tu khoa cua BRIEF.
+        if _BAT_THUONG.search(t):
+            return Intent("ANOMALY", "", qty, store_hint)
+        if _HUY.search(t) and _BAO_CAO.search(t) and _TUAN.search(t):
+            return Intent("WASTE_REPORT", "", qty, store_hint)
+        if _HUY.search(t) and (_WHY.search(t) or re.search(r"(nguyên nhân|nguyen nhan)", t, re.I)):
+            return Intent("WASTE_WHY", re.sub(r"\s+", " ", _HUY_BO.sub(" ", item_text)).strip(" ,.!?"), qty, store_hint)
         if _BRIEF.search(t):
             return Intent("BRIEF")
         if _TRUY_XUAT.search(t) or _MA_LO.search(t):
@@ -212,12 +231,16 @@ class LiveNLU:
                   "DAMAGE: bao hang hong, vo, khach tra.\n"
                   "BRIEF: xin tong hop viec hom nay. TRACKING: hoi tien do de xuat, chung tu cua minh.\n"
                   "PO_OVERDUE: hoi don mua (PO) qua ngay nhan, chua nhan, hang mua chua ve.\n"
+                  "NHAC_POST: yeu cau tro ly nhac nguoi post nhan hang, gui mail nhac post chung tu.\n"
                   "EXPIRY: hoi lo hang da het han, sap het han, can date.\n"
                   "FORECAST: hoi do chinh xac du bao, du bao lech bao nhieu, WAPE.\n"
                   "SUPPLIER: hoi nha cung cap giao dung han hay tre, lead time, scorecard nha cung cap.\n"
                   "PROMO: hoi chuong trinh khuyen mai, giam gia, uu dai cua LS dang chay, sap toi hoac da ket thuc.\n"
                   "TRACE: truy xuat mot lo hang (co so lo dang L260908-...), lo da di dau, thu hoi.\n"
                   "REPLEN_WHY: hoi vi sao LS Replenishment / de xuat bo sung ra so luong do cho mot mat hang.\n"
+                  "ANOMALY: hoi co gi bat thuong, dau hieu la trong so kho (ban sau han, nhan hang han ngan, huy tang dot bien).\n"
+                  "WASTE_WHY: hoi vi sao / nguyen nhan mot mat hang hay cua hang huy nhieu, hang hong nhieu.\n"
+                  "WASTE_REPORT: xin bao cao tuan hang huy cho quan ly, tai chinh.\n"
                   "INVESTIGATE: hoi vi sao mot cua hang cu het mot mat hang.\n"
                   "SELF_REVIEW: bao tro ly tu cham diem viec da lam.\n"
                   "PLAN: yeu cau mo can tu tra nhieu bang roi ket luan: so sanh, xep hang, phan tich, lap ke hoach, "

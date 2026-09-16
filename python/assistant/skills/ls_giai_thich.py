@@ -47,18 +47,29 @@ def du_lieu(gw: Any, item_no: str, store: str, template: str = TEMPLATE) -> dict
     """Doc het nhung gi can de giai thich. None neu dang chay mo phong hoac LS chua co dong nay."""
     if gw.is_mock:
         return None
-    ct = gw.doc("replenJournalDetails", [("replenishmentTemplateCode", "eq", template), ("itemNo", "eq", item_no),
-                                          ("locationCode", "eq", store)], top=1)
-    log = sorted(gw.doc("replenCalcLogLines", [("replenishmentTemplateCode", "eq", template), ("itemNo", "eq", item_no),
-                                                ("locationCode", "eq", store)], top=500),
-                 key=lambda r: r.get("entryNo", 0))
+    # Journal nao co dong chi tiet cho cap nay thi giai thich theo journal do (Dakao mua thang tu Marou thi la MAROU-PO,
+    # 15/09/2026); MAROU-TO van ghi log "khong xet" cho mat hang To Store nen khong duoc chon journal chi vi co log.
+    cac_tpl = list(dict.fromkeys([template, *gw.LS_TEMPLATES]))
+    ct, log, tpl = [], [], template
+    for chi_can_ct in (True, False):
+        for tpl in cac_tpl:
+            ct = gw.doc("replenJournalDetails", [("replenishmentTemplateCode", "eq", tpl), ("itemNo", "eq", item_no),
+                                                  ("locationCode", "eq", store)], top=1)
+            log = sorted(gw.doc("replenCalcLogLines", [("replenishmentTemplateCode", "eq", tpl), ("itemNo", "eq", item_no),
+                                                        ("locationCode", "eq", store)], top=500),
+                         key=lambda r: r.get("entryNo", 0))
+            if ct or (log and not chi_can_ct):
+                break
+        else:
+            continue
+        break
     if not ct and not log:
         return None
     riq = gw.doc("replenItemQuantities", [("itemNo", "eq", item_no), ("locationCode", "eq", store)], top=5)
     riq = next((r for r in riq if not r.get("variantCode")), riq[0] if riq else {})
     ts = gw.doc("replenItemParameters", [("itemNo", "eq", item_no)], top=1)
     return {"ct": ct[0] if ct else {}, "riq": riq, "ts": ts[0] if ts else {}, "log": [l.get("messageText", "") for l in log],
-            "gw": gw}
+            "gw": gw, "template": tpl}
 
 
 def _profile(gw: Any, ma: str) -> list[dict[str, Any]]:
@@ -231,7 +242,8 @@ def giai_thich(gw: Any, item_no: str, store: str, template: str = TEMPLATE) -> d
              and not (b.id in ("CALC:Text009", "CALC:Text011") and b.gia_tri.get("1") == b.gia_tri.get("2"))]
     trich += doc["chua_nhan_dang"]
     return {"item_no": item_no, "store": store, "mo_ta": ct.get("description") or item_no, "de_xuat": so_cuoi,
-            "tu_kho": ct.get("replenishmentLocationCode") or "", "y": y, "nhat_ky_ls": trich,
+            "tu_kho": ct.get("replenishmentLocationCode") or ct.get("vendorNo") or "", "y": y, "nhat_ky_ls": trich,
+            "template": d.get("template", template),
             "ty_le_nhan_dang": doc["ty_le_nhan_dang"], "ls_central": kt.tai()["ls_central"]}
 
 
@@ -247,13 +259,16 @@ def handle(asst: Any, user: dict[str, Any], item_no: str, store: str) -> list[De
     body = "\n".join("· " + c for c in kq["y"])
     if kq["nhat_ky_ls"]:
         body += "\n\nNhật ký tính của LS, nguyên văn:\n" + "\n".join(kq["nhat_ky_ls"])
+    tpl = kq.get("template", TEMPLATE)
+    mua = tpl != TEMPLATE
     card = Card(title=f"Vì sao LS đề xuất {_so(kq['de_xuat'])} {kq['mo_ta']} cho {store}", body=body,
-                facts=[("Mặt hàng", f"{kq['mo_ta']} ({item_no})"), ("Cửa hàng", store), ("Từ kho", kq["tu_kho"]),
-                       ("Nguồn", f"LS Replenishment, journal {TEMPLATE}")],
+                facts=[("Mặt hàng", f"{kq['mo_ta']} ({item_no})"), ("Cửa hàng", store),
+                       ("Mua từ" if mua else "Từ kho", kq["tu_kho"]),
+                       ("Nguồn", f"LS Replenishment, journal {tpl}")],
                 ref=f"{store}|{item_no}", kind="info",
-                links=[("Nhật ký tính của LS", link("ls_calc_log", {"Replenishment Template Code": TEMPLATE, "Item No.": item_no,
+                links=[("Nhật ký tính của LS", link("ls_calc_log", {"Replenishment Template Code": tpl, "Item No.": item_no,
                                                                      "Location Code": store})),
-                       ("Dòng journal LS", link("ls_transfer_journal_details", {"Replenishment Template Code": TEMPLATE,
+                       ("Dòng journal LS", link("ls_transfer_journal_details", {"Replenishment Template Code": tpl,
                                                                                "Item No.": item_no, "Location Code": store})),
                        ("Replen. Item Quantities", link("ls_item_quantities", {"Item No.": item_no, "Location Code": store}))])
     return [Delivery(uid, f"LS đề xuất {_so(kq['de_xuat'])} {kq['mo_ta']} cho {store}. Các bước dưới đây đọc từ nhật ký tính "

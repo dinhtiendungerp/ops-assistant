@@ -116,15 +116,16 @@ def handle_stockout(asst, user: dict[str, Any], intent) -> list[Delivery]:
     return out
 
 
-def _create(asst, user, item, store, from_loc, qty, action_type, plan, ref, rationale) -> dict[str, Any]:
+def _create(asst, user, item, store, from_loc, qty, action_type, plan, ref, rationale, vendor_no: str = "") -> dict[str, Any]:
     evidence = {k: plan[k] for k in ("onhand", "transit", "avg", "doc", "target", "need", "wh_avail", "constrained")}
     unit_cost = asst.gw.unit_cost(item["itemNo"])
     created = asst.gw.create_proposal(
         scenario="StoreReplenishment", action_type=action_type, item_no=item["itemNo"], from_loc=from_loc, to_loc=store,
         quantity=qty, reference_key=ref, rationale=rationale, priority=max(0, min(100, int(100 - plan["doc"] * 10))) if plan["doc"] < 9999 else 50,
-        evidence=evidence, run_id=asst.run_id, model_name=asst.model_name)
+        evidence=evidence, run_id=asst.run_id, model_name=asst.model_name, vendor_no=vendor_no)
     prop = {"proposal_id": created.get("proposalId") or str(uuid.uuid4()), "bc_id": created["id"], "scenario": "StoreReplenishment",
             "action_type": action_type, "status": "Proposed", "item_no": item["itemNo"], "from_loc": from_loc, "to_loc": store,
+            "vendor_no": vendor_no,
             "quantity": qty, "max_quantity": plan["wh_avail"] if from_loc == asst.gw.central_wh else qty, "rationale": rationale,
             "evidence": evidence, "requested_by": user["user_id"], "created_at": asst.mem.now().isoformat(), "item_desc": item["description"],
             "value_vnd": qty * unit_cost, "item_category": item.get("category", "")}
@@ -133,19 +134,27 @@ def _create(asst, user, item, store, from_loc, qty, action_type, plan, ref, rati
 
 
 def proposal_card(prop: dict[str, Any], item_desc: str, plan: dict[str, Any] | None = None, escalate: bool = False) -> Card:
-    facts = [("Mặt hàng", f"{item_desc} ({prop['item_no']})"), ("Từ", prop["from_loc"]), ("Đến", prop["to_loc"]), ("Số lượng", fmt_qty(prop["quantity"]))]
+    mua = prop.get("action_type") == "Purchase"
+    if mua:
+        # Dakao mua thang tu Marou (15/09/2026): duyet thi BC tao Purchase Order Open cho vendor, giao toi cua hang.
+        facts = [("Mặt hàng", f"{item_desc} ({prop['item_no']})"), ("Mua từ", prop.get("vendor_no") or prop["from_loc"]),
+                 ("Giao đến", prop["to_loc"]), ("Số lượng", fmt_qty(prop["quantity"]))]
+    else:
+        facts = [("Mặt hàng", f"{item_desc} ({prop['item_no']})"), ("Từ", prop["from_loc"]), ("Đến", prop["to_loc"]), ("Số lượng", fmt_qty(prop["quantity"]))]
     if plan:
-        facts += [("Tồn store / ngày", f"{fmt_qty(plan['onhand'])} / {plan['doc']} ngày"), ("Bán bình quân", f"{plan['avg']:.1f}/ngày"), ("Kho còn", fmt_qty(plan["wh_avail"]))]
+        facts += [("Tồn store / ngày", f"{fmt_qty(plan['onhand'])} / {plan['doc']} ngày"), ("Bán bình quân", f"{plan['avg']:.1f}/ngày")]
+        if not mua:
+            facts.append(("Kho còn", fmt_qty(plan["wh_avail"])))
     if escalate:
         return Card(title="Cần nguồn hàng", body=prop["rationale"], facts=facts, ref=prop["proposal_id"], kind="info",
                     actions=[Action("ack", "Đã nhận", "positive")])
     from ..bc_link import link
     loc = {"Item No.": prop["item_no"], "Location Code": prop["to_loc"]}
-    links = [("Dòng journal LS", link("ls_transfer_journal_details", {"Replenishment Template Code": "MAROU-TO", **loc})),
+    links = [("Dòng journal LS", link("ls_transfer_journal_details", {"Replenishment Template Code": "MAROU-PO" if mua else "MAROU-TO", **loc})),
              ("Replen. Item Quantities", link("ls_item_quantities", loc)),
              ("Trang NWV Agent Proposals", link("agent_proposals"))]
-    return Card(title="Đề xuất chuyển hàng", body=prop["rationale"], facts=facts, ref=prop["proposal_id"], links=links,
-                actions=[Action("approve", "Duyệt chuyển hàng", "positive"),
+    return Card(title="Đề xuất đặt mua" if mua else "Đề xuất chuyển hàng", body=prop["rationale"], facts=facts, ref=prop["proposal_id"], links=links,
+                actions=[Action("approve", "Duyệt đặt mua" if mua else "Duyệt chuyển hàng", "positive"),
                          Action("edit", "Sửa số lượng", needs_input="quantity"),
                          Action("reject", "Từ chối", "destructive", needs_input="reason")]
                 + ([Action("ls_vi_sao", "Vì sao LS ra số này", payload={"item_no": prop["item_no"], "store": prop["to_loc"]})]
@@ -244,10 +253,32 @@ def on_approve(asst, user, prop, payload) -> list[Delivery]:
     prop.update({"status": "Executed", "approver": user["user_id"], "approved_at": asst.mem.now().isoformat(), "result_doc": to_no})
     asst.mem.save_proposal(prop)
     item_desc = asst.gw.find_item(prop["item_no"])["description"]
+    if prop.get("action_type") == "WriteOff" and res.get("resultDocumentType") == "Item Journal Line" and to_no:
+        # UC2 G2/A3 (16/09/2026): BC tao dong Item Journal nhap; tro ly soan bien ban, email bo phan post, theo doi den khi post.
+        from . import uc2_huy
+        prop["item_desc"] = prop.get("item_desc") or item_desc
+        return uc2_huy.on_duyet_huy(asst, user, prop, res)
     if not to_no:
         # De xuat khong sinh chung tu chuyen hang (chan mua, giam gia, ra soat): khong bao kho.
         label = res.get("resultDocumentType", prop["action_type"])
         return [Delivery(user["user_id"], f"Đã duyệt: {label} cho {item_desc}. Ghi dưới tên {user['display_name']}. Việc này không sinh Transfer Order nên tôi không báo kho.", skill=SKILL, ref=prop["proposal_id"])]
+    if prop.get("action_type") == "Purchase" or res.get("resultDocumentType") == "Purchase Order":
+        # Don mua tu vendor giao thang cua hang: khong co kho nao phai ship, nguoi mua xem lai roi gui don cho Marou.
+        from ..bc_link import link
+        prop["vendor_no"] = prop.get("vendor_no") or res.get("vendorNo") or ""
+        card = Card(title=f"Đã tạo Purchase Order {to_no}", kind="info", ref=to_no,
+                    facts=[("Mặt hàng", item_desc), ("Số lượng", fmt_qty(prop["quantity"])), ("Mua từ", prop.get("vendor_no") or ""),
+                           ("Giao đến", prop["to_loc"]), ("Trạng thái", "Open, chưa release")],
+                    body="Purchase Order tạo dưới tên người duyệt, trạng thái Open. Người mua xem lại rồi release và gửi cho nhà cung cấp; "
+                         "trợ lý không post gì.",
+                    links=[("Mở Purchase Order trong BC", link("purchase_order", {"Document Type": "Order", "No.": to_no}))])
+        out = [Delivery(user["user_id"], f"Đã duyệt. Purchase Order {to_no} tạo dưới tên {user['display_name']}, trạng thái Open, "
+                                         f"mua {fmt_qty(prop['quantity'])} {item_desc} từ {prop.get('vendor_no') or ''} giao đến {prop['to_loc']}.",
+                        card=card, skill=SKILL, ref=prop["proposal_id"])]
+        for rid in sorted({u["user_id"] for u in asst.mem.users() if u["role"] == "store_manager" and u.get("store_code") == prop["to_loc"]} - {user["user_id"]}):
+            out.append(Delivery(rid, f"Điều phối đã duyệt đặt mua {fmt_qty(prop['quantity'])} {item_desc} từ {prop.get('vendor_no') or 'nhà cung cấp'}, "
+                                     f"đơn {to_no}, giao thẳng tới {prop['to_loc']}.", skill=SKILL, ref=to_no))
+        return out
     out = [Delivery(user["user_id"], f"Đã duyệt. Transfer Order {to_no} tạo dưới tên {user['display_name']}, trạng thái Open. Tôi báo kho và cửa hàng.", skill=SKILL, ref=prop["proposal_id"])]
     # bao cua hang: nguoi yeu cau (neu la user that) va quan ly cua store nhan
     recipients = {u["user_id"] for u in asst.mem.users() if u["role"] == "store_manager" and u.get("store_code") == prop["to_loc"]}
@@ -284,7 +315,8 @@ def on_edit(asst, user, prop, payload) -> list[Delivery]:
 def on_reject(asst, user, prop, payload) -> list[Delivery]:
     reason = payload.get("reason", "") or "không nêu lý do"
     asst.gw.reject(prop["bc_id"], user.get("bc_user") or user["user_id"], reason)
-    prop.update({"status": "Rejected", "approver": user["user_id"], "approved_at": asst.mem.now().isoformat()})
+    # Ly do tu choi luu vao outcome_note de brief hom sau nho (S1: "da tu choi hom X vi Y, khong de xuat lai").
+    prop.update({"status": "Rejected", "approver": user["user_id"], "approved_at": asst.mem.now().isoformat(), "outcome_note": reason})
     asst.mem.save_proposal(prop)
     return [Delivery(user["user_id"], f"Đã từ chối, lý do: {reason}. Tôi ghi lại để chỉnh ngưỡng.", skill=SKILL, ref=prop["proposal_id"]),
             Delivery(prop["requested_by"], f"Điều phối chưa duyệt chuyển {prop['item_no']}: {reason}.", skill=SKILL, ref=prop["proposal_id"])]
@@ -362,15 +394,17 @@ def brief_for_dispatcher(asst, user) -> list[Delivery]:
             dang_co.setdefault(f"{p.get('to_loc')}|{p.get('item_no')}", p)
 
     the: list[Delivery] = []
-    moi = cho = dang_di = het_kho = 0
+    moi = cho = dang_di = het_kho = mua = 0
     for r in rows:
         store, ma, ten = r["storeLocationCode"], r["itemNo"], r["itemDescription"]
         cu = dang_co.get(f"{store}|{ma}")
-        if cu and cu["status"] == "Executed":
+        # De xuat chuyen hang cu (tao khi cua hang con lay tu kho tong) khong che dong mua thang tu vendor: o Dakao bang
+        # de xuat sao chep tu NWV con 22 dong Proposed, neu de `cu` thang thi brief chi thay "cho duyet" cua the gioi cu.
+        if cu and cu["status"] == "Executed" and r.get("replenType") != "Purchase":
             dang_di += 1                         # hang dang tren duong, khong de xuat chong len
             continue
         plan = _plan(asst.gw, store, ma, 0)
-        if cu:
+        if cu and r.get("replenType") != "Purchase":
             # Truoc day nhanh nay `continue` im lang: ca 10 dong da co de xuat tu lan brief truoc
             # nen dieu phoi chi thay cau mo dau "ban duyet tung dong:" roi khong co the nao.
             # Dung bat duoc ngay 13/09/2026. Viec chua duyet thi phai hien lai, khong tao them.
@@ -379,6 +413,26 @@ def brief_for_dispatcher(asst, user) -> list[Delivery]:
             nhan = f"{store} / {ten} · chờ duyệt" + (f" từ {ngay[8:10]}/{ngay[5:7]}" if len(ngay) == 10 else "")
             the.append(Delivery(user["user_id"], nhan, proposal_card(prop, ten, plan), SKILL, prop["proposal_id"]))
             cho += 1
+            continue
+        if r.get("replenType") == "Purchase":
+            # Dakao (15/09/2026): LS de xuat mua thang tu vendor MAROU, giao toi cua hang. De xuat loai Purchase; duyet thi
+            # BC tao Purchase Order Open cho vendor (codeunit NWV Agent Proposal Mgt., app 1.5.3.0).
+            if cu and cu.get("action_type") == "Purchase":
+                prop = _nap_de_xuat_cu(asst, cu, plan, user)
+                ngay = str(cu.get("created_at") or "")[:10]
+                nhan = f"{store} / {ten} · chờ duyệt" + (f" từ {ngay[8:10]}/{ngay[5:7]}" if len(ngay) == 10 else "")
+                the.append(Delivery(user["user_id"], nhan, proposal_card(prop, ten, plan), SKILL, prop["proposal_id"]))
+                cho += 1
+                continue
+            mua += 1
+            item = {"itemNo": ma, "description": ten}
+            fake_user = {"user_id": f"brief:{store}", "store_code": store}
+            prop = _create(asst, fake_user, item, store, "", float(r["suggestedQty"]), "Purchase", plan, f"{store}|{ma}",
+                           r["reason"], vendor_no=r.get("vendorNo") or "")
+            prop["requested_by"] = user["user_id"]
+            asst.mem.save_proposal(prop)
+            the.append(Delivery(user["user_id"], f"{store} / {ten} · mua từ {r.get('vendorNo') or ''}", proposal_card(prop, ten, plan),
+                                SKILL, prop["proposal_id"]))
             continue
         if plan["constrained"] <= 0:
             het_kho += 1
@@ -402,8 +456,13 @@ def brief_for_dispatcher(asst, user) -> list[Delivery]:
         phan.append(f"{dang_di} dòng đã có chuyến hàng đang đi")
     if het_kho:
         phan.append(f"{het_kho} dòng kho trung tâm hết hàng, cần mua thêm")
+    if mua:
+        phan.append(f"{mua} đề xuất đặt mua thẳng từ nhà cung cấp, giao tới cửa hàng")
     tu_ls = bool(rows) and rows[0].get("demandBasis") == "LS"
-    dau = ((f"Sáng nay LS Replenishment đề xuất chuyển hàng cho {len(rows)} dòng: " if tu_ls
+    dau = ((f"Sáng nay LS Replenishment đề xuất bổ sung cho {len(rows)} dòng: " if tu_ls
             else f"Sáng nay {len(rows)} dòng dưới ngưỡng {REORDER_DOC} ngày: ") + "; ".join(phan) + ".")
-    dau += " Bạn duyệt từng thẻ bên dưới." if the else " Không còn việc nào cần bạn duyệt."
+    if moi or cho or mua:
+        dau += " Bạn duyệt từng thẻ bên dưới."
+    else:
+        dau += " Không còn việc nào cần bạn duyệt."
     return [Delivery(user["user_id"], dau, skill=SKILL)] + the

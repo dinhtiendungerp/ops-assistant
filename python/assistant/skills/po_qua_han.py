@@ -226,7 +226,12 @@ def on_xac_nhan(asst: Any, user: dict[str, Any], ref: str, da_ve: bool) -> list[
     viec = ("Cần người post Receive trên Purchase Order để tồn trong BC khớp thực tế." if da_ve
             else "Người mua cần hỏi nhà cung cấp ngày giao mới, hoặc dời Expected Receipt Date.")
     bao = f"{ten_nguoi} ({_ten_diem(dia_diem)}) báo đơn {so_don}: {cau}. Còn {fmt_qty(tong)} đơn vị chưa nhận trên {len(dong)} dòng. {viec}"
+    # Chuyen email noi o the email do nhac_post tra ve, khong hua truoc o day: co the hom nay da gui roi.
     out = [Delivery(uid, f"Đã ghi nhận: {cau}. Tôi đã báo Supply Chain.", skill=SKILL, ref=ref)]
     for sc in asst.mem.users_by_role("supply_chain"):
         out.append(Delivery(sc["user_id"], bao, skill=SKILL, ref=ref))
+    if da_ve:
+        # Hang ve ma chua nhap: tu nhac nguoi post qua email ngay, khong doi lich sang mai (skills/nhac_post.py).
+        from . import nhac_post
+        out += nhac_post.nhac(asst, user, chi_ref=ref)
     return out

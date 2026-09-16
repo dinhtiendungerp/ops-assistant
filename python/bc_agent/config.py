@@ -43,6 +43,22 @@ class Settings:
     bc_environment: str = os.getenv("BC_ENVIRONMENT", "")
     bc_company_name: str = os.getenv("BC_COMPANY_NAME", "")
     bc_company_id: str = os.getenv("BC_COMPANY_ID", "")
+    # Tu 15/09/2026 tro ly chay song song nhieu company, moi company mot tro ly rieng (assistant/cong_ty.py).
+    # Rong thi chi chay BC_COMPANY_NAME nhu truoc.
+    bc_companies: str = os.getenv("BC_COMPANIES", "")
+
+    # Email nhac viec (assistant/thu_dien_tu.py). MAIL_MODE: auto | graph | smtp | file.
+    # auto: co MAIL_SENDER thi gui qua Microsoft Graph, co SMTP_HOST thi qua SMTP, khong co gi thi ghi file .eml.
+    mail_mode: str = os.getenv("MAIL_MODE", "auto")
+    mail_sender: str = os.getenv("MAIL_SENDER", "")
+    mail_to: str = os.getenv("MAIL_TO", "")
+    smtp_host: str = os.getenv("SMTP_HOST", "")
+    smtp_port: int = int(os.getenv("SMTP_PORT", "587"))
+    smtp_user: str = os.getenv("SMTP_USER", "")
+    smtp_password: str = os.getenv("SMTP_PASSWORD", "")
+    # Gio chay nen moi sang de nhac post nhan hang (HH:MM, gio may chu). Rong la tat lich.
+    nhac_post_gio: str = os.getenv("NHAC_POST_GIO", "08:00")
+    quet_uc2_gio: str = os.getenv("QUET_UC2_GIO", "07:30")     # A2: gio quet suc khoe ton kho moi sang, rong = tat
 
     max_proposals_per_run: int = int(os.getenv("AGENT_MAX_PROPOSALS_PER_RUN", "10"))
     max_tool_iterations: int = int(os.getenv("AGENT_MAX_TOOL_ITERATIONS", "20"))

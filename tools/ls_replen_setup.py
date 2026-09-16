@@ -6,6 +6,8 @@ Cau hinh sinh tu tools/demo_scenario.py, khong chep tay: danh sach mat hang, cua
     cd python
     python ../tools/ls_replen_setup.py config           # in cau hinh se ap
     python ../tools/ls_replen_setup.py apply            # ghi master data qua NWVDemoReplenSetup
+    python ../tools/ls_replen_setup.py --company NWV-DAKAO partners   # vendor MAROU (Dakao) / customer DAKAO (Marou)
+    python ../tools/ls_replen_setup.py --company NWV-DAKAO apply      # cau hinh rieng cho Dakao: mua thang tu Marou
     python ../tools/ls_replen_setup.py apply --reset-oos  # them buoc xoa het Out of Stock Log demo (sau khi post lai ILE)
     python ../tools/ls_replen_setup.py preflight        # kiem truoc khi import lai Item Journal
     python ../tools/ls_replen_setup.py calc             # Upd Out of Stock, Calc. Item Qty, tinh 2 journal
@@ -114,7 +116,17 @@ def chuong_trinh_km() -> list[dict]:
     ]
 
 
-def build_config() -> dict:
+# Hai company tu 15/09/2026. Dakao (ban le) mua hang thang tu Marou, giao toi tung cua hang: vendor MAROU tren Item, khong
+# co quy tac Replen. From Warehouse, journal mua kieu "Purchase Orders for Receiving Locations" (moi cua hang mot don, mau
+# RT00003 cua Cronus). Marou (san xuat) giu kho tong W0003 va journal chuyen hang cho den khi dung lai du lieu.
+DAKAO = "NWV-DAKAO"
+MAROU = "NWV-MAROU"
+VENDOR_MAROU = {"no": "MAROU", "name": "Marou Chocolate (san xuat)", "copyFrom": "44020"}
+CUSTOMER_DAKAO = {"no": "DAKAO", "name": "Dakao (ban le)"}
+
+
+def build_config(company: str = "") -> dict:
+    dakao = company == DAKAO
     items = []
     dist = []
     for it in ds.ITEMS:
@@ -124,6 +136,8 @@ def build_config() -> dict:
             row.update(calcType="Stock Levels", **STOCK_LEVELS[it.no])
         elif it.no in LS_FORECAST:
             row.update(calcType="LS Forecast")
+        if dakao:
+            row.update(vendor=VENDOR_MAROU["no"], fromWarehouse=False, purchOrderDelivery="To Store")
         items.append(row)
         status = "Not purchased again" if it.no in ds.DISCONTINUED else "Active"
         for s in ds.stores_for(it):
@@ -143,24 +157,38 @@ def build_config() -> dict:
         "templates": [
             {"code": TEMPLATE_TO, "type": "Transfer", "description": "Marou - chuyen hang tu kho tong W0003",
              "location": ds.WH, "storeGroupFilter": stores, "itemNoFilter": item_filter},
-            {"code": TEMPLATE_PO, "type": "Purchase", "description": "Marou - mua hang ve kho tong W0003",
-             "location": ds.WH, "storeGroupFilter": stores, "itemNoFilter": item_filter},
+            ({"code": TEMPLATE_PO, "type": "Purchase", "description": "Dakao - mua tu Marou, giao thang cua hang",
+              "location": "", "storeGroupFilter": stores, "itemNoFilter": item_filter, "purchaseOrderType": "Receiving Locations"}
+             if dakao else
+             {"code": TEMPLATE_PO, "type": "Purchase", "description": "Marou - mua hang ve kho tong W0003",
+              "location": ds.WH, "storeGroupFilter": stores, "itemNoFilter": item_filter}),
         ],
     }
 
 
 def main(argv: list[str]) -> None:
+    # --company nam trong sys.argv thi tools_bc doc (no tu cat khoi sys.argv khi import); o day cat truoc de lay lenh.
+    company = ""
+    argv = list(argv)
+    if "--company" in argv:
+        i = argv.index("--company")
+        company = argv[i + 1]
+        del argv[i:i + 2]
     cmd = argv[0] if argv else "config"
-    cfg = build_config()
+    cfg = build_config(company)
     if "--reset-oos" in argv:
         cfg["resetOutOfStockLog"] = True
     if cmd == "config":
         print(json.dumps(cfg, ensure_ascii=False, indent=1))
         return
 
-    import tools_bc as t  # can .env cua python/
+    import tools_bc as t  # can .env cua python/; --company NWV-DAKAO doi company
 
-    if cmd == "apply":
+    if cmd == "partners":
+        # Vendor MAROU trong Dakao, customer DAKAO trong Marou. Company nao thi doi tac nay.
+        body = {"vendor": VENDOR_MAROU} if company == DAKAO else {"customer": CUSTOMER_DAKAO}
+        print(t.ws("EnsurePartners", {"configJson": json.dumps(body, ensure_ascii=False)}, service="NWVDemoIntercompany"))
+    elif cmd == "apply":
         res = t.ws("Apply", {"configJson": json.dumps(cfg, ensure_ascii=False)}, service="NWVDemoReplenSetup")
         print("so thay doi:", res["changes"])
         for e in res["log"]:

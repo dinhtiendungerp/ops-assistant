@@ -75,7 +75,7 @@ ACTION_LABELS = {
     "ask_explanation": "Hỏi giải trình", "confirm_exception": "Kết luận là có vi phạm",
     "dismiss_exception": "Bỏ qua exception", "inv_steps": "Xem tôi đã tra gì",
     "inv_apply": "Áp dụng đề xuất từ điều tra", "review_detail": "Xem chi tiết chấm điểm",
-    "ih_propose": "Đề xuất xử lý tồn", "ih_transfer_fast": "Chuyển sang cửa hàng bán nhanh",
+    "ih_propose": "Đề xuất xử lý tồn", "ih_transfer_fast": "Phương án cho lô cận date", "ih_d4_apply": "Ghi đề xuất theo phương án",
     "plan_steps": "Xem tôi đã tra gì", "plan_apply": "Ghi đề xuất vào BC",
     "plan_ok": "Trả lời đúng", "plan_bad": "Chưa đúng", "plan_model": "Hỏi lại bằng model",
     "lad_approve": "Duyệt việc đổi ngưỡng", "lad_reject": "Từ chối", "lad_evidence": "Giải thích cho trợ lý",
@@ -102,7 +102,10 @@ HELP = caidat.CAU_MAU_GOC["tro_giup"]["text"]
 
 
 class Assistant:
-    def __init__(self, client: Any, memory: Memory | None = None, users: list[dict[str, Any]] | None = None):
+    def __init__(self, client: Any, memory: Memory | None = None, users: list[dict[str, Any]] | None = None,
+                 cong_ty: str = ""):
+        # Company ma tro ly nay phuc vu (assistant/cong_ty.py). Rong la che do mot company nhu truoc 15/09/2026.
+        self.cong_ty = cong_ty or getattr(getattr(client, "s", None), "bc_company_name", "") or ""
         self.gw = BCGateway(client, central_wh=CENTRAL_WH)
         self.mem = memory or Memory(":memory:")
         self.mem.upsert_users(users or DEMO_USERS)
@@ -219,8 +222,20 @@ class Assistant:
             out = self._ls_vi_sao(user, intent, text)
         elif intent.intent == "PO_OVERDUE":
             out = po_qua_han.handle(self, user)
+        elif intent.intent == "NHAC_POST":
+            from .skills import nhac_post
+            out = nhac_post.handle(self, user, text)
         elif intent.intent == "EXPIRY":
             out = inventory_health.het_han(self, user, intent, text)
+        elif intent.intent == "ANOMALY":
+            from .skills import uc2_bat_thuong
+            out = uc2_bat_thuong.handle(self, user, intent, text)
+        elif intent.intent == "WASTE_WHY":
+            from .skills import uc2_nguyen_nhan
+            out = uc2_nguyen_nhan.handle(self, user, intent, text)
+        elif intent.intent == "WASTE_REPORT":
+            from .skills import uc2_bao_cao_huy
+            out = uc2_bao_cao_huy.handle(self, user, text)
         elif intent.intent == "FORECAST":
             out = du_bao.handle(self, user, intent, text)
         elif intent.intent == "SUPPLIER":
@@ -360,6 +375,9 @@ class Assistant:
             return self._deliver(inventory_health.on_propose(self, user, ref, payload.get("action_type", "ReviewOnly")))
         if verb == "ih_transfer_fast":
             return self._deliver(inventory_health.on_transfer_fast(self, user, ref))
+        if verb == "ih_d4_apply":
+            from .skills import uc2_hanh_dong
+            return self._deliver(uc2_hanh_dong.on_ap_dung(self, user, ref, payload.get("chon", "")))
         return self._deliver([Delivery(user_id, f"Chưa hỗ trợ hành động {verb}.")])
 
     @staticmethod
@@ -434,6 +452,12 @@ class Assistant:
             text = (f"Cửa hàng {user['store_code']}: {len(rows)} mặt hàng dưới ngưỡng ({', '.join(r['itemDescription'] for r in rows)}). "
                     f"{len(pend)} đề xuất đang chờ điều phối duyệt.") if rows or pend else f"Cửa hàng {user['store_code']} sáng nay đủ hàng."
             out = [Delivery(user_id, text)]
+            # UC2 S1: lo het han, can date tai cua hang minh, do AI tom tat (15/09/2026). Loi doc bang khong duoc lam hong brief.
+            try:
+                from .skills import uc2_tom_tat
+                out += uc2_tom_tat.brief_ai(self, user)
+            except Exception as exc:
+                log.warning("Brief bo qua tom tat UC2: %s", exc)
         elif role == "warehouse":
             open_tos = [t for t in self.gw._transfers.values() if not t["shipped"] and t["status"] != "Cancelled"] if self.gw.is_mock else []
             if open_tos:
@@ -475,6 +499,10 @@ class Assistant:
                 if attempts >= 2 and f["escalate_user"]:
                     out.append(Delivery(f["escalate_user"], f"{f['ref']} đã nhắc kho {attempts} lần vẫn chưa ship. Bạn can thiệp giúp.", skill="replenishment", ref=f["ref"]))
                 self.mem.update_followup(f["id"], attempts=attempts, due_at=(now + timedelta(hours=6)).isoformat())
+            elif f["kind"] == "write_off_post":
+                # UC2 A3: chung tu huy nhap da duoc ke toan post chua (16/09/2026).
+                from .skills import uc2_huy
+                out += uc2_huy.theo_doi(self, f)
             elif f["kind"] == "transfer_receive":
                 t = self.gw.transfer(f["ref"])
                 if t and t["received"]:

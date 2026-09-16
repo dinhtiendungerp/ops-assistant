@@ -20,7 +20,7 @@ def line_card(r: dict[str, Any]) -> Card:
              ("Days of cover", str(r["daysOfCover"])), ("Hạn dùng", f"{r.get('expirationDate', '')} ({r.get('daysToExpiry')} ngày)")]
     actions = [Action("ih_propose", label, "positive", payload={"action_type": act})]
     if r["tier"] == "NearExpiry":
-        actions.append(Action("ih_transfer_fast", "Chuyển sang store bán nhanh"))
+        actions.append(Action("ih_transfer_fast", "Phương án xử lý"))
     return Card(title=f"{r['itemDescription']}: {r['riskReason']}", facts=facts, ref=r["id"], kind="info", actions=actions,
                 links=links_lo(r))
 
@@ -33,12 +33,12 @@ def links_lo(r: dict) -> list[tuple[str, str]]:
 
 
 def brief_for_supply_chain(asst, user) -> list[Delivery]:
-    rows = asst.gw.health_lines(60, 8)
-    if not rows:
+    """S1 (15/09/2026): the tom tat do AI viet len dau (3 viec quan trong nhat, ly do, nho ly do tu choi gan day), roi the tung
+    dong nhu truoc. Tat AI thi the tom tat do code ghep, van cung hinh."""
+    from . import uc2_tom_tat
+    out = uc2_tom_tat.brief_ai(asst, user)
+    if not out:
         return [Delivery(user["user_id"], "Không có dòng tồn kho nào vượt ngưỡng.", skill=SKILL)]
-    out = [Delivery(user["user_id"], f"{len(rows)} dòng tồn kho cần xử lý, xếp theo mức rủi ro:", skill=SKILL)]
-    for r in rows:
-        out.append(Delivery(user["user_id"], r["itemDescription"], line_card(r), SKILL, r["id"]))
     return out
 
 
@@ -82,26 +82,32 @@ def het_han(asst, user, intent, text: str) -> list[Delivery]:
     return out
 
 
-def on_propose(asst, user, line_id: str, action_type: str, to_loc: str = "") -> list[Delivery]:
+def on_propose(asst, user, line_id: str, action_type: str, to_loc: str = "", quantity: float | None = None,
+               ref: str | None = None, rationale: str | None = None) -> list[Delivery]:
+    """Ghi mot de xuat tu dong Inventory Health. `quantity`, `ref`, `rationale` do D4 (uc2_hanh_dong) truyen khi de xuat
+    MOT PHAN lo: chuyen vua du ban truoc han, phan con lai giam gia; moi phan mot khoa rieng de khong bi coi la trung."""
     r = asst.gw.client.get("inventoryHealthLines", line_id)
-    ref = f"{r['itemNo']}|{r['locationCode']}|{r.get('lotNo', '')}"
+    ref = ref or f"{r['itemNo']}|{r['locationCode']}|{r.get('lotNo', '')}"
     # So voi ca BC lan bo nho tro ly, xem `gw.de_xuat_dang_co`.
     # Khoa trung la item x kho x LO. Truoc day bo nho chi so item x kho, nen de xuat huy lo thu hai cua cung mat hang
     # tai cung kho bi chan nham.
     if ref in asst.gw.de_xuat_dang_co() or any(
             p["status"] == "Proposed" and p.get("channel_ref") == ref for p in asst.mem.proposals("Proposed")):
         return [Delivery(user["user_id"], "Đã có đề xuất đang chờ cho dòng này, tôi không ghi thêm bản nữa.", skill=SKILL)]
-    rationale = asst.write_rationale(f"{r['tier']}: {r['riskReason']} Tồn {fmt_qty(r['quantityOnHand'])}, giá trị {fmt_vnd(r['inventoryValue'])}.")
+    ton = float(r["quantityOnHand"] or 0)
+    qty = float(quantity) if quantity is not None else (ton if action_type in ("Transfer", "WriteOff") else 0.0)
+    don_gia = float(r["inventoryValue"]) / ton if ton else 0.0
+    rationale = rationale or asst.write_rationale(f"{r['tier']}: {r['riskReason']} Tồn {fmt_qty(ton)}, giá trị {fmt_vnd(r['inventoryValue'])}.")
     created = asst.gw.create_proposal(scenario="InventoryHealth", action_type=action_type, item_no=r["itemNo"], from_loc=r["locationCode"],
-                                      to_loc=to_loc, quantity=float(r["quantityOnHand"]) if action_type in ("Transfer", "WriteOff") else 0,
+                                      to_loc=to_loc, quantity=qty,
                                       reference_key=ref, rationale=rationale, priority=int(r["riskScore"]),
                                       evidence={k: r[k] for k in ("quantityOnHand", "daysOfCover", "daysToExpiry", "daysSinceLastSale", "inventoryValue", "riskScore")},
                                       run_id=asst.run_id, model_name=asst.model_name, lot_no=r.get("lotNo", ""))
     prop = {"proposal_id": created.get("proposalId") or str(uuid.uuid4()), "bc_id": created["id"], "scenario": "InventoryHealth",
             "action_type": action_type, "status": "Proposed", "item_no": r["itemNo"], "from_loc": r["locationCode"], "to_loc": to_loc,
-            "quantity": created.get("quantity", 0), "max_quantity": r["quantityOnHand"], "rationale": rationale, "evidence": {},
+            "quantity": created.get("quantity", qty), "max_quantity": r["quantityOnHand"], "rationale": rationale, "evidence": {},
             "item_desc": r["itemDescription"], "requested_by": user["user_id"], "created_at": asst.mem.now().isoformat(),
-            "channel_ref": ref}
+            "channel_ref": ref, "value_vnd": round(qty * don_gia, 2), "item_category": r.get("itemCategoryCode", "")}
     decision = asst.policy.decide(prop)
     prop["policy_rule"] = decision.rule_code
     prop["policy_mode"] = decision.mode.value
@@ -140,14 +146,7 @@ def _bao_nguoi_duyet(asst, user, prop, r, decision) -> list[Delivery]:
 
 
 def on_transfer_fast(asst, user, line_id: str) -> list[Delivery]:
-    r = asst.gw.client.get("inventoryHealthLines", line_id)
-    if r.get("daysToExpiry", 0) <= 0:
-        return [Delivery(user["user_id"], "Lot này đã hết hạn, không chuyển được. Dùng Đề xuất hủy.", skill=SKILL)]
-    locs = [x for x in asst.gw.stock_by_location(r["itemNo"]) if x["locationCode"] not in (r["locationCode"], asst.gw.central_wh) and x["avgDaily"] > 0]
-    if not locs:
-        return [Delivery(user["user_id"], "Không có store nào đang bán mặt hàng này để chuyển sang.", skill=SKILL)]
-    best = max(locs, key=lambda x: x["avgDaily"])
-    days = r["daysToExpiry"]
-    sellable = best["avgDaily"] * days
-    return on_propose(asst, user, line_id, "Transfer", best["locationCode"]) + [
-        Delivery(user["user_id"], f"{best['locationCode']} bán {best['avgDaily']:.1f}/ngày, trong {days} ngày còn hạn bán được khoảng {fmt_qty(sellable)}. Đề xuất chuyển sang đó.", skill=SKILL)]
+    """Nut "Phuong an xu ly" tren the lo can date. Truoc 16/09/2026 nut nay de xuat chuyen CA TON LO sang cua hang ban nhanh
+    nhat, khong xet noi nhan co ban het truoc han khong. Gio la D4: code tinh tung phuong an, model so sanh, nguoi chon."""
+    from . import uc2_hanh_dong
+    return uc2_hanh_dong.on_goi_y(asst, user, line_id)

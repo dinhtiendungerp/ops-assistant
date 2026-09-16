@@ -63,6 +63,12 @@
   #srcbar .seg button { border:0; background:transparent; padding:6px 14px; font-size:12.5px; color:var(--ink); }
   #srcbar .seg button.on { background:var(--red); color:#fff; font-weight:600; }
   #srcbar .seg button:disabled { opacity:.5; }
+  /* Company: nguoi lam hai company thay hai nut, nguoi chi mot company thay mot nhan co dinh */
+  #congty { display:flex; align-items:center; gap:6px; }
+  #congty .ct { border:1px solid rgba(0,0,0,.18); background:#fff; color:var(--ink); border-radius:999px;
+                padding:4px 12px; font-size:12.5px; cursor:pointer; white-space:nowrap; }
+  #congty .ct.on { background:var(--ink); color:#fff; border-color:var(--ink); font-weight:600; }
+  #congty .ct.co-dinh { cursor:default; }
 
   /* ---------- left nav ---------- */
   #nav { background:var(--panel); border-right:1px solid var(--line); padding:14px 16px 20px; overflow:auto; }
@@ -236,7 +242,7 @@
   .facts { display:grid; grid-template-columns:auto 1fr; gap:6px 18px; font-size:13.5px; margin:12px 0 4px; }
   .facts .k { color:var(--muted); }
   .facts .v { font-weight:500; }
-  .card .prose { white-space:pre-wrap; margin:10px 0 4px; }
+  .card .prose { white-space:pre-wrap; margin:10px 0 4px; overflow-wrap:anywhere; }   /* link BC dai trong the email khong keo tran ngang */
   .actions { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:14px; }
   .actions.stack { flex-direction:column; flex-wrap:nowrap; align-items:stretch; gap:12px; }
   .actions.stack .inputs { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }
@@ -442,7 +448,7 @@
 
 <div id="loibar"><span id="loitext"></span><button class="x" onclick="anLoi()" title="Đóng">×</button></div>
 
-<div id="srcbar" class="mock"><span id="srctext">Đang đọc nguồn nào…</span>
+<div id="srcbar" class="mock"><span id="congty"></span><span id="srctext">Đang đọc nguồn nào…</span>
   <span class="seg">
     <button id="segMock" onclick="setMode('mock')">Dữ liệu mô phỏng</button>
     <button id="segLive" onclick="setMode('live')">Business Central</button>
@@ -552,6 +558,10 @@
         <button class="btn" onclick="post('/api/brief_all')">Brief sáng cho mọi người</button>
         <button class="btn" onclick="post('/api/self_review',{user:me,text:''}).then(poll)">Trợ lý tự chấm điểm</button>
         <button class="btn" onclick="post('/api/kpi',{user:me,text:''}).then(poll)">Baseline và kết quả</button>
+        <button class="btn" title="Chạy ngay vòng nhắc post nhận hàng như lịch 8 giờ sáng: nhắc qua chat và gửi email"
+                onclick="post('/api/nhac-post',{user:me}).then(poll)">Chạy nhắc post ngay</button>
+        <button class="btn" onclick="post('/api/quet-uc2',{user:me, chay_lai:true}).then(poll)" title="UC2 A2: đề xuất hủy lô hết hạn, phương án lô cận date, brief cho từng vai, nhắc đề xuất chờ, kiểm chứng từ hủy đã post chưa">Chạy quét sáng UC2 ngay</button>
+        <button class="btn" onclick="post('/api/demo/post-huy',{user:me}).then(poll)" title="Chỉ mô phỏng: giả lập kế toán đã post các dòng Item Journal hủy, để thấy trợ lý đóng việc">Giả lập kế toán post chứng từ hủy</button>
         <button class="btn" onclick="post('/api/reset').then(()=>{lastId={};location.reload()})">Reset</button>
       </div>
       <h4>Chế độ đang chạy</h4>
@@ -565,6 +575,45 @@
 
 <script>
 let me = null, users = [], lastId = {}, tab = 'chat';
+// Company dang lam viec (NWV-MAROU hoac NWV-DAKAO). Moi lenh goi may chu tu gan header X-Cong-Ty, nen khong
+// ham nao phia duoi phai nho truyen company. Lua chon nho theo tung nguoi dung trong trinh duyet.
+let congTy = '', congTyDuoc = [];
+const _fetchGoc = window.fetch.bind(window);
+window.fetch = (url, opt = {}) => {
+  if (typeof url === 'string' && url.startsWith('/') && congTy) {
+    opt = {...opt, headers: {...(opt.headers || {}), 'X-Cong-Ty': congTy}};
+  }
+  return _fetchGoc(url, opt);
+};
+function nhoCongTy(uid, ten) { try { localStorage.setItem('congTy:' + uid, ten); } catch (e) {} }
+function congTyDaNho(uid) { try { return localStorage.getItem('congTy:' + uid) || ''; } catch (e) { return ''; } }
+async function taiCongTy() {
+  if (!me) return;
+  const d = await (await _fetchGoc('/api/cong-ty?user=' + encodeURIComponent(me))).json();
+  congTyDuoc = d.duoc || [];
+  const nho = congTyDaNho(me);
+  congTy = congTyDuoc.some(c => c.ten === nho) ? nho : d.dang_chon;
+  veCongTy();
+}
+function veCongTy() {
+  const el = $('#congty'); if (!el) return;
+  if (congTyDuoc.length <= 1) {
+    const c = congTyDuoc[0];
+    el.innerHTML = c ? `<span class="ct on co-dinh" title="${esc(c.mo_ta)}">${esc(c.day_du)}</span>` : '';
+    return;
+  }
+  el.innerHTML = congTyDuoc.map(c => `<button class="ct ${c.ten === congTy ? 'on' : ''}" title="${esc(c.mo_ta)}"
+    onclick="doiCongTy('${c.ten}')">${esc(c.day_du)}</button>`).join('');
+}
+async function doiCongTy(ten) {
+  if (ten === congTy) return;
+  congTy = ten; nhoCongTy(me, ten); veCongTy();
+  // Moi company mot hoi thoai, mot bo de xuat: xoa man hinh roi tai lai theo company moi.
+  lastId = {}; $('#chat').innerHTML = ''; daTaiHopThu = false; uc2Sum = null; uc1 = null;
+  veHero(); taiDoanChat(); poll();
+  if (tab === 'uc2') loadUC2(); else if (tab === 'uc1') loadUC1?.(); else if (tab === 'uc3') loadUC3?.();
+  baoOk('Đang làm việc ở ' + (congTyDuoc.find(c => c.ten === ten)?.day_du || ten) + '.');
+}
 // `sau` la chi so cua kich ban phai chay truoc. Kich ban 220 khach la cau noi tiep cua tiec
 // 150 khach: bam thang vao no ma chua co ke hoach truoc thi tro ly tra loi khong hieu, nen o
 // day tu chay cai truoc roi moi chay cai sau.
@@ -586,6 +635,11 @@ const POC = [
   {ten: "Kho hỏi hàng hết hạn", ai: "hung.dieuphoi", text: "có mặt hàng nào đã hết hạn chưa"},
   {ten: "Truy xuất lô bánh quá hạn", ai: "hung.dieuphoi", text: "truy xuất lô L260908-33170B"},
   {ten: "Nhà cung cấp hay giao trễ", ai: "trang.sc", text: "nhà cung cấp nào hay giao trễ"},
+  {ten: "PO quá hạn, hỏi cửa hàng", ai: "trang.sc", text: "PO nào quá hạn chưa nhận"},
+  {ten: "Gửi mail nhắc post nhận hàng", ai: "trang.sc", text: "gửi mail nhắc post nhận hàng", sau: 7},
+  {ten: "Có gì bất thường trong sổ kho", ai: "trang.sc", text: "có gì bất thường trong 28 ngày qua không"},
+  {ten: "Vì sao hủy nhiều", ai: "trang.sc", text: "vì sao Chocolate cake hủy nhiều"},
+  {ten: "Báo cáo tuần hàng hủy", ai: "trang.sc", text: "báo cáo tuần hàng hủy"},
 ];
 let scnChon = "";        // "quick:1" hoac "ladder:0", de to dung cai vua bam
 const ROLE_VI = {store_manager:"Quản lý cửa hàng", dispatcher:"Điều phối kho", warehouse:"Kho trung tâm", supply_chain:"Supply Chain", retail_ops:"Retail Ops", admin:"Quản trị hệ thống"};
@@ -687,7 +741,9 @@ function switchUser(id) {
   // man hinh cua nguoi truoc de lai.
   if (tab !== 'chat') showTab('chat');
   me = id; lastId[me] = 0; nenTin[id] = tinRa[id] || 0;
-  $('#chat').innerHTML = ''; daTaiHopThu = false; veHero(); taiDoanChat();
+  $('#chat').innerHTML = ''; daTaiHopThu = false;
+  // Company phai chot truoc khi tai hop thu: hop thu cua Dakao va cua Marou la hai hop thu khac nhau.
+  taiCongTy().then(() => { veHero(); taiDoanChat(); poll(); });
   const u = users.find(x=>x.user_id===id) || {display_name:id, role:''};
   $('#who').textContent = u.display_name.replace(/\s*\(.*\)/,'');
   $('#whorole').textContent = (ROLE_VI[u.role]||u.role) + (u.store_code ? ' · ' + u.store_code : '');
@@ -763,6 +819,7 @@ async function setMode(bc) {
 const NGUON_SKILL = {
   du_bao: 'bảng NWV Forecast Accuracy',
   nha_cung_cap: 'bảng NWV Supplier Scorecard', po_qua_han: 'Purchase Line',
+  nhac_post: 'Purchase Line; email lưu trong sổ thư đi của trợ lý',
   truy_xuat: 'Item Ledger Entry của lô',
   khuyen_mai: 'Periodic Discount và Planned Event của LS',
   ls_giai_thich: 'journal và nhật ký tính của LS Replenishment',
@@ -1023,7 +1080,7 @@ async function act(verb, ref, mid, inputName, payload) {
   if (inputName) { const el = document.getElementById(`in-${mid}-${verb}`); const v = el ? el.value : ''; if (!v && inputName !== 'reason') { alert('Nhập ' + (INPUT[inputName]||inputName)); return; } payload[inputName] = v; }
   const nut = document.querySelectorAll(`#act-${mid} button`);
   nut.forEach(b => b.disabled = true);
-  const GHI_VAO_BC = ['approve', 'edit', 'reject', 'lad_approve', 'plan_apply', 'inv_apply', 'ih_propose', 'ih_transfer_fast'];
+  const GHI_VAO_BC = ['approve', 'edit', 'reject', 'lad_approve', 'plan_apply', 'inv_apply', 'ih_propose', 'ih_d4_apply'];
   if (GHI_VAO_BC.includes(verb)) dangXuLy('Đang ghi vào Business Central…');
   try {
     const r = await post('/api/action', {user: me, verb, ref, payload});
@@ -1388,7 +1445,8 @@ const so = n => (n ?? 0).toLocaleString('vi-VN');
 const usd = n => '$' + (n ?? 0).toFixed(n >= 1 ? 2 : (n >= 0.01 ? 4 : 6));
 const gia = n => '$' + (n ?? 0).toFixed(2);        // don gia cong bo, luon hai chu so
 const VIEC = {nlu:'Hiểu câu người dùng', rationale:'Viết lại câu trả lời', planner:'Tự dựng chuỗi tra cứu',
-              evidence:'Đọc câu giải trình', agent:'Vòng lặp agent'};
+              evidence:'Đọc câu giải trình', agent:'Vòng lặp agent', brief:'Viết brief sức khỏe tồn kho',
+              giai_thich_lo:'Giải thích lô bằng lời', d4:'Chọn phương án cho lô cận date', bien_ban:'Soạn biên bản hủy', d3:'Xếp tín hiệu bất thường', d2:'Kết luận nguyên nhân hủy', bao_cao_huy:'Viết báo cáo tuần hàng hủy', thu:'Soạn email nhắc post'};
 
 async function lamMoi() {
   const b = $('#btnLamMoi');
@@ -1672,6 +1730,8 @@ async function openTrace(id) {
       <div><h1>${esc(L.itemDescription)}</h1><div class="code">${esc(L.locationCode)} · ${esc(L.lotNo || 'không có lô')}</div>
         <div style="margin-top:8px"><span class="pill ${L.tier==='Expired'||L.tier==='NearExpiry'?'bad':(L.tier==='Healthy'?'ok':'shadow')}">! ${esc(badge)}</span></div></div>
       <div class="kv"><div><small>Kho</small>${esc(L.locationCode)}</div><div><small>Mã lô</small>${esc(L.lotNo||'—')}</div><div><small>Mặt hàng</small>${esc(L.itemNo)}</div></div></div>
+    <div class="sec" id="giaithich"><h2>Nói bằng lời <small>trợ lý tóm tắt từ các con số bên dưới</small></h2><div class="hint">Đang soạn…</div></div>
+    ${L.tier === 'NearExpiry' && L.daysToExpiry >= 0 ? '<div class="sec" id="phuongan"><h2>Phương án xử lý <small>code tính từng phương án, trợ lý so sánh và chọn</small></h2><div class="hint">Đang tính…</div></div>' : ''}
     <div class="sec"><h2>Nguồn số liệu</h2>
       <table class="grid"><thead><tr><th style="width:200px">Chỉ tiêu</th><th style="width:160px">Giá trị</th><th>Cách xác định</th></tr></thead><tbody>
       ${d.calc.map(c => `<tr><td>${esc(c.label)}</td><td><b>${esc(c.value)}</b></td><td class="hint">${esc(c.formula)}</td></tr>`).join('')}</tbody></table></div>
@@ -1689,6 +1749,40 @@ async function openTrace(id) {
     <div class="sec" id="hanhtrinh"></div>`;
   $('#view').scrollTo({top:0, behavior:'smooth'});
   if (L.lotNo) veHanhTrinh(L.lotNo);
+  veGiaiThich(id);
+  if ($('#phuongan')) vePhuongAn(id);
+}
+// UC2 D4: bang phuong an cho lo can date. So do server tinh; model chi chon va giai thich. Ghi de xuat thi qua the trong Tro chuyen.
+async function vePhuongAn(id) {
+  try {
+    const g = await (await fetch('/api/uc2/phuong-an?line_id=' + encodeURIComponent(id))).json();
+    const el = $('#phuongan'); if (!el) return;
+    const pa = g.phan_tich.phuong_an, pt = g.phan_tich;
+    const mo = (k, v) => k === 'giu' ? `bán được ${v.ban_duoc_truoc_han}, dư ${v.du_den_han} (${v.gia_tri_phan_du})`
+      : (k === 'chuyen' || k === 'chuyen_giam_gia') ? 'chuyển ' + v.chuyen.map(x => `${x.so_luong} sang ${x.den} (bán ${x.ban_binh_quan_ngay}/ngày)`).join(', ') + `, cứu ${v.gia_tri_cuu_duoc}, dư ${v.du_sau_chuyen}` + (k === 'chuyen_giam_gia' ? ' giảm giá' : '')
+      : k === 'giam_gia' ? `${v.so_luong} cái, giá trị ${v.gia_tri_rui_ro}, mức giảm do người duyệt đặt` : `${v.so_luong} cái, mất ${v.gia_tri_mat}`;
+    el.innerHTML = `<h2>Phương án xử lý <small>code tính từng phương án, trợ lý so sánh và chọn</small></h2>
+      <div class="hint" style="margin-bottom:8px">Tại ${esc(pt.dia_diem)} bán ${pt.ban_binh_quan_ngay_tai_cho}/ngày, còn ${pt.con_ngay_den_han} ngày; nơi nhận trừ ${pt.ngay_van_chuyen} ngày vận chuyển và tồn sẵn của họ${pt.noi_nhan.length ? ': ' + pt.noi_nhan.map(x => `${esc(x.dia_diem)} nhận tối đa ${x.nhan_duoc_toi_da} (bán ${x.ban_binh_quan_ngay}/ngày, tồn ${x.ton_hien_co})`).join('; ') : '; không cửa hàng nào còn chỗ'}.</div>
+      <table class="grid" style="max-width:860px"><thead><tr><th style="width:280px">Phương án</th><th>Con số</th></tr></thead><tbody>
+      ${Object.entries(pa).map(([k, v]) => `<tr class="${k === g.chon ? 'hit' : ''}"><td>${k === g.chon ? '→ ' : ''}${esc(v.ten)}</td><td>${esc(mo(k, v))}</td></tr>`).join('')}</tbody></table>
+      <p style="font-size:15px;line-height:1.6;margin:10px 0 6px;max-width:860px">${esc(g.vi_sao || '')}</p>
+      <div class="hint">Người soạn: ${esc(g.nguoi_soan || '')}${g.nho_lai ? ' (đã soạn trước, dùng lại)' : ''}. Ghi đề xuất theo phương án: mở Trò chuyện, bấm "Phương án xử lý" trên thẻ lô.</div>`;
+  } catch (e) {
+    if ($('#phuongan')) $('#phuongan').innerHTML = `<h2>Phương án xử lý</h2><div class="hint">Không tính được: ${esc(String(e))}</div>`;
+  }
+}
+// UC2 S2: doan loi thuong ve lo. Model viet tu dung con so cua trang nay; so nao khong co trong bang thi server thay bang cau mau.
+async function veGiaiThich(id) {
+  const el = $('#giaithich'); if (!el) return;
+  try {
+    const g = await (await fetch('/api/uc2/giai-thich?line_id=' + encodeURIComponent(id))).json();
+    if (!$('#giaithich')) return;
+    $('#giaithich').innerHTML = `<h2>Nói bằng lời <small>trợ lý tóm tắt từ các con số bên dưới</small></h2>
+      <p style="font-size:15px;line-height:1.6;margin:0 0 6px;max-width:860px">${esc(g.doan || '')}</p>
+      <div class="hint">Người soạn: ${esc(g.nguoi_soan || '')}${g.nho_lai ? ' (đã soạn trước, dùng lại)' : ''}. Mọi con số trong đoạn được đối chiếu với bảng Nguồn số liệu; có số lạ thì thay bằng câu mẫu.</div>`;
+  } catch (e) {
+    if ($('#giaithich')) $('#giaithich').innerHTML = `<h2>Nói bằng lời</h2><div class="hint">Không soạn được: ${esc(String(e))}</div>`;
+  }
 }
 // UC2 truy xuat: moi dong Item Ledger Entry cua lo, gom theo dia diem. Cung du lieu voi cau "truy xuat lo ..." trong chat.
 async function veHanhTrinh(lot) {

@@ -39,8 +39,28 @@ page 70204 "NWV Location API"
                 field(requireReceive; Rec."Require Receive") { }
                 field(requireShipment; Rec."Require Shipment") { }
                 field(requirePutAway; Rec."Require Put-away") { }
+                // Vai tro theo LS Central (codeunit NWV Location Role): tro ly doc o day, khong doan theo ma dia diem.
+                field(isStore; IsStore) { }
+                field(storeNo; StoreNo) { }
+                field(isWarehouse; IsWarehouse) { }
+                field(isCentralWarehouse; IsCentralWarehouse) { }
                 field(lastModifiedDateTime; Rec.SystemModifiedAt) { }
             }
         }
     }
+
+    var
+        LocationRole: Codeunit "NWV Location Role";
+        IsStore: Boolean;
+        IsWarehouse: Boolean;
+        IsCentralWarehouse: Boolean;
+        StoreNo: Code[10];
+
+    trigger OnAfterGetRecord()
+    begin
+        IsStore := LocationRole.IsStore(Rec.Code);
+        StoreNo := LocationRole.StoreNo(Rec.Code);
+        IsWarehouse := LocationRole.IsWarehouse(Rec.Code);
+        IsCentralWarehouse := (Rec.Code <> '') and (Rec.Code = LocationRole.CentralWarehouse());
+    end;
 }

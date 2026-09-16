@@ -43,6 +43,12 @@ table 70102 "NWV Agent Proposal"
             Caption = 'Quantity';
             DecimalPlaces = 0 : 5;
         }
+        field(16; "Vendor No."; Code[20])
+        {
+            Caption = 'Vendor No.';
+            TableRelation = Vendor;
+            ToolTip = 'Vendor for a Purchase proposal (Dakao buys directly from Marou). Empty for other action types.';
+        }
         field(15; "Reference Key"; Text[100])
         {
             Caption = 'Reference Key';
@@ -129,6 +135,8 @@ enum 70103 "NWV Proposal Action"
     value(5; AuditNote) { Caption = 'Audit Note'; }
     value(6; "Escalate") { Caption = 'Escalate'; }
     value(7; AdjustParameter) { Caption = 'Adjust Parameter'; }
+    // 15/09/2026: Dakao mua thang tu Marou (vendor MAROU), giao toi cua hang. Duyet thi tao Purchase Order trang thai Open.
+    value(8; "Purchase") { Caption = 'Purchase'; }
 }
 
 enum 70104 "NWV Proposal Status"

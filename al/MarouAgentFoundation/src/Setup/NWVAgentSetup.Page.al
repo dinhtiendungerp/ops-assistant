@@ -14,7 +14,7 @@ page 70100 "NWV Agent Setup"
         {
             group(InventoryHealth)
             {
-                Caption = 'Inventory Health';
+                Caption = 'Inventory Health (UC2)';
                 field("Sales History Days"; Rec."Sales History Days") { }
                 field("Stock-out Risk Days"; Rec."Stock-out Risk Days") { }
                 field("Excess Days"; Rec."Excess Days") { }
@@ -24,14 +24,25 @@ page 70100 "NWV Agent Setup"
             }
             group(Locations)
             {
-                Caption = 'Dia diem';
-                // De xuat bo sung cua hang lay tu LS Replenishment (template MAROU-TO), khong con nguong o day.
-                field("Central Warehouse Code"; Rec."Central Warehouse Code") { }
-                field("Store Location Filter"; Rec."Store Location Filter") { }
+                Caption = 'Locations (from LS Central)';
+                // Read-only: stores and warehouses come from LSC Store, LSC Store Location and LSC Replen. Setup
+                // (codeunit NWV Location Role). Nothing to type here; change them on the LS pages.
+                field(CentralWarehouse; CentralWarehouse)
+                {
+                    Caption = 'Central Warehouse';
+                    Editable = false;
+                    ToolTip = 'Default Central Warehouse from LSC Replen. Setup. Demand at a warehouse is measured as total outflow. Change it on the Replenishment Setup page.';
+                }
+                field(StoreLocations; StoreLocations)
+                {
+                    Caption = 'Store Locations';
+                    Editable = false;
+                    ToolTip = 'Number of locations linked to a store through LSC Store (Location Code) or LSC Store Location. Only these locations are measured for forecast accuracy.';
+                }
             }
             group(DiscountGovernance)
             {
-                Caption = 'Discount Governance';
+                Caption = 'Discount Governance (UC7)';
                 field("Max Manual Discount %"; Rec."Max Manual Discount %") { }
                 field("Manual Disc. Share Warn %"; Rec."Manual Disc. Share Warn %") { }
                 field("Repeat Discount Count"; Rec."Repeat Discount Count") { }
@@ -56,6 +67,14 @@ page 70100 "NWV Agent Setup"
                 field("Supplier History Days"; Rec."Supplier History Days") { }
                 field("Last Supplier Scorecard Run"; Rec."Last Supplier Scorecard Run") { }
             }
+            group(WriteOff)
+            {
+                Caption = 'Write-off Drafts (UC2)';
+                InstructionalText = 'Approving a Write-off proposal creates an unposted Item Journal line in this batch, with lot number and reason code. Accounting reviews and posts it; the agent never posts.';
+                field("Write-off Jnl. Template"; Rec."Write-off Jnl. Template") { }
+                field("Write-off Jnl. Batch"; Rec."Write-off Jnl. Batch") { }
+                field("Write-off Reason Code"; Rec."Write-off Reason Code") { }
+            }
             group(Agent)
             {
                 Caption = 'Agent';
@@ -73,7 +92,7 @@ page 70100 "NWV Agent Setup"
                 Caption = 'Run Inventory Health';
                 ApplicationArea = All;
                 Image = Calculate;
-                ToolTip = 'Tinh lai bang NWV Inv. Health Line cho toan bo item/location.';
+                ToolTip = 'Recalculate NWV Inv. Health Line for every item and location as of the work date.';
                 trigger OnAction()
                 var
                     Calc: Codeunit "NWV Inv. Health Calc";
@@ -87,7 +106,7 @@ page 70100 "NWV Agent Setup"
                 Caption = 'Run Forecast Accuracy';
                 ApplicationArea = All;
                 Image = Calculate;
-                ToolTip = 'Tinh lai do chinh xac du bao baseline (UC1).';
+                ToolTip = 'Recalculate forecast accuracy (MA28, SWA8, Holt-Winters) and, when Publish LS Forecast is on, write the next days into LSC Forecast Entry.';
                 trigger OnAction()
                 var
                     Calc: Codeunit "NWV Forecast Accuracy Calc";
@@ -101,7 +120,7 @@ page 70100 "NWV Agent Setup"
                 Caption = 'Run Supplier Scorecard';
                 ApplicationArea = All;
                 Image = Calculate;
-                ToolTip = 'Tinh lai scorecard nha cung cap (UC3).';
+                ToolTip = 'Recalculate the supplier scorecard (UC3) from posted purchase receipts.';
                 trigger OnAction()
                 var
                     Calc: Codeunit "NWV Supplier Scorecard Calc";
@@ -115,7 +134,7 @@ page 70100 "NWV Agent Setup"
                 Caption = 'Run Discount Governance';
                 ApplicationArea = All;
                 Image = Calculate;
-                ToolTip = 'Quet NWV POS Discount Log va tao exception.';
+                ToolTip = 'Scan NWV POS Discount Log and create discount exceptions.';
                 trigger OnAction()
                 var
                     Calc: Codeunit "NWV Discount Gov. Calc";
@@ -127,8 +146,16 @@ page 70100 "NWV Agent Setup"
         }
     }
 
+    var
+        CentralWarehouse: Code[10];
+        StoreLocations: Integer;
+
     trigger OnOpenPage()
+    var
+        LocationRole: Codeunit "NWV Location Role";
     begin
         Rec.GetRecordOnce();
+        CentralWarehouse := LocationRole.CentralWarehouse();
+        StoreLocations := LocationRole.StoreCount();
     end;
 }

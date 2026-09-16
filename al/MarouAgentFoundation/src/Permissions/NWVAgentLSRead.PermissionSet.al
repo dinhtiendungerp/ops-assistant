@@ -38,6 +38,7 @@ permissionset 70270 "NWV AGENT LS READ"
         tabledata "LSC Validation Period" = R,
         tabledata "LSC Store Price Group" = R,
         tabledata "LSC Store" = R,
+        tabledata "LSC Store Location" = R,
         tabledata "LSC Store Group" = R,
         tabledata Item = R,
         tabledata Location = R,
