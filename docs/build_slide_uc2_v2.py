@@ -240,45 +240,44 @@ vào NaviWorld ở mức dữ liệu.
 Con số cập nhật tới 16/09/2026: 34 API page chỉ đọc, hai company NWV-MAROU và NWV-DAKAO, app NWV Marou Agent 1.6.1.0.
 """)
 
-# ---- Hai company
-s = slide(pr, "KIẾN TRÚC · HAI ĐƠN VỊ", "Marou sản xuất và Dakao bán lẻ trên cùng một môi trường",
-          "Mỗi company một trợ lý riêng, dữ liệu và bộ nhớ tách biệt; hàng đi từ Marou thẳng tới từng cửa hàng.")
+# ---- Hai company, dat trong boi canh POC
+s = slide(pr, "BỐI CẢNH POC · HAI ĐƠN VỊ", "Hai đơn vị của Marou và ba điểm đau khảo sát nêu",
+          "Khảo sát 13/09/2026 nêu ba điểm đau ở kho bán lẻ. POC A (UC1, UC2, UC5) và POC D (trợ lý) diễn trên đúng hai đơn vị này.")
 the_ngang(s, [
     ("NWV-MAROU · sản xuất", ["Quản lý theo lô và hạn dùng",
-                              "Kho trung tâm W0003",
-                              "Đề xuất chuyển hàng nội bộ",
+                              "Kho W0003 giao thẳng tới cửa hàng",
+                              "Trợ lý: tồn kho theo lô, đề xuất chuyển nội bộ",
                               "Vai: kho, Supply Chain, điều phối"], NAVY),
-    ("Luồng hàng", ["LS Central tính nhu cầu từng cửa hàng",
-                    "Trợ lý ghi đề xuất loại Purchase",
-                    "Người duyệt bấm Duyệt: BC tạo Purchase Order",
-                    "Người mua bấm Gửi đơn: sang Marou thành Sales Order"], RED),
-    ("NWV-DAKAO · bán lẻ", ["Mua thẳng từ Marou, giao tới từng cửa hàng",
-                            "Không qua kho trung tâm của Dakao",
-                            "Hạn dùng suy từ đợt giao",
+    ("Khảo sát nêu, POC trả lời", ["Post nhận hàng trễ, thuê người ngoài: trợ lý báo, nhắc, post khi được duyệt",
+                    "Tự động hoá intercompany: đơn mua Dakao thành đơn bán Marou, không nhập lại",
+                    "Kết ca thiếu nguyên liệu: ngoài phạm vi POC này"], RED),
+    ("NWV-DAKAO · bán lẻ", ["Không quản lý lô; hạn dùng suy từ đợt giao",
+                            "LS Central tính nhu cầu, mua thẳng từ Marou",
+                            "Trợ lý: đứt hàng, dự báo, khuyến mãi, nhận hàng",
                             "Vai: quản lý cửa hàng, Retail Ops"], NAVY),
-], t=2.95, h=3.1)
-txt(s, 1.20, 6.35, 14.95, 0.5, "Đã chạy thật trọn vòng: đơn mua HO106201 ở Dakao, thành đơn bán S90014 bên Marou, xuất kho phiếu 102043, nhận hàng phiếu 107110.",
+], t=2.95, h=3.45)
+txt(s, 1.20, 6.55, 14.95, 0.45, "Đã chạy thật: đơn mua HO106201 (Dakao) thành đơn bán S90014 (Marou), xuất kho 102043, nhận hàng 107110.",
     20, True, NAVY)
-txt(s, 1.20, 6.95, 14.95, 1.1,
-    ["Intercompany chuẩn của Business Central: IC Partner hai chiều, tự gửi và tự nhận. Đơn bán sinh ra ở trạng thái chưa post; người kho Marou xuất hàng như đơn thường.",
-     "Người dùng chọn đơn vị ngay trên giao diện; thẻ và link mở đúng company trong Business Central."],
+txt(s, 1.20, 7.10, 14.95, 0.9,
+    ["Mỗi company một trợ lý riêng, dữ liệu và bộ nhớ tách biệt; người dùng chọn đơn vị ngay trên giao diện, thẻ và link mở đúng company.",
+     "Ranh giới giữ nguyên: trợ lý không tự gửi đơn, không tự post; mọi chứng từ sinh ra sau một cú bấm Duyệt của người Marou."],
     19, False, BODY, space=4)
-bang_nguon(s, "Trạng thái 16/09/2026. Dữ liệu hai company hiện là bản sao của bộ mô phỏng; dữ liệu bán lẻ riêng cho Dakao sẽ dựng ở bước sau.")
+bang_nguon(s, "Nguồn: khảo sát Marou 13/09/2026 và RFP 20/08/2026. Dữ liệu trình diễn do NaviWorld dựng trên danh mục của Marou.")
 note(s, """
-Giải thích vì sao có hai company: Marou là đơn vị sản xuất, có quản lý lô và hạn dùng. Dakao là đơn vị bán lẻ, không quản lý lô.
-Hàng đi từ Marou sang Dakao bằng nghiệp vụ mua bán giữa hai công ty, và anh Dũng đã chốt là giao thẳng tới từng cửa hàng chứ không
-qua kho trung tâm của Dakao.
+Slide này nối kiến trúc với đề bài. Khảo sát ngày 13/09 nêu ba điểm đau ở kho bán lẻ: (1) hàng mua về cửa hàng mà chứng từ dồn tới
+cuối tháng mới post receive, Marou đang thuê một nhân sự ngoài để post; (2) kết ca không đủ tồn nguyên liệu; (3) muốn tự động hoá
+intercompany giữa Marou và Dakao. RFP tháng 8 xếp UC1 dự báo, UC2 sức khỏe tồn kho, UC5 bổ sung cửa hàng vào POC A, và UC10 trợ lý vào POC D.
+Vì sao có hai company: Marou là đơn vị sản xuất, có quản lý lô và hạn dùng. Dakao là bán lẻ, không quản lý lô. Hàng đi từ Marou sang
+Dakao bằng nghiệp vụ mua bán giữa hai công ty, và anh Dũng đã chốt là giao thẳng tới từng cửa hàng chứ không qua kho trung tâm của Dakao.
 Điều này đổi cách trợ lý đề xuất: bên Marou là đề xuất chuyển hàng nội bộ (Transfer Order), bên Dakao là đề xuất đặt mua (Purchase Order)
 với nhà cung cấp là chính Marou. Số lượng vẫn do LS Central tính, trợ lý không tự tính lại.
-Bằng chứng đã chạy thật: đơn HO106199 trong company NWV-DAKAO.
-Tự động hóa hai chiều đã chạy: đây chính là vấn đề số 3 trong khảo sát của Marou. Dùng Intercompany chuẩn của Business Central,
-bật được vì hai company chung một môi trường. Người mua bấm "Gửi đơn sang Marou" trên thẻ; BC release đơn mua, đẩy sang hộp thư của
-company kia, và bên đó tự tạo Sales Order. Bằng chứng: đơn HO106200 bên Dakao thành S90013 bên Marou, khách hàng DAKAO, cùng mặt hàng
-và số lượng.
-Ranh giới vẫn giữ: trợ lý không tự bấm gửi, vì gửi kéo theo release đơn, đó là quyết định của người mua.
-Kho xuất hàng bên Marou đã chốt là W0003, gán trên khách hàng DAKAO nên mọi đơn bán liên công ty đều có sẵn địa điểm xuất.
-Chuyện tự động post hai đầu: anh Dũng đã chốt, và slide kịch bản 16 diễn chi tiết. Bên Marou không tự động gì cả; bên Dakao thì trợ lý
-báo và nhắc, còn việc post phiếu nhận chỉ xảy ra sau khi có người duyệt.
+Điểm (3) đã chạy: Intercompany chuẩn của Business Central, bật được vì hai company chung một môi trường. Người mua bấm "Gửi đơn sang
+Marou" trên thẻ; BC release đơn mua, đẩy sang company kia, bên đó tự tạo Sales Order. Trợ lý không tự bấm gửi vì gửi kéo theo release.
+Điểm (1) là kịch bản nhận hàng liên công ty ở cuối buổi: bên Marou không tự động gì; bên Dakao trợ lý báo khi hàng rời kho, nhắc hôm sau,
+và chỉ post phiếu nhận sau khi có người duyệt. Đây là loại đề xuất duy nhất mà duyệt làm BC post thật.
+Điểm (2) nói thẳng là chưa làm, để không bị hỏi bất ngờ.
+Bằng chứng đã chạy thật: HO106201 -> S90014 -> phiếu giao hàng 102043 -> phiếu nhận 107110 tại cửa hàng S0010.
+Nếu khách hỏi về dữ liệu: bộ trình diễn do NaviWorld dựng trên danh mục thật của Marou, chạy trên môi trường demo; không phải số vận hành.
 """)
 
 # ---- AI o dau
