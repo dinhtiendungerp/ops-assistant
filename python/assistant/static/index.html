@@ -656,72 +656,60 @@ const LADDER = [
 // don sang Marou -> Marou xuat kho -> tro ly bao nhan -> phieu nhan; xen giua la du bao (UC1) va khuyen mai noi sang LS (UC5).
 // Han dung (UC2) chi con mot canh, vi Dung 16/09 thay cac case lo va HSD chiem nhieu qua so voi bai toan ban le.
 const CHUONG = [
-  {ten: "1 · Nhìn toàn cảnh buổi sáng", buoc: [
-    {ten: "Sức khỏe tồn kho: bốn con số", loai: "tab", tab: "uc2", ai: "trang.sc", ct: "NWV-MAROU", uc: "UC2",
-     mo: "Số do lớp tính trong Business Central chạy, trợ lý chỉ đọc. Bấm một tầng để lọc; ngày chốt ở thẻ Chốt ngày 17/09/2026."},
-    {ten: "Brief sáng nay do AI viết", loai: "brief", ai: "trang.sc", ct: "NWV-MAROU", uc: "AI",
-     mo: "Thẻ ba việc quan trọng nhất: model chọn trong danh sách code đưa và nói vì sao; mọi chữ số phải có trong dữ liệu, sai là về câu mẫu. Mất khoảng 20 giây."},
+  {ten: "1 · Sáng nay ở Marou: sức khỏe tồn kho", buoc: [
+    {ten: "Sức khỏe tồn kho: bốn con số", y: "số do Business Central tính", loai: "tab", tab: "uc2", ai: "trang.sc", ct: "NWV-MAROU", uc: "UC2",
+     mo: "Lớp tính trong Business Central chạy theo ngày làm việc 17/09/2026, trợ lý chỉ đọc. Sáu tầng: quá hạn, cận date, rủi ro đứt hàng, chậm luân chuyển, tồn thừa, bình thường. Bấm một tầng để lọc."},
+    {ten: "Brief sáng nay do AI viết", y: "ba việc quan trọng nhất và vì sao", loai: "brief", ai: "trang.sc", ct: "NWV-MAROU", uc: "UC2 · AI",
+     mo: "Model chọn ba việc trong danh sách code đưa và nói vì sao; mọi chữ số phải có trong dữ liệu, sai là về câu mẫu. Mất khoảng 20 giây, phần lớn là đọc Business Central."},
   ]},
-  {ten: "2 · Cửa hàng hết hàng, LS tính, AI đề xuất", buoc: [
-    {ten: "Sắp hết Ice cream ở cửa hàng tôi", y: "Minh, cửa hàng Hà Nội, báo hết hàng", loai: "chat", ai: "minh.s0002", ct: "NWV-DAKAO", uc: "UC5", ghi_bc: true,
+  {ten: "2 · Một lô cận date: AI phân tích, chọn phương án", buoc: [
+    {ten: "Lô nào sắp hết hạn?", y: "36 lô cận date, thẻ Choco pillar S0010", loai: "chat", ai: "trang.sc", ct: "NWV-MAROU", uc: "UC2",
+     text: "lô nào sắp hết hạn",
+     mo: "Trợ lý đọc thẳng bảng, chia theo địa điểm, 5 lô giá trị lớn nhất thành thẻ. Thẻ Choco pillar S0010: 470 cái, 26 ngày, bán không kịp, có nút Phương án xử lý."},
+    {ten: "Phương án xử lý cho Choco pillar", y: "code tính 5 phương án, AI chọn và giải thích", loai: "huong_dan", ai: "trang.sc", ct: "NWV-MAROU", uc: "UC2 → UC5 · AI", can_ai: true,
+     mo: "Trên thẻ Choco pillar bấm Phương án xử lý. Code tính giữ, chuyển, chuyển kèm giảm giá, giảm giá, hủy kèm giá trị cứu được; model chọn chuyển 199 sang S0001 vì bên đó bán nhanh hơn và nói vì sao. Bấm nút ghi đề xuất."},
+    {ten: "Hùng duyệt chuyển hàng", y: "Business Central tạo Transfer Order", loai: "huong_dan", ai: "hung.dieuphoi", ct: "NWV-MAROU", uc: "UC2", ghi_bc: true,
+     mo: "Hộp thư Hùng có thẻ đề xuất chuyển 199 Choco pillar S0010 sang S0001. Bấm Duyệt chuyển hàng: BC tạo Transfer Order Open, thẻ có link mở. Trợ lý không có đường tắt ghi thẳng chứng từ."},
+  ]},
+  {ten: "3 · Cửa hàng bán lẻ hết hàng: LS tính, AI đề xuất", buoc: [
+    {ten: "Sắp hết Ice cream ở cửa hàng tôi", y: "Minh, cửa hàng Hà Nội, báo bằng một câu", loai: "chat", ai: "minh.s0002", ct: "NWV-DAKAO", uc: "UC5", ghi_bc: true,
      text: "sắp hết Ice cream ở cửa hàng tôi",
      mo: "LS Replenishment đã tính 12 (min-max 8/20). Trợ lý ghi đề xuất đặt mua từ Marou giao thẳng cửa hàng và gửi Hùng duyệt. Ghi thật vào BC."},
-    {ten: "Vì sao LS đề xuất Ice cream cho S0002?", y: "min-max 8/20, tồn 8 nên mua 12", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC5",
+    {ten: "Vì sao LS đề xuất Ice cream cho S0002?", y: "nhật ký tính của LS, AI kể lại", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC5",
      text: "vì sao LS đề xuất Ice cream cho S0002",
-     mo: "Đọc nhật ký tính của LS: Stock Levels, Reorder Point 8, Maximum 20, tồn 8 nên mua 12. Trợ lý không tính lại."},
-    {ten: "Vì sao LS đề xuất Croissant chocolate cho S0002?", y: "Out of Stock: 42 trên 56 ngày hết hàng", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC5 · OOS",
-     text: "vì sao LS đề xuất Croissant chocolate cho S0002",
-     mo: "Out of Stock: LS đếm 42 trên 56 ngày là hết hàng và bỏ những ngày đó khỏi bán bình quân. Trợ lý cảnh báo quá nửa cửa sổ, bánh tươi hủy cuối ngày nên tồn về 0."},
-    {ten: "Vì sao LS đề xuất Choco nuts cho S0001?", y: "tồn 0, 82 đang về từ Marou", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC5 → IC",
-     text: "vì sao LS đề xuất Choco nuts cho S0001",
-     mo: "Cửa hàng bán 11,9/ngày mà tồn 0. LS biết 82 đang về theo đơn HO106202 nên chỉ đề xuất thêm 2. Đơn này Marou đã xuất kho, xem phần 5."},
-    {ten: "Hùng duyệt đặt mua, gửi đơn sang Marou", loai: "huong_dan", ai: "hung.dieuphoi", ct: "NWV-DAKAO", uc: "UC5", ghi_bc: true,
-     mo: "Trong hộp thư Hùng: thẻ Đề xuất đặt mua Ice cream, bấm Duyệt đặt mua. Thẻ Đã tạo Purchase Order hiện nút Gửi đơn sang Marou, bấm tiếp: đơn Released, bên Marou tự sinh Sales Order."},
-    {ten: "So sánh tốc độ bán Choco nuts giữa các cửa hàng 30 ngày qua", y: "câu mở, model tự dựng chuỗi tra cứu", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "AI", can_ai: true,
-     text: "so sánh tốc độ bán Choco nuts giữa các cửa hàng trong 30 ngày qua",
-     mo: "Không có rule nào cho câu này. Model tự dựng chuỗi tra cứu (khoảng 7 bước), mỗi con số chép từ kết quả tool; thẻ có nút Xem các bước đã tra."},
-    {ten: "Tổng hợp những đề xuất bổ sung bất thường", y: "AI phân tích insight trên đề xuất của LS", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "AI · UC5", can_ai: true,
+     mo: "Stock Levels: Reorder Point 8, Maximum 20, tồn 8 nên mua 12. Trợ lý đọc nhật ký tính của LS, không tính lại; AI viết lại phần lời, bảng thu gọn bên dưới."},
+    {ten: "Hùng duyệt đặt mua, gửi đơn sang Marou", y: "Purchase Order, rồi Intercompany sang Sales Order", loai: "huong_dan", ai: "hung.dieuphoi", ct: "NWV-DAKAO", uc: "UC5", ghi_bc: true,
+     mo: "Thẻ Đề xuất đặt mua Ice cream: bấm Duyệt đặt mua. Thẻ Đã tạo Purchase Order hiện nút Gửi đơn sang Marou, bấm tiếp: đơn Released, bên Marou tự sinh Sales Order."},
+    {ten: "Tổng hợp những đề xuất bổ sung bất thường", y: "AI phân tích insight trên đề xuất của LS", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC5 · AI", can_ai: true,
      text: "tổng hợp những đề xuất bổ sung bất thường",
-     mo: "Khám phá và phân tích insight: model gọi tool đọc mọi đề xuất của LS kèm cờ code tính (hết hàng quá nửa cửa sổ, không có bán bình quân, đề xuất vượt bán nhân ngày phủ, kho không đủ, tồn bằng 0), chọn dòng đáng xem và nói vì sao, kèm việc nên làm."},
+     mo: "Model gọi tool đọc mọi đề xuất của LS kèm cờ code tính (hết hàng quá nửa cửa sổ tính, không có bán bình quân, kho không đủ, tồn bằng 0), chọn dòng đáng xem và nói vì sao. Croissant hết hàng 42 trên 56 ngày lộ ra ở đây."},
   ]},
-  {ten: "3 · Dự báo nối sang bổ sung", buoc: [
-    {ten: "Tab Dự báo: ba phương pháp", loai: "tab", tab: "uc1", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC1",
-     mo: "Holt-Winters, trung bình 28 ngày, trung bình cùng thứ; đo trên 74 cặp, kỳ 21/08 đến 17/09. Biểu đồ theo ngày và 28 ngày tới."},
-    {ten: "Dự báo đang lệch nhiều ở nhóm hàng nào, và vì sao?", y: "nối về chuyện hết hàng ở bước 5", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC1",
-     text: "dự báo đang lệch nhiều ở nhóm hàng nào, và vì sao", mo: "Bánh croissant dự báo cao hơn bán thực tế vì cửa hàng hay hết hàng, nối về chuyện Out of Stock ở bước 5. AI đọc bảng sai số và kể lại; Holt-Winters là thống kê, chưa phải AI."},
-    {ten: "Dự báo Choco bowl ở S0010 sai bao nhiêu?", y: "7 ngày tới đã ghi vào LS, có CTKM 23 đến 25/09", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC1",
+  {ten: "4 · Dự báo, một nhịp", buoc: [
+    {ten: "Dự báo Choco bowl ở S0010 sai bao nhiêu?", y: "Holt-Winters, 7 ngày tới, CTKM 23 đến 25/09", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC1 → UC5",
      text: "dự báo Choco bowl ở S0010 sai bao nhiêu",
-     mo: "Dự báo 7 ngày tới đã ghi vào Retail Forecast Entry của LS; sự kiện KM-CHOCOBOWL-09 (+150%, 23 đến 25/09) sắp tới."},
+     mo: "Dự báo 7 ngày tới đã ghi vào Retail Forecast Entry của LS nên LS dùng ngay khi tính bổ sung; sự kiện KM-CHOCOBOWL-09 cộng 150%. Tab Dự báo có chú thích WAPE và Bias."},
     {ten: "CTKM nào đang chạy và sắp tới?", y: "cửa hàng nào LS chưa cộng nhu cầu khuyến mãi", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC7 → UC5",
      text: "CTKM nào đang chạy và sắp tới",
-     mo: "Đọc Periodic Discount của LS. Điểm nhấn: CTKM Choco bowl có Planned Event cho S0001, S0010 nhưng S0002, S0005 chưa có, LS sẽ tính như ngày thường."},
-    {ten: "Vì sao LS đề xuất Choco bowl cho S0010?", y: "dự báo 25,17 cộng khuyến mãi thành 35,22", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC1 → UC5",
-     text: "vì sao LS đề xuất Choco bowl cho S0010",
-     mo: "Kiểu tính Retail Forecast: dự báo 25,17 trong cửa sổ phủ, cộng Planned Sales Demand thành 35,22, trừ tồn 34 ra 2."},
+     mo: "Đọc Periodic Discount của LS. Điểm nhấn: CTKM Choco bowl có Planned Event cho S0001, S0010 nhưng S0002, S0005 chưa có, LS sẽ tính như ngày thường và cửa hàng đó thiếu hàng đúng ngày khuyến mãi."},
   ]},
-  {ten: "4 · Một lô cận date, AI chọn phương án", buoc: [
-    {ten: "Lô nào sắp hết hạn?", y: "36 lô cận date, thẻ Choco pillar S0010", loai: "chat", ai: "trang.sc", ct: "NWV-MAROU", uc: "UC2",
-     text: "lô nào sắp hết hạn", mo: "36 lô cận date, 5 lô giá trị lớn nhất thành thẻ. Thẻ Choco pillar S0010: 470 cái, 26 ngày, bán không kịp."},
-    {ten: "Phương án xử lý cho Choco pillar", loai: "huong_dan", ai: "trang.sc", ct: "NWV-MAROU", uc: "AI", can_ai: true,
-     mo: "Trên thẻ Choco pillar bấm Phương án xử lý. Code tính năm phương án (giữ, chuyển, chuyển kèm giảm giá, giảm giá, hủy) kèm giá trị cứu được; model chọn một (chuyển 199 sang S0001 bán nhanh hơn) và giải thích. Bấm nút ghi đề xuất."},
-    {ten: "Hùng duyệt chuyển hàng", loai: "huong_dan", ai: "hung.dieuphoi", ct: "NWV-MAROU", uc: "UC2", ghi_bc: true,
-     mo: "Hộp thư Hùng có thẻ đề xuất chuyển 199 Choco pillar S0010 → S0001. Bấm Duyệt chuyển hàng: BC tạo Transfer Order Open, thẻ có link mở."},
+  {ten: "5 · Hàng về cửa hàng: liên công ty khép vòng", buoc: [
+    {ten: "Kiểm hàng Marou đã xuất kho", y: "HO106202 vừa xuất, HO106200 quá ngày", loai: "api", url: "/api/ic-nhan-hang", body: {chay_lai: true}, ai: "hung.dieuphoi", ct: "NWV-DAKAO", uc: "UC2 · A4",
+     mo: "HO106202 (82 Choco nuts cho S0001) Marou xuất kho hôm nay: báo Lan, Hùng, Supply Chain và gửi email. HO106200 xuất từ hôm qua chưa post nhận: nhắc lại và ghi đề xuất cho trợ lý post."},
+    {ten: "Lan (S0001) nhận tin chuẩn bị nhận hàng", y: "cửa hàng biết hàng đang tới, không có số lô", loai: "huong_dan", ai: "lan.s0001", ct: "NWV-DAKAO", uc: "UC2 · A4",
+     mo: "Hộp thư Lan có thẻ Marou đã xuất kho đơn HO106202: 82 Choco nuts, giao Cửa hàng Quận 1, link mở đơn mua. Không có số lô: bán lẻ không quản lý lô."},
+    {ten: "Hùng duyệt cho trợ lý post nhận HO106200", y: "loại đề xuất duy nhất mà duyệt là post thật", loai: "huong_dan", ai: "hung.dieuphoi", ct: "NWV-DAKAO", uc: "UC2 · A4", ghi_bc: true,
+     mo: "Thẻ Cho trợ lý post nhận hàng đơn HO106200, bấm Duyệt cho post nhận hàng: BC post phiếu nhận thật, thẻ có link mở phiếu. Đây là điểm đau số một trong khảo sát."},
+    {ten: "Marou xuất kho đơn Ice cream vừa gửi", y: "khép vòng từ lúc Minh kêu hết hàng", loai: "api", url: "/api/demo/marou-xuat-kho", ai: "hung.dieuphoi", ct: "NWV-DAKAO", uc: "UC2 · A4",
+     mo: "Nút demo thay người kho Marou bấm Post Shipment cho đơn Ice cream ở phần 3. Trợ lý báo ngay Minh (S0002) chuẩn bị nhận hàng. Cần đơn ở bước 8 đã gửi sang Marou."},
   ]},
-  {ten: "5 · Liên công ty khép vòng", buoc: [
-    {ten: "Kiểm hàng Marou đã xuất kho", loai: "api", url: "/api/ic-nhan-hang", body: {chay_lai: true}, ai: "hung.dieuphoi", ct: "NWV-DAKAO", uc: "A4",
-     mo: "HO106202 (82 Choco nuts cho S0001) Marou xuất kho hôm nay: trợ lý báo Lan và Supply Chain, gửi email. HO106200 xuất từ hôm qua chưa post nhận: nhắc lại và ghi đề xuất cho trợ lý post."},
-    {ten: "Lan (S0001) nhận tin chuẩn bị nhận hàng", loai: "huong_dan", ai: "lan.s0001", ct: "NWV-DAKAO", uc: "A4",
-     mo: "Hộp thư Lan có thẻ Marou đã xuất kho đơn HO106202: 82 Choco nuts, giao Cửa hàng Quận 1. Không có số lô: bán lẻ không quản lý lô."},
-    {ten: "Hùng duyệt cho trợ lý post nhận HO106200", loai: "huong_dan", ai: "hung.dieuphoi", ct: "NWV-DAKAO", uc: "A4", ghi_bc: true,
-     mo: "Thẻ Cho trợ lý post nhận hàng đơn HO106200, bấm Duyệt cho post nhận hàng: BC post phiếu nhận thật, thẻ có link mở phiếu. Loại đề xuất duy nhất mà duyệt là post."},
-    {ten: "Marou xuất kho đơn Ice cream vừa gửi", loai: "api", url: "/api/demo/marou-xuat-kho", ai: "hung.dieuphoi", ct: "NWV-DAKAO", uc: "A4",
-     mo: "Nút demo thay người kho Marou bấm Post Shipment cho đơn Ice cream ở bước 2. Trợ lý báo ngay Minh (S0002) chuẩn bị nhận hàng, khép vòng từ lúc cửa hàng kêu hết hàng."},
-  ]},
-  {ten: "6 · Bất thường và chi phí", buoc: [
-    {ten: "Có gì bất thường trong 28 ngày qua không?", y: "code quét 5 tín hiệu, AI chọn và nhận xét", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "AI", can_ai: true,
+  {ten: "6 · Truy xuất, bất thường, chi phí", buoc: [
+    {ten: "Truy xuất lô L260906-33323C", y: "lô Choco nuts vừa xuất sang Cửa hàng Quận 1", loai: "chat", ai: "trang.sc", ct: "NWV-MAROU", uc: "UC2",
+     text: "truy xuất lô L260906-33323C",
+     mo: "Traceability của UC2: lô Choco nuts hạn 22/04/2027, Marou vừa xuất 81 cái theo đơn liên công ty HO106202 (phiếu 102045) sang Cửa hàng Quận 1 ở phần 5. Trợ lý gom Item Ledger Entry của lô theo địa điểm, nói còn tồn ở đâu và thu hồi lấy lại ở đâu."},
+    {ten: "Có gì bất thường trong 28 ngày qua không?", y: "code quét 5 tín hiệu, AI chọn và nhận xét", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC2 · AI", can_ai: true,
      text: "có gì bất thường trong 28 ngày qua không",
-     mo: "Code quét 5 tín hiệu (bán sau hạn, nhận hạn ngắn, hủy tăng, tồn không bán, hết hàng lặp); model chọn tối đa 3 và viết nhận xét, mã tín hiệu phải nằm trong danh sách."},
-    {ten: "Chi phí AI đo được", loai: "tab", tab: "caidat", ai: "dung.admin", ct: "NWV-MAROU", uc: "Vận hành",
+     mo: "Bán sau hạn, nhận hàng hạn ngắn, hủy tăng, tồn không bán, hết hàng lặp; model chọn tối đa 3 và viết nhận xét, mã tín hiệu phải nằm trong danh sách."},
+    {ten: "Chi phí AI đo được", y: "token thật, tiền ước tính", loai: "tab", tab: "caidat", ai: "dung.admin", ct: "NWV-MAROU", uc: "Vận hành",
      mo: "Token là số đếm thật từ Azure, tiền là ước tính theo đơn giá công bố. Cả buổi demo tốn vài cent."},
   ]},
 ];
@@ -1853,7 +1841,7 @@ function renderUC2() {
   const rows = uc2Q ? uc2Rows.filter(r => (r.itemDescription+' '+r.itemNo+' '+(r.lotNo||'')+' '+r.locationCode).toLowerCase().includes(uc2Q)) : uc2Rows;
   let h = `<div id="scnbar" class="${dangChay ? 'on' : ''}"></div><div class="pagehead"><div><h1>Sức khỏe tồn kho</h1>
       <div class="sub">Đánh giá các mặt hàng cần chú ý theo lô, kho và tốc độ bán. ${bcMode==='live' ? 'Business Central tính bằng AL, trợ lý đọc lại.' : 'Ở bản demo này là dữ liệu mô phỏng; trên hệ thống thật, Business Central tính bằng AL.'}</div></div>
-    <div class="right"><span class="pill">📅 Chốt ngày ${dmy(s.asOf)}</span><span class="pill ${bcMode==='live'?'ok':''}">${bcMode==='live'?'Business Central':'Dữ liệu mô phỏng'}</span></div></div>
+    <div class="right"><span class="pill">📅 Ngày làm việc ${dmy(s.asOf)}</span><span class="pill ${bcMode==='live'?'ok':''}">${bcMode==='live'?'Business Central':'Dữ liệu mô phỏng'}</span></div></div>
   <div class="bignum"><div class="n">${money(s.badValue)}</div><div class="sep"></div>
     <div class="lbl"><b>Giá trị ở bốn tầng có vấn đề</b><span>${String(s.badPct).replace('.',',')}% của ${money(s.totalValue)} tồn kho · ${s.badLines} / ${s.totalLines} dòng theo Item, Location, Lô</span></div></div>
   <div class="tiles">` + s.tiers.map(t => `
@@ -1977,7 +1965,8 @@ function renderUC1() {
   const rows = d.rows.filter(r => r.method === tot && (!uc1Q || (r.itemDescription + ' ' + r.itemNo + ' ' + r.locationCode + ' ' + r.itemCategoryCode).toLowerCase().includes(uc1Q)))
     .sort((a, b) => (b.isException - a.isException) || (b.absErrorQty - a.absErrorQty));
   let h = `<div class="pagehead"><div><h1>Độ chính xác dự báo</h1>
-      <div class="sub">Dự báo lập từ dữ liệu trước kỳ kiểm tra rồi so với bán thực tế trong ${dmy(d.ky[0])} đến ${dmy(d.ky[1])}. Ngày hết hàng và ngày có Planned Sales Demand của LS bị bỏ khỏi phép tính. Trung bình 28 ngày và trung bình cùng thứ là mốc; Holt-Winters là mô hình thống kê chuỗi thời gian, dự báo 28 ngày tới được ghi vào Retail Forecast Entry của LS để bổ sung hàng.</div></div>
+      <div class="sub">Dự báo lập từ dữ liệu trước kỳ kiểm tra rồi so với bán thực tế trong ${dmy(d.ky[0])} đến ${dmy(d.ky[1])}. Ngày hết hàng và ngày có Planned Sales Demand của LS bị bỏ khỏi phép tính. Trung bình 28 ngày và trung bình cùng thứ là mốc; Holt-Winters là mô hình thống kê chuỗi thời gian, dự báo 28 ngày tới được ghi vào Retail Forecast Entry của LS để bổ sung hàng.</div>
+      <div class="sub" style="margin-top:6px"><b>Cách đọc:</b> WAPE là tổng sai số tuyệt đối (dự báo trừ thực tế, bỏ dấu) chia tổng bán thực tế; 0% là khớp hoàn toàn, càng lớn dự báo càng lệch. Bias là tổng dự báo trừ tổng thực tế, chia thực tế: dương là dự báo cao hơn bán (dễ tồn thừa), âm là thấp hơn (dễ thiếu hàng). Cặp “cần xem” là WAPE hoặc Bias vượt ngưỡng đặt trên NWV Agent Setup.</div></div>
     <div class="right"><span class="pill ${bcMode==='live'?'ok':''}">${bcMode==='live'?'Business Central':'Dữ liệu mô phỏng'}</span></div></div>
   <div class="tiles">` + d.methods.map(m => `<div class="tile ${m===tot?'sel':''}"><span class="bar"></span><div><b>${esc(ten(m))}</b>
       <div class="st"><span>WAPE <strong>${pct(d.tong[m])}</strong></span>${m===tot?'<span>tốt hơn</span>':''}</div></div></div>`).join('')

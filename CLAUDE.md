@@ -1869,6 +1869,14 @@ kheo giua UC2 voi UC1, UC5, va dua AI vao vai tro trong yeu. Da lam:
   nguoi khac); buoc huong_dan noi ro chi doi vai. `VAI_TRO_CHU_VIEC` cua IC them dispatcher: Hung bam Kiem hang ma hop thu
   trong vi tin chi di cho cua hang va Supply Chain. Luu y: HO106200 xuat 16/09 nen HOM NAY la "trong ngay"; sang 17/09 moi
   thanh qua ngay va sinh de xuat post nhan (buoc 20), dung thay toi 16/09 khong co the ma tuong hong.
+- **Mach demo xep lai lan ba, 23:00 16/09 (Dung: "chech nhip roi, ngay mai tap trung UC2, ghep mot chut UC1, UC5, lay tinh tuy,
+  mach lac"; "kich ban 4, 5, 6 giong nhau qua"):** 18 buoc, 6 phan, UC2 o giua: (1) suc khoe ton kho + brief AI; (2) lo can date:
+  het han -> D4 -> Hung duyet TO; (3) cua hang ban le het hang: Minh -> vi sao LS Ice cream -> Hung duyet, gui Marou -> AI tong hop
+  de xuat bat thuong; (4) du bao mot nhip: Choco bowl S0010 + CTKM; (5) lien cong ty: kiem hang -> Lan -> Hung duyet post nhan ->
+  Marou xuat kho Ice cream; (6) truy xuat lo L260906-33323C (lo Choco nuts vua xuat 81 theo HO106202, con han; KHONG dung
+  L260908-33110B vi lo do da qua han, chon truoc khi sua FEFO) -> bat thuong D3 -> chi phi. Bo: 2 cau "vi sao LS" trung mau, tab
+  du bao, "du bao lech o dau", cau hoi mo so sanh, vi sao LS Choco bowl. The "Chot ngay" doi thanh "Ngay lam viec". Tab Du bao co
+  doan "Cach doc" WAPE va Bias. Tai lieu 13 ban 2.3 viet lai muc 0, 1, 2, 3 theo 18 buoc.
 - **Co bat thuong cua tool `replenishment_suggestions` viet tieng Viet** ("het hang qua nua cua so tinh", "kieu min-max (khong
   co ban binh quan la binh thuong)"...) va SYSTEM planner cam in ten truong ky thuat, vi model chep nguyen "flags min_max,
   oos_qua_nua_cua_so" ra cau tra loi.
