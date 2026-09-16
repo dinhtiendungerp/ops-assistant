@@ -385,6 +385,7 @@ class BCGateway:
     def approve(self, bc_id: str, approver_bc_user: str, comment: str = "") -> dict[str, Any]:
         """Live: POST .../agentProposals(id)/Microsoft.NAV.approve voi token uy quyen cua nguoi duyet (OBO).
         POC hien tai dung token app; TODO OBO khi co Teams SSO. Mock: gia lap codeunit NWV Agent Proposal Mgt."""
+        self._kiem_con_de_xuat(bc_id)
         self.client.bound_action("agentProposals", bc_id, "approve", {"comment": comment[:250]})
         self.quen_nho("agentProposals")     # khong bo thi brief ke tiep van thay de xuat nay cho duyet
         if not self.is_mock:
@@ -479,7 +480,18 @@ class BCGateway:
         self._recalc_suggestion(t["toLocationCode"], t["itemNo"], in_transit_delta=-float(t["quantity"]))
         return True
 
+    def _kiem_con_de_xuat(self, bc_id: str) -> None:
+        """De xuat co con ben BC khong. Bo nho tro ly song lau hon du lieu: o che do mo phong thi fixtures nap lai moi lan, con tren
+        BC that thi nguoi khac co the da xoa dong do. Thieu cho nay, bam Duyet tra 500 thay vi mot cau doc duoc (16/09/2026)."""
+        from bc_agent.bc_client import BCError
+        try:
+            self.client.get("agentProposals", bc_id)
+        except KeyError:
+            raise BCError("Đề xuất này không còn trong Business Central. Có thể nó thuộc phiên dữ liệu trước, hoặc đã bị xóa. "
+                          "Bạn bấm Brief để lấy danh sách đề xuất hiện tại.") from None
+
     def reject(self, bc_id: str, approver_bc_user: str, comment: str) -> None:
+        self._kiem_con_de_xuat(bc_id)
         self.client.bound_action("agentProposals", bc_id, "reject", {"comment": comment[:250]})
         self.quen_nho("agentProposals")
         if self.is_mock:

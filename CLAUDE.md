@@ -1722,6 +1722,22 @@ khong co dong Sale sau han; document no rong.
   "AI o dau trong UC2" bon nhom 12 tinh nang, lop 3 co Purchase va WriteOff, 34 API page. Render: Chrome headless
   `--screenshot --window-size=1800,3400` roi cat day bang Pillow (lenh trong lich su phien, khong co script rieng).
 
+### Bo slide 12 cho buoi present, va bo nho mo phong quay ve RAM, 16/09/2026
+
+- **`docs/12 Marou POC - Kien truc va kich ban UC2 (slide).pptx`**, 28 slide, dung bang `docs/build_slide_uc2_v2.py` (python-pptx)
+  tren CHINH file template cua NaviWorld trong Downloads: giu slide bia va bia phan (do hoa freeform), xoa phan con lai, them slide moi
+  theo style da do duoc (Aptos, navy 001F60, do D71920, than 333333, hop F5F7FA, bang nguon EAF4F7, khung 17,42 x 9,79 inch).
+  **Moi slide co speaker note chi tiet** (Dung vibe code nen chua nam het tinh nang): noi gi, so nao, cau khach hay hoi va cach tra loi.
+  Bay: xoa slide roi them ngay tren cung doi tuong lam part cu con trong goi va slide moi trung ten part
+  ("Duplicate name: ppt/slides/slide3.xml"); phai luu tam roi mo lai giua hai buoc.
+- Thu tu theo comment cua Hung: 3 hinh kien truc (tong quan, ban do tinh nang, chi tiet), roi 15 kich ban dang dau vao / thao tac / dau ra.
+- `tools/chup_uc2_ai.mjs` chup 11 anh tinh nang AI moi (S1, S2, D4, G2, D3, D2, S3, A2, chi phi) o CHE DO MO PHONG, tra nguon ve .env
+  khi xong. Anh tho cao qua thi cat bang `anh_cat(..., phan_tren=)`.
+- **Loi that bat duoc khi chup (da sua):** bo nho tro ly tren dia song lau hon du lieu mo phong. `MockBCClient` nap lai fixtures moi lan
+  dung client moi, nen `bc_id` trong bo nho cu khong con ben mock, bam Duyet tra HTTP 500 `KeyError agentProposals(...)`. Sua hai lop:
+  che do mo phong quay ve `Memory(":memory:")` (chi BC that moi ghi `runs/bo-nho-<company>.sqlite`), va `gw._kiem_con_de_xuat` nem
+  `BCError` co cau doc duoc truoc khi goi approve/reject. Test `test_duyet_de_xuat_khong_con_ben_bc_thi_bao_ro`.
+
 ### Vai tro dia diem doc tu LS Central, app 1.5.2.0, 15/09/2026
 
 Dung bac hai field tren NWV Agent Setup: `Central Warehouse Code` trung `LSC Replen. Setup."Default Central Warehouse"`,

@@ -139,3 +139,17 @@ def test_api_quet_va_demo_post_huy(a):
     a.mem.advance_clock(25)
     kq = c.post("/api/demo/post-huy", json={"user": "dung.admin"}).json()
     assert kq["da_post"] == [a.mem.proposal(p["proposal_id"])["result_doc"]] and "hung.dieuphoi" in kq["delivered"]
+
+
+def test_duyet_de_xuat_khong_con_ben_bc_thi_bao_ro(a):
+    """Bo nho tro ly song lau hon du lieu: o che do mo phong fixtures nap lai, tren BC that nguoi khac co the xoa dong do.
+    Bat duoc 16/09/2026: bam Duyet tra HTTP 500 KeyError thay vi mot cau doc duoc."""
+    from bc_agent.bc_client import BCError
+
+    r = _lo_het_han(a)
+    ih.on_propose(a, a.mem.user("trang.sc"), r["id"], "WriteOff")
+    p = a.mem.proposals()[0]
+    a.gw.client.data["agentProposals"] = [x for x in a.gw.client.data["agentProposals"] if x["id"] != p["bc_id"]]
+    with pytest.raises(BCError) as e:
+        a.handle_action("hung.dieuphoi", "approve", p["proposal_id"], {})
+    assert "không còn trong Business Central" in str(e.value)

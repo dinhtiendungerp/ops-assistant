@@ -99,16 +99,20 @@ def cac_cong_ty() -> list[str]:
 
 
 def _bo_nho(live: bool, ten: str) -> Memory:
-    """Bo nho tro ly nam tren dia, moi company va moi nguon (BC that / mo phong) mot file: runs/bo-nho-<nguon>-<company>.sqlite.
+    """Bo nho tro ly nam tren dia, moi company mot file: runs/bo-nho-<company>.sqlite.
 
     Truoc 16/09/2026 la Memory(":memory:"): moi lan `--reload` sau khi sua file Python hay khoi dong lai la mat hop thu, de xuat da
-    nap, viec theo doi chung tu huy (A3) va cac doan AI da soan. Dung yeu cau chuyen xuong dia. Test van dung ":memory:" (pytest
-    dat state["asst"] hoac tu tao Memory), nen khi chay duoi pytest van giu ban trong RAM de khong ghi vao runs/ that."""
+    nap, viec theo doi chung tu huy (A3) va cac doan AI da soan. Dung yeu cau chuyen xuong dia.
+
+    CHE DO MO PHONG VAN GIU TRONG RAM. `MockBCClient` nap lai fixtures moi lan dung client moi, nen de xuat da ghi vao mock bien mat
+    theo, trong khi bo nho tren dia thi con: bam Duyet tren the cu se tra 500 vi `bc_id` khong con trong mock (bat duoc 16/09/2026
+    khi chup anh cho slide). Du lieu mo phong la de demo, khong can nho qua lan khoi dong lai.
+    Duoi pytest cung dung ":memory:" de khong ghi vao runs/ that."""
     import re as _re
     import sys
-    if "pytest" in sys.modules:
+    if not live or "pytest" in sys.modules:
         return Memory(":memory:")
-    duong = Path(settings.log_dir) / f"bo-nho-{'bc' if live else 'mock'}-{_re.sub(r'[^A-Za-z0-9_-]+', '_', ten) or 'mac-dinh'}.sqlite"
+    duong = Path(settings.log_dir) / f"bo-nho-{_re.sub(r'[^A-Za-z0-9_-]+', '_', ten) or 'mac-dinh'}.sqlite"
     duong.parent.mkdir(parents=True, exist_ok=True)
     return Memory(duong)
 
@@ -139,7 +143,7 @@ def _dung_lai_tro_ly(live: bool, xoa_bo_nho: bool = False) -> None:
                 a.mem.conn.close()
             except Exception:
                 pass
-        for f in Path(settings.log_dir).glob(f"bo-nho-{'bc' if live else 'mock'}-*.sqlite"):
+        for f in Path(settings.log_dir).glob("bo-nho-*.sqlite"):
             try:
                 f.unlink()
             except OSError as exc:
