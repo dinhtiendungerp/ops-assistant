@@ -22,15 +22,15 @@ function noiDung() {
 (async () => {
   await build(
     "Speaker note: buổi demo 17/09/2026",
-    "Lời nói cho từng slide của bộ slide rút gọn v7, kèm ghi chú cho người trình bày",
+    "Lời nói cho từng slide của bộ slide rút gọn v8, kèm ghi chú cho người trình bày",
     {
       headerLeft: "NaviWorld", headerRight: "Marou • Speaker note • Nội bộ",
-      footer: "Speaker note · slide rút gọn v7 · 17/09/2026",
+      footer: "Speaker note · slide rút gọn v8 · 17/09/2026",
       cover: ["Người đọc: người trình bày",
         "Phần in thường là lời nói; khung ghi chú là để nhắc mình, không đọc lên",
-        "Đi kèm: Marou POC - slide demo (ban ngan, 17-09 v7).pptx và demo script bản 3.1"],
+        "Đi kèm: Marou POC - slide demo (ban ngan, 17-09 v8).pptx và demo script bản 3.1"],
     },
     noiDung(),
-    "C:/Users/dungdt.NWV/Demo-Marou/Marou POC - speaker note (17-09, v7b).docx",
+    "C:/Users/dungdt.NWV/Demo-Marou/Marou POC - speaker note (17-09, v8).docx",
   );
 })();

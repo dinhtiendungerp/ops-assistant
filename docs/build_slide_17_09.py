@@ -19,7 +19,7 @@ from pptx import Presentation
 DOCS = Path(__file__).resolve().parent
 NGOAI = Path(r"C:/Users/dungdt.NWV/Demo-Marou")
 NGUON = NGOAI / "Marou POC - slide demo.pptx"
-RA = NGOAI / (sys.argv[1] if len(sys.argv) > 1 else "Marou POC - slide demo (ban ngan, 17-09 v7).pptx")
+RA = NGOAI / (sys.argv[1] if len(sys.argv) > 1 else "Marou POC - slide demo (ban ngan, 17-09 v8).pptx")
 
 # Nap helper (mau, font, slide, txt, hop, anh, anh_cat, ba_cot_io, the_ngang, bang_nguon, note) tu builder goc.
 _src = (DOCS / "build_slide_uc2_v2.py").read_text(encoding="utf-8")
@@ -262,5 +262,51 @@ for so in sorted(BO_SLIDE, reverse=True):
     pr.part.drop_rel(_sid.rId)
     _ids.remove(_sid)
 
+# Chieu 17/09: them hai slide kien truc chi tiet sau slide Ban do tinh nang (buoi gioi thieu kien truc cho Vinh, Hieu).
+# Anh cat tu docs/kien-truc/kien-truc-chi-tiet.html bang tools/chup_kien_truc_phan.mjs.
+# Vua xoa slide ma them slide ngay tren cung doi tuong thi part moi trung ten part da xoa ("slide26.xml" hai lan) va PowerPoint
+# khong mo duoc file. Luu tam roi mo lai truoc khi them.
+_TAM = NGOAI / "_tam-slide-17-09.pptx"
+pr.save(str(_TAM))
+pr = Presentation(str(_TAM))
+KT = DOCS / "kien-truc"
+NOTE_KT1 = """NÓI:
+Đây là kiến trúc chi tiết, phần thứ nhất: người dùng và trợ lý. Các anh đọc từ trên xuống giúp em.
+Hàng trên cùng là các kênh. Người dùng làm việc trên web console, mỗi vai chỉ thấy dữ liệu và việc của mình, và mỗi company có một trợ lý riêng. Email và lịch chạy nền lo phần nhắc việc: báo người duyệt, nhắc post nhận hàng, báo khi Marou vừa xuất kho. Người duyệt vẫn làm trên Business Central như bình thường, mỗi thẻ có link mở đúng trang. Agent bên ngoài cũng gọi được trợ lý qua MCP, dùng chung policy và luồng duyệt.
+Khối đỏ là trợ lý của NaviWorld, chia bốn cột. Cột một là cách hiểu câu hỏi, đi theo thứ tự rẻ trước đắt sau: rule đọc được thì không tốn token, rồi tới kịch bản đã duyệt, rồi mới nhờ model phân loại, và chỉ câu hỏi tự do mới tới planner. Cột hai là các skill theo từng use case, chạy bằng rule, không gọi model. Cột ba là kiểm soát: policy từng loại đề xuất, chặn ngay ở lớp tool, và trần chi phí AI. Cột bốn là bộ nhớ và cổng kết nối Business Central.
+Bên phải là model trên Azure OpenAI, chỉ nhận bảng số đã lọc và trả lời theo khuôn; và một bản đối chiếu độc lập viết lại công thức bằng Python để kiểm số Business Central tính ra.
+
+GHI CHÚ:
+- Câu hay bị hỏi: "trợ lý có tự tính không". Không; trợ lý đọc số Business Central và LS đã tính, bản Python chỉ để đối chiếu.
+- Chi phí mỗi câu hỏi tự do khoảng 6 đến 14 nghìn token; rule và kịch bản đã duyệt không tốn token."""
+NOTE_KT2 = """NÓI:
+Phần thứ hai là bên trong Business Central, gồm ba lớp. Số liệu và quyết định cuối cùng đều nằm ở đây; tắt trợ lý thì ba lớp này vẫn chạy.
+Lớp một là dữ liệu chuẩn của Business Central và LS Central: sổ kho, lô và hạn dùng, đơn mua bán, dữ liệu bổ sung hàng của LS, cộng các bảng kết quả của app.
+Lớp hai là tính toán, viết bằng AL và dùng LS Central, chạy trong Business Central: sức khỏe tồn kho theo lô, độ chính xác dự báo, chấm điểm nhà cung cấp, bổ sung hàng của LS. Ngưỡng nằm trên trang Setup, Marou tự sửa được, không phải sửa code.
+Lớp ba là đề xuất và người duyệt. Trợ lý chỉ ghi vào bảng đề xuất. Người của Marou bấm Duyệt thì Business Central mới tạo chứng từ, và chứng từ ở trạng thái nháp. Riêng post phiếu nhận hàng liên công ty là loại duy nhất được post thật, và quyền đó tách riêng.
+Trợ lý nói chuyện với Business Central qua ba đường ở trên cùng: đọc qua API chỉ đọc, ghi vào đúng một bảng đề xuất, và quyền gán theo permission set.
+Ba ô dưới cùng là ba nguyên tắc em muốn các anh nhớ: số do Business Central tính, trợ lý chỉ ghi đề xuất, và model là lớp cuối.
+
+GHI CHÚ:
+- Hỏi vì sao không tính trong Python cho nhanh: để người nghiệm thu mở page trong BC là đối chiếu được, và không có dịch vụ ngoài nào phải chạy thì số mới hiện ra.
+- Kết nối bằng Entra app theo OAuth 2.0 server-to-server; không có secret trong mã nguồn."""
+
+for ten_anh, tieu, phu, noi in (
+        ("kien-truc-phan-1-tro-ly.png", "Kiến trúc chi tiết: người dùng và trợ lý",
+         "Kênh làm việc, trợ lý NaviWorld (hiểu câu hỏi, skill, kiểm soát, lưu vết), model và bản đối chiếu.", NOTE_KT1),
+        ("kien-truc-phan-2-bc.png", "Kiến trúc chi tiết: bên trong Business Central",
+         "Ba lớp dữ liệu, tính toán, đề xuất và người duyệt; cách trợ lý đọc, ghi và được cấp quyền.", NOTE_KT2)):
+    s_moi = slide(pr, "KIẾN TRÚC · CHI TIẾT", tieu)
+    anh(s_moi, KT / ten_anh, 0.45, 1.85, 16.5, 7.1)
+    s_moi.notes_slide.notes_text_frame.text = noi.strip()
+
+# Doi hai slide vua them ve ngay sau slide Ban do tinh nang (vi tri 5 va 6).
+_ids = pr.slides._sldIdLst
+_ds = list(_ids)
+for k, sid in enumerate(_ds[-2:]):
+    _ids.remove(sid)
+    _ids.insert(4 + k, sid)
+
 pr.save(str(RA))
+_TAM.unlink(missing_ok=True)
 print("bo day du:", so_cu, "slide; da ghi:", RA, "so slide:", len(Presentation(str(RA)).slides._sldIdLst))
