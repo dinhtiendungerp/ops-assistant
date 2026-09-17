@@ -115,7 +115,7 @@ GHI CHÚ:
 - Hai câu hỏi tự do (bước 6, 7) và bước 13 không bấm sát nhau, tránh chạm hạn mức token mỗi phút.""",
 
 9: """NÓI:
-Em mở bằng tiền, không mở bằng tính năng. Đây là toàn bộ giá trị tồn đang có vấn đề, tính theo từng lô.
+Trước khi nói tới tính năng, em mời các anh xem con số trước. Đây là tổng giá trị hàng tồn đang có vấn đề, tính tới từng lô.
 Các anh nhìn bốn ô lớn: quá hạn, cận date, sắp hết hàng, chậm luân chuyển. Các con số này do Business Central tính, chạy tự động mỗi đêm hoặc bấm tay. Trợ lý không tính.
 Ngày làm việc hiện ngay trên màn hình; mọi con số phía sau tính theo ngày đó.
 
@@ -246,7 +246,7 @@ GHI CHÚ:
 - Phiếu nhận trong ảnh có lô vì dữ liệu demo bên Dakao còn bật quản lý lô. Đừng hứa bán lẻ truy được lô.""",
 
 24: """NÓI:
-Slide này cho người trả tiền. Em nói ba ý.
+Slide này nói về chi phí AI. Em xin nói ba ý.
 Một, token là số đếm thật từ Azure sau mỗi lượt gọi; tiền là ước tính theo đơn giá công bố, hóa đơn thật mới là số cuối.
 Hai, chi phí nhỏ là do kiến trúc: câu nào rule trả lời được thì không gọi model, và model chỉ nhận bảng số đã lọc.
 Ba, có phanh thật: trần theo ngày và trần cộng dồn, vượt thì trợ lý tự quay về câu mẫu. Quản trị xem được chi phí theo từng việc và tắt AI bất cứ lúc nào.
