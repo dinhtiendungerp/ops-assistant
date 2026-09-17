@@ -31,6 +31,6 @@ function noiDung() {
         "Đi kèm: Marou POC - slide demo (ban ngan, 17-09 v7).pptx và demo script bản 3.1"],
     },
     noiDung(),
-    "C:/Users/dungdt.NWV/Demo-Marou/Marou POC - speaker note (17-09, v7).docx",
+    "C:/Users/dungdt.NWV/Demo-Marou/Marou POC - speaker note (17-09, v7b).docx",
   );
 })();
