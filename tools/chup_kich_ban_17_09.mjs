@@ -96,6 +96,15 @@ async function main() {
   await choDen("typeof switchUser === 'function' && typeof users !== 'undefined' && users.length > 0", 90000);
 
   const CHI = process.argv.slice(2);
+  if (CHI.includes("d4dakao")) {
+    // Buoc 3-5 chuyen sang Dakao sang 17/09 (Marou la san xuat, khong co cua hang theo nghiep vu).
+    await vai("trang.sc", "NWV-DAKAO");
+    await chup("kb17-04-phuong-an-chat", TIN("Phương án cho lô cận date"));
+    await chup("kb17-04b-email-nguoi-duyet", TIN("Email cho người duyệt"));
+    await vai("hung.dieuphoi", "NWV-DAKAO");
+    await chup("kb17-05-duyet-chuyen", TIN("Transfer Order HO1039"));
+    return;
+  }
   if (!CHI.includes("dakao")) {
   await vai("trang.sc", "NWV-MAROU");
   await chup("kb17-02-brief-ai", TIN("việc quan trọng nhất"));

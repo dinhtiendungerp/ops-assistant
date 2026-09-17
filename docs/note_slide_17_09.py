@@ -15,6 +15,8 @@ SUA_CHU = [
         "Marou bán cho Dakao bằng Intercompany chuẩn của Business Central."),
     (5, "Nguồn: khảo sát Marou 13/09/2026 và RFP 20/08/2026.", "Nguồn: bối cảnh vận hành hiện tại của Marou và RFP 20/08/2026."),
     (5, "Dữ liệu trình diễn do NaviWorld dựng trên danh mục của Marou.", "Dữ liệu trình diễn do NaviWorld dựng trên danh mục của data demo Cronus."),
+    (5, "Trợ lý: tồn kho theo lô, đề xuất chuyển nội bộ", "Trợ lý: tồn kho theo lô, truy xuất lô, bán cho Dakao"),
+    (5, "Trợ lý: đứt hàng, dự báo, khuyến mãi, nhận hàng", "Trợ lý: lô cận date, đứt hàng, dự báo, khuyến mãi, nhận hàng"),
     (7, " Toàn bộ ngày QA 16/09 tốn 0,085 USD cho 146 lượt gọi.", ""),
     (8, " Đã chạy thử trọn vòng trên Business Central đêm 16/09.", ""),
     (12, "Chạy thật 17/09/2026 00:28 trên NWV-MAROU: SMTP đã gửi, người soạn AI (gpt-4.1-mini).",
@@ -73,12 +75,13 @@ GHI CHÚ:
 
 5: """NÓI:
 Slide này nối kiến trúc với bài toán của Marou. Marou có hai đơn vị. Marou là sản xuất, quản lý theo lô và hạn dùng. Dakao là bán lẻ, không quản lý lô. Hàng đi từ Marou sang Dakao bằng mua bán giữa hai công ty, giao thẳng tới từng cửa hàng.
-Vì vậy trợ lý đề xuất khác nhau ở hai bên. Bên Marou là chuyển hàng nội bộ. Bên Dakao là đặt mua, với nhà cung cấp chính là Marou. Số lượng vẫn do LS Central tính.
+Vì vậy trợ lý làm việc khác nhau ở hai bên. Bên Marou, trợ lý theo dõi tồn kho theo lô và truy xuất lô. Bên Dakao, trợ lý lo cho cửa hàng: lô cận date thì chuyển sang cửa hàng bán nhanh hơn, sắp hết hàng thì đặt mua từ Marou. Số lượng vẫn do LS Central tính.
 Ở giữa là ba painpoint của kho bán lẻ theo bối cảnh hiện tại. Một, hàng về cửa hàng mà chứng từ nhận hàng dồn tới cuối tháng mới post, phải thuê người ngoài làm. Hai, muốn tự động hóa đơn qua lại giữa hai công ty. Ba, kết ca thiếu nguyên liệu.
 Painpoint một và hai POC trả lời được, các anh sẽ thấy ở phần liên công ty cuối buổi. Painpoint ba nằm ngoài phạm vi POC này, em nói thẳng từ đầu.
 
 GHI CHÚ:
 - Không nói "khảo sát"; đây là bối cảnh hiện tại, chưa khảo sát chính thức.
+- Data demo: company Marou vẫn còn cửa hàng vì là bản sao từ Cronus. Mọi bước có cửa hàng đều chạy ở company Dakao; đừng mở cửa hàng ở company Marou.
 - Khách hỏi vì sao không tự gửi đơn: gửi đơn kéo theo Release, là quyết định của người mua.""",
 
 6: """NÓI:

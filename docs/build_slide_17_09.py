@@ -19,7 +19,7 @@ from pptx import Presentation
 DOCS = Path(__file__).resolve().parent
 NGOAI = Path(r"C:/Users/dungdt.NWV/Demo-Marou")
 NGUON = NGOAI / "Marou POC - slide demo.pptx"
-RA = NGOAI / (sys.argv[1] if len(sys.argv) > 1 else "Marou POC - slide demo (ban ngan, 17-09 v5).pptx")
+RA = NGOAI / (sys.argv[1] if len(sys.argv) > 1 else "Marou POC - slide demo (ban ngan, 17-09 v6).pptx")
 
 # Nap helper (mau, font, slide, txt, hop, anh, anh_cat, ba_cot_io, the_ngang, bang_nguon, note) tu builder goc.
 _src = (DOCS / "build_slide_uc2_v2.py").read_text(encoding="utf-8")

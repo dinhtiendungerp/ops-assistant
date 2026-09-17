@@ -1,5 +1,5 @@
 /**
- * Tai lieu 13, ban 3.0: demo script cho buoi trinh dien ngay 17/09/2026.
+ * Tai lieu 13, ban 3.1: demo script cho buoi trinh dien ngay 17/09/2026.
  * Khac voi speaker note trong slide 12: cho nay la runbook thao tac, ai bam gi, o dau, cho bao lau, khach thay gi, noi cau nao.
  * Ban 3.0 (dem 16 rang sang 17/09): UC2 len dau theo yeu cau cua Dung ("chu yeu la UC2"), them cau hoi tu do ve hang cham luan
  * chuyen noi sang de xuat CTKM, email cho nguoi duyet do AI soan, lich nen tu bao khi Marou post xuat kho. Da QA ca 20 buoc tren
@@ -23,7 +23,7 @@ function noiDung() {
     + "của console, tên nút chính là câu sẽ gửi."));
   c.push(...table(["Phần", "Bước", "UC", "Phút"], [
     ["1 · Sáng nay ở Marou: sức khỏe tồn kho", "1, 2", "UC2, AI", "0 đến 4"],
-    ["2 · Một lô cận date: AI phân tích, chọn phương án", "3 đến 5", "UC2 nối UC5, AI", "4 đến 10"],
+    ["2 · Một lô cận date ở cửa hàng: AI phân tích, chọn phương án", "3 đến 5", "UC2 nối UC5, AI", "4 đến 10"],
     ["3 · Hỏi tự do trên tồn kho: chậm luân chuyển, CTKM, truy xuất, bất thường", "6 đến 9", "UC2, AI", "10 đến 19"],
     ["4 · Cửa hàng bán lẻ hết hàng: LS tính, AI đề xuất", "10 đến 13", "UC5, AI", "19 đến 27"],
     ["5 · Dự báo, một nhịp", "14, 15", "UC1, UC7 nối UC5", "27 đến 31"],
@@ -46,7 +46,7 @@ function noiDung() {
     + "chứng từ do lần chạy thử sinh ra. Không phải làm lại gì trước buổi họp, chỉ kiểm theo mục 2."));
   c.push(...table(["Đã có sẵn", "Ở đâu", "Dùng cho bước"], [
     ["Bộ dữ liệu tính theo ngày làm việc 17/09/2026: Inventory Health, dự báo, scorecard, LS Replenishment, cả hai company", "NWV-MAROU và NWV-DAKAO", "Tất cả"],
-    ["Lô Choco pillar L260829-33310-SD tại S0010: 470 cái, 26 ngày nữa hết hạn, bán không kịp; S0001 bán nhanh hơn", "Inventory Health NWV-MAROU", "3 đến 5"],
+    ["Lô Choco pillar L260829-33310-SD tại S0010: 470 cái, 26 ngày nữa hết hạn, bán không kịp; S0001 bán nhanh hơn", "Inventory Health NWV-DAKAO", "3 đến 5"],
     ["Ice cream strawberry: 109 ngày không bán ở S0001, S0002, S0013 và kho; ba CTKM đang chạy không có mặt hàng này", "Inventory Health và Periodic Discount NWV-DAKAO", "6, 7"],
     ["Lô Choco nuts L260906-33323C: Marou xuất 81 cái theo HO106202 sang S0001, hạn 22/04/2027", "Item Ledger Entry NWV-MAROU", "8"],
     ["LS ở Dakao đề xuất 12 Ice cream cho S0002 (min-max 8/20), 7 Croissant chocolate cho S0002 (hết hàng quá nửa cửa sổ tính), 2 Choco nuts cho S0001", "Journal MAROU-PO của NWV-DAKAO", "10, 11, 13"],
@@ -58,7 +58,7 @@ function noiDung() {
   c.push(h2("Đã dọn"));
   c.push(...table(["Đã xoá hoặc đóng", "Vì sao"], [
     ["Đề xuất huỷ Croissant plain ở Marou và đề xuất đặt mua Ice cream ở Dakao từ lần bạn chạy thử tối 16/09", "Để bước 4 và bước 10 ghi đề xuất mới, không bị báo “đã có đề xuất”."],
-    ["Transfer Order HO1039 và đề xuất chuyển Choco pillar của lần QA", "Bước 5 sẽ tạo lại đúng trước mặt khách."],
+    ["Transfer Order HO1039 và đề xuất chuyển Choco pillar của lần QA, ở cả hai company", "Bước 5 sẽ tạo lại đúng trước mặt khách."],
     ["Đơn thử HO106204 (10 Choco pillar, S0005) và HO106205 (12 Ice cream, S0002): đã xuất kho và đã post nhận (phiếu 107111, 107112), đề xuất liên quan đã xoá", "Hai đơn dùng để kiểm lịch nền báo xuất kho và nút Marou xuất kho. Đóng lại để bước 16 chỉ còn HO106202 và HO106200."],
     ["Đề xuất post nhận HO106200 sinh ra khi QA bước 16", "Bước 16 sẽ ghi lại đúng lúc bấm."],
   ], [6.0, 6.0]));
@@ -73,7 +73,7 @@ function noiDung() {
     ["Bấm Reset MỘT lần lúc bắt đầu, rồi thôi", "Khay Điều khiển demo ở góc dưới phải, nút Reset", "Hộp thư mọi vai về màn hình chào. Sau đó không bấm Reset nữa, không bấm +24 giờ"],
     ["Nguồn dữ liệu là Business Central", "Dải ngay dưới thanh tiêu đề, nút Business Central đang tô", "Dải xanh ghi Đang đọc Business Central NWV01"],
     ["Bật AI", "Vai Dũng (Quản trị), tab Cài đặt AI", "Ô trạng thái ghi AI đang bật; trần ngày còn ít nhất 1 USD"],
-    ["Cột Theo dõi xử lý sạch", "Vai Hùng, xem cột phải ở cả hai company", "Marou: chưa có đề xuất nào. Dakao: bốn dòng Executed (HO106200, HO106201, HO106202, phiếu nhận 107110)"],
+    ["Cột Theo dõi xử lý sạch", "Vai Hùng, xem cột phải ở cả hai company", "Marou: chưa có đề xuất nào. Dakao: bốn dòng Executed (HO106200, HO106201, HO106202, phiếu nhận 107110), chưa có đề xuất chuyển hàng"],
     ["Mở sẵn Business Central", "Một tab trình duyệt riêng, đăng nhập NWV01, company NWV-MAROU", "Bấm link trong thẻ là mở được; muốn tự post xuất kho HO106203 thì mở sẵn Sales Order S90016"],
   ], [2.6, 5.2, 4.2]));
   c.push(h2("Người dùng demo"));
@@ -119,20 +119,20 @@ function noiDung() {
      "Bản này cũng tự chạy lúc 07:30 và gửi email, hôm nay tạm dừng để giữ dữ liệu cho buổi họp."],
     ["Phần lớn thời gian là đọc Business Central. Nói trước để người xem không tưởng máy treo."]);
 
-  c.push(h2("Phần 2 · Một lô cận date: AI phân tích, chọn phương án"));
-  buoc(3, "Lô nào sắp hết hạn?", "trang.sc · Marou",
+  c.push(h2("Phần 2 · Một lô cận date ở cửa hàng: AI phân tích, chọn phương án"));
+  buoc(3, "Lô nào sắp hết hạn?", "trang.sc · Dakao",
     "Nút 3.",
     "Khoảng 5 giây: 36 lô cận date, chia theo địa điểm; 5 thẻ lô giá trị lớn nhất. Thẻ Choco pillar S0010: 470 cái, 26 ngày, bán không kịp; hai nút Đề xuất giảm giá và Phương án xử lý.",
     ["Câu này trợ lý đọc thẳng bảng. Điều phối thấy toàn hệ thống; quản lý cửa hàng hỏi cùng câu chỉ thấy cửa hàng mình.",
      "Chọn Choco pillar để đi tiếp: 470 cái mà 26 ngày nữa hết hạn, tại chỗ bán không kịp."]);
-  buoc(4, "Phương án xử lý cho Choco pillar ở S0010", "trang.sc · Marou",
+  buoc(4, "Phương án xử lý cho Choco pillar ở S0010", "trang.sc · Dakao",
     "Nút 4 gửi câu “phương án xử lý cho Choco pillar ở S0010” (cùng kết quả với nút Phương án xử lý trên thẻ lô). Trên thẻ trả về, bấm nút Ghi đề xuất: Chuyển.",
     "Khoảng 5 giây: bảng năm phương án kèm giá trị cứu được hoặc mất, lời khuyên của model (chuyển 187 sang S0001, không còn phần dư). Sau khi ghi (khoảng 15 giây): câu đã ghi đề xuất, thẻ Email cho người duyệt với hai đoạn AI viết, kênh SMTP đã gửi.",
     ["Code tính năm phương án: giữ, chuyển, chuyển kèm giảm giá, giảm giá, huỷ. Khả năng nhận của từng cửa hàng bằng bán bình quân nhân ngày còn lại trừ tồn họ đang có.",
      "Model chọn một và nói vì sao. Khoá phương án phải nằm trong bảng, chữ số phải có trong dữ liệu, không được thêm đơn vị tiền, không được chọn giữ khi giữ vẫn còn dư. Vi phạm là về câu mẫu.",
-     "Đây là UC2 nối sang UC5: hàng cận date đi về nơi bán nhanh, không phải huỷ.",
+     "Đây là UC2 nối sang UC5: hàng cận date đi về nơi bán nhanh, không phải huỷ. Bước này chạy ở Dakao vì cửa hàng thuộc Dakao; Marou là nhà sản xuất.",
      "Người duyệt được gọi hai đường: thẻ trong chat cho ai đang mở trợ lý, email cho ai không mở. Code điền bảng số liệu và link BC; AI chỉ viết đoạn mở đầu và đoạn kết."]);
-  buoc(5, "Hùng duyệt chuyển hàng", "hung.dieuphoi · Marou",
+  buoc(5, "Hùng duyệt chuyển hàng", "hung.dieuphoi · Dakao",
     "Nút 5 đổi sang Hùng. Bấm Duyệt chuyển hàng trên thẻ đề xuất Choco pillar S0010 sang S0001.",
     "Khoảng 5 giây: Đã duyệt, Transfer Order HO10xx tạo dưới tên Hùng, trạng thái Open; cột phải Transfer Order có dòng mới.",
     ["Đề xuất ghi vào một bảng riêng trong Business Central, trạng thái luôn vào ở Proposed. Không có đường tắt cho trợ lý ghi thẳng chứng từ.",
@@ -295,7 +295,7 @@ function noiDung() {
     "Runbook 20 bước cho buổi trình diễn 17/09/2026: dữ liệu đã tạo sẵn, bấm gì, khách thấy gì, nói gì",
     {
       headerLeft: "NaviWorld", headerRight: "Marou • Demo script • Nội bộ",
-      footer: `Demo script · Bản 3.0, ${NGAY}`,
+      footer: `Demo script · Bản 3.1, ${NGAY}`,
       cover: ["Người đọc: người trình diễn và người hỗ trợ kỹ thuật trong buổi họp",
         "Môi trường: Business Central NWV01, hai company NWV-MAROU và NWV-DAKAO, Work Date 17/09/2026",
         `Soạn rạng sáng ${NGAY}, sau khi chạy thử cả 20 bước trên dữ liệu thật. Thứ tự bước trùng với cột Kịch bản demo trên console.`,

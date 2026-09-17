@@ -1914,6 +1914,14 @@ Dung giao: QA toan bo kich ban, cap nhat slide, tao chung tu can cho live demo, 
   slide, xep lai), anh `docs/anh-uc2/kb17-*.png` chup bang `tools/chup_kich_ban_17_09.mjs` tu hop thu QA (khong gui cau moi).
 - Toc do do duoc: cau tu do 10-35 giay (planner 2-4 luot + doc BC); hai cau tu do sat nhau de cham 429 vi TPM 30k. Chi phi ca vong QA ~0,08 USD.
 
+### Buoc 3-5 (lo can date, D4, duyet TO) chuyen sang NWV-DAKAO, sang 17/09/2026
+
+Dung hoi "sao ben Marou lai chuyen hang noi bo": Marou la san xuat, cua hang thuoc Dakao; NWV-MAROU con 5 cua hang chi vi la
+ban sao. Moi buoc co cua hang chay o NWV-DAKAO (console `CHUONG` phan 2, `tools/qa_kich_ban_17_09.py`, tai lieu 13 ban 3.1,
+slide v6). QA that o Dakao: D4 chon chuyen 187 sang S0001, email [Dakao] SMTP da gui, duyet ra TO (Direct Transfer); da xoa TO
+va de xuat thu. Slide rut gon v6: note van noi xung "em", nguoi nghe "cac anh" (`docs/note_slide_17_09.py`), painpoint theo
+boi canh hien tai (chua khao sat), du lieu "dung tren danh muc cua data demo Cronus", ma G3 cho email nhac post.
+
 ### Email cho nguoi duyet khi co de xuat moi, AI soan phan loi, 16/09/2026 dem
 
 Dung nhin the "Da ghi de xuat WriteOff ... Toi da bao nguoi duyet ngay trong chat cua ho" va hoi "phan nay co gui qua email

@@ -663,14 +663,14 @@ const CHUONG = [
     {ten: "Brief sáng nay do AI viết", y: "ba việc quan trọng nhất và vì sao", loai: "brief", ai: "trang.sc", ct: "NWV-MAROU", uc: "UC2 · AI",
      mo: "Model chọn ba việc trong danh sách code đưa và nói vì sao; mọi chữ số phải có trong dữ liệu, sai là về câu mẫu. Mất khoảng 20 giây, phần lớn là đọc Business Central."},
   ]},
-  {ten: "2 · Một lô cận date: AI phân tích, chọn phương án", buoc: [
-    {ten: "Lô nào sắp hết hạn?", y: "36 lô cận date, thẻ Choco pillar S0010", loai: "chat", ai: "trang.sc", ct: "NWV-MAROU", uc: "UC2",
+  {ten: "2 · Một lô cận date ở cửa hàng: AI phân tích, chọn phương án", buoc: [
+    {ten: "Lô nào sắp hết hạn?", y: "36 lô cận date, thẻ Choco pillar S0010", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC2",
      text: "lô nào sắp hết hạn",
      mo: "Trợ lý đọc thẳng bảng, chia theo địa điểm, 5 lô giá trị lớn nhất thành thẻ. Thẻ Choco pillar S0010: 470 cái, 26 ngày, bán không kịp, có nút Phương án xử lý."},
-    {ten: "Phương án xử lý cho Choco pillar ở S0010", y: "code tính 5 phương án, AI chọn và giải thích", loai: "chat", ai: "trang.sc", ct: "NWV-MAROU", uc: "UC2 → UC5 · AI", can_ai: true,
+    {ten: "Phương án xử lý cho Choco pillar ở S0010", y: "code tính 5 phương án, AI chọn và giải thích", loai: "chat", ai: "trang.sc", ct: "NWV-DAKAO", uc: "UC2 → UC5 · AI", can_ai: true,
      text: "phương án xử lý cho Choco pillar ở S0010",
      mo: "Cùng kết quả với nút Phương án xử lý trên thẻ lô. Code tính giữ, chuyển, chuyển kèm giảm giá, giảm giá, hủy kèm giá trị cứu được; model chọn chuyển 199 sang S0001 vì bên đó bán nhanh hơn và nói vì sao. Bấm nút ghi đề xuất."},
-    {ten: "Hùng duyệt chuyển hàng", y: "Business Central tạo Transfer Order", loai: "huong_dan", ai: "hung.dieuphoi", ct: "NWV-MAROU", uc: "UC2", ghi_bc: true,
+    {ten: "Hùng duyệt chuyển hàng", y: "Business Central tạo Transfer Order", loai: "huong_dan", ai: "hung.dieuphoi", ct: "NWV-DAKAO", uc: "UC2", ghi_bc: true,
      mo: "Hộp thư Hùng có thẻ đề xuất chuyển 199 Choco pillar S0010 sang S0001. Bấm Duyệt chuyển hàng: BC tạo Transfer Order Open, thẻ có link mở. Trợ lý không có đường tắt ghi thẳng chứng từ."},
   ]},
   {ten: "3 · Hỏi tự do trên tồn kho: chậm luân chuyển, CTKM, truy xuất, bất thường", buoc: [
