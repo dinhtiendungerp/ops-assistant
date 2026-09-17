@@ -217,7 +217,7 @@ GHI CHÚ:
 - Lỗ hổng CTKM cố ý để trong dữ liệu để thấy trợ lý bắt được.""",
 
 21: """NÓI:
-Phần này trả lời hai painpoint các anh đã thấy ở đầu buổi: nhận hàng post trễ, và đơn qua lại giữa hai công ty.
+Phần này trả lời hai painpoint của kho bán lẻ hiện nay: hàng về cửa hàng mà chứng từ nhận hàng dồn tới cuối tháng mới post, và đơn qua lại giữa hai công ty phải nhập tay. Marou là sản xuất, Dakao là bán lẻ, hàng đi từ Marou giao thẳng tới từng cửa hàng Dakao.
 Em xin nói rõ là hai đầu không giống nhau. Bên Marou, bên bán, không có gì tự động; người kho vẫn post xuất kho như mọi ngày.
 Bên Dakao, bên mua, trợ lý làm ba việc. Marou vừa xuất kho thì trợ lý báo ngay cho cửa hàng nhận hàng và Supply Chain để chuẩn bị, chỉ báo, không ghi gì. Qua ngày hôm sau mà vẫn chưa post nhận thì trợ lý nhắc lại và xin phép post thay. Người duyệt bấm Duyệt thì Business Central mới post phiếu nhận. Không ai duyệt thì không có gì được post.
 Đây là loại đề xuất duy nhất mà duyệt làm Business Central post thật một chứng từ.

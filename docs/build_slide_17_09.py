@@ -19,7 +19,7 @@ from pptx import Presentation
 DOCS = Path(__file__).resolve().parent
 NGOAI = Path(r"C:/Users/dungdt.NWV/Demo-Marou")
 NGUON = NGOAI / "Marou POC - slide demo.pptx"
-RA = NGOAI / (sys.argv[1] if len(sys.argv) > 1 else "Marou POC - slide demo (ban ngan, 17-09 v6).pptx")
+RA = NGOAI / (sys.argv[1] if len(sys.argv) > 1 else "Marou POC - slide demo (ban ngan, 17-09 v7).pptx")
 
 # Nap helper (mau, font, slide, txt, hop, anh, anh_cat, ba_cot_io, the_ngang, bang_nguon, note) tu builder goc.
 _src = (DOCS / "build_slide_uc2_v2.py").read_text(encoding="utf-8")
@@ -253,6 +253,14 @@ if not any(sh.has_text_frame and sh.text_frame.text == "G3" for sh in s6.shapes)
 
 for so, noi_dung in ns.NOTE.items():
     slides[so - 1].notes_slide.notes_text_frame.text = noi_dung.strip()
+
+# Dung sang 17/09: bo slide 5 (hai don vi va painpoint). Note slide 21 da ke lai painpoint.
+BO_SLIDE = [5]
+_ids = pr.slides._sldIdLst
+for so in sorted(BO_SLIDE, reverse=True):
+    _sid = list(_ids)[so - 1]
+    pr.part.drop_rel(_sid.rId)
+    _ids.remove(_sid)
 
 pr.save(str(RA))
 print("bo day du:", so_cu, "slide; da ghi:", RA, "so slide:", len(Presentation(str(RA)).slides._sldIdLst))
