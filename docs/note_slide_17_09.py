@@ -14,6 +14,7 @@ SUA_CHU = [
     (5, "Đã chạy thật: đơn mua HO106201 (Dakao) thành đơn bán S90014 (Marou), xuất kho 102043, nhận hàng 107110.",
         "Marou bán cho Dakao bằng Intercompany chuẩn của Business Central."),
     (5, "Nguồn: khảo sát Marou 13/09/2026 và RFP 20/08/2026.", "Nguồn: bối cảnh vận hành hiện tại của Marou và RFP 20/08/2026."),
+    (5, "Dữ liệu trình diễn do NaviWorld dựng trên danh mục của Marou.", "Dữ liệu trình diễn do NaviWorld dựng trên danh mục của data demo Cronus."),
     (7, " Toàn bộ ngày QA 16/09 tốn 0,085 USD cho 146 lượt gọi.", ""),
     (8, " Đã chạy thử trọn vòng trên Business Central đêm 16/09.", ""),
     (12, "Chạy thật 17/09/2026 00:28 trên NWV-MAROU: SMTP đã gửi, người soạn AI (gpt-4.1-mini).",
@@ -41,7 +42,7 @@ NOTE = {
 1: """NÓI:
 Em chào các anh. Hôm nay NaviWorld trình bày phần POC về sức khỏe tồn kho và truy xuất lô, tức UC2, cùng với trợ lý AI chạy xuyên suốt.
 Trước khi vào, em xin nói ba điều để các anh có khung. Thứ nhất, mọi con số các anh thấy hôm nay đều do Business Central và LS Central tính, trợ lý chỉ đọc lại chứ không tự tính. Thứ hai, trợ lý chỉ ghi đề xuất; chứng từ chỉ sinh ra khi người của Marou bấm Duyệt, và sinh ở trạng thái nháp. Thứ ba, phần AI bật tắt được và có trần chi phí.
-Dữ liệu trong buổi này là bộ mô phỏng NaviWorld dựng trên danh mục thật của Marou, không phải số vận hành thật.
+Dữ liệu trong buổi này là bộ mô phỏng NaviWorld dựng trên danh mục của data demo Cronus, không phải số vận hành thật.
 
 GHI CHÚ:
 - Câu dữ liệu mô phỏng nói ngay từ đầu, để không ai hỏi lại giữa chừng.""",
@@ -253,7 +254,7 @@ GHI CHÚ:
 25: """NÓI:
 Để kết, em chia ba cột cho rõ trách nhiệm. Cột xanh là những gì đã chạy. Cột vàng là những gì đang mở rộng. Cột đỏ là những điều cần Marou quyết: ai được quyền post phiếu nhận, có mở thêm loại chứng từ nào không, vùng xử lý dữ liệu, ngưỡng và policy chính thức.
 Bước tiếp theo bên em đề nghị là một bước nhỏ: chốt ngưỡng và policy với Supply Chain, dựng dữ liệu bán lẻ riêng cho Dakao, rồi chạy thử một tuần thật với trần chi phí đặt sẵn.
-Và em nhắc lại: toàn bộ số liệu hôm nay là dữ liệu mô phỏng NaviWorld dựng trên danh mục của Marou. Em cảm ơn các anh.
+Và em nhắc lại: toàn bộ số liệu hôm nay là dữ liệu mô phỏng NaviWorld dựng trên danh mục của data demo Cronus. Em cảm ơn các anh.
 
 GHI CHÚ:
 - Đừng gộp ba cột làm một; khách cần biết phần nào phụ thuộc họ.""",
