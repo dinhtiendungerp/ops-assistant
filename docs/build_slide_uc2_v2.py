@@ -284,7 +284,7 @@ Nếu khách hỏi về dữ liệu: bộ trình diễn do NaviWorld dựng trê
 s = slide(pr, "AI · BỐN NHÓM NĂNG LỰC", "13 tính năng AI đã chạy thật trong UC2",
           "Mỗi tính năng phải thuộc một trong bốn nhóm; không thuộc nhóm nào thì đó là tính năng ứng dụng.")
 nhom = [("Tóm tắt", [("S1", "Brief buổi sáng do AI viết"), ("S2", "Giải thích lô bằng lời"), ("S3", "Báo cáo tuần hàng hủy")], AMBER),
-        ("Tạo sinh nội dung", [("G1", "Lý do đề xuất viết lại"), ("G2", "Biên bản hủy"), ("", "Email nhắc post nhận hàng")], RGBColor(0xA4, 0x55, 0x2A)),
+        ("Tạo sinh nội dung", [("G1", "Lý do đề xuất viết lại"), ("G2", "Biên bản hủy"), ("G3", "Email nhắc post nhận hàng")], RGBColor(0xA4, 0x55, 0x2A)),
         ("Khám phá và phân tích", [("D1", "Hỏi đáp tự do"), ("D4", "Phương án cho lô cận date"), ("D3", "Phát hiện bất thường"), ("D2", "Nguyên nhân hàng hủy")], RGBColor(0x2F, 0x6B, 0x8A)),
         ("Tự động hóa", [("A1", "Đề xuất có người duyệt"), ("A2", "Quét sáng mỗi ngày"), ("A3", "Luồng hủy khép kín"),
                          ("A4", "Nhận hàng liên công ty")], GREEN)]

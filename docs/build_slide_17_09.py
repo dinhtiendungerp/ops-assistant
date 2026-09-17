@@ -19,7 +19,7 @@ from pptx import Presentation
 DOCS = Path(__file__).resolve().parent
 NGOAI = Path(r"C:/Users/dungdt.NWV/Demo-Marou")
 NGUON = NGOAI / "Marou POC - slide demo.pptx"
-RA = NGOAI / (sys.argv[1] if len(sys.argv) > 1 else "Marou POC - slide demo (ban ngan, 17-09 v4).pptx")
+RA = NGOAI / (sys.argv[1] if len(sys.argv) > 1 else "Marou POC - slide demo (ban ngan, 17-09 v5).pptx")
 
 # Nap helper (mau, font, slide, txt, hop, anh, anh_cat, ba_cot_io, the_ngang, bang_nguon, note) tu builder goc.
 _src = (DOCS / "build_slide_uc2_v2.py").read_text(encoding="utf-8")
@@ -215,6 +215,44 @@ for ext_lst in [e for e in el if e.tag.endswith("}extLst")]:
             ext_lst.remove(ext)
     if len(ext_lst) == 0:
         el.remove(ext_lst)
+
+# ---------------------------------------------------------------- v5: sua chu, ma G3, speaker note van noi
+import copy as _copy
+sys.path.insert(0, str(DOCS))
+import note_slide_17_09 as ns
+
+slides = list(pr.slides)
+thieu = []
+for so, cu, moi_chu in ns.SUA_CHU:
+    thay = False
+    for sh in slides[so - 1].shapes:
+        if not sh.has_text_frame:
+            continue
+        for para in list(sh.text_frame.paragraphs):
+            for r in para.runs:
+                if cu in r.text:
+                    r.text = r.text.replace(cu, moi_chu)
+                    thay = True
+            if thay and not moi_chu and not "".join(r.text for r in para.runs).strip() and len(sh.text_frame.paragraphs) > 1:
+                para._p.getparent().remove(para._p)
+    if not thay:
+        thieu.append((so, cu[:50]))
+if thieu:
+    raise SystemExit(f"Khong tim thay chu can sua: {thieu}")
+
+# Ma G3 cho "Email nhac post nhan hang" tren slide bon nhom AI (ban day du de trong ma).
+s6 = slides[5]
+g2 = next(sh for sh in s6.shapes if sh.has_text_frame and sh.text_frame.text == "G2")
+email = next(sh for sh in s6.shapes if sh.has_text_frame and sh.text_frame.text == "Email nhắc post nhận hàng")
+if not any(sh.has_text_frame and sh.text_frame.text == "G3" for sh in s6.shapes):
+    el = _copy.deepcopy(g2._element)
+    s6.shapes._spTree.append(el)
+    g3 = s6.shapes[-1]
+    g3.top = email.top
+    g3.text_frame.paragraphs[0].runs[0].text = "G3"
+
+for so, noi_dung in ns.NOTE.items():
+    slides[so - 1].notes_slide.notes_text_frame.text = noi_dung.strip()
 
 pr.save(str(RA))
 print("bo day du:", so_cu, "slide; da ghi:", RA, "so slide:", len(Presentation(str(RA)).slides._sldIdLst))
