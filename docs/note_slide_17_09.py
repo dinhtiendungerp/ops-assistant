@@ -155,7 +155,7 @@ GHI CHÚ:
 - Bước 5 trên màn hình: Hùng bấm Duyệt, Transfer Order tạo ở trạng thái Open.""",
 
 14: """NÓI:
-Anh hay hỏi: tám mươi phần trăm câu hỏi nằm ngoài kịch bản thì sao? Hai câu này không có mẫu nào viết sẵn.
+Chắc anh sẽ hỏi: nếu tám mươi phần trăm câu hỏi nằm ngoài kịch bản thì sao? Hai câu này không có mẫu nào viết sẵn.
 Câu thứ nhất: mặt hàng nào đang chậm luân chuyển. Model tự chọn cách đọc bảng tồn kho, xếp theo số ngày tồn đủ bán và số ngày không bán, rồi liệt kê từng cửa hàng.
 Câu thứ hai em hỏi nối tiếp: có đề xuất CTKM gì để bán các mặt hàng này không. Chữ "các mặt hàng này" trợ lý hiểu được nhờ đọc lại mấy tin trước trong đoạn chat. Model đọc CTKM đang chạy của LS, thấy chưa có chương trình nào cho mặt hàng đó, rồi đề xuất giảm giá, combo hoặc đưa ra khu trưng bày.
 Nó không đưa ra mức giảm bao nhiêu phần trăm, vì Marou chưa có quy tắc, và việc đó để người phụ trách chốt.
